@@ -1,6 +1,16 @@
 import { Mongo } from 'meteor/mongo';
+import { AccompanistProfileSchema } from './accompanistProfile.js'
 
 export const Accounts = new Mongo.Collection('accounts');
+
+PaymentMethodSchema = new SimpleSchema({
+  paymentType: {
+    type: String,
+    label: "Payment Type"
+  },
+
+
+});
 
 AccountSchema = new SimpleSchema({
   name: {
@@ -8,9 +18,9 @@ AccountSchema = new SimpleSchema({
     label: "Name"
   },
 
-  email: {
-    type: String,
-    label: "Email"
+  birthDate : {
+    type: Date,
+    label: "Date of Birth"
   },
 
   phone: {
@@ -21,7 +31,15 @@ AccountSchema = new SimpleSchema({
   school: {
     type: String,
     label: "School"
+  },
+
+  accompanistProfile : {
+    type: [AccompanistProfileSchema],
+    label: "Accompanist Profile",
+    optional: true
   }
+
+
 
 });
 
