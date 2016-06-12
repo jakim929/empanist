@@ -7,7 +7,7 @@ PaymentMethodSchema = new SimpleSchema({
   paymentType: {
     type: String,
     label: "Payment Type"
-  },
+  }
 
 
 });
@@ -28,9 +28,9 @@ AccountSchema = new SimpleSchema({
     label: "Phone Number"
   },
 
-  school: {
+  affiliation: {
     type: String,
-    label: "School"
+    label: "Affiliation"
   },
 
   accompanistProfile : {
