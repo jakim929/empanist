@@ -8,8 +8,6 @@ PaymentMethodSchema = new SimpleSchema({
     type: String,
     label: "Payment Type"
   }
-
-
 });
 
 AccountSchema = new SimpleSchema({
@@ -38,8 +36,6 @@ AccountSchema = new SimpleSchema({
     label: "Accompanist Profile",
     optional: true
   }
-
-
 
 });
 
