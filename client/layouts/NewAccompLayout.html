@@ -3,12 +3,17 @@
         <h1> Signup to Become an Accompanist </h1>
     </header>
     <main>
-
-      {{> newAccompForm}}
-
+      {{> makeUpdateAccompForm}}
     </main>
+
+
+
 </template>
 
-<template name="newAccompForm">
-  {{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
+<template name="makeUpdateAccompForm">
+  {{#if accompanistProfileDoc}}
+    {{> quickForm collection="AccompanistProfile" doc=accompanistProfileDoc id="insertAccompProfileForm" type="update"}}
+  {{else}}
+    {{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
+  {{/if}}
 </template>

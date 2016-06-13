@@ -24,9 +24,9 @@ AccompanistProfileSchema = new SimpleSchema({
   		label: "Hourly Charge",
   		autoform: {
       		options: [
-        	{label: "$20", value: 20},
-        	{label: "$40", value: 40},
-        	{label: "$60", value: 60}
+	        	{label: "$20", value: 20},
+	        	{label: "$40", value: 40},
+	        	{label: "$60", value: 60}
       		]
    		}
   	},
