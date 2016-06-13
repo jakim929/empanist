@@ -2,16 +2,6 @@ import { Mongo } from 'meteor/mongo';
 
 export const MusicProfiles = new Mongo.Collection('musicProfiles');
 
-export const Temp = new Mongo.Collection('temp');
-
-TempSchema = new SimpleSchema({
-  name: {
-    type: String,
-    label: "NAME"
-  }
-})
-Temp.attachSchema(TempSchema)
-
 OrchestraSchema = new SimpleSchema({
   name: {
     type: String,

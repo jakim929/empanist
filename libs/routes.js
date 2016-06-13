@@ -26,10 +26,9 @@ FlowRouter.route('/results', {
     }
 });
 
-FlowRouter.route('/accompprofile', {
-    name: 'accompprofile',
+FlowRouter.route('/profile', {
+    name: 'profile',
     action() {
-    	BlazeLayout.render('MainLayout', {main: 'AccompProfileLayout'});
+    	BlazeLayout.render('MainLayout', {main: 'ProfileLayout'});
     }
 });
-
