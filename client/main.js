@@ -5,10 +5,17 @@ import { AccompanistProfile } from '../collections/accompanistProfile.js'
 window.MusicProfiles = MusicProfiles
 window.Temp = Temp
 
-Template.makeProfileForm.helpers ({
+Template.AddInfoLayout.helpers ({
   profileDoc() {
   	event.preventDefault();
-    return MusicProfiles.findOne({_id : Meteor.userId})
+    return MusicProfiles.findOne({ userId: Meteor.userId()});
+  }
+});
+
+Template.makeUpdateProfileForm.helpers ({
+  profileDoc() {
+  	event.preventDefault();
+    return MusicProfiles.findOne({ userId: Meteor.userId()});
   }
 });
 

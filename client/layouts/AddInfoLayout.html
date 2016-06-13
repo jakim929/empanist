@@ -1,12 +1,21 @@
 <template name="AddInfoLayout">
     <header>
-        <h1> Create Your Profile </h1>
+      {{#if profileDoc}}
+        <h1>Edit Profile</h1>
+      {{else}}
+        <h1>Create a Profile</h1>
+      {{/if}}
     </header>
     <main>
-      {{> makeProfileForm}}
+      {{> makeUpdateProfileForm}}
+
     </main>
 </template>
 
-<template name="makeProfileForm">
-  {{> quickForm collection="MusicProfiles" id="makeProfileForm" type="insert" doc=profileDoc}}
+<template name="makeUpdateProfileForm">
+  {{#if profileDoc}}
+    {{> quickForm collection="MusicProfiles" doc=profileDoc id="makeUpdateProfileForm" type="update"}}
+  {{else}}
+    {{> quickForm collection="MusicProfiles" id="makeUpdateProfileForm" type="insert"}}
+  {{/if}}
 </template>
