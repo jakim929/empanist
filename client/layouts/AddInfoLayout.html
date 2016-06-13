@@ -7,8 +7,17 @@
       {{/if}}
     </header>
     <main>
+      {{> makeUpdateAccountForm}}
       {{> makeUpdateProfileForm}}
     </main>
+</template>
+
+<template name="makeUpdateAccountForm">
+  {{#if accountDoc}}
+    {{> quickForm collection="Accounts" doc=accountDoc id="makeUpdateProfileForm" type="update"}}
+  {{else}}
+    {{> quickForm collection="Accounts" id="makeUpdateProfileForm" type="insert"}}
+  {{/if}}
 </template>
 
 <template name="makeUpdateProfileForm">
