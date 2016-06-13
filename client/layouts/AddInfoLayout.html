@@ -3,6 +3,10 @@
         <h1> Create Your Profile </h1>
     </header>
     <main>
-      
+      {{> makeProfileForm}}
     </main>
+</template>
+
+<template name="makeProfileForm">
+  {{> quickForm collection="MusicProfiles" id="makeProfileForm" type="insert" doc=profileDoc}}
 </template>
