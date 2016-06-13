@@ -1,9 +1,10 @@
 import { MusicProfiles } from '../collections/musicProfile.js'
 import { AccompanistProfile } from '../collections/accompanistProfile.js'
+import { Accounts } from '../collections/account.js'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfile = AccompanistProfile
-
+window.Accounts = Accounts
 
 // Global Template Helpers
 
@@ -11,6 +12,11 @@ Template.registerHelper( 'profileDoc', () => {
     event.preventDefault();
     return MusicProfiles.findOne({ userId: Meteor.userId()});
 });
+
+Template.registerHelper( 'accountDoc', () => {
+  	event.preventDefault();
+    return Accounts.findOne({ _id: Meteor.userId()});
+  });
 
 Template.registerHelper( 'accompanistProfileDoc', () => {
     event.preventDefault();
