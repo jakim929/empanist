@@ -20,16 +20,24 @@
 
 		      <ul class="nav navbar-nav navbar-right">
 		        <li> {{> loginButtons}} </li>
-		        <li><a href="/addinfo">Add Info</a></li>
-		        <li><a href="/newaccomp">Become an Accompanist</a></li>
 
+						<!-- If the user already created a profile -->
+						{{#if profileDoc}}
+							<li><a href="/addinfo">Edit Profile</a></li>
+							<li><a href="/profile">View Profile</a></li>
+						{{else}}
+							<li><a href="/addinfo">Add Profile</a></li>
+						{{/if}}
+						{{#if accompanistProfileDoc}}
 
+						<!-- FILL THIS -->
+						{{else}}
+							<li><a href="/newaccomp">Become an Accompanist</a></li>
+						{{/if}}
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
 		</nav>
-
     	{{> Template.dynamic template=main}}
-
-    </main>
+  </main>
 </template>
