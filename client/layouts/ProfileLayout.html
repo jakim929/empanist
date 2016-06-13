@@ -3,6 +3,9 @@
         <h1> Profile </h1>
     </header>
     <main>
+      <br>
+      <button><a href="/addinfo">Edit Profile</a></button>
+      <br><br>
     	<section class="myprofile">
 			<!-- List all user's accounts -->
 			{{#each myprofile}}
@@ -10,20 +13,20 @@
 				<h5>Years Played: {{yearsPlayed}}</h5>
 				<hr>
 				<h5>Awards: </h5>
-					{{#each awards}} 
+					{{#each awards}}
 						Name: {{name}}<br>
 						Date: {{date}}<br><br>
 					{{/each}}
 				<hr>
 				<h5>Competitions: </h5>
-					{{#each competitions}} 
+					{{#each competitions}}
 						Name: {{name}}<br>
 						Date: {{date}}<br>
 						Award: {{award}}<br><br>
 					{{/each}}
 				<hr>
 				<h5>Music Programs: </h5>
-					{{#each musicPrograms}} 
+					{{#each musicPrograms}}
 						Institution Name: {{instName}}<br>
 						Program Name: {{programName}}<br>
 						Start Date: {{startDate}}<br>
@@ -31,7 +34,7 @@
 					{{/each}}
 				<hr>
 				<h5>Orchestra's Participated in: </h5>
-					{{#each orchestras}} 
+					{{#each orchestras}}
 						Name: {{name}}<br>
 						Position: {{position}}<br>
 						Start Date: {{startDate}}<br>
