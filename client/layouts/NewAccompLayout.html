@@ -4,7 +4,11 @@
     </header>
     <main>
 
-    	   	{{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
+      {{> newAccompForm}}
         
     </main>
+</template>
+
+<template name="newAccompForm">
+  {{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
 </template>
