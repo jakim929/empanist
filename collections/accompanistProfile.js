@@ -3,12 +3,22 @@ import { Mongo } from 'meteor/mongo';
 export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 
 AccompanistProfileSchema = new SimpleSchema({
-	
-	repertoire: {
+		userId: {
+			type: String,
+			label: "User ID",
+			autoform: {
+				type: "hidden"
+			},
+			autoValue: function(){
+				return this.userId
+			}
+		},
+
+		repertoire: {
     	type: [String],
     	label: "Repertoire"
   	},
-  	
+
   	charge: {
   		type: Number,
   		label: "Hourly Charge",
@@ -51,7 +61,7 @@ AccompanistProfileSchema = new SimpleSchema({
         	{label: "Sunday", value: "sunday"},
       		]
    		}
-  	}, 	
+  	},
 
   	location: {
   		type: String,
