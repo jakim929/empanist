@@ -63,7 +63,7 @@ AccompanistProfileSchema = new SimpleSchema({
    		}
   	},
 
-  	location: {
+  	session_location: {
   		type: String,
   		label: "Session's Location",
   		autoform: {
@@ -74,6 +74,13 @@ AccompanistProfileSchema = new SimpleSchema({
       		]
   		}
   	},
+
+    // make this show up only if the accomp said he's willing to give sessoins in his place
+    mylocation: {
+      type: String,
+      label: "My location",
+      optional: true
+    },
 
   	one_liner: {
   		type: String,

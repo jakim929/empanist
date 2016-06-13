@@ -4,19 +4,40 @@
     </header>
     <main>
         <!-- Search Bar -->
-        <div class="row search">
-  <div class="col-md-8 col-md-offset-2">
-    <form class="form-inline" role="form">
-      <div class="form-group">
-        <label class="sr-only" for="">Enter search terms</label>
-        <input type="search" class="form-control" id="k" name="k" placeholder="Enter search terms">
-        <input id="cn" name="cn" type="hidden" value="false" />
-      </div>
-      <button type="submit" id="s" class="btn btn-default">
-        <span class="glyphicon glyphicon-search"></span>
-      </button>
-    </form>
+<div class="input-group">
+  	
+  	<!-- City -->
+  <input type="text" class="form-control" aria-label="City">
+  <div class="input-group-btn">
+    
+    <!-- Session Time Pref -->
+	<div class="btn-group">
+	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Time Preferance <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu">
+	    <li><a href="#">Morning</a></li>
+	    <li><a href="#">Afternoon</a></li>
+	    <li><a href="#">Night</a></li>
+	  </ul>
+	</div>
+
+	 <!-- Session Location Pref -->
+	<div class="btn-group">
+	  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	    Session's Location <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu">
+	    <li><a href="#">My Place</a></li>
+	    <li><a href="#">Accompanists Place</a></li>
+	    <li><a href="#">Either</a></li>
+	  </ul>
+	</div>
+
+	<!-- Search Button -->
+	<button class="btn btn-default" type="button">Search</button>
   </div>
 </div>
+
     </main>
 </template>
