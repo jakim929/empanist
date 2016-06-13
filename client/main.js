@@ -1,10 +1,12 @@
 import { MusicProfiles } from '../collections/musicProfile.js'
 import { AccompanistProfile } from '../collections/accompanistProfile.js'
 import { Accounts } from '../collections/account.js'
+import { MusicCompetitions } from '../collections/competitions.js'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfile = AccompanistProfile
 window.Accounts = Accounts
+window.MusicCompetitions = MusicCompetitions
 
 // Global Template Helpers
 
@@ -16,11 +18,16 @@ Template.registerHelper( 'profileDoc', () => {
 Template.registerHelper( 'accountDoc', () => {
   	event.preventDefault();
     return Accounts.findOne({ _id: Meteor.userId()});
-  });
+});
 
 Template.registerHelper( 'accompanistProfileDoc', () => {
     event.preventDefault();
     return AccompanistProfile.findOne({ userId: Meteor.userId()});
+});
+
+Template.registerHelper( 'musicCompetitionsDoc', () => {
+    event.preventDefault();
+    return MusicCompetitions.find().fetch();
 });
 
 // Local Template Helpers
@@ -33,7 +40,7 @@ Template.makeUpdateAccompForm.helpers ({
 });
 
 // add info from account.js and make it work for accompanist search results as well
-Template.ProfileLayout.helpers({  
+Template.ProfileLayout.helpers({
   myprofile: ()=> {
     return MusicProfiles.find({userId: Meteor.userId()});
   }

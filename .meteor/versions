@@ -55,6 +55,7 @@ less@2.6.0
 livedata@1.0.18
 localstorage@1.0.9
 logging@1.0.12
+lukemadera:autoform-autocomplete@1.0.2
 matb33:bootstrap-base@10.0.0
 matb33:bootstrap-glyphicons@10.0.0
 mdg:validation-error@0.2.0
@@ -87,6 +88,7 @@ mongo@1.1.7
 mongo-id@1.0.4
 msavin:jetsetter@2.0.0
 msavin:mongol@2.0.1
+notorii:array@0.0.1
 npm-bcrypt@0.8.6_1
 npm-mongo@1.4.43
 observe-sequence@1.0.11

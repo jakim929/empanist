@@ -38,7 +38,11 @@ AwardSchema = new SimpleSchema({
 CompetitionSchema = new SimpleSchema({
   name: {
     type: String,
-    label: "Competition Name"
+    label: "Competition Name",
+    autoform: {
+      type: "select",
+      options: ["First Manhattan International Music Competition"]
+    }
   },
   date: {
     type: Date,
