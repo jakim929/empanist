@@ -26,5 +26,12 @@ Template.makeUpdateAccompForm.helpers ({
   }
 });
 
+// add info from account.js and make it work for accompanist search results as well
+Template.ProfileLayout.helpers({  
+  myprofile: ()=> {
+    return MusicProfiles.find({userId: Meteor.userId()});
+  }
+});
+
 // For Debugging
   SimpleSchema.debug = true;
