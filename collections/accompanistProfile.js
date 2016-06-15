@@ -26,16 +26,6 @@ AccompanistProfileSchema = new SimpleSchema({
     	label: "Repertoire"
   	},
 
-		dateBegin:{
-			type: Date,
-			label: "Begin Date"
-		},
-
-		dateEnd:{
-			type: Date,
-			label: "End Date"
-		},
-
   	charge: {
   		type: Number,
   		label: "Hourly Charge",

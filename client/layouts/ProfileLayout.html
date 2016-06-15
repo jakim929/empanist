@@ -6,8 +6,22 @@
       <br>
       <button><a href="/addinfo">Edit Profile</a></button>
       <br><br>
+      {{>accountTemplate}}
       {{>profileTemplate}}
+      {{>accompanistProfileTemplate}}
+
     </main>
+</template>
+
+<template name="accountTemplate">
+  <h3>Account Details</h3>
+    {{#with accountDoc.doc}}
+    <h5>Name: {{name}}</h5>
+    <h5>Birthday: {{birthDate}}</h5>
+    <h5>Phone Number: {{phone}}</h5>
+    <h5>Affiliation: {{affiliation}}</h5>
+    <br><br>
+    {{/with}}
 </template>
 
 <template name="profileTemplate">
@@ -38,7 +52,7 @@
           End Date: {{endDate}}<br><br>
         {{/each}}
       <hr>
-      <h5>Orchestra's Participated in: </h5>
+      <h5>Orchestras Participated in: </h5>
         {{#each orchestras}}
           Name: {{name}}<br>
           Position: {{position}}<br>
@@ -47,4 +61,25 @@
         {{/each}}
     {{/with}}
   </section>
+</template>
+
+<template name="accompanistProfileTemplate">
+  <h3>Accompanist Profile</h3>
+  {{#with accompanistProfileDoc.doc}}
+  <h5>Repertoire: </h5>
+    {{#each repertoire}}
+      {{this}}<br>
+    {{/each}}
+  <hr>
+  <h5>Start Date: {{startDate}}</h5>
+  <h5>End Date: {{endDate}}</h5>
+  <h5>Hourly Rate: ${{charge}}/HR</h5>
+  <h5>Preferred Working Time: /{{#each working_hours}}{{this}}/{{/each}}</h5>
+  <h5>Working Hours: /{{#each working_hours}}{{this}}/{{/each}}</h5>
+  <h5>Working Days: /{{#each working_days}}{{this}}/{{/each}}</h5>
+  <h5>Session Location: {{session_location}}</h5>
+  <h5>My Location: {{mylocation}}</h5>
+  <hr>
+  <h5>One Liner: {{one_liner}}</h5>
+  {{/with}}
 </template>
