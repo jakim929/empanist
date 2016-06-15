@@ -22,7 +22,6 @@ function wrapDoc (obj) {
   }
 }
 
-
 // Global Template Helpers
 
 Template.registerHelper( 'profileDoc', () => {
