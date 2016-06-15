@@ -1,42 +1,77 @@
 import { MusicProfiles } from '../collections/musicProfile.js'
 import { AccompanistProfile } from '../collections/accompanistProfile.js'
 import { Accounts } from '../collections/account.js'
+import { MusicCompetitions } from '../collections/competitions.js'
+import { Transactions } from '../collections/transactions.js'
+
+import { TestAccountData } from '../collections/testData.js'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfile = AccompanistProfile
 window.Accounts = Accounts
+window.MusicCompetitions = MusicCompetitions
+window.Transactions = Transactions
 
+// Helper functions
+
+function wrapDoc (obj) {
+  if (obj){
+    return {field: "update", doc: obj}
+  }else{
+    return {field: "insert", doc: null}
+  }
+}
 
 // Global Template Helpers
 
 Template.registerHelper( 'profileDoc', () => {
     event.preventDefault();
-    return MusicProfiles.findOne({ userId: Meteor.userId()});
+
+    return wrapDoc(MusicProfiles.findOne({ userId: Meteor.userId()}));
 });
 
 Template.registerHelper( 'accountDoc', () => {
   	event.preventDefault();
-    return Accounts.findOne({ _id: Meteor.userId()});
-  });
+    return wrapDoc(Accounts.findOne({ userId: Meteor.userId()}));
+});
 
 Template.registerHelper( 'accompanistProfileDoc', () => {
     event.preventDefault();
-    return AccompanistProfile.findOne({ userId: Meteor.userId()});
+    return wrapDoc(AccompanistProfile.findOne({ userId: Meteor.userId()}));
+});
+
+Template.registerHelper( 'musicCompetitionsDoc', () => {
+    event.preventDefault();
+    // array =  MusicCompetitions.find().fetch();
+    return [{label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition"}]
 });
 
 // Local Template Helpers
+
+Template.upsertProfileForm.helpers ({
+  instrumentList: function () {
+    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
+    "Zither"].map(function(obj){return {label: obj, value:obj}})
+  }
+});
+
+// Local Template Events
+
+Template.testData.events({
+  'click button'(event){
+    event.preventDefault();
+      console.log("Pressed");
+    for (var i =0; i < TestAccountData.length; i++){
+      Accounts.insert(TestAccountData[i]);
+      console.log("Inserted account number "+(i+1));
+    };
+  }
+});
 
 Template.makeUpdateAccompForm.helpers ({
   NewAccompSchema: function () {
   	event.preventDefault();
   	return Schema.AccompanistProfileSchema;
-  }
-});
-
-// add info from account.js and make it work for accompanist search results as well
-Template.ProfileLayout.helpers({  
-  myprofile: ()=> {
-    return MusicProfiles.find({userId: Meteor.userId()});
   }
 });
 
@@ -80,12 +115,3 @@ Template.search.events({
 
 // For Debugging
   SimpleSchema.debug = true;
-
-
-
-
-
-
-
-
-

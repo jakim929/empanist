@@ -11,6 +11,18 @@ PaymentMethodSchema = new SimpleSchema({
 });
 
 AccountSchema = new SimpleSchema({
+  userId: {
+    type: String,
+    label: "User ID",
+    autoform: {
+      type: "hidden"
+    },
+    autoValue: function() {
+      return this.userId;
+    }
+
+  },
+
   name: {
     type: String,
     label: "Name"

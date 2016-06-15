@@ -1,29 +1,46 @@
 <template name="AddInfoLayout">
     <header>
       {{#if profileDoc}}
-        <h1>Edit Profile</h1>
+        <h1>Edit User Information</h1>
       {{else}}
         <h1>Create a Profile</h1>
       {{/if}}
     </header>
     <main>
-      {{> makeUpdateAccountForm}}
-      {{> makeUpdateProfileForm}}
+      <h3>Edit Account Information</h3>
+      {{> upsertAccountForm}}
+      <br><br>
+      <h3>Edit Music Profile</h3>
+      {{> upsertProfileForm}}
     </main>
 </template>
 
-<template name="makeUpdateAccountForm">
-  {{#if accountDoc}}
-    {{> quickForm collection="Accounts" doc=accountDoc id="makeUpdateProfileForm" type="update"}}
-  {{else}}
-    {{> quickForm collection="Accounts" id="makeUpdateProfileForm" type="insert"}}
-  {{/if}}
+<template name="upsertAccountForm">
+  {{#autoForm collection="Accounts" doc=accountDoc.doc id="upsertAccountForm" type=accountDoc.field}}
+    <fieldset>
+      {{>afQuickField name="name"}}
+      {{>afQuickField name="birthDate"}}
+      {{>afQuickField name="phone"}}
+      {{>afQuickField name="affiliation"}}
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Update Account Information</button>
+  {{/autoForm}}
 </template>
 
-<template name="makeUpdateProfileForm">
-  {{#if profileDoc}}
-    {{> quickForm collection="MusicProfiles" doc=profileDoc id="makeUpdateProfileForm" type="update"}}
-  {{else}}
-    {{> quickForm collection="MusicProfiles" id="makeUpdateProfileForm" type="insert"}}
-  {{/if}}
+<template name="upsertProfileForm">
+  {{#autoForm collection="MusicProfiles" doc=profileDoc.doc id="upsertProfileForm" type=profileDoc.field}}
+    <fieldset>
+      {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
+      {{>afQuickField name="yearsPlayed"}}
+      {{>afQuickField name="awards"}}
+      {{>afQuickField name="musicPrograms"}}
+      {{>afQuickField name="orchestras"}}
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Update Profile</button>
+  {{/autoForm}}
+</template>
+
+
+<template name="nameRender">
+  {{name}}
 </template>
