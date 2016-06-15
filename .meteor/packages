@@ -52,4 +52,5 @@ easy:search				# easy search used for initial tests with the search bar
 easysearch:core
 easysearch:autosuggest
 
-momentjs:moment			# for comparing dates
+momentjs:moment			# Dealing with dates
+

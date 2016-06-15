@@ -57,17 +57,16 @@ Template.upsertProfileForm.helpers ({
 
 // Local Template Events
 
-Template.testData.events({
-  'click button'(event){
-    event.preventDefault();
-      console.log("Pressed");
-    for (var i =0; i < TestAccountData.length; i++){
-      Accounts.insert(TestAccountData[i]);
-      console.log("Inserted account number "+(i+1));
-    };
-  }
-});
-
+// Template.testData.events({
+//   'click button'(event){
+//     event.preventDefault();
+//       console.log("Pressed");
+//     for (var i =0; i < TestAccountData.length; i++){
+//       Accounts.insert(TestAccountData[i]);
+//       console.log("Inserted account number "+(i+1));
+//     };
+//   }
+// });
 
 Template.makeUpdateAccompForm.helpers ({
   NewAccompSchema: function () {
@@ -76,52 +75,51 @@ Template.makeUpdateAccompForm.helpers ({
   }
 });
 
-// Searching Account profile
-
-Template.search.helpers({
-  accountsIndex: () => AccountsIndex // instanceof EasySearch.Index
-});
-
-Template.search.events({
-
-'submit form': function(){
-    event.preventDefault();
-    console.log("Form submitted");
-    console.log(event.type);
-
-    //Constants submitted from the Home search bar
-   	const geo_location = event.target.geo_location.value
-   	const start_date = event.target.start_date.value
-   	const end_date = event.target.end_date.value
-
-  	Session.set('geo_location', geo_location)
-    Session.set('start_date', start_date)
-  	Session.set('end_date', end_date)
-}
-});
-
- 	Template.search.helpers({
-	accompanists: ()=> {
+Template.results.helpers({
+	// print this from the new page
+  accompanists: ()=> {
 		var gl = Session.get('geo_location')
-		var sd = moment().toDate().Session.get('start_date')
-		var ed = moment().toDate().Session.get('end_date')
+		var sd = Session.get('start_date') 
+		var ed = Session.get('end_date') 
+	
+		// convert dates to dates that can be compared with Mongo schema
+		var new_sd = new Date(sd)
+		var new_ed = new Date(ed)
 
-		// comparing dates
-		// var startDate = moment().toDate();
-		// var endDate = moment().toDate();
-
-		// check for sd and ed ranges in corrispondance with star end dates for accompanist
+		// fix location (Rad + Google API)
 		if (gl && sd && ed) {
-			return AccompanistProfile.find({mylocation: gl, startDate: {$gte: sd, $lt: ed}})
-			//return AccompanistProfile.find({"mylocation": gl, "startDate": {$lte st}, "endDate": {$gte ed}})
-
-		}
-    // take dates into account!!!! this is only for testing reasons!!!
+		  console.log("Searched")
+      return AccompanistProfile.find({
+        mylocation: gl, 
+        startDate:  {$lte: new_sd, $lte: new_ed}, 
+        endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+    }
+    	// return No results found if null!!!!!!!!
+      console.log("Didn't search")
     	return null
   }
-
 });
 
+// Events 
+
+Template.search.events({
+	'submit form': function(){
+	    event.preventDefault();
+	   
+	    //Constants submitted from the Home search bar
+	   	const geo_location = event.target.geo_location.value
+	   	const start_date = event.target.start_date.value
+	   	const end_date = event.target.end_date.value
+	 
+	  	Session.set('geo_location', geo_location)
+	    Session.set('start_date', start_date)
+	  	Session.set('end_date', end_date)
+
+      console.log("Form Submitted")
+      // go to knew page here
+      FlowRouter.go('results');
+  }
+});
 
 // For Debugging
-  SimpleSchema.debug = true;
+ SimpleSchema.debug = true;

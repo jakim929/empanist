@@ -3,57 +3,20 @@
         <h1> Search Results </h1>
     </header>
     <main>
-    	<section class="results">
-			<!-- List all user's accounts -->
-			<!-- {{#each myprofile}}
-				<h5>Instruments Mastered: {{instrument}}</h5>
-				<h5>Years Played: {{yearsPlayed}}</h5>
-				<hr>
-				<h5>Awards: </h5>
-					{{#each awards}}
-						Name: {{name}}<br>
-						Date: {{date}}<br><br>
-					{{/each}}
-				<hr>
-				<h5>Competitions: </h5>
-					{{#each competitions}}
-						Name: {{name}}<br>
-						Date: {{date}}<br>
-						Award: {{award}}<br><br>
-					{{/each}}
-				<hr>
-				<h5>Music Programs: </h5>
-					{{#each musicPrograms}}
-						Institution Name: {{instName}}<br>
-						Program Name: {{programName}}<br>
-						Start Date: {{startDate}}<br>
-						End Date: {{endDate}}<br><br>
-					{{/each}}
-				<hr>
-				<h5>Orchestra's Participated in: </h5>
-					{{#each orchestras}}
-						Name: {{name}}<br>
-						Position: {{position}}<br>
-						Start Date: {{startDate}}<br>
-						End Date: {{endDate}}<br><br>
-					{{/each}}
-			{{/each}} -->
-
-			 
-<!--     {{#EasySearch.Each index=accountsIndex}}
-      Accompanist Name: {{name}}<br>
-      Phone: {{phone}}<br>
-      Affiliation: {{affiliation}}<br>
-    {{/EasySearch.Each}}
-  
-
-  {{> EasySearch.LoadMore index=accountsIndex}}
-
-  {{#EasySearch.IfNoResults index=accountsIndex}}
-    <div class="no-results">No results found!</div>
-  {{/EasySearch.IfNoResults}} -->
-
-		</section>
-
+		{{> results}}
     </main>
+</template>
+
+<template name="results">
+	{{#each accompanists}}
+		<h5>Accompanist ID: {{userId}}</h5>
+		<h5>Location: {{mylocation}}</h5>
+		<h5>Charge: {{charge}}</h5>
+		<h5>repertoire: {{repertoire}}</h5>
+		<h5>Working Hours: {{working_hours}}</h5>
+		<h5>Start Date: {{startDate}}</h5>
+		<h5>End Date: {{endDate}}</h5>
+		<a href="/newaccomp">Profile/Book</a>
+		<hr>
+	{{/each}}
 </template>
