@@ -3,13 +3,6 @@ import { AccompanistProfileSchema } from './accompanistProfile.js'
 
 export const Accounts = new Mongo.Collection('accounts');
 
-  // Searching
-  AccountsIndex = new EasySearch.Index({
-    collection: Accounts,
-    fields: ['name', 'phone'],
-    engine: new EasySearch.Minimongo()
-  });
-
 PaymentMethodSchema = new SimpleSchema({
   paymentType: {
     type: String,

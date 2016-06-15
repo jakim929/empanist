@@ -8,30 +8,6 @@
     </main>
 </template>
 
-<!-- EasySearch text bar.. it works but it's not we need for out website -->
-
-<!-- <template name="search">
-  {{> EasySearch.Input index=accountsIndex placeholder="Search..."}}
-  	{{> EasySearch.FieldInput field="name" index=myIndex}}
-
-      <br>
-      {{#EasySearch.Each index=accountsIndex}}
-      Accompanist Name: {{name}}<br>
-      Phone: {{phone}}<br>
-      Affiliation: {{affiliation}}<br>
-      <hr>
-    {{/EasySearch.Each}}
-  
-  {{> EasySearch.LoadMore index=accountsIndex}}
-
-  {{#EasySearch.IfNoResults index=accountsIndex}}
-    <div class="no-results">No results found!</div>
-  {{/EasySearch.IfNoResults}}
-
-
-</template> -->
-
-<!-- Testing Search bars -->
 
  <template name="search">
  	<div class="container">
@@ -39,11 +15,12 @@
 	        <div class="span12">
 	            <form id="searchform">
 	            	<!-- make it auto complete city for user -->
-	               <!-- <input name="geo_location" class="span5" type="text"  placeholder="Location" > -->
   					<input name="geo_location" id="autocomplete" placeholder="Session location" type="text">
 	               <!-- add 30min drive raduis button -->
 	                <input name="start_date" class="span5" type="date"  placeholder="First day of session" >
+	               	
 	               	<input name="end_date" class="span5" type="date"  placeholder="Event day" >
+	                
 	                <button type="submit" class="btn btn-primary"> Search</button>
 	            </form>
 	        </div>
@@ -54,9 +31,13 @@
 
 	{{#each accompanists}}
 				<h5>Accompanist ID: {{userId}}</h5>
+				<h5>Location: {{mylocation}}</h5>
 				<h5>Charge: {{charge}}</h5>
 				<h5>repertoire: {{repertoire}}</h5>
 				<h5>Working Hours: {{working_hours}}</h5>
+				<h5>Start Date: {{startDate}}</h5>
+				<h5>End Date: {{endDate}}</h5>
+
 
 				<hr>
 			{{/each}}

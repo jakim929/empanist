@@ -2,13 +2,6 @@ import { Mongo } from 'meteor/mongo';
 
 export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 
- // Searching
-  AccompanistIndex = new EasySearch.Index({
-    collection: AccompanistProfile,
-    fields: ['charge', 'working_hours', 'session_location'],
-    engine: new EasySearch.Minimongo()
-  });
-
 AccompanistProfileSchema = new SimpleSchema({
 		userId: {
 			type: String,
