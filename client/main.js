@@ -12,23 +12,33 @@ window.Accounts = Accounts
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
+// Helper functions
+
+function wrapDoc (obj) {
+  if (obj){
+    return {field: "update", doc: obj}
+  }else{
+    return {field: "insert", doc: null}
+  }
+}
 
 
 // Global Template Helpers
 
 Template.registerHelper( 'profileDoc', () => {
     event.preventDefault();
-    return MusicProfiles.findOne({ userId: Meteor.userId()});
+
+    return wrapDoc(MusicProfiles.findOne({ userId: Meteor.userId()}));
 });
 
 Template.registerHelper( 'accountDoc', () => {
   	event.preventDefault();
-    return Accounts.findOne({ _id: Meteor.userId()});
+    return wrapDoc(Accounts.findOne({ userId: Meteor.userId()}));
 });
 
 Template.registerHelper( 'accompanistProfileDoc', () => {
     event.preventDefault();
-    return AccompanistProfile.findOne({ userId: Meteor.userId()});
+    return wrapDoc(AccompanistProfile.findOne({ userId: Meteor.userId()}));
 });
 
 Template.registerHelper( 'musicCompetitionsDoc', () => {
@@ -38,6 +48,15 @@ Template.registerHelper( 'musicCompetitionsDoc', () => {
 });
 
 // Local Template Helpers
+
+Template.upsertProfileForm.helpers ({
+  instrumentList: function () {
+    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
+    "Zither"].map(function(obj){return {label: obj, value:obj}})
+  }
+});
+
+// Local Template Events
 
 Template.testData.events({
   'click button'(event){
@@ -58,75 +77,11 @@ Template.makeUpdateAccompForm.helpers ({
   }
 });
 
-// add info from account.js and make it work for accompanist search results as well
-Template.ProfileLayout.helpers({
-  myprofile: ()=> {
-    return MusicProfiles.find({userId: Meteor.userId()});
-  }
-});
-
-// Event Listeners
-// Template.HomeLayout.events({
-//     'click submit': function () {
-//       event.preventDefault();
-
-//      // const account_number = event.target;
-//       // const text = target.text.value;
-//     // deposit money
-//      // accounts.update(account_number: account_number, {$inc: {balance: amount}});
-      
-//       //const city =;
-//       //const time_pref =;
-//       //const session_location=;
-
-//       results: ()=> {
-//     	return AccompanistProfile.find({});
-//   }
-//     }
-//   });
-
-// Trial search
-
-// Template.HomeLayout.helpers({
-//   accountsIndex: function () {
-//   	return Accounts.find();
-//   } 
-// });
-
 // Searching Account profile
-
 
 Template.search.helpers({
   accountsIndex: () => AccountsIndex // instanceof EasySearch.Index
 });
-
-// // On Client
-// Tracker.autorun(function () {
-//   let cursor = AccountsIndex.search('Marie'); // search all docs that contain "Marie" in the name or score field
-
-
-//   console.log(cursor.fetch()); // log found documents with default search limit
-//   console.log(cursor.count()); // log count of all found documents
-// });
-
-
-
-// Searching Accompanist profile
-
-// Template.ResultsLayout.helpers({
-// // Searching Account profile
-//   accompanistIndex: () => AccompanistIndex // instanceof EasySearch.Index
-// });
-
-// // On Client
-// Tracker.autorun(function () {
-// // Searching Account profile
-//   let cursor = AccompanistIndex.search('Marie'); // search all docs that contain "Marie" in the name or score field
-
-
-//   console.log(cursor.fetch()); // log found documents with default search limit
-//   console.log(cursor.count()); // log count of all found documents
-// });
 
 Template.search.events({
 
@@ -169,27 +124,5 @@ Template.search.events({
 });
 
 
-
-
-// Template.players.events({
-//   'submit form': function () {
-//     // index instanceof EasySearch.Index
-//     index
-//       .getComponentMethods(/* optional name if specified on the components */)
-//       .search(this._id)
-//     ;
-//   }
-// });
-
-
 // For Debugging
   SimpleSchema.debug = true;
-
-
-
-
-
-
-
-
-

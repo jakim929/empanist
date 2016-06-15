@@ -55,10 +55,7 @@ htmljs@1.0.9
 http@1.1.5
 id-map@1.0.7
 insecure@1.0.7
-<<<<<<< HEAD
 jamiecollinson:selectize-bootstrap@0.12.1
-=======
->>>>>>> 827de70e41c1e0122613450126da1015188de442
 jeremy:selectize@0.12.1_5
 jquery@1.11.8
 kadira:blaze-layout@2.3.0

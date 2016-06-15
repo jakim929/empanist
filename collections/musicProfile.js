@@ -28,7 +28,6 @@ AwardSchema = new SimpleSchema({
   name: {
     type: String,
     label: "Competition Name"
-    }
   },
   award: {
     type: String,
