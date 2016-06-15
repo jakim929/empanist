@@ -2,6 +2,13 @@ import { Mongo } from 'meteor/mongo';
 
 export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 
+ // Searching
+  AccompanistIndex = new EasySearch.Index({
+    collection: AccompanistProfile,
+    fields: ['charge', 'working_hours', 'session_location'],
+    engine: new EasySearch.Minimongo()
+  });
+
 AccompanistProfileSchema = new SimpleSchema({
 		userId: {
 			type: String,
@@ -73,7 +80,7 @@ AccompanistProfileSchema = new SimpleSchema({
    		}
   	},
 
-  	location: {
+  	session_location: {
   		type: String,
   		label: "Session's Location",
   		autoform: {
@@ -84,6 +91,26 @@ AccompanistProfileSchema = new SimpleSchema({
       		]
   		}
   	},
+
+    startDate: {
+      type: Date,
+      label: "Start Date"
+      // optional: true
+    },
+
+    endDate: {
+      type: Date,
+      label: "End Date"
+      // optional: true
+    },
+
+    // make this show up only if the accomp said he's willing to give sessoins in his place
+    // in main.js HomeLayout search bar this is assumed to be only a city text
+    mylocation: {
+      type: String,
+      label: "City you work in"
+      // optional: true
+    },
 
   	one_liner: {
   		type: String,
