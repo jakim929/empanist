@@ -57,16 +57,16 @@ Template.upsertProfileForm.helpers ({
 
 // Local Template Events
 
-Template.testData.events({
-  'click button'(event){
-    event.preventDefault();
-      console.log("Pressed");
-    for (var i =0; i < TestAccountData.length; i++){
-      Accounts.insert(TestAccountData[i]);
-      console.log("Inserted account number "+(i+1));
-    };
-  }
-});
+// Template.testData.events({
+//   'click button'(event){
+//     event.preventDefault();
+//       console.log("Pressed");
+//     for (var i =0; i < TestAccountData.length; i++){
+//       Accounts.insert(TestAccountData[i]);
+//       console.log("Inserted account number "+(i+1));
+//     };
+//   }
+// });
 
 Template.makeUpdateAccompForm.helpers ({
   NewAccompSchema: function () {
