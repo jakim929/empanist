@@ -6,6 +6,7 @@ window.MusicProfiles = MusicProfiles
 window.AccompanistProfile = AccompanistProfile
 window.Accounts = Accounts
 
+
 // Global Template Helpers
 
 Template.registerHelper( 'profileDoc', () => {
@@ -39,5 +40,131 @@ Template.ProfileLayout.helpers({
   }
 });
 
+// Event Listeners
+// Template.HomeLayout.events({
+//     'click submit': function () {
+//       event.preventDefault();
+
+//      // const account_number = event.target;
+//       // const text = target.text.value;
+//     // deposit money
+//      // accounts.update(account_number: account_number, {$inc: {balance: amount}});
+      
+//       //const city =;
+//       //const time_pref =;
+//       //const session_location=;
+
+//       results: ()=> {
+//     	return AccompanistProfile.find({});
+//   }
+//     }
+//   });
+
+// Trial search
+
+// Template.HomeLayout.helpers({
+//   accountsIndex: function () {
+//   	return Accounts.find();
+//   } 
+// });
+
+// Searching Account profile
+
+
+Template.search.helpers({
+  accountsIndex: () => AccountsIndex // instanceof EasySearch.Index
+});
+
+// // On Client
+// Tracker.autorun(function () {
+//   let cursor = AccountsIndex.search('Marie'); // search all docs that contain "Marie" in the name or score field
+
+
+//   console.log(cursor.fetch()); // log found documents with default search limit
+//   console.log(cursor.count()); // log count of all found documents
+// });
+
+
+
+// Searching Accompanist profile
+
+// Template.ResultsLayout.helpers({
+// // Searching Account profile
+//   accompanistIndex: () => AccompanistIndex // instanceof EasySearch.Index
+// });
+
+// // On Client
+// Tracker.autorun(function () {
+// // Searching Account profile
+//   let cursor = AccompanistIndex.search('Marie'); // search all docs that contain "Marie" in the name or score field
+
+
+//   console.log(cursor.fetch()); // log found documents with default search limit
+//   console.log(cursor.count()); // log count of all found documents
+// });
+
+Template.search.events({
+
+'submit form': function(){
+    event.preventDefault();
+    console.log("Form submitted");
+    console.log(event.type);
+
+    //Constants submitted from the Home search bar
+   	const geo_location = event.target.geo_location.value
+   	const start_date = event.target.start_date.value
+   	const end_date = event.target.end_date.value
+
+  	Session.set('geo_location', geo_location)
+    Session.set('start_date', start_date)
+  	Session.set('end_date', end_date)
+}
+});
+
+ 	Template.search.helpers({
+	accompanists: ()=> {
+		var gl = Session.get('geo_location')
+		var sd = moment().toDate().Session.get('start_date')
+		var ed = moment().toDate().Session.get('end_date')
+
+		// comparing dates
+		// var startDate = moment().toDate();
+		// var endDate = moment().toDate();
+
+		// check for sd and ed ranges in corrispondance with star end dates for accompanist
+		if (gl && sd && ed) {
+			return AccompanistProfile.find({mylocation: gl, startDate: {$gte: sd, $lt: ed}})
+			//return AccompanistProfile.find({"mylocation": gl, "startDate": {$lte st}, "endDate": {$gte ed}})
+
+		}
+    // take dates into account!!!! this is only for testing reasons!!!
+    	return null
+  }
+
+});
+
+
+
+
+// Template.players.events({
+//   'submit form': function () {
+//     // index instanceof EasySearch.Index
+//     index
+//       .getComponentMethods(/* optional name if specified on the components */)
+//       .search(this._id)
+//     ;
+//   }
+// });
+
+
 // For Debugging
   SimpleSchema.debug = true;
+
+
+
+
+
+
+
+
+

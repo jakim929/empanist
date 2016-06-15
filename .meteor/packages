@@ -36,3 +36,10 @@ matb33:bootstrap-glyphicons
 zimme:active-route
 gwendall:auth-client-callbacks
 meteortoys:allthings
+
+easy:search				# easy search used for initial tests with the search bar
+easysearch:core
+easysearch:autosuggest
+
+momentjs:moment			# for comparing dates
+
