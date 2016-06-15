@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 
 export const MusicCompetitions = new Mongo.Collection('musicCompetitions');
+export const TagsCollection = new Mongo.Collection('tagsCollection');
 
 MusicCompetitionSchema = new SimpleSchema({
   name: {
@@ -21,3 +22,17 @@ MusicCompetitionSchema = new SimpleSchema({
 });
 
 MusicCompetitions.attachSchema(MusicCompetitionSchema)
+
+TagsSchema =new SimpleSchema({
+  tags: {
+    type: [Object]
+  },
+  "tags.$._id": {
+    type: String
+  },
+  "tags.$.name": {
+    type: String
+  }
+});
+
+TagsCollection.attachSchema(TagsSchema);

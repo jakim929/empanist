@@ -15,8 +15,47 @@
       <button type="submit" id="s" class="btn btn-default">
         <span class="glyphicon glyphicon-search"></span>
       </button>
+
+      <br><br>
+      {{> testData}}
+      <br><br>
+      {{>searchBox}}
+
+      {{>searchResult}}
+
+      {{>test_typeahead}}
+
+
     </form>
   </div>
 </div>
     </main>
+</template>
+
+<template name="testData">
+  <button>Create Test Data</button>
+</template>
+
+<template name="searchResult">
+  {{#each getAccounts}}
+    <div class="package">
+      <h4 class="name">
+        <p>{{{name}}}</p>
+      </h4>
+    </div>
+  {{/each}}
+</template>
+
+<template name="searchBox">
+  <form>
+    <input type="text" id="search-box" placeholder="Enter search terms">
+    <input type="button" value="Search">
+  </form>
+</template>
+
+<template name="test_typeahead">
+  <input class="form-control typeahead" name="team" type="text"
+       placeholder="NBA teams"
+       autocomplete="off" spellcheck="off"
+       data-source="accounts"/>
 </template>

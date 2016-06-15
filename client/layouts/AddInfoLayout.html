@@ -8,7 +8,7 @@
     </header>
     <main>
       {{> makeUpdateAccountForm}}
-      {{> makeUpdateProfileForm}}
+      {{> upsertProfileForm}}
     </main>
 </template>
 
@@ -26,4 +26,19 @@
   {{else}}
     {{> quickForm collection="MusicProfiles" id="makeUpdateProfileForm" type="insert"}}
   {{/if}}
+</template>
+
+<template name="upsertProfileForm">
+  {{#autoForm collection="MusicProfiles" doc=profileDoc id="upsertProfileForm" type="update"}}
+    {{>afQuickField name="instrument" options=accounts}}
+    {{>afQuickField name="yearsPlayed"}}
+    {{>afQuickField name="awards" type="selectize" multiple="true" selectizeOptions=accounts }}
+    {{>afQuickField name="musicPrograms"}}
+    {{>afQuickField name="orchestras"}}
+  {{/autoForm}}
+</template>
+
+
+<template name="nameRender">
+  {{name}}
 </template>

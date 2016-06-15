@@ -27,7 +27,12 @@ OrchestraSchema = new SimpleSchema({
 AwardSchema = new SimpleSchema({
   name: {
     type: String,
-    label: "Award Name"
+    label: "Competition Name"
+    }
+  },
+  award: {
+    type: String,
+    label: "Award Title"
   },
   date: {
     type: Date,
@@ -38,11 +43,7 @@ AwardSchema = new SimpleSchema({
 CompetitionSchema = new SimpleSchema({
   name: {
     type: String,
-    label: "Competition Name",
-    autoform: {
-      type: "select",
-      options: ["First Manhattan International Music Competition"]
-    }
+    label: "Competition Name"
   },
   date: {
     type: Date,
@@ -106,12 +107,6 @@ MusicProfileSchema = new SimpleSchema({
     optional: true
   },
 
-  competitions: {
-    type: [CompetitionSchema],
-    label: "Competitions Participated in",
-    optional: true
-  },
-
   musicPrograms: {
     type: [MusicProgramSchema],
     label: "Music Programs Participated in",
@@ -123,8 +118,6 @@ MusicProfileSchema = new SimpleSchema({
     label: "Orchestras Played At",
     optional: true
   }
-
-
 
 });
 

@@ -11,6 +11,11 @@ PaymentMethodSchema = new SimpleSchema({
 });
 
 AccountSchema = new SimpleSchema({
+  userId: {
+    type: String,
+    label: "User ID"
+  },
+
   name: {
     type: String,
     label: "Name"

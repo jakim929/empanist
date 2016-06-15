@@ -24,6 +24,10 @@ caching-html-compiler@1.0.6
 callback-hook@1.0.8
 check@1.2.1
 coffeescript@1.0.17
+comerc:autoform-selectize@2.3.2
+comerc:autoform-typeahead@1.0.6
+comerc:bs-typeahead@1.0.2
+dandv:caret-position@2.1.1
 ddp@1.2.5
 ddp-client@1.2.7
 ddp-common@1.2.5
@@ -47,6 +51,8 @@ htmljs@1.0.9
 http@1.1.5
 id-map@1.0.7
 insecure@1.0.7
+jamiecollinson:selectize-bootstrap@0.12.1
+jeremy:selectize@0.12.1_5
 jquery@1.11.8
 kadira:blaze-layout@2.3.0
 kadira:flow-router@2.12.1
@@ -61,6 +67,8 @@ matb33:bootstrap-glyphicons@10.0.0
 mdg:validation-error@0.2.0
 meteor@1.1.14
 meteor-base@1.0.4
+meteorhacks:picker@1.0.3
+meteorhacks:search-source@1.4.2
 meteortoys:allthings@3.0.0
 meteortoys:authenticate@3.0.0
 meteortoys:autopub@3.0.0
@@ -79,6 +87,7 @@ meteortoys:toykit@3.0.4
 minifier-css@1.1.11
 minifier-js@1.1.11
 minimongo@1.0.16
+mizzao:autocomplete@0.5.1
 mobile-experience@1.0.4
 mobile-status-bar@1.0.12
 modules@0.6.1
@@ -86,6 +95,8 @@ modules-runtime@0.6.3
 momentjs:moment@2.10.6
 mongo@1.1.7
 mongo-id@1.0.4
+mpowaga:autoform-autocomplete@0.0.2
+mrt:copy-template@0.9.0
 msavin:jetsetter@2.0.0
 msavin:mongol@2.0.1
 notorii:array@0.0.1
@@ -103,6 +114,7 @@ reactive-var@1.0.9
 reload@1.1.8
 retry@1.0.7
 routepolicy@1.0.10
+sergeyt:typeahead@0.11.1_9
 service-configuration@1.0.9
 session@1.1.5
 sha@1.0.7

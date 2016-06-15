@@ -37,3 +37,13 @@ zimme:active-route
 gwendall:auth-client-callbacks
 meteortoys:allthings
 lukemadera:autoform-autocomplete
+ejson
+meteorhacks:search-source
+check
+mpowaga:autoform-autocomplete
+comerc:bs-typeahead
+comerc:autoform-typeahead
+sergeyt:typeahead
+jeremy:selectize
+jamiecollinson:selectize-bootstrap
+comerc:autoform-selectize
