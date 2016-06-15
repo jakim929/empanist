@@ -75,43 +75,51 @@ Template.makeUpdateAccompForm.helpers ({
   }
 });
 
-Template.search.events({
-
-'submit form': function(){
-    event.preventDefault();
-   
-    //Constants submitted from the Home search bar
-   	const geo_location = event.target.geo_location.value
-   	const start_date = event.target.start_date.value
-   	const end_date = event.target.end_date.value
- 
-  	Session.set('geo_location', geo_location)
-    Session.set('start_date', start_date)
-  	Session.set('end_date', end_date)
-
-}
-});
-
- 	Template.search.helpers({
-	accompanists: ()=> {
+Template.results.helpers({
+	// print this from the new page
+  accompanists: ()=> {
 		var gl = Session.get('geo_location')
 		var sd = Session.get('start_date') 
 		var ed = Session.get('end_date') 
 	
+		// convert dates to dates that can be compared with Mongo schema
 		var new_sd = new Date(sd)
 		var new_ed = new Date(ed)
 
 		// fix location (Rad + Google API)
 		if (gl && sd && ed) {
-			return AccompanistProfile.find({mylocation: gl, startDate:  {$lte: new_sd, $lte: new_ed}, endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-		}
-    // return No results found if null!!!!!!!!
+		  console.log("Searched")
+      return AccompanistProfile.find({
+        mylocation: gl, 
+        startDate:  {$lte: new_sd, $lte: new_ed}, 
+        endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+    }
+    	// return No results found if null!!!!!!!!
+      console.log("Didn't search")
     	return null
   }
+});
 
-  // end session?
+// Events 
 
+Template.search.events({
+	'submit form': function(){
+	    event.preventDefault();
+	   
+	    //Constants submitted from the Home search bar
+	   	const geo_location = event.target.geo_location.value
+	   	const start_date = event.target.start_date.value
+	   	const end_date = event.target.end_date.value
+	 
+	  	Session.set('geo_location', geo_location)
+	    Session.set('start_date', start_date)
+	  	Session.set('end_date', end_date)
+
+      console.log("Form Submitted")
+      // go to knew page here
+      FlowRouter.go('results');
+  }
 });
 
 // For Debugging
-  SimpleSchema.debug = true;
+ SimpleSchema.debug = true;
