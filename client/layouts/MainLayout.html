@@ -25,7 +25,7 @@
 
 						<!-- If the user already created a profile -->
 						{{#if profileDoc}}
-							<li><a href="/profile">View Profile</a></li>
+							<li><a href={{getProfileRoute}}>View Profile</a></li>
 						{{else}}
 							<li><a href="/addinfo">Add Profile</a></li>
 						{{/if}}

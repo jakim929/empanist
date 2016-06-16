@@ -27,38 +27,40 @@
 <template name="profileTemplate">
   <section class="myprofile">
     <h3>Music Profile</h3>
-    {{#with profileDoc.doc}}
-      <h5>Instruments Mastered: {{instrument}}</h5>
-      <h5>Years Played: {{yearsPlayed}}</h5>
-      <hr>
-      <h5>Awards: </h5>
-        {{#each awards}}
-          Name: {{name}}<br>
-          Date: {{date}}<br><br>
-        {{/each}}
-      <hr>
-      <h5>Competitions: </h5>
-        {{#each competitions}}
-          Name: {{name}}<br>
-          Date: {{date}}<br>
-          Award: {{award}}<br><br>
-        {{/each}}
-      <hr>
-      <h5>Music Programs: </h5>
-        {{#each musicPrograms}}
-          Institution Name: {{instName}}<br>
-          Program Name: {{programName}}<br>
-          Start Date: {{startDate}}<br>
-          End Date: {{endDate}}<br><br>
-        {{/each}}
-      <hr>
-      <h5>Orchestras Participated in: </h5>
-        {{#each orchestras}}
-          Name: {{name}}<br>
-          Position: {{position}}<br>
-          Start Date: {{startDate}}<br>
-          End Date: {{endDate}}<br><br>
-        {{/each}}
+    {{#with profileDoc}}
+      {{#with this.doc}}
+        <h5>Instruments Mastered: {{instrument}}</h5>
+        <h5>Years Played: {{yearsPlayed}}</h5>
+        <hr>
+        <h5>Awards: </h5>
+          {{#each awards}}
+            Name: {{name}}<br>
+            Date: {{date}}<br><br>
+          {{/each}}
+        <hr>
+        <h5>Competitions: </h5>
+          {{#each competitions}}
+            Name: {{name}}<br>
+            Date: {{date}}<br>
+            Award: {{award}}<br><br>
+          {{/each}}
+        <hr>
+        <h5>Music Programs: </h5>
+          {{#each musicPrograms}}
+            Institution Name: {{instName}}<br>
+            Program Name: {{programName}}<br>
+            Start Date: {{startDate}}<br>
+            End Date: {{endDate}}<br><br>
+          {{/each}}
+        <hr>
+        <h5>Orchestras Participated in: </h5>
+          {{#each orchestras}}
+            Name: {{name}}<br>
+            Position: {{position}}<br>
+            Start Date: {{startDate}}<br>
+            End Date: {{endDate}}<br><br>
+          {{/each}}
+      {{/with}}
     {{/with}}
   </section>
 </template>
