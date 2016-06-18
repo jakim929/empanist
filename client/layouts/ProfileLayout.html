@@ -3,14 +3,43 @@
         <h1> Profile </h1>
     </header>
     <main>
-      <br>
-      <button><a href="/addinfo">Edit Profile</a></button>
-      <br><br>
-      {{>accountTemplate}}
-      {{>profileTemplate}}
-      {{>accompanistProfileTemplate}}
-
+      {{#if ownProfile}}
+        {{> editProfile}}<br>
+        {{> accountTemplate}}
+        {{> profileTemplate}}<br>
+        {{> accompanistProfileTemplate}}
+      {{else}}
+        {{#if accompanistProfileDoc}}
+          {{> bookAccompanist}}<br>
+          {{> accountTemplate}}
+          {{> profileTemplate}}<br>
+          {{> accompanistProfileTemplate}}
+        {{else}}
+          {{> accountTemplate}}
+          {{> profileTemplate}}
+        {{/if}}
+      {{/if}}
     </main>
+</template>
+
+<template name="editProfile">
+  <button><a href="/addinfo">Edit Profile</a></button>
+</template>
+
+<template name="bookAccompanist">
+  <!-- {{> quickForm collection="Transactions" id="bookAccompanist" type="insert"}} -->
+  <h3>Book Accompanist</h3>
+  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type=insert}}
+    <fieldset>
+      {{>afQuickField name="musician"}}
+      {{>afQuickField name="accompanist"}}
+      {{>afQuickField name="status"}}
+      {{>afQuickField name="repertoire"}}
+      {{>afQuickField name="startDate"}}
+      {{>afQuickField name="endDate"}}
+      <button type="submit" class="btn btn-primary">Book Accompanist</button>
+    </fieldset>
+  {{/autoForm}}
 </template>
 
 <template name="accountTemplate">
@@ -20,7 +49,7 @@
     <h5>Birthday: {{birthDate}}</h5>
     <h5>Phone Number: {{phone}}</h5>
     <h5>Affiliation: {{affiliation}}</h5>
-    <br><br>
+    <br>
     {{/with}}
 </template>
 
@@ -35,14 +64,7 @@
         <h5>Awards: </h5>
           {{#each awards}}
             Name: {{name}}<br>
-            Date: {{date}}<br><br>
-          {{/each}}
-        <hr>
-        <h5>Competitions: </h5>
-          {{#each competitions}}
-            Name: {{name}}<br>
             Date: {{date}}<br>
-            Award: {{award}}<br><br>
           {{/each}}
         <hr>
         <h5>Music Programs: </h5>
@@ -50,7 +72,7 @@
             Institution Name: {{instName}}<br>
             Program Name: {{programName}}<br>
             Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br><br>
+            End Date: {{endDate}}<br>
           {{/each}}
         <hr>
         <h5>Orchestras Participated in: </h5>
@@ -58,7 +80,7 @@
             Name: {{name}}<br>
             Position: {{position}}<br>
             Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br><br>
+            End Date: {{endDate}}<br>
           {{/each}}
       {{/with}}
     {{/with}}

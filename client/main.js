@@ -24,6 +24,17 @@ function wrapDoc (obj) {
 
 // Global Template Helpers
 
+Template.registerHelper('defaultTransaction', () => {
+  return {musician: Meteor.userId(),
+          accompanist: FlowRouter.getParam("profileId"),
+          status: 'Offered'}
+});
+
+Template.registerHelper('ownProfile', () => {
+  event.preventDefault();
+
+  return (FlowRouter.getParam("profileId") == Meteor.userId())
+});
 
 Template.registerHelper( 'userId', () => {
     event.preventDefault();
@@ -31,11 +42,19 @@ Template.registerHelper( 'userId', () => {
 });
 
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
-  return "profile/"+id
+  return "/profile/"+id
 })
 
+Template.registerHelper( 'transactionsDoc', () => {
+    event.preventDefault();
+    var allTransactions =
+      {asMusician: Transactions.find({ musician: Meteor.userId()}).fetch(),
+       asAccompanist: Transactions.find({ accompanist: Meteor.userId()}).fetch()}
+    console.log(allTransactions)
+    return allTransactions;
+});
 
-Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("postId")) => {
+Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) => {
     event.preventDefault();
     if (!id) {
       id = Meteor.userId;
@@ -43,7 +62,7 @@ Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("postId")) => {
     return wrapDoc(MusicProfiles.findOne({ userId: id}));
 });
 
-Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("postId")) => {
+Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) => {
   	event.preventDefault();
     if (!id) {
       id = Meteor.userId;
@@ -51,7 +70,7 @@ Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("postId")) => {
     return wrapDoc(Accounts.findOne({ userId: id}));
 });
 
-Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("postId")) => {
+Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("profileId")) => {
     event.preventDefault();
     if (!id) {
       id = Meteor.userId();
@@ -73,6 +92,25 @@ Template.upsertProfileForm.helpers ({
     "Zither"].map(function(obj){return {label: obj, value:obj}})
   }
 });
+
+// Hooks (AutoForm)
+// All client side-> fix for security later
+
+// AutoForm.hooks({
+//   bookAccompanist: {
+//     before: {
+//       insert: function(doc) {
+//         console.log("Running")
+//         if(Meteor.userId()){
+//           doc.musician = Meteor.userId();
+//           doc.accompanist = FlowRouter.getParam("profileId");
+//           doc.status = 'Offered';
+//         }
+//         return doc;
+//       }
+//     }
+//   }
+// });
 
 // Local Template Events
 

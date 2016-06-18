@@ -1,0 +1,25 @@
+<template name="BookingsLayout">
+    <header>
+        <h1> Your Bookings </h1>
+    </header>
+    <main>
+      {{> Booking}}
+    </main>
+</template>
+
+<template name="Booking">
+  {{#with transactionsDoc}}
+    <h2>Your Bookings</h2>
+    {{#each asMusician}}
+      Musician: {{this.musician}}<br>
+      Accompanist: {{this.accompanist}}<br>
+      Planned Repertoire: <br>
+      {{#each repertoire}}
+        {{this}}<br>
+      {{/each}}
+      Status: {{this.status}} <br>
+      Start Date: {{this.startDate}} <br>
+      End Date: {{this.endDate}} <br>
+    {{/each}}
+  {{/with}}
+</template>
