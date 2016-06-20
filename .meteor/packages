@@ -54,3 +54,7 @@ easysearch:autosuggest
 
 momentjs:moment			# Dealing with dates
 
+mrt:googlemaps			# Googlemap package for autocompleting location bars
+
+u2622:persistent-session # Session that doesn't end of refresh
+
