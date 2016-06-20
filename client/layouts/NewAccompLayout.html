@@ -3,7 +3,7 @@
         <h1> Signup to Become an Accompanist </h1>
     </header>
     <main>
-      {{> makeUpdateAccompForm}}
+      {{> upsertAccompanistForm}}
     </main>
 </template>
 
@@ -13,4 +13,21 @@
   {{else}}
     {{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
   {{/if}}
+</template>
+
+<template name="upsertAccompanistForm">
+  {{#autoForm collection="AccompanistProfile" doc=accompanistProfileDoc.doc id="upsertAccompanistForm" type=accompanistProfileDoc.field}}
+  <fieldset>
+    {{> afQuickField name="repertoire"}}
+    {{> afQuickField name="charge"}}
+    {{> afQuickField name="working_hours"}}
+    {{> afQuickField name="working_days"}}
+    {{> afQuickField name="session_location"}}
+    {{> afQuickField name="startDate"}}
+    {{> afQuickField name="endDate"}}
+    {{> afQuickField name="mylocation"}}
+    {{> afQuickField name="one_liner"}}
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Update Accompanist Profile</button>
+  {{/autoForm}}
 </template>

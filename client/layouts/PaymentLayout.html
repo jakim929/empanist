@@ -1,0 +1,24 @@
+<template name="PaymentLayout">
+    <header>
+        <h1> Payment </h1>
+    </header>
+    <main>
+      {{> StripeCheckout }}
+    </main>
+</template>
+
+
+<template name="StripeCheckout">
+  <form action="" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_F5YQcuYeHVN8GBYmoCxcmPyC"
+      data-amount="999"
+      data-name="Empanist"
+      data-zip-code="true"
+      data-description="Widget"
+      data-image="/img/documentation/checkout/marketplace.png"
+      data-locale="auto">
+    </script>
+  </form>
+</template>
