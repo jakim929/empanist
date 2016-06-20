@@ -11,12 +11,19 @@
   {{#with transactionsDoc}}
     <h2>Your Bookings</h2>
     {{#each asMusician}}
-      Musician: {{this.musician}}<br>
-      Accompanist: {{this.accompanist}}<br>
+      {{#with accountDoc this.musician}}
+      Musician: {{this.doc.name}}<br>
+      {{/with}}
+
+      {{#with accountDoc this.accompanist}}
+      Accompanist: {{this.doc.name}}<br>
+      {{/with}}
+
       Planned Repertoire: <br>
       {{#each repertoire}}
         {{this}}<br>
       {{/each}}
+
       Status: {{this.status}} <br>
       Start Date: {{this.startDate}} <br>
       End Date: {{this.endDate}} <br>

@@ -3,23 +3,31 @@
         <h1> Profile </h1>
     </header>
     <main>
-      {{#if ownProfile}}
-        {{> editProfile}}<br>
-        {{> accountTemplate}}
-        {{> profileTemplate}}<br>
-        {{> accompanistProfileTemplate}}
-      {{else}}
-        {{#if accompanistProfileDoc}}
-          {{> bookAccompanist}}<br>
+      {{#if validId}}
+        {{#if ownProfile}}
+          {{> editProfile}}<br>
           {{> accountTemplate}}
           {{> profileTemplate}}<br>
           {{> accompanistProfileTemplate}}
         {{else}}
-          {{> accountTemplate}}
-          {{> profileTemplate}}
+          {{#if accompanistProfileDoc}}
+            {{> bookAccompanist}}<br>
+            {{> accountTemplate}}
+            {{> profileTemplate}}<br>
+            {{> accompanistProfileTemplate}}
+          {{else}}
+            {{> accountTemplate}}
+            {{> profileTemplate}}
+          {{/if}}
         {{/if}}
+      {{else}}
+        {{> invalidId}}
       {{/if}}
     </main>
+</template>
+
+<template name="invalidId">
+  <h2>Invalid ID</h2>
 </template>
 
 <template name="editProfile">
@@ -27,9 +35,8 @@
 </template>
 
 <template name="bookAccompanist">
-  <!-- {{> quickForm collection="Transactions" id="bookAccompanist" type="insert"}} -->
   <h3>Book Accompanist</h3>
-  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type=insert}}
+  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
     <fieldset>
       {{>afQuickField name="musician"}}
       {{>afQuickField name="accompanist"}}

@@ -24,6 +24,14 @@ function wrapDoc (obj) {
 
 // Global Template Helpers
 
+Template.registerHelper('validId', () =>{
+  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+    return true
+  }else{
+    return false
+  }
+});
+
 Template.registerHelper('defaultTransaction', () => {
   return {musician: Meteor.userId(),
           accompanist: FlowRouter.getParam("profileId"),
