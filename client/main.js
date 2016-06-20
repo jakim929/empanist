@@ -102,6 +102,27 @@ Template.results.helpers({
 
 // Events 
 
+// var initAutoCompleteProfile = function() {
+//       var autocomplete = new google.maps.places.Autocomplete(
+//         (document.getElementById('autocomplete')),{types: ['geocode'] }
+//       );
+// };
+
+// var initAutoCompletePost = function() {
+//       var autocomplete = new google.maps.places.Autocomplete(
+//         (document.getElementById('autocomplete')),{types: ['geocode'] }
+//       );
+// };
+
+// Template.search.rendered = initAutoCompleteProfile;
+
+// Template.search.rendered = initAutoCompletePost;
+window.onload = function() {
+  var autocomplete = new google.maps.places.Autocomplete(
+    (document.getElementById('autocomplete')),{types: ['geocode'] }
+  );
+};
+
 Template.search.events({
 	'submit form': function(){
 	    event.preventDefault();

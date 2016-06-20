@@ -54,3 +54,5 @@ easysearch:autosuggest
 
 momentjs:moment			# Dealing with dates
 
+mrt:googlemaps			# Googlemap package for autocompleting location bars
+

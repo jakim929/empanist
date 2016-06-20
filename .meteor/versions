@@ -101,6 +101,7 @@ mongo@1.1.7
 mongo-id@1.0.4
 mpowaga:autoform-autocomplete@0.0.2
 mrt:copy-template@0.9.0
+mrt:googlemaps@0.1.1
 msavin:jetsetter@2.0.0
 msavin:mongol@2.0.1
 notorii:array@0.0.1
