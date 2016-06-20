@@ -24,6 +24,14 @@ function wrapDoc (obj) {
 
 // Global Template Helpers
 
+Template.registerHelper('statusCount', (array) =>{
+  return array.length
+});
+
+Template.registerHelper('arrayLength', (array) =>{
+  return array.length
+});
+
 Template.registerHelper('validId', () =>{
   if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
     return true
@@ -51,21 +59,30 @@ Template.registerHelper( 'userId', () => {
 
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
-})
+});
+
+Template.registerHelper( 'getBookingRoute', (bookingId) =>{
+  return "/bookingRequest/"+bookingId
+});
 
 Template.registerHelper( 'transactionsDoc', () => {
     event.preventDefault();
     var allTransactions =
       {asMusician: Transactions.find({ musician: Meteor.userId()}).fetch(),
        asAccompanist: Transactions.find({ accompanist: Meteor.userId()}).fetch()}
-    console.log(allTransactions)
     return allTransactions;
+});
+
+Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
+    event.preventDefault();
+    // Only return if the user is the accompanist listed
+    return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
 Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) => {
     event.preventDefault();
     if (!id) {
-      id = Meteor.userId;
+      id = Meteor.userId();
     }
     return wrapDoc(MusicProfiles.findOne({ userId: id}));
 });
@@ -73,7 +90,7 @@ Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) =
 Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) => {
   	event.preventDefault();
     if (!id) {
-      id = Meteor.userId;
+      id = Meteor.userId();
     }
     return wrapDoc(Accounts.findOne({ userId: id}));
 });
@@ -100,25 +117,6 @@ Template.upsertProfileForm.helpers ({
     "Zither"].map(function(obj){return {label: obj, value:obj}})
   }
 });
-
-// Hooks (AutoForm)
-// All client side-> fix for security later
-
-// AutoForm.hooks({
-//   bookAccompanist: {
-//     before: {
-//       insert: function(doc) {
-//         console.log("Running")
-//         if(Meteor.userId()){
-//           doc.musician = Meteor.userId();
-//           doc.accompanist = FlowRouter.getParam("profileId");
-//           doc.status = 'Offered';
-//         }
-//         return doc;
-//       }
-//     }
-//   }
-// });
 
 // Local Template Events
 
@@ -204,6 +202,21 @@ Template.search.events({
       console.log("Form Submitted")
       // go to knew page here
       FlowRouter.go('results');
+  }
+});
+
+Template.EditAccompanistProfile.events({
+	'click button': function(){
+      Notifications.info('Test', 'Working Notification');
+  }
+});
+
+
+Template.BookingRequest.events({
+	'click button': function(){
+      console.log(FlowRouter.getParam("transactionId"))
+      Transactions.update({_id: "LZzdkhMzNa6CbXCAg"}, {$set: {status: "Confirmed"}});
+      Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');
   }
 });
 

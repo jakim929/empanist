@@ -1,0 +1,44 @@
+<template name="AccompanistDashboard">
+    <header>
+        <h1> Accompanist Dashboard </h1>
+    </header>
+    <main>
+        {{> EditAccompanistProfile }}
+        <br>
+        {{> notifications }}
+        {{> BookingRequests}}
+    </main>
+</template>
+
+<template name="EditAccompanistProfile">
+  <button><a href="/newaccomp">Edit Accompanist Profile</a></button>
+  <button name="requestNotification">Press</button>
+</template>
+
+<template name="BookingRequests">
+  {{#with transactionsDoc}}
+    <h2>Pending Booking Requests ({{arrayLength this.asAccompanist}})</h2>
+    {{#each asAccompanist}}
+      {{#with accountDoc this.musician}}
+      Musician: {{this.doc.name}}<br>
+      {{/with}}
+
+      {{#with accountDoc this.accompanist}}
+      Accompanist: {{this.doc.name}}<br>
+      {{/with}}
+
+      Planned Repertoire:
+      {{#each repertoire}}
+        {{this}},
+      {{/each}}
+      <br>
+
+      Status: {{this.status}} <br>
+      Start Date: {{this.startDate}} <br>
+      End Date: {{this.endDate}} <br>
+
+      <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
+      <br><br>
+    {{/each}}
+  {{/with}}
+</template>
