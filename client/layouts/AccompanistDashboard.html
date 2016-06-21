@@ -16,29 +16,40 @@
 </template>
 
 <template name="BookingRequests">
-  {{#with transactionsDoc}}
-    <h2>Pending Booking Requests ({{arrayLength this.asAccompanist}})</h2>
-    {{#each asAccompanist}}
-      {{#with accountDoc this.musician}}
-      Musician: {{this.doc.name}}<br>
-      {{/with}}
+  {{#with transactionsAsAccompanist}}
+    {{#with pendingTransactions this}}
+      <h3>Pending Bookings ({{arrayLength this}})</h3>
+      {{#each this}}
+        {{#with accountDoc musician}}
+          Musician: {{doc.name}}<br>
+        {{/with}}
 
-      {{#with accountDoc this.accompanist}}
-      Accompanist: {{this.doc.name}}<br>
-      {{/with}}
+        Planned Repertoire:
+        {{#each repertoire}}
+          {{this}},
+        {{/each}}<br>
 
-      Planned Repertoire:
-      {{#each repertoire}}
-        {{this}},
+        Status: {{status}} <br>
+        Start Date: {{startDate}} <br>
+        End Date: {{endDate}} <br><br>
+        <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
+        <br><br>
       {{/each}}
-      <br>
+    {{/with}}
 
-      Status: {{this.status}} <br>
-      Start Date: {{this.startDate}} <br>
-      End Date: {{this.endDate}} <br>
+    {{#with confirmedTransactions this}}
+      <h3>Confirmed Bookings ({{arrayLength this}})</h3>
+    {{/with}}
 
-      <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
-      <br><br>
-    {{/each}}
+    {{#with completedTransactions this}}
+      <h3>Completed Bookings ({{arrayLength this}})</h3>
+    {{/with}}
+
+    {{#with cancelledTransactions this}}
+      <h3>Cancelled Bookings ({{arrayLength this}})</h3>
+    {{/with}}
+
+  {{else}}
+    <h3>No Bookings</h3>
   {{/with}}
 </template>

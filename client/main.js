@@ -24,9 +24,30 @@ function wrapDoc (obj) {
 
 // Global Template Helpers
 
-Template.registerHelper('statusCount', (array) =>{
-  return array.length
+Template.registerHelper('pendingTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Pending"
+  })
 });
+
+Template.registerHelper('confirmedTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Confirmed"
+  })
+});
+
+Template.registerHelper('completedTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Completed"
+  })
+});
+
+Template.registerHelper('cancelledTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Completed"
+  })
+});
+
 
 Template.registerHelper('arrayLength', (array) =>{
   return array.length
@@ -43,7 +64,7 @@ Template.registerHelper('validId', () =>{
 Template.registerHelper('defaultTransaction', () => {
   return {musician: Meteor.userId(),
           accompanist: FlowRouter.getParam("profileId"),
-          status: 'Offered'}
+          status: 'Pending'}
 });
 
 Template.registerHelper('ownProfile', () => {
@@ -63,6 +84,14 @@ Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
 
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return "/bookingRequest/"+bookingId
+});
+
+Template.registerHelper('transactionsAsAccompanist', () =>{
+  return Transactions.find({ accompanist: Meteor.userId()}).fetch();
+});
+
+Template.registerHelper('transactionsAsMusician', () =>{
+  return Transactions.find({ musician: Meteor.userId()}).fetch()
 });
 
 Template.registerHelper( 'transactionsDoc', () => {
@@ -214,9 +243,16 @@ Template.EditAccompanistProfile.events({
 
 Template.BookingRequest.events({
 	'click button': function(){
-      console.log(FlowRouter.getParam("transactionId"))
-      Transactions.update({_id: "LZzdkhMzNa6CbXCAg"}, {$set: {status: "Confirmed"}});
+      Transactions.update({_id: FlowRouter.getParam("transactionId")}, {$set: {status: "Confirmed"}});
       Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');
+  }
+});
+
+Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
+  if(err) {
+    console.log(err);
+  }else {
+    console.log(result);
   }
 });
 
