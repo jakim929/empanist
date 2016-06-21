@@ -93,25 +93,6 @@ Template.upsertProfileForm.helpers ({
   }
 });
 
-// Hooks (AutoForm)
-// All client side-> fix for security later
-
-// AutoForm.hooks({
-//   bookAccompanist: {
-//     before: {
-//       insert: function(doc) {
-//         console.log("Running")
-//         if(Meteor.userId()){
-//           doc.musician = Meteor.userId();
-//           doc.accompanist = FlowRouter.getParam("profileId");
-//           doc.status = 'Offered';
-//         }
-//         return doc;
-//       }
-//     }
-//   }
-// });
-
 // Local Template Events
 
 // Template.testData.events({
@@ -159,22 +140,14 @@ Template.results.helpers({
 
 // Events
 
-// var initAutoCompleteProfile = function() {
-//       var autocomplete = new google.maps.places.Autocomplete(
-//         (document.getElementById('autocomplete')),{types: ['geocode'] }
-//       );
-// };
+// Google search autocomplete
+Template.search.events({
+   'click #autocomplete': function(e,search) {
+     initAutoComplete();
+   }
+});
 
-// var initAutoCompletePost = function() {
-//       var autocomplete = new google.maps.places.Autocomplete(
-//         (document.getElementById('autocomplete')),{types: ['geocode'] }
-//       );
-// };
-
-// Template.search.rendered = initAutoCompleteProfile;
-
-// Template.search.rendered = initAutoCompletePost;
-window.onload = function() {
+var initAutoComplete = function() {
   var autocomplete = new google.maps.places.Autocomplete(
     (document.getElementById('autocomplete')),{types: ['geocode'] }
   );
@@ -189,9 +162,9 @@ Template.search.events({
 	   	const start_date = event.target.start_date.value
 	   	const end_date = event.target.end_date.value
 
-	  	Session.set('geo_location', geo_location)
-	    Session.set('start_date', start_date)
-	  	Session.set('end_date', end_date)
+	  	Session.setPersistent('geo_location', geo_location)
+	    Session.setPersistent('start_date', start_date)
+	  	Session.setPersistent('end_date', end_date)
 
       console.log("Form Submitted")
       // go to knew page here
@@ -199,5 +172,4 @@ Template.search.events({
   }
 });
 
-// For Debugging
  SimpleSchema.debug = true;

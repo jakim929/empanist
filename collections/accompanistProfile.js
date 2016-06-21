@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 
 AccompanistProfileSchema = new SimpleSchema({
-		userId: {
+		Id: {
 			type: String,
 			label: "User ID",
 			autoform: {
@@ -91,9 +91,27 @@ AccompanistProfileSchema = new SimpleSchema({
     // in main.js HomeLayout search bar this is assumed to be only a city text
     mylocation: {
       type: String,
-      label: "City you work in"
-      // optional: true
+      label: "mylocation"
     },
+
+  //   long_lat:{
+
+  //     type: Object,
+  //     label: 'long_lat',
+  //     optional: true,
+  //     autoValue:function(){
+  //       // doesnt work... use main.js to fill this field
+  //       // make it a helper in main.js server?
+  //       // var result = Geolocation.latLng('29 champs elysée paris')
+  //       var result = geo.geocode('29 champs elysée paris');
+
+  //       return result;
+  //   },
+  //   autoform: {
+  //       type: "hidden",
+  //       label: false
+  //   }
+  // },
 
   	one_liner: {
   		type: String,
