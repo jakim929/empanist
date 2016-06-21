@@ -8,9 +8,6 @@ TransactionSchema = new SimpleSchema({
     label: "Musician ID",
     autoform: {
       type: "hidden"
-    },
-    autoValue: function() {
-      return this.userId;
     }
   },
 
@@ -19,9 +16,6 @@ TransactionSchema = new SimpleSchema({
     label: "Accompanist ID",
     autoform: {
       type: "hidden"
-    },
-    autoValue: function() {
-      return FlowRouter.getParam("profileId");
     }
   },
 
@@ -33,12 +27,9 @@ TransactionSchema = new SimpleSchema({
   status: {
     type: String,
     label: "Booking Status",
-    allowedValues: ['Accepted', 'Rejected', 'Offered', 'Cancelled'],
+    allowedValues: ['Confirmed', 'Rejected', 'Pending', 'Cancelled', 'Completed'],
     autoform: {
       type: "hidden"
-    },
-    autoValue: function() {
-      return 'Offered'
     }
   },
 

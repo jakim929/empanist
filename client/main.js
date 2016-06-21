@@ -24,10 +24,47 @@ function wrapDoc (obj) {
 
 // Global Template Helpers
 
+Template.registerHelper('pendingTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Pending"
+  })
+});
+
+Template.registerHelper('confirmedTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Confirmed"
+  })
+});
+
+Template.registerHelper('completedTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Completed"
+  })
+});
+
+Template.registerHelper('cancelledTransactions', (array) =>{
+  return array.filter(function(element, index, array){
+    return element.status == "Completed"
+  })
+});
+
+
+Template.registerHelper('arrayLength', (array) =>{
+  return array.length
+});
+
+Template.registerHelper('validId', () =>{
+  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+    return true
+  }else{
+    return false
+  }
+});
+
 Template.registerHelper('defaultTransaction', () => {
   return {musician: Meteor.userId(),
           accompanist: FlowRouter.getParam("profileId"),
-          status: 'Offered'}
+          status: 'Pending'}
 });
 
 Template.registerHelper('ownProfile', () => {
@@ -43,21 +80,38 @@ Template.registerHelper( 'userId', () => {
 
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
-})
+});
+
+Template.registerHelper( 'getBookingRoute', (bookingId) =>{
+  return "/bookingRequest/"+bookingId
+});
+
+Template.registerHelper('transactionsAsAccompanist', () =>{
+  return Transactions.find({ accompanist: Meteor.userId()}).fetch();
+});
+
+Template.registerHelper('transactionsAsMusician', () =>{
+  return Transactions.find({ musician: Meteor.userId()}).fetch()
+});
 
 Template.registerHelper( 'transactionsDoc', () => {
     event.preventDefault();
     var allTransactions =
       {asMusician: Transactions.find({ musician: Meteor.userId()}).fetch(),
        asAccompanist: Transactions.find({ accompanist: Meteor.userId()}).fetch()}
-    console.log(allTransactions)
     return allTransactions;
+});
+
+Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
+    event.preventDefault();
+    // Only return if the user is the accompanist listed
+    return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
 Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) => {
     event.preventDefault();
     if (!id) {
-      id = Meteor.userId;
+      id = Meteor.userId();
     }
     return wrapDoc(MusicProfiles.findOne({ userId: id}));
 });
@@ -65,7 +119,7 @@ Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) =
 Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) => {
   	event.preventDefault();
     if (!id) {
-      id = Meteor.userId;
+      id = Meteor.userId();
     }
     return wrapDoc(Accounts.findOne({ userId: id}));
 });
@@ -172,4 +226,27 @@ Template.search.events({
   }
 });
 
+Template.EditAccompanistProfile.events({
+	'click button': function(){
+      Notifications.info('Test', 'Working Notification');
+  }
+});
+
+
+Template.BookingRequest.events({
+	'click button': function(){
+      Transactions.update({_id: FlowRouter.getParam("transactionId")}, {$set: {status: "Confirmed"}});
+      Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');
+  }
+});
+
+Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
+  if(err) {
+    console.log(err);
+  }else {
+    console.log(result);
+  }
+});
+
+// For Debugging
  SimpleSchema.debug = true;

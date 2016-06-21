@@ -1,0 +1,29 @@
+<template name="BookingRequestLayout">
+    <header>
+        <h1>Confirm/Reject A Booking Request</h1>
+    </header>
+    <main>
+      {{> BookingRequest}}
+    </main>
+</template>
+
+<template name="BookingRequest">
+  {{#with transactionById}}
+
+      {{#with accountDoc this.musician}}
+      <h2>Your Booking With {{this.doc.name}}</h2>
+      {{/with}}
+
+      Planned Repertoire:
+      {{#each repertoire}}
+        {{this}},
+      {{/each}}
+      <br>
+
+      Status: {{this.status}} <br>
+      Start Date: {{this.startDate}} <br>
+      End Date: {{this.endDate}} <br>
+
+      <button name="confirmRequest">Confirm Request</button>
+  {{/with}}
+</template>
