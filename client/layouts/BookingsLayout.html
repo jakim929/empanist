@@ -3,30 +3,25 @@
         <h1> Your Bookings </h1>
     </header>
     <main>
-      {{> Booking}}
+      {{#each transactionsDoc.asMusician}}
+        {{> Template.dynamic template="Booking" data=this }}
+      {{/each}}
     </main>
 </template>
 
 <template name="Booking">
-  {{#with transactionsDoc}}
     <h2>Your Bookings</h2>
-    {{#each asMusician}}
       {{#with accountDoc this.musician}}
       Musician: {{this.doc.name}}<br>
       {{/with}}
-
       {{#with accountDoc this.accompanist}}
       Accompanist: {{this.doc.name}}<br>
       {{/with}}
-
       Planned Repertoire: <br>
       {{#each repertoire}}
         {{this}}<br>
       {{/each}}
-
       Status: {{this.status}} <br>
       Start Date: {{this.startDate}} <br>
       End Date: {{this.endDate}} <br>
-    {{/each}}
-  {{/with}}
 </template>

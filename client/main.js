@@ -255,6 +255,7 @@ AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, opt
 AccompanistProfile.after.insert(function (userId, doc) {
   Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
   if(err) {
+    console.log(err)
   }else {
     AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0]}});
     }

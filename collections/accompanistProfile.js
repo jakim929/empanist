@@ -101,6 +101,7 @@ AccompanistProfileSchema = new SimpleSchema({
       },
   },
 
+
   	one_liner: {
   		type: String,
   		label: "Describe yourself in one sentence",
