@@ -129,7 +129,6 @@ Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("pro
     if (!id) {
       id = Meteor.userId();
     }
-    console.log(AccompanistProfile.findOne({ Id: Meteor.userId()}))
     return wrapDoc(AccompanistProfile.findOne({ Id: Meteor.userId()}));
 });
 
@@ -171,7 +170,7 @@ Template.makeUpdateAccompForm.helpers ({
 Template.results.helpers({
 	// print this from the new page
   accompanists: ()=> {
-		var gl = Session.get('geo_location')
+		var coords = Session.get('coords')
 		var sd = Session.get('start_date')
 		var ed = Session.get('end_date')
 
@@ -179,21 +178,63 @@ Template.results.helpers({
 		var new_sd = new Date(sd)
 		var new_ed = new Date(ed)
 
-		// fix location (Rad + Google API)
-		if (gl && sd && ed) {
+    if (coords && sd && ed) {
 		  console.log("Searched")
       return AccompanistProfile.find({
-        mylocation: gl,
+        loc: 
+          { $near :
+            {
+              $geometry: { type: "Point",  coordinates: coords },
+              $maxDistance: 20000 
+            }
+          },
         startDate:  {$lte: new_sd, $lte: new_ed},
         endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     }
-    	// return No results found if null!!!!!!!!
+    	// return No results found return Null (should just go to empty results page with advanced search)
       console.log("Didn't search")
     	return null
   }
 });
 
 // Events
+
+Template.search.events({
+	'submit form': function(){
+	    event.preventDefault();
+
+	    //Constants submitted from the Home search bar
+      const address = event.target.address.value
+	   	const start_date = event.target.start_date.value
+	   	const end_date = event.target.end_date.value
+
+  
+      Meteor.call('getGeocode', address, function(err, result){
+      
+        var lat = Number(result[0].latitude);
+        var lng = Number(result[0].longitude);
+        var coords_new = [lat, lng];
+
+        if(err) {
+          console.log(err)
+        } else {
+            console.log("search works")
+            Session.setPersistent('coords', coords_new)
+            Session.setPersistent('start_date', start_date)
+            Session.setPersistent('end_date', end_date)
+        }
+        console.log("working_search nothing done")
+    }); 
+
+	  	Session.setPersistent('address', address)
+	    Session.setPersistent('start_date', start_date)
+	  	Session.setPersistent('end_date', end_date)
+
+      console.log("Form Submitted")
+      // go to knew page here
+      FlowRouter.go('results');
+  }
+});
 
 // Google search autocomplete
 Template.search.events({
@@ -207,25 +248,6 @@ var initAutoComplete = function() {
     (document.getElementById('autocomplete')),{types: ['geocode'] }
   );
 };
-
-Template.search.events({
-	'submit form': function(){
-	    event.preventDefault();
-
-	    //Constants submitted from the Home search bar
-	   	const geo_location = event.target.geo_location.value
-	   	const start_date = event.target.start_date.value
-	   	const end_date = event.target.end_date.value
-
-	  	Session.setPersistent('geo_location', geo_location)
-	    Session.setPersistent('start_date', start_date)
-	  	Session.setPersistent('end_date', end_date)
-
-      console.log("Form Submitted")
-      // go to knew page here
-      FlowRouter.go('results');
-  }
-});
 
 Template.EditAccompanistProfile.events({
 	'click button': function(){
@@ -241,23 +263,48 @@ Template.BookingRequest.events({
   }
 });
 
+// Hooks
 
+// update Hook
 AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
-  Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
+  
+  var address = doc.mylocation;
+  
+  // take if outside to make more efficient!!!!!
+  Meteor.call('getGeocode', address, function(err, result){
+      
+      var lat = Number(result[0].latitude);
+      var lng = Number(result[0].longitude);
+      var coords_new = [lat, lng];
+      var coords_db = doc.loc.coordinates
+
   if(err) {
     console.log(err)
-  } else if (doc.result !== this.geolocation) {
-    AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0]}});
+  } else if (coords_new[0] !== coords_db[0] && coords_new[1] !== coords_db[1]) {
+      console.log("updating")
+      AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
   }
+  console.log("working_UPDATE nothing done")
+
 }); 
 }, {fetchPrevious: true});
 
+// Insert Hook
 AccompanistProfile.after.insert(function (userId, doc) {
-  Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
-  if(err) {
-    console.log(err)
-  }else {
-    AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0]}});
+
+  var address = doc.mylocation;
+
+  Meteor.call('getGeocode', address, function(err, result){
+    if(err) {
+      console.log(err)
+    }else {
+      console.log("working_INSERT")
+      
+      var lat = Number(result[0].latitude);
+      var lng = Number(result[0].longitude);
+      var coords_new = [lat, lng];
+
+      AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
     }
   });  
 });

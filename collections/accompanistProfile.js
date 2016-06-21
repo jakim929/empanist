@@ -94,18 +94,42 @@ AccompanistProfileSchema = new SimpleSchema({
       type: Object,
       blackbox: true,
       label: 'geolocation',
-      optional: true,
       autoform: {
         type: "hidden",
         label: false
       },
+      optional: true
   },
 
+    loc: {
+      type: Object,
+      index: '2dsphere',
+      label: "Location",
+      //blackbox: true,
+      autoform: {
+      type: "hidden",
+      omit: true
+        },
+        optional: true
+      },
+      
+      "loc.type": {
+        type: String,
+        allowedValues: ["Point"],
+        label: "Start location type"
+      },
+      
+      "loc.coordinates": {
+        type: [Number],
+        //minCount: 2,
+        //maxCount: 2,
+        decimal: true,
+    },
 
-  	one_liner: {
-  		type: String,
-  		label: "Describe yourself in one sentence",
-  	},
+      	one_liner: {
+      		type: String,
+      		label: "Describe yourself in one sentence",
+      	},
 
 });
 
