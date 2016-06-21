@@ -60,7 +60,7 @@ u2622:persistent-session # Session that doesn't end of refresh
 
 aldeed:geocoder			# for finding long and lat and then query results that are near your location
 
-muriloventuroso:get-coordinates
+muriloventuroso:get-coordinates			# I don't think we use this, but if we do it will be in become accompanist
 
 mdg:geolocation
 

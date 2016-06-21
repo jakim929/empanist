@@ -33,7 +33,6 @@ AccompanistProfileSchema = new SimpleSchema({
 
   	working_hours: {
   		type: [String],
-  		//noselect:true,
   		label: "Times you prefer working",
   		autoform: {
   			type: "select-checkbox-inline",
@@ -78,40 +77,29 @@ AccompanistProfileSchema = new SimpleSchema({
     startDate: {
       type: Date,
       label: "Start Date"
-      // optional: true
     },
 
     endDate: {
       type: Date,
       label: "End Date"
-      // optional: true
     },
 
     // make this show up only if the accomp said he's willing to give sessoins in his place
-    // in main.js HomeLayout search bar this is assumed to be only a city text
     mylocation: {
       type: String,
       label: "mylocation"
     },
 
-  //   long_lat:{
-
-  //     type: Object,
-  //     label: 'long_lat',
-  //     optional: true,
-  //     autoValue:function(){
-  //       // doesnt work... use main.js to fill this field
-  //       // make it a helper in main.js server?
-  //       // var result = Geolocation.latLng('29 champs elysée paris')
-  //       var result = geo.geocode('29 champs elysée paris');
-
-  //       return result;
-  //   },
-  //   autoform: {
-  //       type: "hidden",
-  //       label: false
-  //   }
-  // },
+    geolocation:{
+      type: Object,
+      blackbox: true,
+      label: 'geolocation',
+      optional: true,
+      autoform: {
+        type: "hidden",
+        label: false
+      },
+  },
 
   	one_liner: {
   		type: String,
@@ -119,6 +107,5 @@ AccompanistProfileSchema = new SimpleSchema({
   	},
 
 });
-
 
 AccompanistProfile.attachSchema(AccompanistProfileSchema)

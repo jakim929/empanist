@@ -129,7 +129,8 @@ Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("pro
     if (!id) {
       id = Meteor.userId();
     }
-    return wrapDoc(AccompanistProfile.findOne({ userId: id}));
+    console.log(AccompanistProfile.findOne({ Id: Meteor.userId()}))
+    return wrapDoc(AccompanistProfile.findOne({ Id: Meteor.userId()}));
 });
 
 Template.registerHelper( 'musicCompetitionsDoc', () => {
@@ -240,12 +241,24 @@ Template.BookingRequest.events({
   }
 });
 
-Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
+
+AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
+  Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
   if(err) {
-    console.log(err);
-  }else {
-    console.log(result);
+    console.log(err)
+  } else if (doc.result !== this.geolocation) {
+    AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0]}});
   }
+}); 
+}, {fetchPrevious: true});
+
+AccompanistProfile.after.insert(function (userId, doc) {
+  Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
+  if(err) {
+  }else {
+    AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0]}});
+    }
+  });  
 });
 
 // For Debugging
