@@ -252,9 +252,22 @@ Meteor.call('getGeocode', '29 champs elysée paris', function(err, result){
   if(err) {
     console.log(err);
   }else {
-    console.log(result);
   }
 });
+
+AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
+  Meteor.call('getGeocode', '29 champs elysée paris', function(err, res){
+    if(err) {
+      console.log(err);
+    }else {
+
+      AccompanistProfile.update({_id : doc._id}, {$set:{geolocation: res[0]}})
+      console.log(AccompanistProfile.findOne({_id: doc._id}))
+    }
+  });
+}, {fetchPrevious: false});
+
+
 
 // For Debugging
  SimpleSchema.debug = true;

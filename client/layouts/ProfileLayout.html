@@ -8,13 +8,13 @@
           {{> editProfile}}<br>
           {{> accountTemplate}}
           {{> profileTemplate}}<br>
-          {{> accompanistProfileTemplate}}
+          {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
         {{else}}
           {{#if accompanistProfileDoc}}
             {{> bookAccompanist}}<br>
             {{> accountTemplate}}
             {{> profileTemplate}}<br>
-            {{> accompanistProfileTemplate}}
+            {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
           {{else}}
             {{> accountTemplate}}
             {{> profileTemplate}}
@@ -96,7 +96,6 @@
 
 <template name="accompanistProfileTemplate">
   <h3>Accompanist Profile</h3>
-  {{#with accompanistProfileDoc.doc}}
   <h5>Repertoire: </h5>
     {{#each repertoire}}
       {{this}}<br>
@@ -112,5 +111,4 @@
   <h5>My Location: {{mylocation}}</h5>
   <hr>
   <h5>One Liner: {{one_liner}}</h5>
-  {{/with}}
 </template>

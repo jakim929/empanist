@@ -61,3 +61,4 @@ u2622:persistent-session # Session that doesn't end of refresh
 gfk:notifications
 useraccounts:materialize
 aldeed:geocoder
+matb33:collection-hooks

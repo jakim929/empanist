@@ -95,6 +95,13 @@ AccompanistProfileSchema = new SimpleSchema({
       // optional: true
     },
 
+    geolocation: {
+      type: Object,
+      label: "Geocoded Location",
+      optional: true,
+      blackbox: true
+    },
+
   	one_liner: {
   		type: String,
   		label: "Describe yourself in one sentence",
