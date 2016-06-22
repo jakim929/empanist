@@ -22,7 +22,94 @@ function wrapDoc (obj) {
   }
 }
 
-// Global Template Helpers
+// Javascript Component Initialization
+
+Template.CollapsibleStructure.onRendered(function () {
+  $('.collapsible').collapsible({
+    accordion : false
+  });
+});
+
+Template.TabStructure.onRendered(function () {
+  $('ul.tabs').tabs();
+});
+
+// On creation
+
+Template.MainLayout.onCreated(function (){
+  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings', 'login'])
+});
+
+// ==Global Template Helpers==
+
+
+
+// Get Current User's Account
+Template.registerHelper('myAccount', () => {
+  return Accounts.findOne({userId: Meteor.userId()});
+});
+
+// Get Current User's Music Profile
+Template.registerHelper('myProfile', () => {
+  return MusicProfiles.findOne({userId: Meteor.userId()});
+});
+
+// Get Current Route's Accompanist Profile
+Template.registerHelper('myAccompanistProfile', () => {
+  return AccompanistProfile.findOne({Id: Meteor.userId()});
+});
+
+Template.registerHelper('routeAccount', () => {
+  return Accounts.findOne({userId: FlowRouter.getParam("profileId")});
+});
+
+// Get Current Route's Music Profile
+Template.registerHelper('routeProfile', () => {
+  return MusicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
+});
+
+// Get Current Route's Accompanist Profile
+Template.registerHelper('routeAccompanistProfile', () => {
+  return AccompanistProfile.findOne({Id: FlowRouter.getParam("profileId")});
+});
+
+Template.registerHelper('sentBookingRequests', () =>{
+  return Transactions.find({musician: Meteor.userId()}).fetch()
+});
+
+Template.registerHelper('receivedBookingRequests', () =>{
+  return Transactions.find({accompanist: Meteor.userId()}).fetch()
+});
+
+Template.registerHelper('accountById', (id) =>{
+  return Accounts.findOne({userId: id})
+});
+
+Template.registerHelper('profileById', (id) =>{
+  return MusicProfiles.findOne({userId: id})
+});
+
+Template.registerHelper('accompanistProfileById', (id) =>{
+  return AccompanistProfile.findOne({Id: id})
+});
+
+Template.registerHelper('routeTransaction', () =>{
+  return Transactions.findOne({_id: FlowRouter.getParam("transactionId")})
+});
+
+Template.registerHelper('isOwnProfile', () => {
+  return FlowRouter.getParam("profileId") == Meteor.userId();
+});
+
+
+// Get Elements of the Navbar Fields for the User
+Template.registerHelper('navbarFields', () => {
+  return Template.instance().navbarFields.get()
+});
+
+
+
+// Old Global Template Helpers
 
 Template.registerHelper('pendingTransactions', (array) =>{
   return array.filter(function(element, index, array){
@@ -54,7 +141,11 @@ Template.registerHelper('arrayLength', (array) =>{
 });
 
 Template.registerHelper('validId', () =>{
-  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+  // For now it is set to looking up in Accounts instead of Meteor.users
+  // Makes it work with test data
+  // if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+
+  if (Accounts.findOne({userId: FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
@@ -138,12 +229,73 @@ Template.registerHelper( 'musicCompetitionsDoc', () => {
     return [{label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition"}]
 });
 
+
+// Local Template On Created
+
+Template.upsertProfileForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+Template.upsertAccountForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+Template.upsertAccompanistForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
 // Local Template Helpers
 
 Template.upsertProfileForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+    if (currentProfile) {
+      Template.instance().formType.set('update');
+      return currentProfile
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  },
+
   instrumentList: function () {
     return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
     "Zither"].map(function(obj){return {label: obj, value:obj}})
+  }
+});
+
+Template.upsertAccountForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentAccount: function () {
+    var currentAccount = Accounts.findOne({ userId: Meteor.userId()});
+    if (currentAccount) {
+      Template.instance().formType.set('update');
+      return currentAccount;
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  }
+});
+
+Template.upsertAccompanistForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentAccompanistProfile: function () {
+    var currentAccompanistProfile = AccompanistProfile.findOne({ Id: Meteor.userId()});
+    if (currentAccompanistProfile) {
+      Template.instance().formType.set('update');
+      return currentAccompanistProfile;
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
   }
 });
 
@@ -160,12 +312,6 @@ Template.upsertProfileForm.helpers ({
 //   }
 // });
 
-Template.makeUpdateAccompForm.helpers ({
-  NewAccompSchema: function () {
-  	event.preventDefault();
-  	return Schema.AccompanistProfileSchema;
-  }
-});
 
 // Template.results.helpers({
 
@@ -189,35 +335,41 @@ Template.results.helpers({
     if (coords && sd && ed) {
 		  console.log("search all")
       return AccompanistProfile.find({
-        loc: 
+        loc:
           { $near :
             {
               $geometry: { type: "Point",  coordinates: coords },
-              $maxDistance: 20000 
+              $maxDistance: 20000
             }
           },
+<<<<<<< HEAD
         startDate:  {$lte: sd, $lte: ed},
         endDate: {$gte: sd, $gte: ed}}).fetch()
      } 
+=======
+        startDate:  {$lte: new_sd, $lte: new_ed},
+        endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+     }
+>>>>>>> 1fb653c3a66cb60c85d5ee3c13ce62c878ffacda
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
     //   return AccompanistProfile.find({
-    //     loc: 
+    //     loc:
     //       { $near :
     //         {
     //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000 
+    //           $maxDistance: 20000
     //         }
     //       },
     //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     // } else if (coords && sd) {
     //   console.log("Searched coords and sd")
     //   return AccompanistProfile.find({
-    //     loc: 
+    //     loc:
     //       { $near :
     //         {
     //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000 
+    //           $maxDistance: 20000
     //         }
     //       },
     //     startDate:  {$lte: new_sd, $lte: new_ed}}).fetch()
@@ -244,9 +396,9 @@ Template.search.events({
 	   	const start_date = event.target.start_date.value
 	   	const end_date = event.target.end_date.value
 
-  
+
       Meteor.call('getGeocode', address, function(err, result){
-      
+
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
         var coords_new = [lat, lng];
@@ -260,7 +412,7 @@ Template.search.events({
             Session.setPersistent('end_date', end_date)
         }
         console.log("working_search nothing done")
-    }); 
+    });
 
       console.log("Form Submitted")
       // go to knew page here
@@ -305,12 +457,12 @@ Template.BookingRequest.events({
 
 // Insert geocode in accomp profile at update
 AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
-  
+
   var address = doc.mylocation;
-  
+
   // take if outside to make more efficient!!!!!
   Meteor.call('getGeocode', address, function(err, result){
-      
+
       var lat = Number(result[0].latitude);
       var lng = Number(result[0].longitude);
       var coords_new = [lat, lng];
@@ -324,7 +476,7 @@ AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, opt
   }
   console.log("working_UPDATE nothing done")
 
-}); 
+});
 }, {fetchPrevious: true});
 
 // Insert geocode in accomp profile at Insert
@@ -337,14 +489,14 @@ AccompanistProfile.after.insert(function (userId, doc) {
       console.log(err)
     }else {
       console.log("working_INSERT")
-      
+
       var lat = Number(result[0].latitude);
       var lng = Number(result[0].longitude);
       var coords_new = [lat, lng];
 
       AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
     }
-  });  
+  });
 });
 
   insertFullRandomProfile = function(userId){

@@ -32,7 +32,6 @@ aldeed:collection2
 aldeed:autoform
 accounts-ui
 accounts-password
-matb33:bootstrap-glyphicons
 zimme:active-route
 gwendall:auth-client-callbacks
 meteortoys:allthings
@@ -67,4 +66,8 @@ mdg:geolocation
 matb33:collection-hooks
 
 gfk:notifications
-random
+
+useraccounts:materialize		# can't create new acocunt with this
+
+materialize:materialize
+

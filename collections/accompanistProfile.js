@@ -112,13 +112,13 @@ AccompanistProfileSchema = new SimpleSchema({
         },
         optional: true
       },
-      
+
       "loc.type": {
         type: String,
         allowedValues: ["Point"],
         label: "Start location type"
       },
-      
+
       "loc.coordinates": {
         type: [Number],
         //minCount: 2,

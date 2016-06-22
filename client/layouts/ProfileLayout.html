@@ -4,20 +4,20 @@
     </header>
     <main>
       {{#if validId}}
-        {{#if ownProfile}}
+        {{#if isOwnProfile}}
           {{> editProfile}}<br>
-          {{> accountTemplate}}
-          {{> profileTemplate}}<br>
-          {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
+          {{> Template.dynamic template="accountTemplate" data=myAccount}}
+          {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
+          {{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfile}}
         {{else}}
-          {{#if accompanistProfileDoc}}
+          {{#if routeAccompanistProfile}}
             {{> bookAccompanist}}<br>
-            {{> accountTemplate}}
-            {{> profileTemplate}}<br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
+            {{> Template.dynamic template="accountTemplate" data=routeAccount}}
+            {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
+            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
           {{else}}
-            {{> accountTemplate}}
-            {{> profileTemplate}}
+          {{> Template.dynamic template="accountTemplate" data=routeAccount}}
+          {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
           {{/if}}
         {{/if}}
       {{else}}
@@ -34,63 +34,44 @@
   <button><a href="/addinfo">Edit Profile</a></button>
 </template>
 
-<template name="bookAccompanist">
-  <h3>Book Accompanist</h3>
-  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
-    <fieldset>
-      {{>afQuickField name="musician"}}
-      {{>afQuickField name="accompanist"}}
-      {{>afQuickField name="status"}}
-      {{>afQuickField name="repertoire"}}
-      {{>afQuickField name="startDate"}}
-      {{>afQuickField name="endDate"}}
-      <button type="submit" class="btn btn-primary">Book Accompanist</button>
-    </fieldset>
-  {{/autoForm}}
-</template>
+
 
 <template name="accountTemplate">
   <h3>Account Details</h3>
-    {{#with accountDoc.doc}}
     <h5>Name: {{name}}</h5>
     <h5>Birthday: {{birthDate}}</h5>
     <h5>Phone Number: {{phone}}</h5>
     <h5>Affiliation: {{affiliation}}</h5>
     <br>
-    {{/with}}
 </template>
 
 <template name="profileTemplate">
   <section class="myprofile">
     <h3>Music Profile</h3>
-    {{#with profileDoc}}
-      {{#with this.doc}}
-        <h5>Instruments Mastered: {{instrument}}</h5>
-        <h5>Years Played: {{yearsPlayed}}</h5>
-        <hr>
-        <h5>Awards: </h5>
-          {{#each awards}}
-            Name: {{name}}<br>
-            Date: {{date}}<br>
-          {{/each}}
-        <hr>
-        <h5>Music Programs: </h5>
-          {{#each musicPrograms}}
-            Institution Name: {{instName}}<br>
-            Program Name: {{programName}}<br>
-            Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br>
-          {{/each}}
-        <hr>
-        <h5>Orchestras Participated in: </h5>
-          {{#each orchestras}}
-            Name: {{name}}<br>
-            Position: {{position}}<br>
-            Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br>
-          {{/each}}
-      {{/with}}
-    {{/with}}
+      <h5>Instruments Mastered: {{instrument}}</h5>
+      <h5>Years Played: {{yearsPlayed}}</h5>
+      <hr>
+      <h5>Awards: </h5>
+        {{#each awards}}
+          Name: {{name}}<br>
+          Date: {{date}}<br>
+        {{/each}}
+      <hr>
+      <h5>Music Programs: </h5>
+        {{#each musicPrograms}}
+          Institution Name: {{instName}}<br>
+          Program Name: {{programName}}<br>
+          Start Date: {{startDate}}<br>
+          End Date: {{endDate}}<br>
+        {{/each}}
+      <hr>
+      <h5>Orchestras Participated in: </h5>
+        {{#each orchestras}}
+          Name: {{name}}<br>
+          Position: {{position}}<br>
+          Start Date: {{startDate}}<br>
+          End Date: {{endDate}}<br>
+        {{/each}}
   </section>
 </template>
 
@@ -111,4 +92,20 @@
   <h5>My Location: {{mylocation}}</h5>
   <hr>
   <h5>One Liner: {{one_liner}}</h5>
+</template>
+
+
+<template name="bookAccompanist">
+  <h3>Book Accompanist</h3>
+  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
+    <fieldset>
+      {{>afQuickField name="musician"}}
+      {{>afQuickField name="accompanist"}}
+      {{>afQuickField name="status"}}
+      {{>afQuickField name="repertoire"}}
+      {{>afQuickField name="startDate"}}
+      {{>afQuickField name="endDate"}}
+      <button type="submit" class="btn btn-primary">Book Accompanist</button>
+    </fieldset>
+  {{/autoForm}}
 </template>

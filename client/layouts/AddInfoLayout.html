@@ -1,10 +1,6 @@
 <template name="AddInfoLayout">
     <header>
-      {{#if profileDoc}}
-        <h1>Edit User Information</h1>
-      {{else}}
-        <h1>Create a Profile</h1>
-      {{/if}}
+      <h1>My Profile</h1>
     </header>
     <main>
       <h3>Edit Account Information</h3>
@@ -16,7 +12,7 @@
 </template>
 
 <template name="upsertAccountForm">
-  {{#autoForm collection="Accounts" doc=accountDoc.doc id="upsertAccountForm" type=accountDoc.field}}
+  {{#autoForm collection="Accounts" doc=currentAccount id="upsertAccountForm" type=formType}}
     <fieldset>
       {{>afQuickField name="name"}}
       {{>afQuickField name="birthDate"}}
@@ -28,7 +24,7 @@
 </template>
 
 <template name="upsertProfileForm">
-  {{#autoForm collection="MusicProfiles" doc=profileDoc.doc id="upsertProfileForm" type=profileDoc.field}}
+  {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertProfileForm" type=formType}}
     <fieldset>
       {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
       {{>afQuickField name="yearsPlayed"}}
@@ -38,9 +34,4 @@
   </fieldset>
   <button type="submit" class="btn btn-primary">Update Profile</button>
   {{/autoForm}}
-</template>
-
-
-<template name="nameRender">
-  {{name}}
 </template>

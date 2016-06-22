@@ -1,49 +1,44 @@
 <template name="MainLayout">
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-<link rel="stylesheet" type="text/css" href="style.css">
-
 	<main>
-    	<nav class="navbar navbar-default">
-		  <div class="container-fluid">
-		  	<div class="navbar-header">
-		      <a class="navbar-brand" href="/">Empanist</a>
-		    </div>
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-		      <ul class="nav navbar-nav navbar-right">
-		        <li> {{> loginButtons}} </li>
-
-						<!-- If the user already created a profile -->
-						{{#if profileDoc}}
-							<li><a href={{getProfileRoute}}>View Profile</a></li>
-						{{else}}
-							<li><a href="/addinfo">Add Profile</a></li>
-						{{/if}}
-
-						{{#if accompanistProfileDoc}}
-							<li><a href="/accompanistDashboard">Accompanist Dashboard</a></li>
-						<!-- FILL THIS -->
-						{{else}}
-							<li><a href="/newaccomp">Become an Accompanist</a></li>
-						{{/if}}
-
-						<li><a href="/bookings">Bookings</a></li>
+		<div class="navbar-fixed">
+			<nav>
+		    <div class="nav-wrapper">
+		      <a href="/" class="brand-logo right">Empanist</a>
+		      <ul id="nav-mobile" class="left hide-on-med-and-down">
+							{{#each navbarFields}}
+								{{> Template.dynamic template=this}}
+							{{/each}}
 		      </ul>
-		    </div><!-- /.navbar-collapse -->
-		  </div><!-- /.container-fluid -->
-		</nav>
+		    </div>
+		  </nav>
+		</div>
     <div class ="main_margin">
    		{{> Template.dynamic template=main}}
    	</div>
   </main>
+</template>
+
+
+<template name="login">
+	{{> loginButtons}}
+</template>
+
+<template name="myProfile">
+	<li><a href={{getProfileRoute}}>My Profile</a></li>
+</template>
+
+<template name="accompanistDashboard">
+	<li><a href='/accompanistDashboard'>Accompanist Dashboard</a></li>
+</template>
+
+<template name="bookings">
+	<li><a href='/bookings'>Bookings</a></li>
+</template>
+
+<template name="becomeAnAccompanist">
+	<li><a href='/newaccomp'>Become an Accompanist</a></li>
+</template>
+
+<template name="addProfile">
+	<li><a href='/addinfo'>Add Profile</a></li>
 </template>

@@ -42,7 +42,6 @@ AccountSchema = new SimpleSchema({
     type: String,
     label: "Affiliation"
   }
-
 });
 
 Accounts.attachSchema(AccountSchema)
