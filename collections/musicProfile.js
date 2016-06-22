@@ -26,9 +26,10 @@ OrchestraSchema = new SimpleSchema({
 
 AwardSchema = new SimpleSchema({
   name: {
-    type: String,
+    type:String,
     label: "Competition Name"
   },
+
   award: {
     type: String,
     label: "Award Title"
@@ -55,10 +56,6 @@ CompetitionSchema = new SimpleSchema({
 });
 
 MusicProgramSchema = new SimpleSchema({
-  instName: {
-    type: String,
-    label: "Institution Name"
-  },
 
   programName : {
     type: String,
@@ -96,7 +93,7 @@ MusicProfileSchema = new SimpleSchema({
   },
 
   yearsPlayed: {
-    type: String,
+    type: Number,
     label: "Years Played"
   },
 

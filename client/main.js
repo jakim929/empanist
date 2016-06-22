@@ -167,16 +167,24 @@ Template.makeUpdateAccompForm.helpers ({
   }
 });
 
+// Template.results.helpers({
+
+//   account_details: function(arg){
+
+//     return Accounts.findOne({_id: arg})
+
+//   }
+// });
+
 Template.results.helpers({
-	// print this from the new page
+
+  // print this from the new page
   accompanists: ()=> {
 		var coords = Session.get('coords')
-		var sd = Session.get('start_date')
-		var ed = Session.get('end_date')
 
 		// convert dates to dates that can be compared with Mongo schema
-		var new_sd = new Date(sd)
-		var new_ed = new Date(ed)
+		var sd = new Date(Session.get('start_date'))
+		var ed = new Date(Session.get('end_date'))
 
     if (coords && sd && ed) {
 		  console.log("search all")
@@ -188,8 +196,8 @@ Template.results.helpers({
               $maxDistance: 20000 
             }
           },
-        startDate:  {$lte: new_sd, $lte: new_ed},
-        endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+        startDate:  {$lte: sd, $lte: ed},
+        endDate: {$gte: sd, $gte: ed}}).fetch()
      } 
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
@@ -338,6 +346,22 @@ AccompanistProfile.after.insert(function (userId, doc) {
     }
   });  
 });
+
+  insertFullRandomProfile = function(userId){
+    Accounts.insert(createNewAccount(userId), {getAutoValues: false});
+    MusicProfiles.insert(createNewMusicProfile(userId), {getAutoValues: false});
+    AccompanistProfile.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
+  };
+
+  insertRandomData = function(number) {
+    for (var i = 0; i < number; i++){
+      var genId = Random.id();
+      Accounts.insert(createNewAccount(genId), {getAutoValues: false});
+      MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
+      AccompanistProfile.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
+    }
+
+  };
 
 // For Debugging
  SimpleSchema.debug = true;

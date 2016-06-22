@@ -41,12 +41,6 @@ AccountSchema = new SimpleSchema({
   affiliation: {
     type: String,
     label: "Affiliation"
-  },
-
-  accompanistProfile : {
-    type: [AccompanistProfileSchema],
-    label: "Accompanist Profile",
-    optional: true
   }
 
 });
