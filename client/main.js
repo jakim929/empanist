@@ -179,7 +179,7 @@ Template.results.helpers({
 		var new_ed = new Date(ed)
 
     if (coords && sd && ed) {
-		  console.log("Searched")
+		  console.log("search all")
       return AccompanistProfile.find({
         loc: 
           { $near :
@@ -190,7 +190,35 @@ Template.results.helpers({
           },
         startDate:  {$lte: new_sd, $lte: new_ed},
         endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-    }
+     } 
+     //   else if (coords && ed) {
+    //   console.log("Searched coords and ed")
+    //   return AccompanistProfile.find({
+    //     loc: 
+    //       { $near :
+    //         {
+    //           $geometry: { type: "Point",  coordinates: coords },
+    //           $maxDistance: 20000 
+    //         }
+    //       },
+    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+    // } else if (coords && sd) {
+    //   console.log("Searched coords and sd")
+    //   return AccompanistProfile.find({
+    //     loc: 
+    //       { $near :
+    //         {
+    //           $geometry: { type: "Point",  coordinates: coords },
+    //           $maxDistance: 20000 
+    //         }
+    //       },
+    //     startDate:  {$lte: new_sd, $lte: new_ed}}).fetch()
+    // } else if (sd && ed) {
+    //   console.log("Searched sd and ed")
+    //   return AccompanistProfile.find({
+    //     startDate:  {$lte: new_sd, $lte: new_ed},
+    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
+    // }
     	// return No results found return Null (should just go to empty results page with advanced search)
       console.log("Didn't search")
     	return null
@@ -218,17 +246,13 @@ Template.search.events({
         if(err) {
           console.log(err)
         } else {
-            console.log("search works")
+            console.log("search session set")
             Session.setPersistent('coords', coords_new)
             Session.setPersistent('start_date', start_date)
             Session.setPersistent('end_date', end_date)
         }
         console.log("working_search nothing done")
     }); 
-
-	  	Session.setPersistent('address', address)
-	    Session.setPersistent('start_date', start_date)
-	  	Session.setPersistent('end_date', end_date)
 
       console.log("Form Submitted")
       // go to knew page here
@@ -239,6 +263,12 @@ Template.search.events({
 // Google search autocomplete
 Template.search.events({
    'click #autocomplete': function(e,search) {
+     initAutoComplete();
+   }
+});
+
+Template.NewAccompLayout.events({
+   'click #autocomplete': function(e,NewAccompLayout) {
      initAutoComplete();
    }
 });
@@ -265,7 +295,7 @@ Template.BookingRequest.events({
 
 // Hooks
 
-// update Hook
+// Insert geocode in accomp profile at update
 AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
   
   var address = doc.mylocation;
@@ -289,7 +319,7 @@ AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, opt
 }); 
 }, {fetchPrevious: true});
 
-// Insert Hook
+// Insert geocode in accomp profile at Insert
 AccompanistProfile.after.insert(function (userId, doc) {
 
   var address = doc.mylocation;
