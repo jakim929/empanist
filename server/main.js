@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from '../collections/account.js'
 import { MusicProfiles } from '../collections/musicProfile.js'
 import { AccompanistProfile } from '../collections/accompanistProfile.js'
-import { MusicProfiles } from '../collections/musicProfile.js'
 
 Meteor.startup(() => {
 

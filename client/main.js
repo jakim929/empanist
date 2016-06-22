@@ -299,32 +299,8 @@ Template.upsertAccompanistForm.helpers ({
   }
 });
 
-// Local Template Events
-
-// Template.testData.events({
-//   'click button'(event){
-//     event.preventDefault();
-//       console.log("Pressed");
-//     for (var i =0; i < TestAccountData.length; i++){
-//       Accounts.insert(TestAccountData[i]);
-//       console.log("Inserted account number "+(i+1));
-//     };
-//   }
-// });
-
-
-// Template.results.helpers({
-
-//   account_details: function(arg){
-
-//     return Accounts.findOne({_id: arg})
-
-//   }
-// });
-
 Template.results.helpers({
 
-  // print this from the new page
   accompanists: ()=> {
 		var coords = Session.get('coords')
 
@@ -342,15 +318,10 @@ Template.results.helpers({
               $maxDistance: 20000
             }
           },
-<<<<<<< HEAD
         startDate:  {$lte: sd, $lte: ed},
         endDate: {$gte: sd, $gte: ed}}).fetch()
      } 
-=======
-        startDate:  {$lte: new_sd, $lte: new_ed},
-        endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-     }
->>>>>>> 1fb653c3a66cb60c85d5ee3c13ce62c878ffacda
+
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
     //   return AccompanistProfile.find({
@@ -401,7 +372,7 @@ Template.search.events({
 
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
-        var coords_new = [lat, lng];
+        var coords_new = [lng, lat];
 
         if(err) {
           console.log(err)
@@ -465,7 +436,7 @@ AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, opt
 
       var lat = Number(result[0].latitude);
       var lng = Number(result[0].longitude);
-      var coords_new = [lat, lng];
+      var coords_new = [lng, lat];
       var coords_db = doc.loc.coordinates
 
   if(err) {
@@ -492,7 +463,7 @@ AccompanistProfile.after.insert(function (userId, doc) {
 
       var lat = Number(result[0].latitude);
       var lng = Number(result[0].longitude);
-      var coords_new = [lat, lng];
+      var coords_new = [lng, lat];
 
       AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
     }
