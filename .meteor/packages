@@ -32,7 +32,6 @@ aldeed:collection2
 aldeed:autoform
 accounts-ui
 accounts-password
-matb33:bootstrap-glyphicons
 zimme:active-route
 gwendall:auth-client-callbacks
 meteortoys:allthings
@@ -62,3 +61,4 @@ gfk:notifications
 useraccounts:materialize
 aldeed:geocoder
 matb33:collection-hooks
+materialize:materialize

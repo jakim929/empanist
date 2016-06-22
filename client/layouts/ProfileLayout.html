@@ -4,11 +4,11 @@
     </header>
     <main>
       {{#if validId}}
-        {{#if ownProfile}}
+        {{#if isOwnProfile}}
           {{> editProfile}}<br>
-          {{> accountTemplate}}
-          {{> profileTemplate}}<br>
-          {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
+          {{> Template.dynamic template="accountTemplate" data=myAccount}}
+          {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
+          {{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfile}}
         {{else}}
           {{#if accompanistProfileDoc}}
             {{> bookAccompanist}}<br>
@@ -63,34 +63,30 @@
 <template name="profileTemplate">
   <section class="myprofile">
     <h3>Music Profile</h3>
-    {{#with profileDoc}}
-      {{#with this.doc}}
-        <h5>Instruments Mastered: {{instrument}}</h5>
-        <h5>Years Played: {{yearsPlayed}}</h5>
-        <hr>
-        <h5>Awards: </h5>
-          {{#each awards}}
-            Name: {{name}}<br>
-            Date: {{date}}<br>
-          {{/each}}
-        <hr>
-        <h5>Music Programs: </h5>
-          {{#each musicPrograms}}
-            Institution Name: {{instName}}<br>
-            Program Name: {{programName}}<br>
-            Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br>
-          {{/each}}
-        <hr>
-        <h5>Orchestras Participated in: </h5>
-          {{#each orchestras}}
-            Name: {{name}}<br>
-            Position: {{position}}<br>
-            Start Date: {{startDate}}<br>
-            End Date: {{endDate}}<br>
-          {{/each}}
-      {{/with}}
-    {{/with}}
+      <h5>Instruments Mastered: {{instrument}}</h5>
+      <h5>Years Played: {{yearsPlayed}}</h5>
+      <hr>
+      <h5>Awards: </h5>
+        {{#each awards}}
+          Name: {{name}}<br>
+          Date: {{date}}<br>
+        {{/each}}
+      <hr>
+      <h5>Music Programs: </h5>
+        {{#each musicPrograms}}
+          Institution Name: {{instName}}<br>
+          Program Name: {{programName}}<br>
+          Start Date: {{startDate}}<br>
+          End Date: {{endDate}}<br>
+        {{/each}}
+      <hr>
+      <h5>Orchestras Participated in: </h5>
+        {{#each orchestras}}
+          Name: {{name}}<br>
+          Position: {{position}}<br>
+          Start Date: {{startDate}}<br>
+          End Date: {{endDate}}<br>
+        {{/each}}
   </section>
 </template>
 
