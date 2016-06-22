@@ -91,7 +91,7 @@ MusicProfileSchema = new SimpleSchema({
   },
 
   yearsPlayed: {
-    type: String,
+    type: Number,
     label: "Years Played"
   },
 
