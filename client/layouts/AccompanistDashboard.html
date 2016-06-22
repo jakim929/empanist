@@ -91,11 +91,11 @@
 <template name="bookingAvatar">
   <li class="collection-item avatar">
     <i class="material-icons circle">folder</i>
-    {{#with accountDoc musician}}
-      <span class="title">{{doc.name}}</span>
+    {{#with accountById musician}}
+      <span class="title">{{name}}</span>
     {{/with}}
-    {{#with profileDoc musician}}
-      <p>{{doc.instrument}} <br></p>
+    {{#with profileById musician}}
+      <p>{{instrument}} <br></p>
     {{/with}}
     <p>
       {{startDate}} to {{endDate}}

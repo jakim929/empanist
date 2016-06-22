@@ -7,17 +7,9 @@
     </main>
 </template>
 
-<template name="makeUpdateAccompForm">
-  {{#if accompanistProfileDoc}}
-    {{> quickForm collection="AccompanistProfile" doc=accompanistProfileDoc id="insertAccompProfileForm" type="update"}}
-  {{else}}
-    {{> quickForm collection="AccompanistProfile" id="insertAccompProfileForm" type="insert"}}
-  {{/if}}
-</template>
 
 <template name="upsertAccompanistForm">
-  {{#with accompanistProfileDoc userId}}
-  {{#autoForm collection="AccompanistProfile" doc=this.doc id="upsertAccompanistForm" type=this.field}}
+  {{#autoForm collection="AccompanistProfile" doc=currentAccompanistProfile id="upsertAccompanistForm" type=formType}}
   <fieldset>
     {{> afQuickField name="repertoire"}}
     {{> afQuickField name="charge"}}
@@ -31,5 +23,4 @@
   </fieldset>
   <button type="submit" class="btn btn-primary">Update Accompanist Profile</button>
   {{/autoForm}}
-  {{/with}}
 </template>

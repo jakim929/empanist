@@ -3,21 +3,21 @@
         <h1>Confirm/Reject A Booking Request</h1>
     </header>
     <main>
-      {{> Template.dynamic template="BookingRequest" data=transactionById}}
+      {{> Template.dynamic template="BookingRequest" data=routeTransaction}}
     </main>
 </template>
 
 <template name="BookingRequest">
-      {{#with accountDoc this.musician}}
-      <h2>Your Booking With {{this.doc.name}}</h2>
+      {{#with accountById musician}}
+      <h2>Your Booking With {{name}}</h2>
       {{/with}}
       Planned Repertoire:
       {{#each repertoire}}
         {{this}},
       {{/each}}
       <br>
-      Status: {{this.status}} <br>
-      Start Date: {{this.startDate}} <br>
-      End Date: {{this.endDate}} <br>
+      Status: {{status}} <br>
+      Start Date: {{startDate}} <br>
+      End Date: {{endDate}} <br>
       <button name="confirmRequest">Confirm Request</button>
 </template>

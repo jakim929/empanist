@@ -10,14 +10,14 @@
           {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
           {{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfile}}
         {{else}}
-          {{#if accompanistProfileDoc}}
+          {{#if routeAccompanistProfile}}
             {{> bookAccompanist}}<br>
-            {{> accountTemplate}}
-            {{> profileTemplate}}<br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=accompanistProfileDoc.doc}}
+            {{> Template.dynamic template="accountTemplate" data=routeAccount}}
+            {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
+            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
           {{else}}
-            {{> accountTemplate}}
-            {{> profileTemplate}}
+          {{> Template.dynamic template="accountTemplate" data=routeAccount}}
+          {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
           {{/if}}
         {{/if}}
       {{else}}
@@ -35,30 +35,14 @@
 </template>
 
 
-<template name="bookAccompanist">
-  <h3>Book Accompanist</h3>
-  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
-    <fieldset>
-      {{>afQuickField name="musician"}}
-      {{>afQuickField name="accompanist"}}
-      {{>afQuickField name="status"}}
-      {{>afQuickField name="repertoire"}}
-      {{>afQuickField name="startDate"}}
-      {{>afQuickField name="endDate"}}
-      <button type="submit" class="btn btn-primary">Book Accompanist</button>
-    </fieldset>
-  {{/autoForm}}
-</template>
 
 <template name="accountTemplate">
   <h3>Account Details</h3>
-    {{#with accountDoc.doc}}
     <h5>Name: {{name}}</h5>
     <h5>Birthday: {{birthDate}}</h5>
     <h5>Phone Number: {{phone}}</h5>
     <h5>Affiliation: {{affiliation}}</h5>
     <br>
-    {{/with}}
 </template>
 
 <template name="profileTemplate">
@@ -108,4 +92,20 @@
   <h5>My Location: {{mylocation}}</h5>
   <hr>
   <h5>One Liner: {{one_liner}}</h5>
+</template>
+
+
+<template name="bookAccompanist">
+  <h3>Book Accompanist</h3>
+  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
+    <fieldset>
+      {{>afQuickField name="musician"}}
+      {{>afQuickField name="accompanist"}}
+      {{>afQuickField name="status"}}
+      {{>afQuickField name="repertoire"}}
+      {{>afQuickField name="startDate"}}
+      {{>afQuickField name="endDate"}}
+      <button type="submit" class="btn btn-primary">Book Accompanist</button>
+    </fieldset>
+  {{/autoForm}}
 </template>
