@@ -55,11 +55,6 @@ CompetitionSchema = new SimpleSchema({
 });
 
 MusicProgramSchema = new SimpleSchema({
-  instName: {
-    type: String,
-    label: "Institution Name"
-  },
-
   programName : {
     type: String,
     label: "Program Name"

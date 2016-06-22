@@ -1,12 +1,13 @@
 <template name="AccompanistDashboard">
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
     <header>
-        <h1> Accompanist Dashboard </h1>
     </header>
     <main>
-        {{> EditAccompanistProfile }}
         <br>
         {{> notifications }}
-        {{> BookingRequests}}
+        {{> TabStructure }}
     </main>
 </template>
 
@@ -15,41 +16,112 @@
   <button name="requestNotification">Press</button>
 </template>
 
+<template name="CollapsibleStructure">
+  <ul class="collapsible" data-collapsible="expandable">
+    {{> pendingBookings}}
+
+  </ul>
+</template>
+
+<template name="TabStructure">
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#test1">Bookings</a></li>
+        <li class="tab col s3"><a href="#test2">Profile</a></li>
+        <li class="tab col s3"><a href="#test3">Analytics</a></li>
+        <li class="tab col s3"><a href="#test4">Settings</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">{{> CollapsibleStructure }}</div>
+    <div id="test2" class="col s12">Test 2</div>
+    <div id="test3" class="col s12">Test 3</div>
+    <div id="test4" class="col s12">Test 4</div>
+  </div>
+</template>
+
+
 <template name="BookingRequests">
-  {{#with transactionsAsAccompanist}}
-    {{#with pendingTransactions this}}
-      <h3>Pending Bookings ({{arrayLength this}})</h3>
-      {{#each this}}
-        {{#with accountDoc musician}}
-          Musician: {{doc.name}}<br>
-        {{/with}}
-
-        Planned Repertoire:
-        {{#each repertoire}}
-          {{this}},
-        {{/each}}<br>
-
-        Status: {{status}} <br>
-        Start Date: {{startDate}} <br>
-        End Date: {{endDate}} <br><br>
-        <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
-        <br><br>
-      {{/each}}
+  {{#each this}}
+    {{#with accountDoc musician}}
+      Musician: {{doc.name}}<br>
     {{/with}}
+    Planned Repertoire:
+    {{#each repertoire}}
+      {{this}},
+    {{/each}}<br>
+    Status: {{status}} <br>
+    Start Date: {{startDate}} <br>
+    End Date: {{endDate}} <br><br>
+    <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
+    <br><br>
+  {{/each}}
+</template>
 
-    {{#with confirmedTransactions this}}
-      <h3>Confirmed Bookings ({{arrayLength this}})</h3>
+<template name="pendingBookings">
+  <li>
+    <div class="collapsible-header teal lighten-2 active"><i class="material-icons">filter_drama</i>Pending Bookings</div>
+    <div class="collapsible-body">
+
+      <ul class="collection">
+        {{> Template.dynamic template="bookingAvatar" data=(transactionsAsAccompanist)}}
+
+        <li class="collection-item avatar">
+          <i class="material-icons circle green">insert_chart</i>
+          <span class="title">Title</span>
+          <p>First Line <br>
+             Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+        <li class="collection-item avatar">
+          <i class="material-icons circle red">play_arrow</i>
+          <span class="title">Title</span>
+          <p>First Line <br>
+             Second Line
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+      </ul>
+
+    </div>
+  </li>
+</template>
+
+<template name="bookingAvatar">
+  <li class="collection-item avatar">
+    <i class="material-icons circle">folder</i>
+    {{#with accountDoc musician}}
+      <span class="title">{{doc.name}}</span>
     {{/with}}
-
-    {{#with completedTransactions this}}
-      <h3>Completed Bookings ({{arrayLength this}})</h3>
+    {{#with profileDoc musician}}
+      <p>{{doc.instrument}} <br></p>
     {{/with}}
+    <p>
+      {{startDate}} to {{endDate}}
+    </p>
 
-    {{#with cancelledTransactions this}}
-      <h3>Cancelled Bookings ({{arrayLength this}})</h3>
-    {{/with}}
+    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+  </li>
+</template>
 
-  {{else}}
-    <h3>No Bookings</h3>
+<template name="completedBookings">
+  {{#with completedTransactions transactionsAsAccompanist}}
+    <h3>Completed Bookings ({{arrayLength this}})</h3>
+    {{> Template.dynamic template="BookingRequests" data=this}}
+  {{/with}}
+</template>
+
+<template name="confirmedBookings">
+  {{#with confirmedTransactions transactionsAsAccompanist}}
+    <h3>Confirmed Bookings ({{arrayLength this}})</h3>
+    {{> Template.dynamic template="BookingRequests" data=this}}
+  {{/with}}
+</template>
+
+<template name="cancelledBookings">
+  {{#with cancelledTransactions transactionsAsAccompanist}}
+    <h3>Cancelled Bookings ({{arrayLength this}})</h3>
+    {{> Template.dynamic template="BookingRequests" data=this}}
   {{/with}}
 </template>

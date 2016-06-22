@@ -1,23 +1,5 @@
-import { Meteor } from 'meteor/meteor';
-import { Accounts } from '../collections/account.js'
-import { AccompanistProfile } from '../collections/accompanistProfile.js'
 
-Meteor.startup(() => {
-
-});
-
-Meteor.methods({
-  getGeocode: function (arg) {
-    var geo = new GeoCoder();
-    var result = geo.geocode(arg);
-    return result
-  },
-
-  insertRandomAccount: function() {
-    Accounts.insert(createNewAccount());
-  }
-});
-
+// Random creation
 function randomElement (arr) {
   return arr[Math.floor(Math.random()*arr.length)];
 }
@@ -66,8 +48,8 @@ function randomMusicProgram (){
   return {programName: musicProgramName, startDate: sd, endDate: ed};
 };
 
-function createNewAccount (){
-  var randomUserId = Accounts.ObjectId();
+function createNewMusicProfile (){
+  var randomUserId = new Meteor.Collection.ObjectID()._str;
   var randomYearsPlayed = Math.floor(Math.random()*20);
-  return {userId: randomUserId, instrument: randomInstrument(), yearsPlayed: randomYearsPlayed, awards: randomAward(), musicPrograms: randomMusicProgram()};
+  return {userId: randomUserId, instrument: randomInstrument(), yearsPlayed: randomYearsPlayed, awards: [randomAward(),randomAward()], musicPrograms: [randomMusicProgram(),randomMusicProgram()]};
 };
