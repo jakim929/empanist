@@ -16,7 +16,8 @@
 </template>
 
 <template name="upsertAccompanistForm">
-  {{#autoForm collection="AccompanistProfile" doc=accompanistProfileDoc.doc id="upsertAccompanistForm" type=accompanistProfileDoc.field}}
+  {{#with accompanistProfileDoc userId}}
+  {{#autoForm collection="AccompanistProfile" doc=this.doc id="upsertAccompanistForm" type=this.field}}
   <fieldset>
     {{> afQuickField name="repertoire"}}
     {{> afQuickField name="charge"}}
@@ -30,4 +31,5 @@
   </fieldset>
   <button type="submit" class="btn btn-primary">Update Accompanist Profile</button>
   {{/autoForm}}
+  {{/with}}
 </template>

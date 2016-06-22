@@ -57,8 +57,15 @@ mrt:googlemaps			# Googlemap package for autocompleting location bars
 
 u2622:persistent-session # Session that doesn't end of refresh
 
+aldeed:geocoder			# for finding long and lat and then query results that are near your location
+
+muriloventuroso:get-coordinates			# I don't think we use this, but if we do it will be in become accompanist
+
+mdg:geolocation
+
+matb33:collection-hooks
+
 gfk:notifications
 useraccounts:materialize
-aldeed:geocoder
-matb33:collection-hooks
+
 materialize:materialize

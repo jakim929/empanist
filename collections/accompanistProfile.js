@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 
 AccompanistProfileSchema = new SimpleSchema({
-		userId: {
+		Id: {
 			type: String,
 			label: "User ID",
 			autoform: {
@@ -33,7 +33,6 @@ AccompanistProfileSchema = new SimpleSchema({
 
   	working_hours: {
   		type: [String],
-  		//noselect:true,
   		label: "Times you prefer working",
   		autoform: {
   			type: "select-checkbox-inline",
@@ -78,36 +77,60 @@ AccompanistProfileSchema = new SimpleSchema({
     startDate: {
       type: Date,
       label: "Start Date"
-      // optional: true
     },
 
     endDate: {
       type: Date,
       label: "End Date"
-      // optional: true
     },
 
     // make this show up only if the accomp said he's willing to give sessoins in his place
-    // in main.js HomeLayout search bar this is assumed to be only a city text
     mylocation: {
       type: String,
-      label: "City you work in"
-      // optional: true
+      label: "mylocation"
     },
 
-    geolocation: {
+    geolocation:{
       type: Object,
-      label: "Geocoded Location",
-      optional: true,
-      blackbox: true
+      blackbox: true,
+      label: 'geolocation',
+      autoform: {
+        type: "hidden",
+        label: false
+      },
+      optional: true
+  },
+
+    loc: {
+      type: Object,
+      index: '2dsphere',
+      label: "Location",
+      //blackbox: true,
+      autoform: {
+      type: "hidden",
+      omit: true
+        },
+        optional: true
+      },
+
+      "loc.type": {
+        type: String,
+        allowedValues: ["Point"],
+        label: "Start location type"
+      },
+
+      "loc.coordinates": {
+        type: [Number],
+        //minCount: 2,
+        //maxCount: 2,
+        decimal: true,
     },
 
-  	one_liner: {
-  		type: String,
-  		label: "Describe yourself in one sentence",
-  	},
+      	one_liner: {
+      		type: String,
+      		label: "Describe yourself in one sentence",
+      	},
 
 });
-
 
 AccompanistProfile.attachSchema(AccompanistProfileSchema)
