@@ -68,20 +68,4 @@ Meteor.methods({
 // 	    ]
 // });
 
-insertFullRandomProfile = function(userId){
-console.log("check this out:")
-    console.log(userId)
-    Accounts.insert(createNewAccount(userId), {getAutoValues: false});
-    MusicProfiles.insert(createNewMusicProfile(userId), {getAutoValues: false});
-    AccompanistProfile.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
-  };
 
-  insertRandomData = function(number) {
-    for (var i = 0; i < number; i++){
-      var genId = Random.id();
-      console.log(genId)
-      Accounts.insert(createNewAccount(genId), {getAutoValues: false});
-      MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
-      AccompanistProfile.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
-    }
-  };
