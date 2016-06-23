@@ -109,7 +109,7 @@ createNewAccompanistProfile = function (givenUserId){
   var locations = ["Boston", "Cambridge", "Harvard"];
   var randomMyLocation = randomElement(locations);
 
-  var oneLiner = "I accept James as my Lord and Savior";
+  var oneLiner = "I accept Jamjoom as my Lord and Savior";
     console.log(givenUserId);
 
   return {Id: givenUserId,
