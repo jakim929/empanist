@@ -7,9 +7,10 @@ Meteor.startup(() => {
 
 });
 
+var geo = new GeoCoder();
+
 Meteor.methods({
   getGeocode: function (arg) {
-    var geo = new GeoCoder();
     var result = geo.geocode(arg);
     return result
   },

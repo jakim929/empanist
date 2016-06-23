@@ -30,7 +30,6 @@ fastclick
 raix:handlebar-helpers
 aldeed:collection2
 aldeed:autoform
-accounts-ui
 accounts-password
 zimme:active-route
 gwendall:auth-client-callbacks
@@ -72,3 +71,4 @@ useraccounts:materialize		# can't create new acocunt with this
 materialize:materialize
 
 random
+alanning:roles
