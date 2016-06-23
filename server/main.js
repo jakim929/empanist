@@ -33,11 +33,16 @@ Meteor.methods({
       MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
       AccompanistProfiles.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
     }
+  },
+
+  divinify: function(userId) {
+    Roles.addUsersToRoles(userId, 'admin');
   }
 
 });
 
 // Server Side hooks
+// CHANGE ADMIN SETTINGS WHEN DONE TESTING
 
 Meteor.users.after.insert(function (userId, doc){
   Roles.addUsersToRoles(this._id, 'makeBasicProfile');
@@ -49,7 +54,8 @@ BasicProfiles.before.insert(function (userId, doc){
   var loggedInUser = Meteor.user();
   if(!loggedInUser){
     throw new Meteor.Error(403, "Not Logged In");
-  }else if(!Roles.userIsInRole(loggedInUser._id, 'makeBasicProfile')){
+  }else if((!Roles.userIsInRole(loggedInUser._id, 'makeBasicProfile'))
+            &&(!Roles.userIsInRole(loggedInUser._id, 'admin'))){
     throw new Meteor.Error(403, "No Permission to Make Basic Profile");
   }
 });
@@ -67,7 +73,8 @@ MusicProfiles.before.insert(function (userId, doc){
   var loggedInUser = Meteor.user();
   if(!loggedInUser){
     throw new Meteor.Error(403, "Not Logged In");
-  }else if(!(Roles.userIsInRole(loggedInUser._id, 'makeMusicProfile'))){
+  }else if((!Roles.userIsInRole(loggedInUser._id, 'makeMusicProfile'))
+            &&(!Roles.userIsInRole(loggedInUser._id, 'admin'))){
     throw new Meteor.Error(403, "No Permission to Make Music Profile");
   }
 });
@@ -84,7 +91,8 @@ AccompanistProfiles.before.insert(function (userId, doc){
   var loggedInUser = Meteor.user();
   if(!loggedInUser){
     throw new Meteor.Error(403, "Not Logged In");
-  }else if(!Roles.userIsInRole(loggedInUser._id, 'becomeAccompanist')){
+  }else if((!Roles.userIsInRole(loggedInUser._id, 'becomeAccompanist'))
+            &&(!Roles.userIsInRole(loggedInUser._id, 'admin'))){
     throw new Meteor.Error(403, "Must first make Music Profile");
   }
 });
