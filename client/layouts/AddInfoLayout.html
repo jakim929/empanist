@@ -3,28 +3,28 @@
       <h1>My Profile</h1>
     </header>
     <main>
-      <h3>Edit Account Information</h3>
-      {{> upsertAccountForm}}
+      <h3>Edit Basic Profile</h3>
+      {{> upsertBasicProfileForm}}
       <br><br>
       <h3>Edit Music Profile</h3>
-      {{> upsertProfileForm}}
+      {{> upsertMusicProfileForm}}
     </main>
 </template>
 
-<template name="upsertAccountForm">
-  {{#autoForm collection="Accounts" doc=currentAccount id="upsertAccountForm" type=formType}}
+<template name="upsertBasicProfileForm">
+  {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
     <fieldset>
       {{>afQuickField name="name"}}
       {{>afQuickField name="birthDate"}}
       {{>afQuickField name="phone"}}
       {{>afQuickField name="affiliation"}}
   </fieldset>
-  <button type="submit" class="btn btn-primary">{{formType}} Account Information</button>
+  <button type="submit" class="btn btn-primary">{{formType}} Basic Profile</button>
   {{/autoForm}}
 </template>
 
-<template name="upsertProfileForm">
-  {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertProfileForm" type=formType}}
+<template name="upsertMusicProfileForm">
+  {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
     <fieldset>
       {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
       {{>afQuickField name="yearsPlayed"}}
@@ -32,6 +32,6 @@
       {{>afQuickField name="musicPrograms"}}
       {{>afQuickField name="orchestras"}}
   </fieldset>
-  <button type="submit" class="btn btn-primary">Update Profile</button>
+  <button type="submit" class="btn btn-primary">{{formType}} Music Profile</button>
   {{/autoForm}}
 </template>

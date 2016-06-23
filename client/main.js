@@ -1,14 +1,14 @@
-import { MusicProfiles } from '../collections/musicProfile.js'
-import { AccompanistProfile } from '../collections/accompanistProfile.js'
-import { Accounts } from '../collections/account.js'
+import { MusicProfiles } from '../collections/musicProfiles.js'
+import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
+import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
 
 import { TestAccountData } from '../collections/testData.js'
 
 window.MusicProfiles = MusicProfiles
-window.AccompanistProfile = AccompanistProfile
-window.Accounts = Accounts
+window.AccompanistProfiles = AccompanistProfiles
+window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
@@ -55,7 +55,7 @@ Template.MainLayout.onCreated(function (){
 
 // Get Current User's Account
 Template.registerHelper('myAccount', () => {
-  return Accounts.findOne({userId: Meteor.userId()});
+  return BasicProfiles.findOne({userId: Meteor.userId()});
 });
 
 // Get Current User's Music Profile
@@ -64,12 +64,12 @@ Template.registerHelper('myProfile', () => {
 });
 
 // Get Current Route's Accompanist Profile
-Template.registerHelper('myAccompanistProfile', () => {
-  return AccompanistProfile.findOne({Id: Meteor.userId()});
+Template.registerHelper('myAccompanistProfiles', () => {
+  return AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
 Template.registerHelper('routeAccount', () => {
-  return Accounts.findOne({userId: FlowRouter.getParam("profileId")});
+  return BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
 });
 
 // Get Current Route's Music Profile
@@ -78,8 +78,8 @@ Template.registerHelper('routeProfile', () => {
 });
 
 // Get Current Route's Accompanist Profile
-Template.registerHelper('routeAccompanistProfile', () => {
-  return AccompanistProfile.findOne({Id: FlowRouter.getParam("profileId")});
+Template.registerHelper('routeAccompanistProfiles', () => {
+  return AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
 });
 
 Template.registerHelper('sentBookingRequests', () =>{
@@ -91,7 +91,7 @@ Template.registerHelper('receivedBookingRequests', () =>{
 });
 
 Template.registerHelper('accountById', (id) =>{
-  return Accounts.findOne({userId: id})
+  return BasicProfiles.findOne({userId: id})
 });
 
 Template.registerHelper('profileById', (id) =>{
@@ -99,7 +99,7 @@ Template.registerHelper('profileById', (id) =>{
 });
 
 Template.registerHelper('accompanistProfileById', (id) =>{
-  return AccompanistProfile.findOne({Id: id})
+  return AccompanistProfiles.findOne({Id: id})
 });
 
 Template.registerHelper('routeTransaction', () =>{
@@ -150,11 +150,11 @@ Template.registerHelper('arrayLength', (array) =>{
 });
 
 Template.registerHelper('validId', () =>{
-  // For now it is set to looking up in Accounts instead of Meteor.users
+  // For now it is set to looking up in BasicProfiles instead of Meteor.users
   // Makes it work with test data
   // if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
 
-  if (Accounts.findOne({userId: FlowRouter.getParam("profileId")})){
+  if (BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
@@ -221,7 +221,7 @@ Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) =
     if (!id) {
       id = Meteor.userId();
     }
-    return wrapDoc(Accounts.findOne({ userId: id}));
+    return wrapDoc(BasicProfiles.findOne({ userId: id}));
 });
 
 Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("profileId")) => {
@@ -229,7 +229,7 @@ Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("pro
     if (!id) {
       id = Meteor.userId();
     }
-    return wrapDoc(AccompanistProfile.findOne({ Id: Meteor.userId()}));
+    return wrapDoc(AccompanistProfiles.findOne({ Id: Meteor.userId()}));
 });
 
 Template.registerHelper( 'musicCompetitionsDoc', () => {
@@ -241,11 +241,11 @@ Template.registerHelper( 'musicCompetitionsDoc', () => {
 
 // Local Template On Created
 
-Template.upsertProfileForm.onCreated(function() {
+Template.upsertMusicProfileForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
-Template.upsertAccountForm.onCreated(function() {
+Template.upsertBasicProfileForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
@@ -255,7 +255,7 @@ Template.upsertAccompanistForm.onCreated(function() {
 
 // Local Template Helpers
 
-Template.upsertProfileForm.helpers ({
+Template.upsertMusicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
   currentProfile: function () {
     var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
@@ -276,10 +276,10 @@ Template.upsertProfileForm.helpers ({
   }
 });
 
-Template.upsertAccountForm.helpers ({
+Template.upsertBasicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
-  currentAccount: function () {
-    var currentAccount = Accounts.findOne({ userId: Meteor.userId()});
+  currentBasicProfile: function () {
+    var currentAccount = BasicProfiles.findOne({ userId: Meteor.userId()});
     if (currentAccount) {
       Template.instance().formType.set('update');
       return currentAccount;
@@ -294,11 +294,11 @@ Template.upsertAccountForm.helpers ({
 
 Template.upsertAccompanistForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
-  currentAccompanistProfile: function () {
-    var currentAccompanistProfile = AccompanistProfile.findOne({ Id: Meteor.userId()});
-    if (currentAccompanistProfile) {
+  currentAccompanistProfiles: function () {
+    var currentAccompanistProfiles = AccompanistProfiles.findOne({ Id: Meteor.userId()});
+    if (currentAccompanistProfiles) {
       Template.instance().formType.set('update');
-      return currentAccompanistProfile;
+      return currentAccompanistProfiles;
     }
   },
 
@@ -314,16 +314,16 @@ Template.upsertAccompanistForm.helpers ({
 
 //   belongsTo: {
 //     account: {
-//       collection: 'Accounts',
+//       collection: 'BasicProfiles',
 //       foreignKey: 'userId'
 //     }
 //   }
 // },{});
 
-// Accompanist = Graviton.define("AccompanistProfile", {
+// Accompanist = Graviton.define("AccompanistProfiles", {
 //   belongsTo: {
 //     account: {
-//       collection: 'Accounts',
+//       collection: 'BasicProfiles',
 //       foreignKey: 'userId'
 //     }
 //   }
@@ -332,16 +332,16 @@ Template.upsertAccompanistForm.helpers ({
 // AccountModel = Graviton.Model.extend({
 //   belongsTo: {
 //     accompprofile: {
-//       collection: 'AccompanistProfile',
+//       collection: 'AccompanistProfiles',
 //       foreignKey: 'Id'
 //     }
 //   }
 // },{});
 
-// Account = Graviton.define("Accounts", {
+// Account = Graviton.define("BasicProfiles", {
 //   belongsTo: {
 //     accompprofile: {
-//       collection: 'AccompanistProfile',
+//       collection: 'AccompanistProfiles',
 //       foreignKey: 'Id'
 //     }
 //   }
@@ -372,7 +372,7 @@ Template.results.helpers({
 
       if (coords && sd && ed) {
         console.log("search all")
-        return AccompanistProfile.find({
+        return AccompanistProfiles.find({
           loc:
             { $near :
               {
@@ -385,13 +385,13 @@ Template.results.helpers({
       } // else if (sd && ed){
       //   console.log("search sd and ed")
 
-      //   return AccompanistProfile.find({
+      //   return AccompanistProfiles.find({
       //     startDate:  {$lte: sd, $lte: ed},
       //     endDate: {$gte: sd, $gte: ed}}).fetch();
       // } else if (coords){
       //   console.log("search coords")
 
-      //   return AccompanistProfile.find({
+      //   return AccompanistProfiles.find({
       //     loc:
       //       { $near :
       //         {
@@ -409,7 +409,7 @@ Template.results.helpers({
     accompname: function() {
         // We use this helper inside the {{#each posts}} loop, so the context
         // will be a post object. Thus, we can use this.authorId.
-        var names = Accounts.findOne({userId: this.Id});
+        var names = BasicProfiles.findOne({userId: this.Id});
                 //console.log(names)
 
         return names
@@ -433,7 +433,7 @@ Template.results.helpers({
   //     ]
 
   //     var accompProfs =
-  //       AccompanistProfile.find({
+  //       AccompanistProfiles.find({
   //         loc:
   //           { $near :
   //             {
@@ -445,7 +445,7 @@ Template.results.helpers({
   //         endDate: {$gte: sd, $gte: ed}}).fetch()
 
 
-      //return accompProfs //, accompAccounts]
+      //return accompProfs //, accompBasicProfiles]
      //}
   // accompanists: ()=> {
 		// var coords = Session.get('coords')
@@ -456,7 +456,7 @@ Template.results.helpers({
 
   //   if (coords && sd && ed) {
 		//   console.log("search all")
-  //     return AccompanistProfile.find({
+  //     return AccompanistProfiles.find({
   //       loc:
   //         { $near :
   //           {
@@ -471,7 +471,7 @@ Template.results.helpers({
 
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
-    //   return AccompanistProfile.find({
+    //   return AccompanistProfiles.find({
     //     loc:
     //       { $near :
     //         {
@@ -482,7 +482,7 @@ Template.results.helpers({
     //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     // } else if (coords && sd) {
     //   console.log("Searched coords and sd")
-    //   return AccompanistProfile.find({
+    //   return AccompanistProfiles.find({
     //     loc:
     //       { $near :
     //         {
@@ -493,7 +493,7 @@ Template.results.helpers({
     //     startDate:  {$lte: new_sd, $lte: new_ed}}).fetch()
     // } else if (sd && ed) {
     //   console.log("Searched sd and ed")
-    //   return AccompanistProfile.find({
+    //   return AccompanistProfiles.find({
     //     startDate:  {$lte: new_sd, $lte: new_ed},
     //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     // }
@@ -557,7 +557,7 @@ var initAutoComplete = function() {
   );
 };
 
-Template.EditAccompanistProfile.events({
+Template.EditAccompanistProfiles.events({
 	'click button': function(){
       Notifications.info('Test', 'Working Notification');
   }

@@ -8,13 +8,13 @@
           {{> editProfile}}<br>
           {{> Template.dynamic template="accountTemplate" data=myAccount}}
           {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
-          {{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfile}}
+          {{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfiles}}
         {{else}}
-          {{#if routeAccompanistProfile}}
+          {{#if routeAccompanistProfiles}}
             {{> bookAccompanist}}<br>
             {{> Template.dynamic template="accountTemplate" data=routeAccount}}
             {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfiles}}
           {{else}}
           {{> Template.dynamic template="accountTemplate" data=routeAccount}}
           {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
