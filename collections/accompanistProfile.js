@@ -5,7 +5,7 @@ export const AccompanistProfile = new Mongo.Collection('accompanistProfile');
 AccompanistProfileSchema = new SimpleSchema({
 		Id: {
 			type: String,
-			label: "User ID",
+			label: "Accompanist User ID",
 			autoform: {
 				type: "hidden"
 			},
