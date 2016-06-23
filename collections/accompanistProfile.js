@@ -10,7 +10,12 @@ AccompanistProfileSchema = new SimpleSchema({
 				type: "hidden"
 			},
 			autoValue: function(){
-				return this.userId
+        if (!this.value){
+          return this.userId
+        }else{
+          return this.value
+        }
+
 			}
 		},
 
@@ -126,11 +131,12 @@ AccompanistProfileSchema = new SimpleSchema({
         decimal: true,
     },
 
-      	one_liner: {
-      		type: String,
-      		label: "Describe yourself in one sentence",
-      	},
+    one_liner: {
+      type: String,
+      label: "Describe yourself in one sentence",
+    },
 
 });
+
 
 AccompanistProfile.attachSchema(AccompanistProfileSchema)

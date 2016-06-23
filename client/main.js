@@ -308,29 +308,166 @@ Template.upsertAccompanistForm.helpers ({
   }
 });
 
+// Attempt to create relations between collections
+
+// AccompModel = Graviton.Model.extend({
+
+//   belongsTo: {
+//     account: {
+//       collection: 'Accounts',
+//       foreignKey: 'userId'
+//     }
+//   }
+// },{});
+
+// Accompanist = Graviton.define("AccompanistProfile", {
+//   belongsTo: {
+//     account: {
+//       collection: 'Accounts',
+//       foreignKey: 'userId'
+//     }
+//   }
+// });
+
+// AccountModel = Graviton.Model.extend({
+//   belongsTo: {
+//     accompprofile: {
+//       collection: 'AccompanistProfile',
+//       foreignKey: 'Id'
+//     }
+//   }
+// },{});
+
+// Account = Graviton.define("Accounts", {
+//   belongsTo: {
+//     accompprofile: {
+//       collection: 'AccompanistProfile',
+//       foreignKey: 'Id'
+//     }
+//   }
+// });
+
+//Meteor.subscribe('results');
+
 Template.results.helpers({
 
-  accompanists: ()=> {
-		var coords = Session.get('coords')
 
-		// convert dates to dates that can be compared with Mongo schema
-		var sd = new Date(Session.get('start_date'))
-		var ed = new Date(Session.get('end_date'))
+   //  var coords = Session.get('coords')
 
-    if (coords && sd && ed) {
-		  console.log("search all")
-      return AccompanistProfile.find({
-        loc:
-          { $near :
-            {
-              $geometry: { type: "Point",  coordinates: coords },
-              $maxDistance: 20000
-            }
-          },
-        startDate:  {$lte: sd, $lte: ed},
-        endDate: {$gte: sd, $gte: ed}}).fetch()
+   //   //convert dates to dates that can be compared with Mongo schema
+   // var sd = new Date(Session.get('start_date'))
+   // var ed = new Date(Session.get('end_date'))
 
-     }
+  accompanists: function() {
+      var coords = Session.get('coords')
+
+      //convert dates to dates that can be compared with Mongo schema
+      var sd = new Date(Session.get('start_date'))
+      var ed = new Date(Session.get('end_date'))
+
+        console.log(coords)
+        console.log(sd)
+        console.log(ed)
+
+
+      if (coords && sd && ed) {
+        console.log("search all")
+        return AccompanistProfile.find({
+          loc:
+            { $near :
+              {
+                $geometry: { type: "Point",  coordinates: coords },
+                $maxDistance: 20000
+              }
+            },
+          startDate:  {$lte: sd, $lte: ed},
+          endDate: {$gte: sd, $gte: ed}}).fetch();
+      } // else if (sd && ed){
+      //   console.log("search sd and ed")
+
+      //   return AccompanistProfile.find({
+      //     startDate:  {$lte: sd, $lte: ed},
+      //     endDate: {$gte: sd, $gte: ed}}).fetch();
+      // } else if (coords){
+      //   console.log("search coords")
+
+      //   return AccompanistProfile.find({
+      //     loc:
+      //       { $near :
+      //         {
+      //           $geometry: { type: "Point",  coordinates: coords },
+      //           $maxDistance: 20000
+      //         }
+      //       }}).fetch();
+        else {
+      console.log("search null")
+
+        return null
+      }
+  },
+
+    accompname: function() {
+        // We use this helper inside the {{#each posts}} loop, so the context
+        // will be a post object. Thus, we can use this.authorId.
+        var names = Accounts.findOne({userId: this.Id});
+                //console.log(names)
+
+        return names
+
+    }
+
+    });
+
+  // accompanists: ()=> {
+		// var coords = Session.get('coords')
+
+		// // convert dates to dates that can be compared with Mongo schema
+		// var sd = new Date(Session.get('start_date'))
+		// var ed = new Date(Session.get('end_date'))
+
+  //   if (coords && sd && ed) {
+		//   console.log("search all")
+
+  //     var pipeline = [
+  //       {$group: {}}
+  //     ]
+
+  //     var accompProfs =
+  //       AccompanistProfile.find({
+  //         loc:
+  //           { $near :
+  //             {
+  //               $geometry: { type: "Point",  coordinates: coords },
+  //               $maxDistance: 20000
+  //             }
+  //           },
+  //         startDate:  {$lte: sd, $lte: ed},
+  //         endDate: {$gte: sd, $gte: ed}}).fetch()
+
+
+      //return accompProfs //, accompAccounts]
+     //}
+  // accompanists: ()=> {
+		// var coords = Session.get('coords')
+
+		// // convert dates to dates that can be compared with Mongo schema
+		// var sd = new Date(Session.get('start_date'))
+		// var ed = new Date(Session.get('end_date'))
+
+  //   if (coords && sd && ed) {
+		//   console.log("search all")
+  //     return AccompanistProfile.find({
+  //       loc:
+  //         { $near :
+  //           {
+  //             $geometry: { type: "Point",  coordinates: coords },
+  //             $maxDistance: 20000
+  //           }
+  //         },
+  //       startDate:  {$lte: sd, $lte: ed},
+  //       endDate: {$gte: sd, $gte: ed}}).fetch()
+
+  //    }
 
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
@@ -361,10 +498,10 @@ Template.results.helpers({
     //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     // }
     	// return No results found return Null (should just go to empty results page with advanced search)
-      console.log("Didn't search")
-    	return null
-  }
-});
+       //console.log("new results responding")
+    	// return null
+
+
 
 // Events
 
@@ -388,9 +525,9 @@ Template.search.events({
           console.log(err)
         } else {
             console.log("search session set")
-            Session.setPersistent('coords', coords_new)
-            Session.setPersistent('start_date', start_date)
-            Session.setPersistent('end_date', end_date)
+            Session.set('coords', coords_new)
+            Session.set('start_date', start_date)
+            Session.set('end_date', end_date)
         }
         console.log("working_search nothing done")
     });
@@ -433,6 +570,7 @@ Template.BookingRequest.events({
       Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');
   }
 });
+
 
 // For Debugging
  SimpleSchema.debug = true;

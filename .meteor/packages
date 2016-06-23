@@ -66,10 +66,18 @@ matb33:collection-hooks
 
 gfk:notifications
 
+<<<<<<< HEAD
 accounts-ui
 		# can't create new acocunt with this
+=======
+# add useraccounts:materialize after you tale out accout-ui
+>>>>>>> 1411a0262075bdb2e5b7f8c048a31972bd99dca7
 
-materialize:materialize
+useraccounts:materialize
+
+ materialize:materialize
+
+# reywood:publish-composite
 
 random
 alanning:roles
