@@ -12,26 +12,30 @@
 </template>
 
 <template name="upsertBasicProfileForm">
-  {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
-    <fieldset>
-      {{>afQuickField name="name"}}
-      {{>afQuickField name="birthDate"}}
-      {{>afQuickField name="phone"}}
-      {{>afQuickField name="affiliation"}}
-  </fieldset>
-  <button type="submit" class="btn btn-primary">{{formType}} Basic Profile</button>
-  {{/autoForm}}
+  {{#if isInRole 'makeBasicProfile'}}
+    {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="name"}}
+        {{>afQuickField name="birthDate"}}
+        {{>afQuickField name="phone"}}
+        {{>afQuickField name="affiliation"}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">{{formType}} Basic Profile</button>
+    {{/autoForm}}
+  {{/if}}
 </template>
 
 <template name="upsertMusicProfileForm">
-  {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
-    <fieldset>
-      {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
-      {{>afQuickField name="yearsPlayed"}}
-      {{>afQuickField name="awards"}}
-      {{>afQuickField name="musicPrograms"}}
-      {{>afQuickField name="orchestras"}}
-  </fieldset>
-  <button type="submit" class="btn btn-primary">{{formType}} Music Profile</button>
-  {{/autoForm}}
+  {{#if isInRole 'makeMusicProfile'}}
+    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
+        {{>afQuickField name="yearsPlayed"}}
+        {{>afQuickField name="awards"}}
+        {{>afQuickField name="musicPrograms"}}
+        {{>afQuickField name="orchestras"}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">{{formType}} Music Profile</button>
+    {{/autoForm}}
+  {{/if}}
 </template>

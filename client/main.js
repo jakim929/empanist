@@ -571,6 +571,13 @@ Template.BookingRequest.events({
   }
 });
 
+Template.makeAdmin.events({
+	'click button': function(){
+    userId = Meteor.userId();
+    Meteor.call('divinify', userId);
+  }
+});
+
 
 // For Debugging
  SimpleSchema.debug = true;
