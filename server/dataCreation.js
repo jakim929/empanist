@@ -106,7 +106,7 @@ createNewAccompanistProfile = function (givenUserId){
   var sd = today;
   var ed = randomDatePar(today, future, 6, 20);
 
-  var locations = ["Boston", "Cambridge", "Harvard"];
+  var locations = ["Boston", "Cambridge", "Harvard", "Jeddah", "Amman"];
   var randomMyLocation = randomElement(locations);
 
   var oneLiner = "I accept Jamjoom as my Lord and Savior";

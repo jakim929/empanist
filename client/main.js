@@ -322,7 +322,7 @@ Template.results.helpers({
         console.log(sd)
         console.log(ed)
 
-      if (coords && sd && ed) {
+      if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
         console.log("search all")
         return AccompanistProfiles.find({
           loc:
@@ -335,38 +335,18 @@ Template.results.helpers({
           startDate:  {$lte: sd, $lte: ed},
           endDate: {$gte: sd, $gte: ed}}).fetch();
 
-      }  else if (sd && ed){
+      }  else if (moment(sd).isValid() && moment(ed).isValid()){
         console.log("search sd and ed")
 
         return AccompanistProfiles.find({
           startDate:  {$lte: sd, $lte: ed},
           endDate: {$gte: sd, $gte: ed}}).fetch();
       } 
-
-      // else if (coords){
-      //   console.log("search coords")
-
-      //   return AccompanistProfiles.find({
-      //     loc:
-      //       { $near :
-      //         {
-      //           $geometry: { type: "Point",  coordinates: coords },
-      //           $maxDistance: 20000
-      //         }
-      //       }}).fetch();
-//         else {
-//       console.log("search null")
-// >>>>>>> 97ce6d142375511dc520d2f86b74e799930eefd3
-
-//         return AccompanistProfile.find({
-//           startDate:  {$lte: sd, $lte: ed},
-//           endDate: {$gte: sd, $gte: ed}}).fetch();
-//       } 
       
-      else if (coords){
+      else if (coords !== undefined){
         console.log("search coords")
 
-        return AccompanistProfile.find({
+        return AccompanistProfiles.find({
           loc:
             { $near :
               {
@@ -375,7 +355,7 @@ Template.results.helpers({
               }
             }}).fetch();
       } 
-      
+    
       else {
         console.log("search null")
         return null
@@ -394,92 +374,6 @@ Template.results.helpers({
 
     });
 
-
-  // accompanists: ()=> {
-		// var coords = Session.get('coords')
-
-		// // convert dates to dates that can be compared with Mongo schema
-		// var sd = new Date(Session.get('start_date'))
-		// var ed = new Date(Session.get('end_date'))
-
-  //   if (coords && sd && ed) {
-		//   console.log("search all")
-
-  //     var pipeline = [
-  //       {$group: {}}
-  //     ]
-
-  //     var accompProfs =
-  //       AccompanistProfiles.find({
-  //         loc:
-  //           { $near :
-  //             {
-  //               $geometry: { type: "Point",  coordinates: coords },
-  //               $maxDistance: 20000
-  //             }
-  //           },
-  //         startDate:  {$lte: sd, $lte: ed},
-  //         endDate: {$gte: sd, $gte: ed}}).fetch()
-
-
-      //return accompProfs //, accompBasicProfiles]
-     //}
-  // accompanists: ()=> {
-		// var coords = Session.get('coords')
-
-		// // convert dates to dates that can be compared with Mongo schema
-		// var sd = new Date(Session.get('start_date'))
-		// var ed = new Date(Session.get('end_date'))
-
-  //   if (coords && sd && ed) {
-		//   console.log("search all")
-  //     return AccompanistProfiles.find({
-  //       loc:
-  //         { $near :
-  //           {
-  //             $geometry: { type: "Point",  coordinates: coords },
-  //             $maxDistance: 20000
-  //           }
-  //         },
-  //       startDate:  {$lte: sd, $lte: ed},
-  //       endDate: {$gte: sd, $gte: ed}}).fetch()
-
-  //    }
-
-     //   else if (coords && ed) {
-    //   console.log("Searched coords and ed")
-    //   return AccompanistProfiles.find({
-    //     loc:
-    //       { $near :
-    //         {
-    //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000
-    //         }
-    //       },
-    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-    // } else if (coords && sd) {
-    //   console.log("Searched coords and sd")
-    //   return AccompanistProfiles.find({
-    //     loc:
-    //       { $near :
-    //         {
-    //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000
-    //         }
-    //       },
-    //     startDate:  {$lte: new_sd, $lte: new_ed}}).fetch()
-    // } else if (sd && ed) {
-    //   console.log("Searched sd and ed")
-    //   return AccompanistProfiles.find({
-    //     startDate:  {$lte: new_sd, $lte: new_ed},
-    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-    // }
-    	// return No results found return Null (should just go to empty results page with advanced search)
-       //console.log("new results responding")
-    	// return null
-
-
-
 // Events
 
 Template.search.events({
@@ -487,27 +381,44 @@ Template.search.events({
 	    event.preventDefault();
 
 	    //Constants submitted from the Home search bar
-      const address = event.target.address.value
-	   	const start_date = event.target.start_date.value
-	   	const end_date = event.target.end_date.value
+      var address = event.target.address.value
+	   	var start_date = event.target.start_date.value
+	   	var end_date = event.target.end_date.value
+
+      console.log("address")
+
+      console.log(address)
 
 
-      Meteor.call('getGeocode', address, function(err, result){
+      if (address !== 0) {
+      
+        console.log("Meteor call if worked")
 
-        var lat = Number(result[0].latitude);
-        var lng = Number(result[0].longitude);
-        var coords_new = [lng, lat];
+        Meteor.call('getGeocode', address, function(err, result){
+          
+          console.log("Meteor call worked")
 
-        // if(err) {
-        //   console.log(err)
-        // } else {
-            console.log("search session set")
-            Session.set('coords', coords_new)
+          if (result !== null){
+
+            var lat = Number(result[0].latitude);
+            var lng = Number(result[0].longitude);
+            var coords = [lng, lat];
+
+            console.log("search session set in meteor.call")
+            Session.set('coords', coords)
             Session.set('start_date', start_date)
             Session.set('end_date', end_date)
-        // }
-        // console.log("working_search nothing done")
-    });
+
+          } else {
+            Session.set('start_date', start_date)
+              Session.set('end_date', end_date)
+
+          }
+      });
+      }
+
+
+
 
       console.log("Form Submitted")
       // go to knew page here
