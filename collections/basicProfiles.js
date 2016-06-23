@@ -1,7 +1,6 @@
 import { Mongo } from 'meteor/mongo';
-import { AccompanistProfileSchema } from './accompanistProfile.js'
 
-export const Accounts = new Mongo.Collection('accounts');
+export const BasicProfiles = new Mongo.Collection('basicProfiles');
 
 PaymentMethodSchema = new SimpleSchema({
   paymentType: {
@@ -10,7 +9,7 @@ PaymentMethodSchema = new SimpleSchema({
   }
 });
 
-AccountSchema = new SimpleSchema({
+BasicProfileSchema = new SimpleSchema({
   userId: {
     type: String,
     label: "User ID",
@@ -18,9 +17,8 @@ AccountSchema = new SimpleSchema({
       type: "hidden"
     },
     autoValue: function() {
-      return this.userId;
+      return this.userId
     }
-
   },
 
   name: {
@@ -44,4 +42,4 @@ AccountSchema = new SimpleSchema({
   }
 });
 
-Accounts.attachSchema(AccountSchema)
+BasicProfiles.attachSchema(BasicProfileSchema)

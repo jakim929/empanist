@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from '../collections/account.js'
-import { MusicProfiles } from '../collections/musicProfile.js'
-import { AccompanistProfile } from '../collections/accompanistProfile.js'
+import { BasicProfiles } from '../collections/basicProfiles.js'
+import { MusicProfiles } from '../collections/musicProfiles.js'
+import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 
 Meteor.startup(() => {
 
@@ -21,17 +21,17 @@ Meteor.methods({
   },
 
   insertFullRandomProfile: function(userId){
-    Accounts.insert(createNewAccount(userId), {getAutoValues: false});
+    BasicProfiles.insert(createNewBasicProfile(userId), {getAutoValues: false});
     MusicProfiles.insert(createNewMusicProfile(userId), {getAutoValues: false});
-    AccompanistProfile.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
+    AccompanistProfiles.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
   },
 
   insertRandomData: function(number) {
     for (var i = 0; i < number; i++){
       var genId = Random.id();
-      Accounts.insert(createNewAccount(genId), {getAutoValues: false});
+      BasicProfiles.insert(createNewBasicProfile(genId), {getAutoValues: false});
       MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
-      AccompanistProfile.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
+      AccompanistProfiles.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
     }
   }
 
@@ -39,29 +39,57 @@ Meteor.methods({
 
 // Server Side hooks
 
-AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
+Meteor.users.after.insert(function (userId, doc){
+  Roles.addUsersToRoles(this._id, 'makeBasicProfile');
+});
 
-  var address = doc.mylocation;
+// Basic Profiles Server Side Hooks
 
-  // take if outside to make more efficient!!!!!
-    var result = getGeocode(address);
+BasicProfiles.before.insert(function (userId, doc){
+  var loggedInUser = Meteor.user();
+  if(!loggedInUser){
+    throw new Meteor.Error(403, "Not Logged In");
+  }else if(!Roles.userIsInRole(loggedInUser._id, 'makeBasicProfile')){
+    throw new Meteor.Error(403, "No Permission to Make Basic Profile");
+  }
+});
 
-      var lat = Number(result[0].latitude);
-      var lng = Number(result[0].longitude);
-      var coords_new = [lng, lat];
-      var coords_db = doc.loc.coordinates
+BasicProfiles.after.insert(function(userId, doc){
+  console.log("Basic Profile Made for",doc.userId);
+  Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
+  Roles.addUsersToRoles(doc.userId, 'bookAccompanist');
+});
 
 
-      if (coords_new[0] !== coords_db[0] && coords_new[1] !== coords_db[1]) {
-        console.log("updating")
-        AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}},
-                                    {getAutoValues: false});
-      }
-      console.log("working_UPDATE nothing done")
+// Music Profile Server Side Hooks
 
-}, {fetchPrevious: true});
+MusicProfiles.before.insert(function (userId, doc){
+  var loggedInUser = Meteor.user();
+  if(!loggedInUser){
+    throw new Meteor.Error(403, "Not Logged In");
+  }else if(!(Roles.userIsInRole(loggedInUser._id, 'makeMusicProfile'))){
+    throw new Meteor.Error(403, "No Permission to Make Music Profile");
+  }
+});
 
-AccompanistProfile.after.insert(function (userId, doc) {
+MusicProfiles.after.insert(function(userId, doc){
+  Roles.addUsersToRoles(doc.userId, ['becomeAccompanist', 'musician']);
+});
+
+
+
+// Accompanist Profile Server Side Hooks
+
+AccompanistProfiles.before.insert(function (userId, doc){
+  var loggedInUser = Meteor.user();
+  if(!loggedInUser){
+    throw new Meteor.Error(403, "Not Logged In");
+  }else if(!Roles.userIsInRole(loggedInUser._id, 'becomeAccompanist')){
+    throw new Meteor.Error(403, "Must first make Music Profile");
+  }
+});
+
+AccompanistProfiles.after.insert(function (userId, doc) {
   var address = doc.mylocation;
   var coded = getGeocode(address);
 
@@ -69,6 +97,27 @@ AccompanistProfile.after.insert(function (userId, doc) {
   var lng = Number(coded[0].longitude);
   var coords_new = [lng, lat];
   console.log("working Insert")
-  AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : coded[0], loc: {'type': "Point", 'coordinates' : coords_new}}},{getAutoValues: false});
-
+  AccompanistProfiles.update({_id: doc._id}, {$set: {geolocation : coded[0], loc: {'type': "Point", 'coordinates' : coords_new}}},{getAutoValues: false});
+  Roles.addUsersToRoles(userId, 'accompanist');
 });
+
+AccompanistProfiles.after.update(function (userId, doc, fieldNames, modifier, options) {
+
+  var address = doc.mylocation;
+
+  // take if outside to make more efficient!!!!!
+  var result = getGeocode(address);
+
+  var lat = Number(result[0].latitude);
+  var lng = Number(result[0].longitude);
+  var coords_new = [lng, lat];
+  var coords_db = doc.loc.coordinates
+
+  if (coords_new[0] !== coords_db[0] && coords_new[1] !== coords_db[1]) {
+    console.log("updating")
+    AccompanistProfiles.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}},
+                                {getAutoValues: false});
+  }
+  console.log("working_UPDATE nothing done")
+
+}, {fetchPrevious: true});
