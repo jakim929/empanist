@@ -1,10 +1,14 @@
 <template name="MainLayout">
+	<head>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles/custom.css">
+	</head>
 	<main>
 		<div class="navbar-fixed">
 			<nav>
 		    <div class="nav-wrapper">
-		      <a href="/" class="brand-logo right">Empanist</a>
-		      <ul id="nav-mobile" class="left hide-on-med-and-down">
+		      <a href="/" class="brand-logo left">Empanist</a>
+		      <ul id="nav-mobile" class="right hide-on-med-and-down">
 							{{#each navbarFields}}
 								{{> Template.dynamic template=this}}
 							{{/each}}
@@ -20,10 +24,14 @@
 
 
 <template name="login">
-	{{> loginButtons}}
+	<ul id="loginDropdown" class="dropdown-content login">
+<!-- 		<li>{{>atForm}}</li> -->
+	</ul>
+	<li><a class="dropdown-button" href="#!" data-activates="loginDropdown" data-beloworigin="true">Login<i class="material-icons right">arrow_drop_down</i></a></li>
 </template>
 
 <template name="myProfile">
+
 	<li><a href={{getProfileRoute}}>My Profile</a></li>
 </template>
 

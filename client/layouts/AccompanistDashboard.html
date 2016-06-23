@@ -19,7 +19,6 @@
 <template name="CollapsibleStructure">
   <ul class="collapsible" data-collapsible="expandable">
     {{> pendingBookings}}
-
   </ul>
 </template>
 
@@ -58,13 +57,31 @@
   {{/each}}
 </template>
 
+
+<template name="bookingAvatar">
+  <li class="collection-item avatar">
+    <i class="material-icons circle">folder</i>
+    {{#with accountById musician}}
+      <span class="title">{{name}}</span>
+    {{/with}}
+    {{#with profileById musician}}
+      <p>{{instrument}} <br></p>
+    {{/with}}
+    <p>
+      {{startDate}} to {{endDate}}
+    </p>
+
+    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+  </li>
+</template>
+
 <template name="pendingBookings">
   <li>
     <div class="collapsible-header teal lighten-2 active"><i class="material-icons">filter_drama</i>Pending Bookings</div>
     <div class="collapsible-body">
 
       <ul class="collection">
-        {{> Template.dynamic template="bookingAvatar" data=(transactionsAsAccompanist)}}
+        {{> Template.dynamic template="bookingAvatar" data=receivedBookingRequests}}
 
         <li class="collection-item avatar">
           <i class="material-icons circle green">insert_chart</i>
@@ -85,23 +102,6 @@
       </ul>
 
     </div>
-  </li>
-</template>
-
-<template name="bookingAvatar">
-  <li class="collection-item avatar">
-    <i class="material-icons circle">folder</i>
-    {{#with accountById musician}}
-      <span class="title">{{name}}</span>
-    {{/with}}
-    {{#with profileById musician}}
-      <p>{{instrument}} <br></p>
-    {{/with}}
-    <p>
-      {{startDate}} to {{endDate}}
-    </p>
-
-    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
   </li>
 </template>
 

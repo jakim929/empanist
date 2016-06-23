@@ -34,6 +34,15 @@ Template.TabStructure.onRendered(function () {
   $('ul.tabs').tabs();
 });
 
+Template.login.onRendered(function () {
+  $(".dropdown-button").dropdown({
+    inDuration: 300,
+    outDuration: 700,
+    belowOrigin: true,
+    alignment: 'right'
+  });
+});
+
 // On creation
 
 Template.MainLayout.onCreated(function (){
@@ -350,12 +359,19 @@ Template.results.helpers({
    // var ed = new Date(Session.get('end_date'))
 
   accompanists: function() {
-        var coords = Session.get('coords')
+      var coords = Session.get('coords')
 
       //convert dates to dates that can be compared with Mongo schema
       var sd = new Date(Session.get('start_date'))
       var ed = new Date(Session.get('end_date'))
+        
+        console.log(coords)
+        console.log(sd)
+        console.log(ed)
 
+
+      if (coords && sd && ed) {
+        console.log("search all")
         return AccompanistProfile.find({
           loc:
             { $near :
@@ -366,13 +382,41 @@ Template.results.helpers({
             },
           startDate:  {$lte: sd, $lte: ed},
           endDate: {$gte: sd, $gte: ed}}).fetch();
-    },
+      } // else if (sd && ed){
+      //   console.log("search sd and ed")
+
+      //   return AccompanistProfile.find({
+      //     startDate:  {$lte: sd, $lte: ed},
+      //     endDate: {$gte: sd, $gte: ed}}).fetch();
+      // } else if (coords){
+      //   console.log("search coords")
+
+      //   return AccompanistProfile.find({
+      //     loc:
+      //       { $near :
+      //         {
+      //           $geometry: { type: "Point",  coordinates: coords },
+      //           $maxDistance: 20000
+      //         }
+      //       }}).fetch();
+        else {
+      console.log("search null")
+
+        return null
+      }
+  },
 
     accompname: function() {
         // We use this helper inside the {{#each posts}} loop, so the context
         // will be a post object. Thus, we can use this.authorId.
-        return Accounts.findOne({userId: this.Id});
+        var names = Accounts.findOne({userId: this.Id});
+                //console.log(names)
+
+        return names
+
     }
+
+    });
 
   // accompanists: ()=> {
 		// var coords = Session.get('coords')
@@ -403,6 +447,27 @@ Template.results.helpers({
 
       //return accompProfs //, accompAccounts]
      //} 
+  // accompanists: ()=> {
+		// var coords = Session.get('coords')
+
+		// // convert dates to dates that can be compared with Mongo schema
+		// var sd = new Date(Session.get('start_date'))
+		// var ed = new Date(Session.get('end_date'))
+
+  //   if (coords && sd && ed) {
+		//   console.log("search all")
+  //     return AccompanistProfile.find({
+  //       loc:
+  //         { $near :
+  //           {
+  //             $geometry: { type: "Point",  coordinates: coords },
+  //             $maxDistance: 20000
+  //           }
+  //         },
+  //       startDate:  {$lte: sd, $lte: ed},
+  //       endDate: {$gte: sd, $gte: ed}}).fetch()
+
+  //    }
 
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
@@ -436,7 +501,7 @@ Template.results.helpers({
        //console.log("new results responding")
     	// return null
   
-});
+
 
 // Events
 
@@ -460,9 +525,9 @@ Template.search.events({
           console.log(err)
         } else {
             console.log("search session set")
-            Session.setPersistent('coords', coords_new)
-            Session.setPersistent('start_date', start_date)
-            Session.setPersistent('end_date', end_date)
+            Session.set('coords', coords_new)
+            Session.set('start_date', start_date)
+            Session.set('end_date', end_date)
         }
         console.log("working_search nothing done")
     });
@@ -552,7 +617,11 @@ AccompanistProfile.after.insert(function (userId, doc) {
   });
 });
 
-  insertFullRandomProfile = function(userId){
+// Random Data Creation (move this to server code!!!)
+
+insertFullRandomProfile = function(userId){
+console.log("check this out:")
+    console.log(userId)
     Accounts.insert(createNewAccount(userId), {getAutoValues: false});
     MusicProfiles.insert(createNewMusicProfile(userId), {getAutoValues: false});
     AccompanistProfile.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
@@ -561,11 +630,11 @@ AccompanistProfile.after.insert(function (userId, doc) {
   insertRandomData = function(number) {
     for (var i = 0; i < number; i++){
       var genId = Random.id();
+      console.log(genId)
       Accounts.insert(createNewAccount(genId), {getAutoValues: false});
       MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
       AccompanistProfile.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
     }
-
   };
 
 // For Debugging

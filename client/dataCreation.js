@@ -80,6 +80,7 @@ function randomMusicProgram (){
 
 createNewMusicProfile = function (givenUserId){
   var randomYearsPlayed = Math.floor(Math.random()*20);
+  console.log(givenUserId);
   return {userId: givenUserId, instrument: randomInstrument(), yearsPlayed: randomYearsPlayed, awards: [randomAward(),randomAward()], musicPrograms: [randomMusicProgram(),randomMusicProgram()]};
 };
 
@@ -100,24 +101,25 @@ createNewAccompanistProfile = function (givenUserId){
   var randomSessionLocation = randomElement(sessionLocations);
 
   var today = new Date(2016, 6, 21);
-  var future = new Date(2020, 6, 21)
+  var future = new Date(2020, 6, 21);
 
   var sd = today;
   var ed = randomDatePar(today, future, 6, 20);
 
-  var locations = ["Boston", "New York City", "Los Angeles", "San Francisco", "Philadelphia", "Chicago", "Cleveland", "St. Louis"];
+  //var locations = ["Boston", "New York City", "Los Angeles", "San Francisco", "Philadelphia", "Chicago", "Cleveland", "St. Louis"];
+  var locations = ["Boston", "Cambridge", "Harvard"]
   var randomMyLocation = randomElement(locations);
 
   var oneLiner = "I accept James as my Lord and Savior";
-
+  console.log(givenUserId);
   return {Id: givenUserId,
           repertoire: randomRepertoire,
           charge: randomCharge,
           working_hours: randomWorkingHours,
           working_days: randomWorkingDays,
           session_location: randomSessionLocation,
-          startDate: sd,
-          endDate: ed,
+          startDate: today,
+          endDate: future,
           mylocation: randomMyLocation,
           one_liner: oneLiner};
 }
@@ -134,7 +136,7 @@ createNewAccount = function (givenUserId){
 
   var randomPhoneDigits = Math.floor(1000000000 + Math.random() * 9000000000);
   var randomPhone = randomPhoneDigits.toString();
-
+  console.log(givenUserId);
   return {userId: givenUserId,
           name: randomName,
           birthDate: randomBirthDate,

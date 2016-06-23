@@ -10,7 +10,12 @@ AccompanistProfileSchema = new SimpleSchema({
 				type: "hidden"
 			},
 			autoValue: function(){
-				return this.userId
+        if (!this.value){
+          return this.userId
+        }else{
+          return this.value
+        }
+
 			}
 		},
 

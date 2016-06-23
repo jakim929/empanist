@@ -30,7 +30,6 @@ fastclick
 raix:handlebar-helpers
 aldeed:collection2
 aldeed:autoform
-accounts-ui
 accounts-password
 zimme:active-route
 gwendall:auth-client-callbacks
@@ -69,6 +68,11 @@ gfk:notifications
 
 # add useraccounts:materialize after you tale out accout-ui
 
+useraccounts:materialize
+
  materialize:materialize
 
-reywood:publish-composite
+# reywood:publish-composite
+
+random
+alanning:roles

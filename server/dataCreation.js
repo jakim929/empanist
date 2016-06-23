@@ -80,6 +80,7 @@ function randomMusicProgram (){
 
 createNewMusicProfile = function (givenUserId){
   var randomYearsPlayed = Math.floor(Math.random()*20);
+    console.log(givenUserId);
   return {userId: givenUserId, instrument: randomInstrument(), yearsPlayed: randomYearsPlayed, awards: [randomAward(),randomAward()], musicPrograms: [randomMusicProgram(),randomMusicProgram()]};
 };
 
@@ -109,6 +110,7 @@ createNewAccompanistProfile = function (givenUserId){
   var randomMyLocation = randomElement(locations);
 
   var oneLiner = "I accept James as my Lord and Savior";
+    console.log(givenUserId);
 
   return {Id: givenUserId,
           repertoire: randomRepertoire,
@@ -134,7 +136,7 @@ createNewAccount = function (givenUserId){
 
   var randomPhoneDigits = Math.floor(1000000000 + Math.random() * 9000000000);
   var randomPhone = randomPhoneDigits.toString();
-
+  console.log(givenUserId);
   return {userId: givenUserId,
           name: randomName,
           birthDate: randomBirthDate,
