@@ -126,11 +126,12 @@ AccompanistProfileSchema = new SimpleSchema({
         decimal: true,
     },
 
-      	one_liner: {
-      		type: String,
-      		label: "Describe yourself in one sentence",
-      	},
+    one_liner: {
+      type: String,
+      label: "Describe yourself in one sentence",
+    },
 
 });
+
 
 AccompanistProfile.attachSchema(AccompanistProfileSchema)

@@ -11,12 +11,10 @@
 <template name="results">
 	{{#each accompanists}}
 		
-<!-- 	{{#each account_details ../Id }}
-			<h5>Name: {{name}}</h5>
-			<h5>Affiliation: {{affiliation}}</h5>
-		{{/each}}
-     -->
-
+	
+		<h5>Name: {{accompname.name}}</h5>
+		<h5>Affiliation: {{accompname.affiliation}}</h5>
+		
 		<h5>Session Location: {{mylocation}}</h5>
 		<h5>Charge: ${{charge}}/Hour</h5>
 		<h5>Session Time Pref: {{working_hours}}</h5>

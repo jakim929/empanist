@@ -299,28 +299,110 @@ Template.upsertAccompanistForm.helpers ({
   }
 });
 
+// Attempt to create relations between collections
+
+// AccompModel = Graviton.Model.extend({
+ 
+//   belongsTo: {
+//     account: {
+//       collection: 'Accounts',
+//       foreignKey: 'userId'
+//     }
+//   }
+// },{});
+
+// Accompanist = Graviton.define("AccompanistProfile", {
+//   belongsTo: {
+//     account: {
+//       collection: 'Accounts',
+//       foreignKey: 'userId'
+//     }
+//   }
+// });
+
+// AccountModel = Graviton.Model.extend({
+//   belongsTo: {
+//     accompprofile: {
+//       collection: 'AccompanistProfile',
+//       foreignKey: 'Id'
+//     }
+//   }
+// },{});
+
+// Account = Graviton.define("Accounts", {
+//   belongsTo: {
+//     accompprofile: {
+//       collection: 'AccompanistProfile',
+//       foreignKey: 'Id'
+//     }
+//   }
+// });
+
+//Meteor.subscribe('results');
+
 Template.results.helpers({
+   
 
-  accompanists: ()=> {
-		var coords = Session.get('coords')
+   //  var coords = Session.get('coords')
 
-		// convert dates to dates that can be compared with Mongo schema
-		var sd = new Date(Session.get('start_date'))
-		var ed = new Date(Session.get('end_date'))
+   //   //convert dates to dates that can be compared with Mongo schema
+   // var sd = new Date(Session.get('start_date'))
+   // var ed = new Date(Session.get('end_date'))
 
-    if (coords && sd && ed) {
-		  console.log("search all")
-      return AccompanistProfile.find({
-        loc:
-          { $near :
-            {
-              $geometry: { type: "Point",  coordinates: coords },
-              $maxDistance: 20000
-            }
-          },
-        startDate:  {$lte: sd, $lte: ed},
-        endDate: {$gte: sd, $gte: ed}}).fetch()
-     } 
+  accompanists: function() {
+        var coords = Session.get('coords')
+
+      //convert dates to dates that can be compared with Mongo schema
+      var sd = new Date(Session.get('start_date'))
+      var ed = new Date(Session.get('end_date'))
+
+        return AccompanistProfile.find({
+          loc:
+            { $near :
+              {
+                $geometry: { type: "Point",  coordinates: coords },
+                $maxDistance: 20000
+              }
+            },
+          startDate:  {$lte: sd, $lte: ed},
+          endDate: {$gte: sd, $gte: ed}}).fetch();
+    },
+
+    accompname: function() {
+        // We use this helper inside the {{#each posts}} loop, so the context
+        // will be a post object. Thus, we can use this.authorId.
+        return Accounts.findOne({userId: this.Id});
+    }
+
+  // accompanists: ()=> {
+		// var coords = Session.get('coords')
+
+		// // convert dates to dates that can be compared with Mongo schema
+		// var sd = new Date(Session.get('start_date'))
+		// var ed = new Date(Session.get('end_date'))
+
+  //   if (coords && sd && ed) {
+		//   console.log("search all")
+      
+  //     var pipeline = [
+  //       {$group: {}}
+  //     ]
+
+  //     var accompProfs = 
+  //       AccompanistProfile.find({
+  //         loc:
+  //           { $near :
+  //             {
+  //               $geometry: { type: "Point",  coordinates: coords },
+  //               $maxDistance: 20000
+  //             }
+  //           },
+  //         startDate:  {$lte: sd, $lte: ed},
+  //         endDate: {$gte: sd, $gte: ed}}).fetch()
+    
+
+      //return accompProfs //, accompAccounts]
+     //} 
 
      //   else if (coords && ed) {
     //   console.log("Searched coords and ed")
@@ -351,9 +433,9 @@ Template.results.helpers({
     //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
     // }
     	// return No results found return Null (should just go to empty results page with advanced search)
-      console.log("Didn't search")
-    	return null
-  }
+       //console.log("new results responding")
+    	// return null
+  
 });
 
 // Events

@@ -31,3 +31,38 @@ Meteor.methods({
   }
   
 });
+
+// Meteor.publishComposite('results', {
+//     find: function() {
+//         // Find top ten highest scoring posts
+//          var coords = Session.get('coords')
+
+//       //convert dates to dates that can be compared with Mongo schema
+//       var sd = new Date(Session.get('start_date'))
+//       var ed = new Date(Session.get('end_date'))
+//              console.log("server shit")
+
+
+//         return AccompanistProfile.find({
+//           loc:
+//             { $near :
+//               {
+//                 $geometry: { type: "Point",  coordinates: coords },
+//                 $maxDistance: 20000
+//               }
+//             },
+//           startDate:  {$lte: sd, $lte: ed},
+//           endDate: {$gte: sd, $gte: ed}})
+//     },
+// 	    children: [
+// 	        {
+// 	            find: function(account) {
+// 	                // Find post author. Even though we only want to return
+// 	                // one record here, we use "find" instead of "findOne"
+// 	                // since this function should return a cursor.
+// 	                return Meteor.accounts.find(
+// 	                    { userId: accompanists.Id });
+// 	            }
+// 	        }
+// 	    ]
+// });

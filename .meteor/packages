@@ -67,7 +67,8 @@ matb33:collection-hooks
 
 gfk:notifications
 
-useraccounts:materialize		# can't create new acocunt with this
+# add useraccounts:materialize after you tale out accout-ui
 
-materialize:materialize
+ materialize:materialize
 
+reywood:publish-composite
