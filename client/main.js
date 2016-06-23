@@ -46,7 +46,7 @@ Template.login.onRendered(function () {
 // On creation
 
 Template.MainLayout.onCreated(function (){
-  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings', 'login'])
+  this.navbarFields = new ReactiveVar(['login','myProfile', 'accompanistDashboard','bookings'])
 });
 
 // ==Global Template Helpers==
@@ -433,69 +433,6 @@ Template.BookingRequest.events({
       Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');
   }
 });
-
-// Hooks
-
-// Insert geocode in accomp profile at update
-AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
-
-  var address = doc.mylocation;
-
-  // take if outside to make more efficient!!!!!
-  Meteor.call('getGeocode', address, function(err, result){
-
-      var lat = Number(result[0].latitude);
-      var lng = Number(result[0].longitude);
-      var coords_new = [lng, lat];
-      var coords_db = doc.loc.coordinates
-
-  if(err) {
-    console.log(err)
-  } else if (coords_new[0] !== coords_db[0] && coords_new[1] !== coords_db[1]) {
-      console.log("updating")
-      AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
-  }
-  console.log("working_UPDATE nothing done")
-
-});
-}, {fetchPrevious: true});
-
-// Insert geocode in accomp profile at Insert
-AccompanistProfile.after.insert(function (userId, doc) {
-
-  var address = doc.mylocation;
-
-  Meteor.call('getGeocode', address, function(err, result){
-    if(err) {
-      console.log(err)
-    }else {
-      console.log("working_INSERT")
-
-      var lat = Number(result[0].latitude);
-      var lng = Number(result[0].longitude);
-      var coords_new = [lng, lat];
-
-      AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : result[0], loc: {'type': "Point", 'coordinates' : coords_new}}});
-    }
-  });
-});
-
-// Random Data Creation
-
-  insertFullRandomProfile = function(userId){
-    Accounts.insert(createNewAccount(userId), {getAutoValues: false});
-    MusicProfiles.insert(createNewMusicProfile(userId), {getAutoValues: false});
-    AccompanistProfile.insert(createNewAccompanistProfile(userId), {getAutoValues: false});
-  };
-
-  insertRandomData = function(number) {
-    for (var i = 0; i < number; i++){
-      var genId = Random.id();
-      Accounts.insert(createNewAccount(genId), {getAutoValues: false});
-      MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
-      AccompanistProfile.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
-    }
-  };
 
 // For Debugging
  SimpleSchema.debug = true;

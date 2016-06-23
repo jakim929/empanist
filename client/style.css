@@ -14,6 +14,7 @@ div.main_margin {
   margin: 0;
   display: none;
   min-width: 300px; /* Changed this to accomodate content width */
+  min-height: 500px;
   max-height: auto;
 	margin-left: -1px; /* Add this to keep dropdown in line with edge of navbar */
   overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
