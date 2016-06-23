@@ -46,7 +46,7 @@ Template.login.onRendered(function () {
 // On creation
 
 Template.MainLayout.onCreated(function (){
-  this.navbarFields = new ReactiveVar(['login','myProfile', 'accompanistDashboard','bookings'])
+  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
 
 // ==Global Template Helpers==

@@ -71,9 +71,6 @@ accounts-ui
 
 # add useraccounts:materialize after you tale out accout-ui
 
-
-useraccounts:materialize
-
 materialize:materialize
 
 # reywood:publish-composite

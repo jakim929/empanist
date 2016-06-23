@@ -39,6 +39,43 @@ Meteor.methods({
 
 // Server Side hooks
 
+// Meteor.users.after.insert(function (userId, doc){
+//   Roles.addUsersToRoles(userId, 'canMakeAccountDetails');
+// });
+
+Accounts.before.insert(function (userId, doc){
+  var loggedInUser = Meteor.user()
+
+  if(!loggedInUser){
+    console.log("Must be Logged In")
+    throw new Meteor.Error(403, "Must be Logged In");
+  }
+});
+
+Accounts.after.insert(function(userId, doc){
+  Roles.addUsersToRoles(userId, ['canMakeMusicProfile', 'canBook']);
+});
+
+MusicProfiles.after.insert(function(userId, doc){
+  Roles.addUsersToRoles(userId, ['canBecomeAccompanist', 'musician']);
+});
+
+
+
+// Accompanist Profile Server Side Hooks
+
+AccompanistProfile.after.insert(function (userId, doc) {
+  var address = doc.mylocation;
+  var coded = getGeocode(address);
+
+  var lat = Number(coded[0].latitude);
+  var lng = Number(coded[0].longitude);
+  var coords_new = [lng, lat];
+  console.log("working Insert")
+  AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : coded[0], loc: {'type': "Point", 'coordinates' : coords_new}}},{getAutoValues: false});
+  Roles.addUsersToRoles(userId, 'accompanist');
+});
+
 AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, options) {
 
   var address = doc.mylocation;
@@ -60,15 +97,3 @@ AccompanistProfile.after.update(function (userId, doc, fieldNames, modifier, opt
       console.log("working_UPDATE nothing done")
 
 }, {fetchPrevious: true});
-
-AccompanistProfile.after.insert(function (userId, doc) {
-  var address = doc.mylocation;
-  var coded = getGeocode(address);
-
-  var lat = Number(coded[0].latitude);
-  var lng = Number(coded[0].longitude);
-  var coords_new = [lng, lat];
-  console.log("working Insert")
-  AccompanistProfile.update({_id: doc._id}, {$set: {geolocation : coded[0], loc: {'type': "Point", 'coordinates' : coords_new}}},{getAutoValues: false});
-
-});

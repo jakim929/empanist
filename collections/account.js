@@ -18,7 +18,7 @@ AccountSchema = new SimpleSchema({
       type: "hidden"
     },
     autoValue: function() {
-      return this.userId;
+      "DefaultValue"
     }
 
   },
