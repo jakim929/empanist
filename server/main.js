@@ -9,15 +9,14 @@ Meteor.startup(() => {
 
 var geo = new GeoCoder();
 
-getGeocode = function(arg) {
-    var result = geo.geocode(arg);
-    return result
-}
-
 Meteor.methods({
   getGeocode: function (arg) {
+    if (arg == 0){
+      return null
+    } else {
     var result = geo.geocode(arg);
     return result
+  }
   },
 
   insertFullRandomProfile: function(userId){
