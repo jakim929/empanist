@@ -33,9 +33,9 @@
       </ul>
     </div>
     <div id="test1" class="col s12">{{> CollapsibleStructure }}</div>
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test3" class="col s12">Test 3</div>
-    <div id="test4" class="col s12">Test 4</div>
+    <div id="test2" class="col s12">{{#if isInRole "accompanist"}}{{> Template.dynamic template="accompanistProfileTemplate" data=myAccompanistProfile}}{{/if}}</div>
+    <div id="test3" class="col s12">{{> NewAccompLayout}}</div>
+    <div id="test4" class="col s12">Settings</div>
   </div>
 </template>
 

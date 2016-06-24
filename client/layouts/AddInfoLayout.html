@@ -3,16 +3,15 @@
       <h1>My Profile</h1>
     </header>
     <main>
-      <h3>Edit Basic Profile</h3>
       {{> upsertBasicProfileForm}}
       <br><br>
-      <h3>Edit Music Profile</h3>
       {{> upsertMusicProfileForm}}
     </main>
 </template>
 
 <template name="upsertBasicProfileForm">
   {{#if isInRole 'makeBasicProfile'}}
+    <h3>Basic Profile</h3>
     {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
       <fieldset>
         {{>afQuickField name="name"}}
@@ -27,6 +26,7 @@
 
 <template name="upsertMusicProfileForm">
   {{#if isInRole 'makeMusicProfile'}}
+    <h3>Music Profile</h3>
     {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
       <fieldset>
         {{>afQuickField name="instrument" type="selectize" options=instrumentList }}

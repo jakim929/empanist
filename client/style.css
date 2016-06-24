@@ -24,3 +24,13 @@ div.main_margin {
   z-index: 1;
   will-change: width, height;
 }
+
+.sidenavOffset {
+  padding-left: 240px;
+}
+
+@media only screen and (max-width : 992px) {
+  .sidenavOffset {
+    padding-left: 0;
+  }
+}

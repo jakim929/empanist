@@ -1,26 +1,29 @@
 <template name="NewAccompLayout">
-    <header>
-        <h1> Signup to Become an Accompanist </h1>
-    </header>
     <main>
-      {{> upsertAccompanistForm}}
+      {{#if isInRole 'becomeAccompanist'}}
+        {{> upsertAccompanistForm}}
+      {{else}}
+        <h4>You must <a href="/addinfo">complete your profile</a> before signing up as an accompanist.</h4>
+        {{> AddInfoLayout}}
+      {{/if}}
+
     </main>
 </template>
 
 
 <template name="upsertAccompanistForm">
-  {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-  <fieldset>
-    {{> afQuickField name="repertoire"}}
-    {{> afQuickField name="charge"}}
-    {{> afQuickField name="working_hours"}}
-    {{> afQuickField name="working_days"}}
-    {{> afQuickField name="session_location"}}
-    {{> afQuickField name="startDate"}}
-    {{> afQuickField name="endDate"}}
-    {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-    {{> afQuickField name="one_liner"}}
-  </fieldset>
-  <button type="submit" class="btn btn-primary">Update Accompanist Profile</button>
-  {{/autoForm}}
+    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
+    <fieldset>
+      {{> afQuickField name="repertoire"}}
+      {{> afQuickField name="charge"}}
+      {{> afQuickField name="working_hours"}}
+      {{> afQuickField name="working_days"}}
+      {{> afQuickField name="session_location"}}
+      {{> afQuickField name="startDate"}}
+      {{> afQuickField name="endDate"}}
+      {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+      {{> afQuickField name="one_liner"}}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">{{formType}} Accompanist Profile</button>
+    {{/autoForm}}
 </template>

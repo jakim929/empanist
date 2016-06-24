@@ -12,15 +12,6 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
-// Helper functions
-
-function wrapDoc (obj) {
-  if (obj){
-    return {field: "update", doc: obj}
-  }else{
-    return {field: "insert", doc: null}
-  }
-}
 
 // Javascript Component Initialization
 
@@ -43,14 +34,41 @@ Template.login.onRendered(function () {
   });
 });
 
+Template.NewAccompLayout.onRendered(function () {
+    // Initialize collapse button
+    $(".button-collapse").sideNav();
+    // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+    //$('.collapsible').collapsible();
+});
+
+
+
 // On creation
 
-Template.MainLayout.onCreated(function (){
-  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
+Template.navbar.onCreated(function (){
+    this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
 
 // ==Global Template Helpers==
 
+Template.registerHelper('navbarFields', () => {
+  // Logged In
+  if (Meteor.user()){
+    // Accompanist
+    if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
+      console.log("Navbar Config 1")
+      return ['accompanistDashboard', 'myProfile', 'bookings']
+    }
+    // Not Accompanist
+    console.log("Navbar Config 2")
+    return ['becomeAnAccompanist', 'myProfile' ,'bookings']
+  // Not Logged In
+  }else{
+    console.log("Navbar Config 3")
+    return ['login', 'becomeAnAccompanist']
+
+  }
+});
 
 
 // Get Current User's Account
@@ -108,12 +126,6 @@ Template.registerHelper('routeTransaction', () =>{
 
 Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
-});
-
-
-// Get Elements of the Navbar Fields for the User
-Template.registerHelper('navbarFields', () => {
-  return Template.instance().navbarFields.get()
 });
 
 
@@ -194,13 +206,6 @@ Template.registerHelper('transactionsAsMusician', () =>{
   return Transactions.find({ musician: Meteor.userId()}).fetch()
 });
 
-Template.registerHelper( 'transactionsDoc', () => {
-    event.preventDefault();
-    var allTransactions =
-      {asMusician: Transactions.find({ musician: Meteor.userId()}).fetch(),
-       asAccompanist: Transactions.find({ accompanist: Meteor.userId()}).fetch()}
-    return allTransactions;
-});
 
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
     event.preventDefault();
@@ -208,29 +213,6 @@ Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transacti
     return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
-Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) => {
-    event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(MusicProfiles.findOne({ userId: id}));
-});
-
-Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) => {
-  	event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(BasicProfiles.findOne({ userId: id}));
-});
-
-Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("profileId")) => {
-    event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(AccompanistProfiles.findOne({ Id: Meteor.userId()}));
-});
 
 Template.registerHelper( 'musicCompetitionsDoc', () => {
     event.preventDefault();

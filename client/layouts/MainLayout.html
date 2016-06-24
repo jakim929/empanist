@@ -4,18 +4,7 @@
     <link rel="stylesheet" href="styles/custom.css">
 	</head>
 	<main>
-		<div class="navbar-fixed">
-			<nav>
-		    <div class="nav-wrapper">
-		      <a href="/" class="brand-logo left">Empanist</a>
-		      <ul id="nav-mobile" class="right hide-on-med-and-down">
-							{{#each navbarFields}}
-								{{> Template.dynamic template=this}}
-							{{/each}}
-		      </ul>
-		    </div>
-		  </nav>
-		</div>
+		{{> navbar }}
     <div class ="main_margin">
    		{{> Template.dynamic template=main}}
    	</div>
@@ -24,11 +13,25 @@
 
 
 <template name="login">
-	{{>loginButtons}}
+	<li><a>Login</a></li>
+</template>
+
+<template name="navbar">
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="/" class="brand-logo left">Empanist</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+						{{#each navbarFields}}
+							{{> Template.dynamic template=this}}
+						{{/each}}
+				</ul>
+			</div>
+		</nav>
+	</div>
 </template>
 
 <template name="myProfile">
-
 	<li><a href={{getProfileRoute}}>My Profile</a></li>
 </template>
 
@@ -41,7 +44,7 @@
 </template>
 
 <template name="becomeAnAccompanist">
-	<li><a href='/newaccomp'>Become an Accompanist</a></li>
+	<li><a class='waves-effect waves-light btn' href='/newaccomp'>Become an Accompanist</a></li>
 </template>
 
 <template name="addProfile">
