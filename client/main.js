@@ -308,45 +308,65 @@ Template.upsertAccompanistForm.helpers ({
   }
 });
 
+
 Template.results.helpers({
 
   accompanists: function() {
-      var coords = Session.get('coords')
+  //var coords = Session.get('coords')
+
+    var address = FlowRouter.getQueryParam("address")
+    var start_date = FlowRouter.getQueryParam("start_date")
+    var end_date = FlowRouter.getQueryParam("end_date")
+
+    Meteor.call('getGeocode', address, function(err, result){
+      console.log("Meteor call worked")
+
+      if (result !== null){
+        var lat = Number(result[0].latitude);
+        var lng = Number(result[0].longitude);
+        var coords = [lng, lat];
+      }
 
       //convert dates to dates that can be compared with Mongo schema
-      var sd = new Date(Session.get('start_date'))
-      var ed = new Date(Session.get('end_date'))
-
-        console.log("Terms you have Searched with")
-        console.log(coords)
-        console.log(sd)
-        console.log(ed)
+      var sd = new Date(start_date)
+      var ed = new Date(end_date)
 
       if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
-        console.log("search all")
-        return AccompanistProfiles.find({
-          loc:
-            { $near :
-              {
-                $geometry: { type: "Point",  coordinates: coords },
-                $maxDistance: 20000
-              }
-            },
-          startDate:  {$lte: sd, $lte: ed},
-          endDate: {$gte: sd, $gte: ed}}).fetch();
+          var results = AccompanistProfiles.find({
+            loc:
+              { $near :
+                {
+                  $geometry: { type: "Point",  coordinates: coords },
+                  $maxDistance: 20000
+                }
+              },
+            startDate:  {$lte: sd, $lte: ed},
+            endDate: {$gte: sd, $gte: ed}}).fetch();
+      }
 
-      }  else if (moment(sd).isValid() && moment(ed).isValid()){
-        console.log("search sd and ed")
+      else if (moment(sd).isValid() && moment(ed).isValid()){
+        var results = 
+          AccompanistProfiles.find({
+            startDate:  {$lte: sd, $lte: ed},
+            endDate: {$gte: sd, $gte: ed}}).fetch();
+      } 
 
-        return AccompanistProfiles.find({
-          startDate:  {$lte: sd, $lte: ed},
-          endDate: {$gte: sd, $gte: ed}}).fetch();
+      else if (moment(ed).isValid()){
+        var results = 
+          AccompanistProfiles.find({
+            startDate:  {$lte: ed},
+            endDate: {$gte: ed}}).fetch();
+      } 
+
+      else if (moment(sd).isValid() ){
+        var results = 
+          AccompanistProfiles.find({
+            startDate:  {$lte: sd},
+            endDate: {$gte: sd}}).fetch();
       } 
       
       else if (coords !== undefined){
-        console.log("search coords")
-
-        return AccompanistProfiles.find({
+        var results = AccompanistProfiles.find({
           loc:
             { $near :
               {
@@ -355,74 +375,29 @@ Template.results.helpers({
               }
             }}).fetch();
       } 
-    
+
       else {
-        console.log("search null")
-        return null
+        var results = null
       }
-  },
 
-    accompname: function() {
-
-        // We use this helper inside the {{#each posts}} loop, so the context
-        // will be a post object. Thus, we can use this.authorId.
-        var names = BasicProfiles.findOne({userId: this.Id});
-                //console.log(names)
-
-        return names
-    }
-
+      Session.set('results', results)    
     });
+
+  return Session.get('results')
+},
+  accompname: function() {
+    var names = BasicProfiles.findOne({userId: this.Id});
+    return names
+  }
+
+});
 
 // Events
 
 Template.search.events({
-	'submit form': function(){
-	    event.preventDefault();
-
-	    //Constants submitted from the Home search bar
-      var address = event.target.address.value
-	   	var start_date = event.target.start_date.value
-	   	var end_date = event.target.end_date.value
-
-      console.log("address")
-
-      console.log(address)
-
-
-      if (address !== 0) {
-      
-        console.log("Meteor call if worked")
-
-        Meteor.call('getGeocode', address, function(err, result){
-          
-          console.log("Meteor call worked")
-
-          if (result !== null){
-
-            var lat = Number(result[0].latitude);
-            var lng = Number(result[0].longitude);
-            var coords = [lng, lat];
-
-            console.log("search session set in meteor.call")
-            Session.set('coords', coords)
-            Session.set('start_date', start_date)
-            Session.set('end_date', end_date)
-
-          } else {
-            Session.set('start_date', start_date)
-              Session.set('end_date', end_date)
-
-          }
-      });
-      }
-
-
-
-
+  'submit form': function(){
       console.log("Form Submitted")
-      // go to knew page here
-      FlowRouter.go('results');
+      FlowRouter.go('results?');
   }
 });
 

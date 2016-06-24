@@ -10,7 +10,22 @@
 </template>
 
 <template name="search">
-	<div class="container">
+	<!-- Code that makes enter work like tab in the home screen (place it in main.js client side ) -->
+  <script type='text/javascript'>
+        $(document).ready(function(){
+            $('#searchform input').keydown(function(e){
+             if(e.keyCode==13){       
+                if($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type')=='submit'){
+                 return true;
+                }
+                $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
+               return false;
+             }
+            });
+        });
+  </script>
+
+  <div class="container">
 	   <div class="row">
         <div class="span12">
             <form id="searchform">
@@ -21,7 +36,7 @@
 
                	<input name="end_date" class="span5" type="date"  placeholder="Event day" >
 
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary"  >Search</button>
                 <br><br>
             </form>
         </div>
@@ -32,3 +47,4 @@
  <template name="makeAdmin">
    <button>Divinify</button>
 </template>
+
