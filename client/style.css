@@ -5,6 +5,11 @@ div.main_margin {
     padding:20px;
 }
 
+div.content {
+    margin:20px;
+    padding:20px;
+}
+
 .brand-logo{
 	font-weight:900;
 }

@@ -1,25 +1,31 @@
 <template name="MainLayout">
-	<head>
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="styles/custom.css">
-	</head>
-	<main>
-		<div class="navbar-fixed">
-			<nav>
-		    <div class="nav-wrapper">
-		      <a href="/" class="brand-logo left">Empanist</a>
-		      <ul id="nav-mobile" class="right hide-on-med-and-down">
-							{{#each navbarFields}}
-								{{> Template.dynamic template=this}}
-							{{/each}}
-		      </ul>
-		    </div>
-		  </nav>
+		<head>
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	    <link rel="stylesheet" href="styles/custom.css">
+		</head>
+
+		<div class="nav">
+			{{> Template.dynamic template="nav"}}
 		</div>
-    <div class ="main_margin">
+
+    <div class ="content">
    		{{> Template.dynamic template=main}}
    	</div>
-  </main>
+</template>
+
+<template name="nav">
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="/" class="brand-logo left">Empanist</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+						{{#each navbarFields}}
+							{{> Template.dynamic template=this}}
+						{{/each}}
+				</ul>
+			</div>
+		</nav>
+	</div>
 </template>
 
 

@@ -12,6 +12,11 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
+
+// Accounts
+
+
+
 // Helper functions
 
 function wrapDoc (obj) {
@@ -45,7 +50,7 @@ Template.login.onRendered(function () {
 
 // On creation
 
-Template.MainLayout.onCreated(function (){
+Template.nav.onCreated(function (){
   this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
 

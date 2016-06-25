@@ -66,10 +66,7 @@ matb33:collection-hooks
 
 gfk:notifications
 
-accounts-ui
-		# can't create new acocunt with this
-
-# add useraccounts:materialize after you tale out accout-ui
+useraccounts:materialize
 
 materialize:materialize
 

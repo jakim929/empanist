@@ -1,7 +1,4 @@
 <template name="AccompanistDashboard">
-    <head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    </head>
     <header>
     </header>
     <main>
@@ -18,7 +15,10 @@
 
 <template name="CollapsibleStructure">
   <ul class="collapsible" data-collapsible="expandable">
-    {{> pendingBookings}}
+    <li>
+      <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Pending Bookings</div>
+      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+    </li>
   </ul>
 </template>
 
@@ -76,33 +76,7 @@
 </template>
 
 <template name="pendingBookings">
-  <li>
-    <div class="collapsible-header teal lighten-2 active"><i class="material-icons">filter_drama</i>Pending Bookings</div>
-    <div class="collapsible-body">
 
-      <ul class="collection">
-        {{> Template.dynamic template="bookingAvatar" data=receivedBookingRequests}}
-
-        <li class="collection-item avatar">
-          <i class="material-icons circle green">insert_chart</i>
-          <span class="title">Title</span>
-          <p>First Line <br>
-             Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-        <li class="collection-item avatar">
-          <i class="material-icons circle red">play_arrow</i>
-          <span class="title">Title</span>
-          <p>First Line <br>
-             Second Line
-          </p>
-          <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-        </li>
-      </ul>
-
-    </div>
-  </li>
 </template>
 
 <template name="completedBookings">
