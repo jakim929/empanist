@@ -13,20 +13,6 @@ window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
 
-// Accounts
-
-
-
-// Helper functions
-
-function wrapDoc (obj) {
-  if (obj){
-    return {field: "update", doc: obj}
-  }else{
-    return {field: "insert", doc: null}
-  }
-}
-
 // Javascript Component Initialization
 
 Template.CollapsibleStructure.onRendered(function () {
@@ -48,14 +34,46 @@ Template.login.onRendered(function () {
   });
 });
 
+Template.NewAccompLayout.onRendered(function () {
+    // Initialize collapse button
+    $(".button-collapse").sideNav();
+    // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+    //$('.collapsible').collapsible();
+});
+
+
+
 // On creation
+
 
 Template.nav.onCreated(function (){
   this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
 
+Template.navbar.onCreated(function (){
+    this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
+});
+
 // ==Global Template Helpers==
 
+Template.registerHelper('navbarFields', () => {
+  // Logged In
+  if (Meteor.user()){
+    // Accompanist
+    if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
+      console.log("Navbar Config 1")
+      return ['accompanistDashboard', 'myProfile', 'bookings']
+    }
+    // Not Accompanist
+    console.log("Navbar Config 2")
+    return ['becomeAnAccompanist', 'myProfile' ,'bookings']
+  // Not Logged In
+  }else{
+    console.log("Navbar Config 3")
+    return ['login', 'becomeAnAccompanist']
+
+  }
+});
 
 
 // Get Current User's Account
@@ -113,12 +131,6 @@ Template.registerHelper('routeTransaction', () =>{
 
 Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
-});
-
-
-// Get Elements of the Navbar Fields for the User
-Template.registerHelper('navbarFields', () => {
-  return Template.instance().navbarFields.get()
 });
 
 
@@ -199,13 +211,6 @@ Template.registerHelper('transactionsAsMusician', () =>{
   return Transactions.find({ musician: Meteor.userId()}).fetch()
 });
 
-Template.registerHelper( 'transactionsDoc', () => {
-    event.preventDefault();
-    var allTransactions =
-      {asMusician: Transactions.find({ musician: Meteor.userId()}).fetch(),
-       asAccompanist: Transactions.find({ accompanist: Meteor.userId()}).fetch()}
-    return allTransactions;
-});
 
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
     event.preventDefault();
@@ -213,29 +218,6 @@ Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transacti
     return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
-Template.registerHelper( 'profileDoc', (id = FlowRouter.getParam("profileId")) => {
-    event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(MusicProfiles.findOne({ userId: id}));
-});
-
-Template.registerHelper( 'accountDoc', (id = FlowRouter.getParam("profileId")) => {
-  	event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(BasicProfiles.findOne({ userId: id}));
-});
-
-Template.registerHelper( 'accompanistProfileDoc', (id = FlowRouter.getParam("profileId")) => {
-    event.preventDefault();
-    if (!id) {
-      id = Meteor.userId();
-    }
-    return wrapDoc(AccompanistProfiles.findOne({ Id: Meteor.userId()}));
-});
 
 Template.registerHelper( 'musicCompetitionsDoc', () => {
     event.preventDefault();
@@ -313,233 +295,96 @@ Template.upsertAccompanistForm.helpers ({
   }
 });
 
-// Attempt to create relations between collections
-
-// AccompModel = Graviton.Model.extend({
-
-//   belongsTo: {
-//     account: {
-//       collection: 'BasicProfiles',
-//       foreignKey: 'userId'
-//     }
-//   }
-// },{});
-
-// Accompanist = Graviton.define("AccompanistProfiles", {
-//   belongsTo: {
-//     account: {
-//       collection: 'BasicProfiles',
-//       foreignKey: 'userId'
-//     }
-//   }
-// });
-
-// AccountModel = Graviton.Model.extend({
-//   belongsTo: {
-//     accompprofile: {
-//       collection: 'AccompanistProfiles',
-//       foreignKey: 'Id'
-//     }
-//   }
-// },{});
-
-// Account = Graviton.define("BasicProfiles", {
-//   belongsTo: {
-//     accompprofile: {
-//       collection: 'AccompanistProfiles',
-//       foreignKey: 'Id'
-//     }
-//   }
-// });
-
-//Meteor.subscribe('results');
 
 Template.results.helpers({
 
-
-   //  var coords = Session.get('coords')
-
-   //   //convert dates to dates that can be compared with Mongo schema
-   // var sd = new Date(Session.get('start_date'))
-   // var ed = new Date(Session.get('end_date'))
-
   accompanists: function() {
-      var coords = Session.get('coords')
+  //var coords = Session.get('coords')
+
+    var address = FlowRouter.getQueryParam("address")
+    var start_date = FlowRouter.getQueryParam("start_date")
+    var end_date = FlowRouter.getQueryParam("end_date")
+
+    Meteor.call('getGeocode', address, function(err, result){
+      console.log("Meteor call worked")
+
+      if (result !== null){
+        var lat = Number(result[0].latitude);
+        var lng = Number(result[0].longitude);
+        var coords = [lng, lat];
+      }
 
       //convert dates to dates that can be compared with Mongo schema
-      var sd = new Date(Session.get('start_date'))
-      var ed = new Date(Session.get('end_date'))
+      var sd = new Date(start_date)
+      var ed = new Date(end_date)
 
-        console.log(coords)
-        console.log(sd)
-        console.log(ed)
+      if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
+          var results = AccompanistProfiles.find({
+            loc:
+              { $near :
+                {
+                  $geometry: { type: "Point",  coordinates: coords },
+                  $maxDistance: 20000
+                }
+              },
+            startDate:  {$lte: sd, $lte: ed},
+            endDate: {$gte: sd, $gte: ed}}).fetch();
+      }
 
+      else if (moment(sd).isValid() && moment(ed).isValid()){
+        var results =
+          AccompanistProfiles.find({
+            startDate:  {$lte: sd, $lte: ed},
+            endDate: {$gte: sd, $gte: ed}}).fetch();
+      }
 
-      if (coords && sd && ed) {
-        console.log("search all")
-        return AccompanistProfiles.find({
+      else if (moment(ed).isValid()){
+        var results =
+          AccompanistProfiles.find({
+            startDate:  {$lte: ed},
+            endDate: {$gte: ed}}).fetch();
+      }
+
+      else if (moment(sd).isValid() ){
+        var results =
+          AccompanistProfiles.find({
+            startDate:  {$lte: sd},
+            endDate: {$gte: sd}}).fetch();
+      }
+
+      else if (coords !== undefined){
+        var results = AccompanistProfiles.find({
           loc:
             { $near :
               {
                 $geometry: { type: "Point",  coordinates: coords },
                 $maxDistance: 20000
               }
-            },
-          startDate:  {$lte: sd, $lte: ed},
-          endDate: {$gte: sd, $gte: ed}}).fetch();
-      } // else if (sd && ed){
-      //   console.log("search sd and ed")
-
-      //   return AccompanistProfiles.find({
-      //     startDate:  {$lte: sd, $lte: ed},
-      //     endDate: {$gte: sd, $gte: ed}}).fetch();
-      // } else if (coords){
-      //   console.log("search coords")
-
-      //   return AccompanistProfiles.find({
-      //     loc:
-      //       { $near :
-      //         {
-      //           $geometry: { type: "Point",  coordinates: coords },
-      //           $maxDistance: 20000
-      //         }
-      //       }}).fetch();
-        else {
-      console.log("search null")
-
-        return null
+            }}).fetch();
       }
-  },
 
-    accompname: function() {
-        // We use this helper inside the {{#each posts}} loop, so the context
-        // will be a post object. Thus, we can use this.authorId.
-        var names = BasicProfiles.findOne({userId: this.Id});
-                //console.log(names)
+      else {
+        var results = null
+      }
 
-        return names
-
-    }
-
+      Session.set('results', results)
     });
 
-  // accompanists: ()=> {
-		// var coords = Session.get('coords')
+  return Session.get('results')
+},
+  accompname: function() {
+    var names = BasicProfiles.findOne({userId: this.Id});
+    return names
+  }
 
-		// // convert dates to dates that can be compared with Mongo schema
-		// var sd = new Date(Session.get('start_date'))
-		// var ed = new Date(Session.get('end_date'))
-
-  //   if (coords && sd && ed) {
-		//   console.log("search all")
-
-  //     var pipeline = [
-  //       {$group: {}}
-  //     ]
-
-  //     var accompProfs =
-  //       AccompanistProfiles.find({
-  //         loc:
-  //           { $near :
-  //             {
-  //               $geometry: { type: "Point",  coordinates: coords },
-  //               $maxDistance: 20000
-  //             }
-  //           },
-  //         startDate:  {$lte: sd, $lte: ed},
-  //         endDate: {$gte: sd, $gte: ed}}).fetch()
-
-
-      //return accompProfs //, accompBasicProfiles]
-     //}
-  // accompanists: ()=> {
-		// var coords = Session.get('coords')
-
-		// // convert dates to dates that can be compared with Mongo schema
-		// var sd = new Date(Session.get('start_date'))
-		// var ed = new Date(Session.get('end_date'))
-
-  //   if (coords && sd && ed) {
-		//   console.log("search all")
-  //     return AccompanistProfiles.find({
-  //       loc:
-  //         { $near :
-  //           {
-  //             $geometry: { type: "Point",  coordinates: coords },
-  //             $maxDistance: 20000
-  //           }
-  //         },
-  //       startDate:  {$lte: sd, $lte: ed},
-  //       endDate: {$gte: sd, $gte: ed}}).fetch()
-
-  //    }
-
-     //   else if (coords && ed) {
-    //   console.log("Searched coords and ed")
-    //   return AccompanistProfiles.find({
-    //     loc:
-    //       { $near :
-    //         {
-    //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000
-    //         }
-    //       },
-    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-    // } else if (coords && sd) {
-    //   console.log("Searched coords and sd")
-    //   return AccompanistProfiles.find({
-    //     loc:
-    //       { $near :
-    //         {
-    //           $geometry: { type: "Point",  coordinates: coords },
-    //           $maxDistance: 20000
-    //         }
-    //       },
-    //     startDate:  {$lte: new_sd, $lte: new_ed}}).fetch()
-    // } else if (sd && ed) {
-    //   console.log("Searched sd and ed")
-    //   return AccompanistProfiles.find({
-    //     startDate:  {$lte: new_sd, $lte: new_ed},
-    //     endDate: {$gte: new_sd, $gte: new_ed}}).fetch()
-    // }
-    	// return No results found return Null (should just go to empty results page with advanced search)
-       //console.log("new results responding")
-    	// return null
-
-
+});
 
 // Events
 
 Template.search.events({
-	'submit form': function(){
-	    event.preventDefault();
-
-	    //Constants submitted from the Home search bar
-      const address = event.target.address.value
-	   	const start_date = event.target.start_date.value
-	   	const end_date = event.target.end_date.value
-
-
-      Meteor.call('getGeocode', address, function(err, result){
-
-        var lat = Number(result[0].latitude);
-        var lng = Number(result[0].longitude);
-        var coords_new = [lng, lat];
-
-        if(err) {
-          console.log(err)
-        } else {
-            console.log("search session set")
-            Session.set('coords', coords_new)
-            Session.set('start_date', start_date)
-            Session.set('end_date', end_date)
-        }
-        console.log("working_search nothing done")
-    });
-
+  'submit form': function(){
       console.log("Form Submitted")
-      // go to knew page here
-      FlowRouter.go('results');
+      FlowRouter.go('results?');
   }
 });
 

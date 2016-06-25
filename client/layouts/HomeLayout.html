@@ -1,33 +1,73 @@
 <template name="HomeLayout">
-    <header>
-        <h1> Home </h1>
-    </header>
-    <main>
-    	{{> search}}
-      {{> atNavButton}}
-      {{> makeAdmin}}
+  <div class="homeScreen">
 
+    <head>
+        <link rel="stylesheet" href="styles/custom.css">
+    </head>
+    <main>
+      <div class="home_text">
+        <div class="container">
+          <h5> "Cool story bruh...." </h5>
+        </div>
+      </div>
+
+    	{{> search}}
+      {{> makeAdmin}}
     </main>
+    </div>
+
 </template>
 
 <template name="search">
-	<div class="container">
-	   <div class="row">
-        <div class="span12">
-            <form id="searchform">
-            	<!-- make it auto complete city for user -->
-					<input name="address" class="autocomplete" id="autocomplete" placeholder="My location" type="text">
-               <!-- add 30min drive raduis button -->
-                <input name="start_date" class="span5" type="date"  placeholder="First day of session" >
+	<!-- Code that makes enter work like tab in the home screen (place it in main.js client side ) -->
+  <script type='text/javascript'>
+    // Enter acts as tabs till time to submit form
+    $(document).ready(function(){
+        $('#searchform input').keydown(function(e){
+         if(e.keyCode==13){
+            if($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type')=='submit'){
+             return true;
+            }
+            $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
+           return false;
+         }
+        });
+    });
 
-               	<input name="end_date" class="span5" type="date"  placeholder="Event day" >
+     // Materialize date picker desing
+     $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+      });
+  </script>
+
+  <div class="search_bar">
+    <div class="container">
+  	   <div class="row">
+          <div class="span12">
+              <form class="col s12" id="searchform">
+
+  					   <div class="input-field col s4">
+                  <input name="address" class="autocomplete" id="autocomplete" type="text">
+                  <label>My location</label>
+                </div>
+
+                <div class="input-field col s3">
+                  <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
+                </div>
+
+                <div class="input-field col s3">
+                  <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
+                </div>
 
                 <button type="submit" class="btn btn-primary">Search</button>
-                <br><br>
-            </form>
-        </div>
+              </form>
+          </div>
+      </div>
     </div>
   </div>
+
+
 </template>
 
  <template name="makeAdmin">
