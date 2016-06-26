@@ -1,20 +1,22 @@
 <template name="HomeLayout">
-  <div class="homeScreen">
 
     <head>
         <link rel="stylesheet" href="styles/custom.css">
     </head>
+
+    <img src="http://www.mrwallpaper.com/wallpapers/tropical-beach-paradise-hd.jpg" id="bg" alt="">
+
     <main>
       <div class="home_text">
         <div class="container">
-          <h5> "Cool story bruh...." </h5>
+          <h2> "Cool story bruh...." </h2>
         </div>
       </div>
       {{> modalLogin}}
     	{{> search}}
       {{> makeAdmin}}
+      
     </main>
-    </div>
 
 </template>
 
@@ -67,23 +69,26 @@
     <div class="container">
   	   <div class="row">
           <div class="span12">
-              <form class="col s12" id="searchform">
+              <div class="blur">
+                <form class="col s12" id="searchform">
+    					   <div class="input-field col s4">
+                    <input name="address" class="autocomplete" id="autocomplete" type="text">
+                    <label>My location</label>
+                  </div>
 
-  					   <div class="input-field col s4">
-                  <input name="address" class="autocomplete" id="autocomplete" type="text">
-                  <label>My location</label>
-                </div>
+                  <div class="input-field col s3">
+                    <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
+                  </div>
 
-                <div class="input-field col s3">
-                  <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
-                </div>
+                  <div class="input-field col s3">
+                    <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
+                  </div>
 
-                <div class="input-field col s3">
-                  <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
-                </div>
-
-                <button type="submit" class="btn btn-primary">Search</button>
-              </form>
+                  <div class="input-field col s1">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                  </div>
+                </form>
+              </div>
           </div>
       </div>
     </div>

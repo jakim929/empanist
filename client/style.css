@@ -1,17 +1,5 @@
 /* CSS declarations go here */
 
-div.main_margin {
-    margin:20px;
-    padding:20px;
-    background-color: #143636
-
-}
-
-div.content {
-    margin:20px;
-    padding:20px;
-}
-
 .brand-logo{
 	font-weight:900;
 }
@@ -42,7 +30,10 @@ div.content {
   }
 }
 
+/*Home Screen*/
+
 div.home_text {
+  color: white;
   text-align: center;
   vertical-align: middle;
   position: absolute;
@@ -50,40 +41,39 @@ div.home_text {
   bottom: 50%;
   left: 0;
   right: 0;
-
   margin: auto;
-
 
 }
 
 div.search_bar {
-   
-    position: absolute;
-    top:70%;
-    bottom: 50%;
-    left: 0;
-    right: 0;
-
-    margin: auto;
-
+  position: absolute;
+  top:70%;
+  bottom: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
-.homeScreen {
-
-  /*  background-image: url("../client/images/background.jpg")
-    background-size: cover;
-    background-repeat: no-repeat;*/
-    background-color: #143636
-
-
+div.blur {
+  /* Backgroung layout*/
+  background-color: rgba(0, 0, 0, 0.5);
+  display:inline-block;
+  width: 100%;
 }
 
 #bg {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  
-  /* Preserve aspet ratio */
-  min-width: 100%;
-  min-height: 100%;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
 }
+
+/* Myprofile Page*/
+
+.card-panel{
+  width: 100%;
+ 
+}
+
+
