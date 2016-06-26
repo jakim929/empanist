@@ -10,12 +10,34 @@
           <h5> "Cool story bruh...." </h5>
         </div>
       </div>
-
+      {{> modalLogin}}
     	{{> search}}
       {{> makeAdmin}}
     </main>
     </div>
 
+</template>
+
+<template name="modalSignUp">
+  <a class="waves-effect waves-light btn modal-trigger" href="#signUp">Sign Up</a>
+
+<!-- Modal Structure -->
+  <div id="signUp" class="modal">
+    <div class="modal-content">
+      {{>atForm state='signUp'}}
+    </div>
+  </div>
+</template>
+
+<template name="modalLogin">
+  <a class="waves-effect waves-light btn modal-trigger" href="#login">Login</a>
+
+<!-- Modal Structure -->
+  <div id="login" class="modal">
+    <div class="modal-content">
+      {{>atForm state='signIn'}}
+    </div>
+  </div>
 </template>
 
 <template name="search">

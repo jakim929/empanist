@@ -13,7 +13,26 @@ window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
 
+// Accounts
+
+AccountsTemplates.configure({
+    defaultLayoutType: 'blaze', // Optional, the default is 'blaze'
+    defaultLayout: 'MainLayout',
+    defaultLayoutRegions: {
+        nav: 'Navbar'
+    },
+    defaultContentRegion: 'main'
+});
+
+
 // Javascript Component Initialization
+
+Template.modalLogin.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+});
 
 Template.CollapsibleStructure.onRendered(function () {
   $('.collapsible').collapsible({
@@ -46,13 +65,10 @@ Template.NewAccompLayout.onRendered(function () {
 // On creation
 
 
-Template.nav.onCreated(function (){
+Template.Navbar.onCreated(function (){
   this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
 
-Template.navbar.onCreated(function (){
-    this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
-});
 
 // ==Global Template Helpers==
 

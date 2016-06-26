@@ -1,0 +1,14 @@
+<template name="Navbar">
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="/" class="brand-logo left">Empanist</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+						{{#each navbarFields}}
+							{{> Template.dynamic template=this}}
+						{{/each}}
+				</ul>
+			</div>
+		</nav>
+	</div>
+</template>

@@ -5,7 +5,7 @@
 		</head>
 
 		<div class="nav">
-			{{> Template.dynamic template="nav"}}
+			{{> Template.dynamic template=nav}}
 		</div>
 
     <div class ="content">
@@ -14,38 +14,10 @@
    	</div>
 </template>
 
-<template name="nav">
-	<div class="navbar-fixed">
-		<nav>
-			<div class="nav-wrapper">
-				<a href="/" class="brand-logo left">Empanist</a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-						{{#each navbarFields}}
-							{{> Template.dynamic template=this}}
-						{{/each}}
-				</ul>
-			</div>
-		</nav>
-	</div>
-</template>
+
 
 <template name="login">
 	<li><a>Login</a></li>
-</template>
-
-<template name="navbar">
-	<div class="navbar-fixed">
-		<nav>
-			<div class="nav-wrapper">
-				<a href="/" class="brand-logo left">Empanist</a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-						{{#each navbarFields}}
-							{{> Template.dynamic template=this}}
-						{{/each}}
-				</ul>
-			</div>
-		</nav>
-	</div>
 </template>
 
 <template name="myProfile">
