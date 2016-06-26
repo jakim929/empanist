@@ -11,4 +11,58 @@
 			</div>
 		</nav>
 	</div>
+
+<!-- Modal Contents -->
+
+  <div id="signUp" class="modal">
+    <div class="modal-content">
+      {{>atForm}}
+    </div>
+  </div>
+
+  <div id="login" class="modal">
+    <div class="modal-content">
+      {{>atForm}}
+    </div>
+  </div>
+
+
+
+</template>
+
+<template name="modalSignUp">
+  <li><a class="waves-effect waves-light modal-trigger " href="#signUp">Sign Up</a></li>
+</template>
+
+<template name="modalLogin">
+  <li><a class="waves-effect waves-light modal-trigger" href="#login">Login</a></li>
+</template>
+
+<template name="navbarAccount">
+  <li><a class="dropdown-button" data-activates="accountDropdown">Account<i class="material-icons right">arrow_drop_down</i></a></li>
+  <ul id="accountDropdown" class="dropdown-content">
+    <li><a href={{getProfileRoute}}>My Profile</a></li>
+    <li class="divider"></li>
+    <li><a class='logout'>Logout</a></li>
+  </ul>
+</template>
+
+<template name="myProfile">
+	<li><a href={{getProfileRoute}}>My Profile</a></li>
+</template>
+
+<template name="accompanistDashboard">
+	<li><a href='/accompanistDashboard'>Accompanist Dashboard</a></li>
+</template>
+
+<template name="bookings">
+	<li><a href='/bookings'>Bookings</a></li>
+</template>
+
+<template name="becomeAnAccompanist">
+	<li><a class='waves-effect waves-light btn' href='/newaccomp'>Become an Accompanist</a></li>
+</template>
+
+<template name="addProfile">
+	<li><a href='/addinfo'>Add Profile</a></li>
 </template>

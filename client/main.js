@@ -21,13 +21,49 @@ AccountsTemplates.configure({
     defaultLayoutRegions: {
         nav: 'Navbar'
     },
-    defaultContentRegion: 'main'
+    defaultContentRegion: 'main',
+
+    onSubmitHook: function(error, state){
+      if (!error){
+        if (state === "signIn"){
+          $('#signUp').closeModal();
+          $('#login').closeModal();
+        }
+        if (state === "signUp"){
+          $('#signUp').closeModal();
+          $('#login').closeModal();
+        }
+      }
+    }
 });
 
+AccountsTemplates.configureRoute('signIn');
+AccountsTemplates.configureRoute('signUp');
 
 // Javascript Component Initialization
 
+Template.Navbar.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $(".dropdown-button").dropdown();
+  });
+});
+
+Template.navbarAccount.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $(".dropdown-button").dropdown();
+  });
+});
+
 Template.modalLogin.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+});
+
+Template.modalSignUp.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-trigger').leanModal();
@@ -44,15 +80,6 @@ Template.TabStructure.onRendered(function () {
   $('ul.tabs').tabs();
 });
 
-Template.login.onRendered(function () {
-  $(".dropdown-button").dropdown({
-    inDuration: 300,
-    outDuration: 700,
-    belowOrigin: true,
-    alignment: 'right'
-  });
-});
-
 Template.NewAccompLayout.onRendered(function () {
     // Initialize collapse button
     $(".button-collapse").sideNav();
@@ -65,11 +92,6 @@ Template.NewAccompLayout.onRendered(function () {
 // On creation
 
 
-Template.Navbar.onCreated(function (){
-  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
-});
-
-
 // ==Global Template Helpers==
 
 Template.registerHelper('navbarFields', () => {
@@ -78,15 +100,15 @@ Template.registerHelper('navbarFields', () => {
     // Accompanist
     if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
       console.log("Navbar Config 1")
-      return ['accompanistDashboard', 'myProfile', 'bookings']
+      return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
     // Not Accompanist
     console.log("Navbar Config 2")
-    return ['becomeAnAccompanist', 'myProfile' ,'bookings']
+    return ['becomeAnAccompanist','bookings', 'navbarAccount' ]
   // Not Logged In
   }else{
     console.log("Navbar Config 3")
-    return ['login', 'becomeAnAccompanist']
+    return ['modalLogin','modalSignUp', 'becomeAnAccompanist']
 
   }
 });
@@ -441,6 +463,27 @@ Template.makeAdmin.events({
 	'click button': function(){
     userId = Meteor.userId();
     Meteor.call('divinify', userId);
+  }
+});
+
+// Decide Modal Login/SignUp Popup
+Template.modalLogin.events({
+  'click .modal-trigger': function(){
+    AccountsTemplates.setState('signIn');
+  }
+});
+
+Template.modalSignUp.events({
+  'click .modal-trigger': function(){
+    AccountsTemplates.setState('signUp');
+  }
+});
+
+
+// Logout from the navbar
+Template.Navbar.events({
+  'click .logout': function(){
+    AccountsTemplates.logout();
   }
 });
 
