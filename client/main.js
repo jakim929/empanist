@@ -45,6 +45,11 @@ Template.NewAccompLayout.onRendered(function () {
 
 // On creation
 
+
+Template.nav.onCreated(function (){
+  this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
+});
+
 Template.navbar.onCreated(function (){
     this.navbarFields = new ReactiveVar(['myProfile', 'accompanistDashboard','bookings'])
 });
@@ -327,26 +332,26 @@ Template.results.helpers({
       }
 
       else if (moment(sd).isValid() && moment(ed).isValid()){
-        var results = 
+        var results =
           AccompanistProfiles.find({
             startDate:  {$lte: sd, $lte: ed},
             endDate: {$gte: sd, $gte: ed}}).fetch();
-      } 
+      }
 
       else if (moment(ed).isValid()){
-        var results = 
+        var results =
           AccompanistProfiles.find({
             startDate:  {$lte: ed},
             endDate: {$gte: ed}}).fetch();
-      } 
+      }
 
       else if (moment(sd).isValid() ){
-        var results = 
+        var results =
           AccompanistProfiles.find({
             startDate:  {$lte: sd},
             endDate: {$gte: sd}}).fetch();
-      } 
-      
+      }
+
       else if (coords !== undefined){
         var results = AccompanistProfiles.find({
           loc:
@@ -356,13 +361,13 @@ Template.results.helpers({
                 $maxDistance: 20000
               }
             }}).fetch();
-      } 
+      }
 
       else {
         var results = null
       }
 
-      Session.set('results', results)    
+      Session.set('results', results)
     });
 
   return Session.get('results')

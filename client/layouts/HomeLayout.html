@@ -1,23 +1,24 @@
-  <template name="HomeLayout">
-    <div class="homeScreen">
+<template name="HomeLayout">
 
-      <head>
-          <link rel="stylesheet" href="styles/custom.css">
-      </head>
-      <main>
-        <div class="home_text">
-          <div class="container">
-            <h5> "Cool story bruh...." </h5>
-          </div>
+    <head>
+        <link rel="stylesheet" href="styles/custom.css">
+    </head>
+
+    <img src="http://www.mrwallpaper.com/wallpapers/tropical-beach-paradise-hd.jpg" id="bg" alt="">
+
+    <main>
+      <div class="home_text">
+        <div class="container">
+          <h2> "Cool story bruh...." </h2>
         </div>
-
-      	{{> search}}
-        {{> loginButtons}}
-        {{> makeAdmin}}
-      </main>
       </div>
 
-  </template>
+    	{{> search}}
+      {{> makeAdmin}}
+      
+    </main>
+
+</template>
 
 <template name="search">
 	<!-- Code that makes enter work like tab in the home screen (place it in main.js client side ) -->
@@ -34,7 +35,7 @@
          }
         });
     });
-   
+
      // Materialize date picker desing
      $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
@@ -46,23 +47,26 @@
     <div class="container">
   	   <div class="row">
           <div class="span12">
-              <form class="col s12" id="searchform">
+              <div class="blur">
+                <form class="col s12" id="searchform">
+    					   <div class="input-field col s4">
+                    <input name="address" class="autocomplete" id="autocomplete" type="text">
+                    <label>My location</label>
+                  </div>
 
-  					   <div class="input-field col s4">
-                  <input name="address" class="autocomplete" id="autocomplete" type="text">
-                  <label>My location</label>
-                </div>
-                
-                <div class="input-field col s3">
-                  <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
-                </div>
+                  <div class="input-field col s3">
+                    <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
+                  </div>
 
-                <div class="input-field col s3">
-                  <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
-                </div>
+                  <div class="input-field col s3">
+                    <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
+                  </div>
 
-                <button type="submit" class="btn btn-primary">Search</button>
-              </form>
+                  <div class="input-field col s1">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                  </div>
+                </form>
+              </div>
           </div>
       </div>
     </div>
@@ -74,5 +78,3 @@
  <template name="makeAdmin">
    <button>Divinify</button>
 </template>
-
-
