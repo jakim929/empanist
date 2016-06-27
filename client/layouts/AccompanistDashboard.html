@@ -5,6 +5,8 @@
         <br>
         {{> notifications }}
         {{> TabStructure }}
+
+
     </main>
 </template>
 
@@ -13,14 +15,6 @@
   <button name="requestNotification">Press</button>
 </template>
 
-<template name="CollapsibleStructure">
-  <ul class="collapsible" data-collapsible="expandable">
-    <li>
-      <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Pending Bookings</div>
-      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-    </li>
-  </ul>
-</template>
 
 <template name="TabStructure">
   <div class="row">
@@ -40,62 +34,69 @@
 </template>
 
 
-<template name="BookingRequests">
-  {{#each this}}
-    {{#with accountDoc musician}}
-      Musician: {{doc.name}}<br>
+<template name="CollapsibleStructure">
+  {{#with receivedBookingRequests}}
+    <ul class="collapsible" data-collapsible="expandable">
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">people</i>Pending Bookings ({{this.pending.length}})</div>
+        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.pending }}</div>
+      </li>
+
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Ongoing Bookings ({{this.ongoing.length}})</div>
+        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.ongoing }}</div>
+      </li>
+
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Previous Bookings ({{this.completed.length}})</div>
+        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.completed }}</div>
+      </li>
+
+      <li>
+        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Cancelled Bookings ({{this.cancelled.length}})</div>
+        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.cancelled }}</div>
+      </li>
+    </ul>
+  {{else}}
+  You currently have no bookings... Here's how you can increase your profile.
+  {{/with}}
+
+</template>
+
+
+<template name="request">
+    <!-- {{#with accountById musician}}
+      Musician: {{name}}<br>
     {{/with}}
     Planned Repertoire:
     {{#each repertoire}}
       {{this}},
     {{/each}}<br>
-    Status: {{status}} <br>
+    Status: {{status}}<br>
     Start Date: {{startDate}} <br>
     End Date: {{endDate}} <br><br>
     <button><a href={{getBookingRoute this._id}}>Review Booking</a></button>
-    <br><br>
-  {{/each}}
+    <br><br> -->
+
+    <li class="collection-item avatar">
+      <img src="/images/profile.png" alt="" class="circle">
+      {{#with basicProfileById musician}}
+        <span class="title"><a href={{getProfileRoute _id}}><b>{{name}}</b></a></span>
+      {{/with}}
+      {{#with musicProfileById musician}}
+        <p class="no-padding">{{instrument}} </p>
+      {{/with}}
+        <p class="no-padding">{{formatDuration this.startDate this.endDate}}</p>
+      <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+    </li>
 </template>
 
 
-<template name="bookingAvatar">
-  <li class="collection-item avatar">
-    <i class="material-icons circle">folder</i>
-    {{#with accountById musician}}
-      <span class="title">{{name}}</span>
-    {{/with}}
-    {{#with profileById musician}}
-      <p>{{instrument}} <br></p>
-    {{/with}}
-    <p>
-      {{startDate}} to {{endDate}}
-    </p>
 
-    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-  </li>
-</template>
-
-<template name="pendingBookings">
-
-</template>
-
-<template name="completedBookings">
-  {{#with completedTransactions transactionsAsAccompanist}}
-    <h3>Completed Bookings ({{arrayLength this}})</h3>
-    {{> Template.dynamic template="BookingRequests" data=this}}
-  {{/with}}
-</template>
-
-<template name="confirmedBookings">
-  {{#with confirmedTransactions transactionsAsAccompanist}}
-    <h3>Confirmed Bookings ({{arrayLength this}})</h3>
-    {{> Template.dynamic template="BookingRequests" data=this}}
-  {{/with}}
-</template>
-
-<template name="cancelledBookings">
-  {{#with cancelledTransactions transactionsAsAccompanist}}
-    <h3>Cancelled Bookings ({{arrayLength this}})</h3>
-    {{> Template.dynamic template="BookingRequests" data=this}}
-  {{/with}}
+<template name="bookingList">
+  <ul class="collection">
+    {{#each this}}
+     {{> Template.dynamic template="request" data=this}}
+    {{/each}}
+  </ul>
 </template>

@@ -27,7 +27,7 @@ TransactionSchema = new SimpleSchema({
   status: {
     type: String,
     label: "Booking Status",
-    allowedValues: ['Confirmed', 'Rejected', 'Pending', 'Cancelled', 'Completed'],
+    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Rejected', 'Cancelled'],
     autoform: {
       type: "hidden"
     }

@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicProfiles } from '../collections/musicProfiles.js'
 import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
+import { Transactions } from '../collections/transactions.js'
 
 Meteor.startup(() => {
 
@@ -9,14 +10,23 @@ Meteor.startup(() => {
 
 var geo = new GeoCoder();
 
+getGeocode = function (arg) {
+  if (arg == 0){
+    return null
+  } else {
+    var result = geo.geocode(arg);
+    return result
+  }
+};
+
 Meteor.methods({
   getGeocode: function (arg) {
     if (arg == 0){
       return null
     } else {
-    var result = geo.geocode(arg);
-    return result
-  }
+      var result = geo.geocode(arg);
+      return result
+    }
   },
 
   insertFullRandomProfile: function(userId){
@@ -31,6 +41,12 @@ Meteor.methods({
       BasicProfiles.insert(createNewBasicProfile(genId), {getAutoValues: false});
       MusicProfiles.insert(createNewMusicProfile(genId), {getAutoValues: false});
       AccompanistProfiles.insert(createNewAccompanistProfile(genId), {getAutoValues: false});
+    }
+  },
+
+  insertRandomTransactions: function(number, userId) {
+    for (var i = 0; i < number; i++){
+      Transactions.insert(createNewTransaction(userId));
     }
   },
 
