@@ -1,4 +1,5 @@
 <template name="NewAccompLayout">
+    <h3>Fill this form to become an accompanist</h3>
     <main>
       {{#if isInRole 'becomeAccompanist'}}
         {{> upsertAccompanistForm}}
@@ -16,14 +17,17 @@
     <fieldset>
       {{> afQuickField name="repertoire"}}
       {{> afQuickField name="charge"}}
-      {{> afQuickField name="working_hours"}}
+      {{> afQuickField name="working_hours" type="select-checkbox" id="test5"}}
+<!--       {{> afFieldInput name="working_hours" options="allowed" type="select-checkbox" id="test5"}}
+ -->     <!--  <input type="checkbox" id="test5" name="working_hours" />
+      <label for="test5">Red</label> -->
       {{> afQuickField name="working_days"}}
-      {{> afQuickField name="session_location"}}
       {{> afQuickField name="startDate"}}
       {{> afQuickField name="endDate"}}
       {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
       {{> afQuickField name="one_liner"}}
     </fieldset>
+    <br>
     <button type="submit" class="btn btn-primary">{{formType}} Accompanist Profile</button>
     {{/autoForm}}
 </template>

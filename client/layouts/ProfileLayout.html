@@ -1,4 +1,34 @@
 <template name="ProfileLayout">
+  
+  <script>
+    $(document).ready(function() {
+
+    $(document).on('click.card', '.card', function (e) {
+      if ($(this).find('> .card-reveal').length) {
+        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
+          // Make Reveal animate down and display none
+          $(this).find('.card-reveal').velocity(
+            {translateY: 0}, {
+              duration: 225,
+              queue: false,
+              easing: 'easeInOutQuad',
+              complete: function() { $(this).css({ display: 'none'}); }
+            }
+          );
+            $(this).velocity({height:$(this).data('height')},{duration:225});
+        }
+        else if ($(e.target).is($('.card .activator')) ||
+                 $(e.target).is($('.card .activator i')) ) {
+          $(e.target).closest('.card').css('overflow', 'hidden');
+          $(this).data('height',$(this).css('height')).find('.card-reveal').css({ display: 'block',height:'auto'}).velocity("stop", false).velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
+              $(this).velocity({height:$(this).find('.card-reveal').height()+40},{duration:300});
+        }
+      }
+      $('.card-reveal').closest('.card').css('overflow', 'hidden');
+    });
+  });
+  </script>
+
     <header>
         <h1> Profile </h1>
         <link rel="stylesheet" href="styles/custom.css">
@@ -6,15 +36,15 @@
     <main>
       {{#if validId}}
         {{#if isOwnProfile}}
-          {{> editProfile}}<br>
           {{> Template.dynamic template="accountTemplate" data=myAccount}}
           {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
         {{else}}
-          {{#if routeAccompanistProfiles}}
-            {{> bookAccompanist}}<br>
-            {{> Template.dynamic template="accountTemplate" data=routeAccount}}
+          {{#if routeAccompanistProfiles}} 
+            {{> Template.dynamic template="accountTemplate" data=routeAccount}} <br>
+            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfiles}} <br>
             {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfiles}}
+            {{> bookAccompanist}}
+            
           {{else}}
           {{> Template.dynamic template="accountTemplate" data=routeAccount}}
           {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
@@ -30,122 +60,166 @@
   <h2>Invalid ID</h2>
 </template>
 
-<template name="editProfile">
-  <button><a href="/addinfo">Edit Profile</a></button>
-</template>
-
 
 <template name="accountTemplate">
-  <div class="col s12">
-    <div class="card-panel hoverable grey lighten-5 z-depth-1">
-      <span class="black-text">
-        <h5>Account Details</h5>
-        <h10>Name: {{name}}</h10>
-        <h10>Birthday: {{birthDate}}</h10>
-        <h10>Phone Number: {{phone}}</h10>
-        <h10>Affiliation: {{affiliation}}</h10>
-     </span>
+  <div class="card grey lighten-5 z-depth-1">
+    <div class="card-content">
+      <span class="black-text activator">
+        <h10>{{name}}</h10><br>
+        <h10>{{affiliation}}</h10> <br>
+
+        {{#if isOwnProfile}}
+        <h10>Birthday: {{birthDate}}</h10> <br>
+        <h10>Phone Number: {{phone}}</h10> <br>
+        <i class="material-icons right">mode_edit</i>
+        <br>
+        {{/if}}
+
+      </span>
     </div>
+
+    {{#if isOwnProfile}}
+      <div class="card-reveal grey lighten-5 z-depth-1">
+        <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+        {{> upsertBasicProfileForm}}
+      </div>
+    {{/if}}
+
   </div>
 </template>
-<!--  {{#if isOwnProfile}}
-  {{/if}}
--->
+
 
 <template name="profileTemplate">
   <section class="myprofile">
-      <div class="col s12">
-        <div class="card-panel hoverable grey lighten-5 z-depth-1">
-          <span class="black-text">
-            <h5>Instruments Mastered: {{instrument}}</h5>
-          <h10>Years Played: {{yearsPlayed}}</h10>
-         </span>
-        </div>
-      </div>
-      <!--  {{#if isOwnProfile}}
-      edit profile
-  {{/if}}
--->
+        
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
+            <span class="black-text activator">
+              <h5>Instruments Mastered</h5> <br>
+              <h10>Instruments Mastered: {{instrument}}</h10> <br>
+              <h10>Years Played: {{yearsPlayed}}</h10>
 
-      <div class="col s12">
-        <div class="card-panel hoverable grey lighten-5 z-depth-1">
-          <span class="black-text">
-            <h5>Awards: </h5>
-              {{#each awards}}
-                Name: {{name}}<br>
-                Date: {{date}}<br>
-              {{/each}}
-         </span>
+               {{#if isOwnProfile}}
+                  <i class="material-icons right">mode_edit</i>
+                {{/if}}
+
+           </span>
+          </div> 
+
+          {{#if isOwnProfile}}
+            <div class="card-reveal grey lighten-5 z-depth-1">
+              <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+              {{> upsertInstrumentForm}}
+            </div>
+          {{/if}} 
+
         </div>
-      </div>
-      <!--  {{#if isOwnProfile}}
-      edit / add
-  {{/if}}
--->
+
+
+
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
+            <span class="black-text activator">
+            <h5>Awards: </h5>
+            {{#each awards}}
+              <span class="right">{{date}}</span>
+              {{name}}
+              <br><br>
+            {{/each}}
+            
+            {{#if isOwnProfile}}
+              <i class="material-icons right">mode_edit</i>
+            {{/if}}
+            <br>
+
+           </span>
+          </div> 
+
+          {{#if isOwnProfile}}
+            <div class="card-reveal grey lighten-5 z-depth-1">
+              <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+              {{> upsertAwardsForm}}
+            </div>
+          {{/if}} 
+
+        </div>
       
-      <div class="col s12">
-        <div class="card-panel hoverable grey lighten-5 z-depth-1">
-          <span class="black-text">
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
+            <span class="black-text activator">
              <h5>Music Programs: </h5>
               {{#each musicPrograms}}
-                Institution Name: {{instName}}<br>
-                Program Name: {{programName}}<br>
-                Start Date: {{startDate}}<br>
-                End Date: {{endDate}}<br>
+                <span class="right">{{startDate}} - {{endDate}}</span>
+                {{programName}}<br>
+
+                <br><br>
               {{/each}}
-         </span>
+
+              {{#if isOwnProfile}}
+                <i class="material-icons right">mode_edit</i>
+              {{/if}}
+              <br>
+
+           </span>
+          </div> 
+
+          {{#if isOwnProfile}}
+            <div class="card-reveal grey lighten-5 z-depth-1">
+              <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+              {{> upsertProgramsForm}}
+            </div>
+          {{/if}} 
+
         </div>
-      </div>
-      <!--  {{#if isOwnProfile}}
-            edit / add
-  {{/if}}
--->
       
-       <div class="col s12">
-        <div class="card-panel hoverable grey lighten-5 z-depth-1">
-          <span class="black-text">
+        <div class="card grey lighten-5 z-depth-1">
+          <div class="card-content">
+            <span class="black-text activator">
             <h5>Orchestras Participated in: </h5>
               {{#each orchestras}}
+                <span class="right">{{startDate}} - {{endDate}}</span>
                 Name: {{name}}<br>
                 Position: {{position}}<br>
-                Start Date: {{startDate}}<br>
-                End Date: {{endDate}}<br>
+                <br><br>
               {{/each}}
-         </span>
+
+            {{#if isOwnProfile}}
+              <i class="material-icons right">mode_edit</i>
+            {{/if}}
+            <br>
+
+           </span>
+          </div> 
+
+          {{#if isOwnProfile}}
+            <div class="card-reveal grey lighten-5 z-depth-1">
+              <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+              {{> upsertOrchestraForm}}
+            </div>
+          {{/if}}           
         </div>
-      </div>
-      <!--  {{#if isOwnProfile}}
-            edit / add
-  {{/if}}
--->
-    
+
   </section>
 </template>
 
-<!-- template to edit profile -->
-<!-- template to edit/add inst -->
-<!-- template to edit/add awards -->
-<!-- template to edit/add progs -->
-<!-- template to edit/add orchestra -->
-
-
 <template name="accompanistProfileTemplate">
-  <h3>Accompanist Profile</h3>
-  <h5>Repertoire: </h5>
-    {{#each repertoire}}
-      {{this}}<br>
-    {{/each}}
-  <hr>
-  <h5>Start Date: {{startDate}}</h5>
-  <h5>End Date: {{endDate}}</h5>
-  <h5>Hourly Rate: ${{charge}}/HR</h5>
-  <h5>Preferred Working Time: /{{#each working_hours}}{{this}}/{{/each}}</h5>
-  <h5>Working Hours: /{{#each working_hours}}{{this}}/{{/each}}</h5>
-  <h5>Working Days: /{{#each working_days}}{{this}}/{{/each}}</h5>
-  <h5>Session Location: {{session_location}}</h5>
-  <h5>My Location: {{mylocation}}</h5>
-  <hr>
-  <h5>One Liner: {{one_liner}}</h5>
+  <div class="card grey lighten-5 z-depth-1">
+    <div class="card-content">
+      <span class="black-text activator">
+        <!--   
+        <h5>Repertoire: </h5>
+        {{#each repertoire}}
+          {{this}}<br>
+        {{/each}}
+           <hr> -->
+        <h10>Hourly Rate: ${{charge}}</h10> <br>
+        <h10>Preferred Working Time: {{#each working_hours}}{{this}}/{{/each}}</h10><br>
+        <h10>Working Days: {{#each working_days}}{{this}}/{{/each}}</h10><br>
+        <h10>Location: {{mylocation}}</h10><br>
+        <h10>One Liner: {{one_liner}}</h10>
+      </span>
+    </div>         
+  </div>
 </template>
 
 
@@ -162,4 +236,57 @@
       <button type="submit" class="btn btn-primary">Book Accompanist</button>
     </fieldset>
   {{/autoForm}}
+</template>
+
+<!-- template to edit/add instruments -->
+<template name="upsertInstrumentForm">
+  {{#if isInRole 'makeMusicProfile'}}
+    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertInstraForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
+        {{>afQuickField name="yearsPlayed"}}
+      </fieldset>
+      <br>
+    <button type="submit" class="btn btn-primary">Save</button>
+    {{/autoForm}}
+  {{/if}}
+</template>
+
+<!-- template to edit/add awards -->
+<template name="upsertAwardsForm">
+  {{#if isInRole 'makeMusicProfile'}}
+    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertAwardsForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="awards"}}
+      </fieldset>
+      <br>
+    <button type="submit" class="btn btn-primary">Save</button>
+    {{/autoForm}}
+  {{/if}}
+</template>
+
+<!-- template to edit/add progs -->
+<template name="upsertProgramsForm">
+  {{#if isInRole 'makeMusicProfile'}}
+    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertProgramsForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="musicPrograms"}}
+      </fieldset>
+      <br>
+    <button type="submit" class="btn btn-primary">Save</button>
+    {{/autoForm}}
+  {{/if}}
+</template>
+
+<!-- template to edit/add orchestra -->
+<template name="upsertOrchestraForm">
+  {{#if isInRole 'makeMusicProfile'}}
+    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertOrchestraForm" type=formType}}
+      <fieldset>
+        {{>afQuickField name="orchestras"}}
+      </fieldset>
+      <br>
+    <button type="submit" class="btn btn-primary">{Save</button>
+    {{/autoForm}}
+  {{/if}}
 </template>
