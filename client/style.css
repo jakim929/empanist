@@ -1,5 +1,9 @@
 /* CSS declarations go here */
 
+.no-padding{
+	padding: 0;
+}
+
 .brand-logo{
 	font-weight:900;
 }

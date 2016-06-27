@@ -115,17 +115,17 @@ Template.registerHelper('navbarFields', () => {
 
 
 // Get Current User's Account
-Template.registerHelper('myAccount', () => {
+Template.registerHelper('myBasicProfile', () => {
   return BasicProfiles.findOne({userId: Meteor.userId()});
 });
 
 // Get Current User's Music Profile
-Template.registerHelper('myProfile', () => {
+Template.registerHelper('myMusicProfile', () => {
   return MusicProfiles.findOne({userId: Meteor.userId()});
 });
 
 // Get Current Route's Accompanist Profile
-Template.registerHelper('myAccompanistProfiles', () => {
+Template.registerHelper('myAccompanistProfile', () => {
   return AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
@@ -147,15 +147,44 @@ Template.registerHelper('sentBookingRequests', () =>{
   return Transactions.find({musician: Meteor.userId()}).fetch()
 });
 
-Template.registerHelper('receivedBookingRequests', () =>{
-  return Transactions.find({accompanist: Meteor.userId()}).fetch()
+Template.registerHelper('receivedBookingRequests', (arg) =>{
+  var splitRequests = {pending:[], ongoing:[], completed:[], cancelled:[]}
+  Transactions.find({accompanist: Meteor.userId()}).forEach(function(doc){
+    if(doc.status == "Pending"){
+      splitRequests.pending.push(doc);
+    }else if(doc.status == "Ongoing"){
+      splitRequests.ongoing.push(doc);
+    }else if(doc.status == "Completed"){
+      splitRequests.completed.push(doc);
+    }else{
+      splitRequests.cancelled.push(doc);
+    }
+  });
+  return splitRequests
 });
 
-Template.registerHelper('accountById', (id) =>{
+Template.registerHelper('formatDate', function(date) {
+  return moment(date).format('ddd, MMMM, DD-YYYY');
+});
+
+Template.registerHelper('formatDuration', function(date1, date2) {
+  var start =  moment(date1);
+  var end = moment(date2);
+  if (start.year() == end.year()){
+    // Year is the same
+    if(start.month() == end.month()){
+      return start.format('MMM DD - ') + end.format('DD, YYYY')
+    }
+      return start.format('MMM DD - ') + end.format('MMM DD, YYYY')
+  }
+  return start.format('MMM DD, YYYY - ') + end.format('MMM DD, YYYY')
+});
+
+Template.registerHelper('basicProfileById', (id) =>{
   return BasicProfiles.findOne({userId: id})
 });
 
-Template.registerHelper('profileById', (id) =>{
+Template.registerHelper('musicProfileById', (id) =>{
   return MusicProfiles.findOne({userId: id})
 });
 
@@ -171,61 +200,12 @@ Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
 });
 
-
-
-// Old Global Template Helpers
-
-Template.registerHelper('pendingTransactions', (array) =>{
-  return array.filter(function(element, index, array){
-    return element.status == "Pending"
-  })
-});
-
-Template.registerHelper('confirmedTransactions', (array) =>{
-  return array.filter(function(element, index, array){
-    return element.status == "Confirmed"
-  })
-});
-
-Template.registerHelper('completedTransactions', (array) =>{
-  return array.filter(function(element, index, array){
-    return element.status == "Completed"
-  })
-});
-
-Template.registerHelper('cancelledTransactions', (array) =>{
-  return array.filter(function(element, index, array){
-    return element.status == "Completed"
-  })
-});
-
-
-Template.registerHelper('arrayLength', (array) =>{
-  return array.length
-});
-
 Template.registerHelper('validId', () =>{
-  // For now it is set to looking up in BasicProfiles instead of Meteor.users
-  // Makes it work with test data
-  // if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
-
-  if (BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")})){
+  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
     return true
   }else{
     return false
   }
-});
-
-Template.registerHelper('defaultTransaction', () => {
-  return {musician: Meteor.userId(),
-          accompanist: FlowRouter.getParam("profileId"),
-          status: 'Pending'}
-});
-
-Template.registerHelper('ownProfile', () => {
-  event.preventDefault();
-
-  return (FlowRouter.getParam("profileId") == Meteor.userId())
 });
 
 Template.registerHelper( 'userId', () => {
@@ -233,20 +213,24 @@ Template.registerHelper( 'userId', () => {
     return Meteor.userId();
 });
 
+
+// Old Global Template Helpers
+
+
+Template.registerHelper('defaultTransaction', () => {
+  return {musician: Meteor.userId(),
+          accompanist: FlowRouter.getParam("profileId"),
+          status: 'Pending'}
+});
+
+
+
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
 });
 
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return "/bookingRequest/"+bookingId
-});
-
-Template.registerHelper('transactionsAsAccompanist', () =>{
-  return Transactions.find({ accompanist: Meteor.userId()}).fetch();
-});
-
-Template.registerHelper('transactionsAsMusician', () =>{
-  return Transactions.find({ musician: Meteor.userId()}).fetch()
 });
 
 

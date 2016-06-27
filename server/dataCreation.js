@@ -1,3 +1,4 @@
+import { BasicProfiles } from '../collections/basicProfiles.js'
 
 // Random creation
 function randomElement (arr) {
@@ -109,7 +110,7 @@ createNewAccompanistProfile = function (givenUserId){
   var locations = ["Boston", "Cambridge", "Harvard", "Jeddah", "Amman"];
   var randomMyLocation = randomElement(locations);
 
-  var oneLiner = "I accept Jamjoom as my Lord and Savior";
+  var oneLiner = "I accept James as my Lord and Savior";
     console.log(givenUserId);
 
   return {Id: givenUserId,
@@ -142,4 +143,20 @@ createNewBasicProfile = function (givenUserId){
           birthDate: randomBirthDate,
           phone: randomPhone,
           affiliation: randomAffiliation};
+}
+
+createNewTransaction = function (givenUserId){
+  var repertoires = ["Dvorak Cello Concerto in B Minor, Op. 104","Schumann Cello Concerto in A Minor, Op. 129","Boccherini Cello Sonata in A Major, G.4","Bloch Cello Sonata ","Bruch Kol Nidrei, Op.47 ","Chopin Introduction et Polonaise Brilliante, Op. 3 ","Fauré Papillon, Op.77","Franck Cello Sonata","Greig Cello Sonata in A Minor, ","Handel Sonata No.1 in G Minor ","Haydn Presto in G"];
+  var randomRepertoire = randomNoElementGiven(repertoires, 3);
+
+  var musicians = BasicProfiles.find({}, {userId : 1}).fetch();
+  var randomMusician = (randomElement(musicians)).userId;
+
+  var randomStatus = 'Pending';
+
+  var today = new Date(2016, 6, 27);
+  var future = new Date(2016, 7, 6);
+
+  return {musician: randomMusician, accompanist: givenUserId, repertoire: randomRepertoire, status: randomStatus, startDate: today, endDate: future}
+
 }
