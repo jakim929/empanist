@@ -1,5 +1,5 @@
 <template name="ProfileLayout">
-  
+
   <script>
     $(document).ready(function() {
 
@@ -39,12 +39,11 @@
           {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
           {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}<br>
         {{else}}
-          {{#if routeAccompanistProfiles}} 
+          {{#if routeAccompanistProfile}}
             {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}} <br>
             {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}} <br>
             {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
             {{> bookAccompanist}}
-            
           {{else}}
           {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
           {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
@@ -91,7 +90,7 @@
 
 <template name="profileTemplate">
   <section class="myprofile">
-        
+
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <span class="black-text activator">
@@ -104,17 +103,17 @@
                 {{/if}}
 
            </span>
-          </div> 
+          </div>
 
           {{#if isOwnProfile}}
             <div class="card-reveal grey lighten-5 z-depth-1">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertInstrumentForm}}
             </div>
-          {{/if}} 
+          {{/if}}
 
         </div>
-      
+
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <span class="black-text activator">
@@ -124,24 +123,24 @@
               {{name}}
               <br><br>
             {{/each}}
-            
+
             {{#if isOwnProfile}}
               <i class="material-icons right">mode_edit</i>
             {{/if}}
             <br>
 
            </span>
-          </div> 
+          </div>
 
           {{#if isOwnProfile}}
             <div class="card-reveal grey lighten-5 z-depth-1">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertAwardsForm}}
             </div>
-          {{/if}} 
+          {{/if}}
 
         </div>
-      
+
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <span class="black-text activator">
@@ -161,17 +160,17 @@
               <br>
 
            </span>
-          </div> 
+          </div>
 
           {{#if isOwnProfile}}
             <div class="card-reveal grey lighten-5 z-depth-1">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertProgramsForm}}
             </div>
-          {{/if}} 
+          {{/if}}
 
         </div>
-      
+
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <span class="black-text activator">
@@ -189,14 +188,14 @@
             <br>
 
            </span>
-          </div> 
+          </div>
 
           {{#if isOwnProfile}}
             <div class="card-reveal grey lighten-5 z-depth-1">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertOrchestraForm}}
             </div>
-          {{/if}}           
+          {{/if}}
         </div>
 
   </section>
@@ -206,7 +205,7 @@
   <div class="card grey lighten-5 z-depth-1">
     <div class="card-content">
       <span class="black-text activator">
-        <!--   
+        <!--
         <h5>Repertoire: </h5>
         {{#each repertoire}}
           {{this}}<br>
@@ -218,25 +217,12 @@
         <h10>Location: {{mylocation}}</h10><br>
         <h10>One Liner: {{one_liner}}</h10>
       </span>
-    </div>         
+    </div>
   </div>
 </template>
 
 
-<template name="bookAccompanist">
-  <h3>Book Accompanist</h3>
-  {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
-    <fieldset>
-      {{>afQuickField name="musician"}}
-      {{>afQuickField name="accompanist"}}
-      {{>afQuickField name="status"}}
-      {{>afQuickField name="repertoire"}}
-      {{>afQuickField name="startDate"}}
-      {{>afQuickField name="endDate"}}
-      <button type="submit" class="btn btn-primary">Book Accompanist</button>
-    </fieldset>
-  {{/autoForm}}
-</template>
+
 
 <!-- template to edit/add instruments -->
 <template name="upsertInstrumentForm">

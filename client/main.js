@@ -12,6 +12,10 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
+// Autoform Settings
+
+AutoForm.setDefaultTemplate('materialize');
+
 
 // Accounts
 
@@ -140,7 +144,9 @@ Template.registerHelper('routeMusicProfile', () => {
 
 // Get Current Route's Accompanist Profile
 Template.registerHelper('routeAccompanistProfile', () => {
-  return AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
+  var x =  AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
+  console.log(x)
+  return x
 });
 
 Template.registerHelper('sentBookingRequests', () =>{
