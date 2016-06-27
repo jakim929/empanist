@@ -101,7 +101,7 @@ MusicProfileSchema = new SimpleSchema({
 
   awards: {
     type: [AwardSchema],
-    label: "awards Won",
+    label: "Awards Won",
     optional: true
   },
 

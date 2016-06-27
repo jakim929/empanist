@@ -36,18 +36,18 @@
     <main>
       {{#if validId}}
         {{#if isOwnProfile}}
-          {{> Template.dynamic template="accountTemplate" data=myAccount}}
-          {{> Template.dynamic template="profileTemplate" data=myProfile}}<br>
+          {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+          {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}<br>
         {{else}}
           {{#if routeAccompanistProfiles}} 
-            {{> Template.dynamic template="accountTemplate" data=routeAccount}} <br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfiles}} <br>
-            {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
+            {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}} <br>
+            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}} <br>
+            {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
             {{> bookAccompanist}}
             
           {{else}}
-          {{> Template.dynamic template="accountTemplate" data=routeAccount}}
-          {{> Template.dynamic template="profileTemplate" data=routeProfile}}<br>
+          {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+          {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
           {{/if}}
         {{/if}}
       {{else}}
@@ -114,15 +114,13 @@
           {{/if}} 
 
         </div>
-
-
-
+      
         <div class="card grey lighten-5 z-depth-1">
           <div class="card-content">
             <span class="black-text activator">
             <h5>Awards: </h5>
             {{#each awards}}
-              <span class="right">{{date}}</span>
+              <span class="right">{{formatDate this.date}}</span>
               {{name}}
               <br><br>
             {{/each}}
@@ -149,8 +147,10 @@
             <span class="black-text activator">
              <h5>Music Programs: </h5>
               {{#each musicPrograms}}
-                <span class="right">{{startDate}} - {{endDate}}</span>
+                <span class="right">{{formatDuration this.startDate this.endDate}}</span>
                 {{programName}}<br>
+
+
 
                 <br><br>
               {{/each}}
@@ -177,7 +177,7 @@
             <span class="black-text activator">
             <h5>Orchestras Participated in: </h5>
               {{#each orchestras}}
-                <span class="right">{{startDate}} - {{endDate}}</span>
+                <span class="right">{{formatDuration this.startDate this.endDate}}</span>
                 Name: {{name}}<br>
                 Position: {{position}}<br>
                 <br><br>

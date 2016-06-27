@@ -129,17 +129,17 @@ Template.registerHelper('myAccompanistProfile', () => {
   return AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
-Template.registerHelper('routeAccount', () => {
+Template.registerHelper('routeBasicProfile', () => {
   return BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
 });
 
 // Get Current Route's Music Profile
-Template.registerHelper('routeProfile', () => {
+Template.registerHelper('routeMusicProfile', () => {
   return MusicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
 });
 
 // Get Current Route's Accompanist Profile
-Template.registerHelper('routeAccompanistProfiles', () => {
+Template.registerHelper('routeAccompanistProfile', () => {
   return AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
 });
 
@@ -164,7 +164,7 @@ Template.registerHelper('receivedBookingRequests', (arg) =>{
 });
 
 Template.registerHelper('formatDate', function(date) {
-  return moment(date).format('ddd, MMMM, DD-YYYY');
+  return moment(date).format('MMM, YYYY');
 });
 
 Template.registerHelper('formatDuration', function(date1, date2) {
@@ -201,7 +201,7 @@ Template.registerHelper('isOwnProfile', () => {
 });
 
 Template.registerHelper('validId', () =>{
-  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+  if (BasicProfiles.findOne({userId : FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
