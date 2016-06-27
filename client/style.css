@@ -75,7 +75,26 @@ div.blur {
 
 /* Myprofile Page*/
 
+.right {
+
+ float:right
+
+}
+
 .card-panel{
   width: 100%;
 
+}
+
+.card-reveal{
+  height: 500px;
+
+}
+
+.hidden{
+    display:none;
+}
+
+.unhidden{
+    display:block;
 }

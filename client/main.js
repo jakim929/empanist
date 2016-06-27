@@ -129,17 +129,17 @@ Template.registerHelper('myAccompanistProfile', () => {
   return AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
-Template.registerHelper('routeAccount', () => {
+Template.registerHelper('routeBasicProfile', () => {
   return BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
 });
 
 // Get Current Route's Music Profile
-Template.registerHelper('routeProfile', () => {
+Template.registerHelper('routeMusicProfile', () => {
   return MusicProfiles.findOne({userId: FlowRouter.getParam("profileId")});
 });
 
 // Get Current Route's Accompanist Profile
-Template.registerHelper('routeAccompanistProfiles', () => {
+Template.registerHelper('routeAccompanistProfile', () => {
   return AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
 });
 
@@ -164,7 +164,7 @@ Template.registerHelper('receivedBookingRequests', (arg) =>{
 });
 
 Template.registerHelper('formatDate', function(date) {
-  return moment(date).format('ddd, MMMM, DD-YYYY');
+  return moment(date).format('MMM, YYYY');
 });
 
 Template.registerHelper('formatDuration', function(date1, date2) {
@@ -201,7 +201,7 @@ Template.registerHelper('isOwnProfile', () => {
 });
 
 Template.registerHelper('validId', () =>{
-  if (Meteor.users.findOne(FlowRouter.getParam("profileId"))){
+  if (BasicProfiles.findOne({userId : FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
@@ -262,7 +262,71 @@ Template.upsertAccompanistForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
+Template.upsertInstrumentForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+Template.upsertAwardsForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+Template.upsertProgramsForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+Template.upsertOrchestraForm.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
 // Local Template Helpers
+
+Template.upsertOrchestraForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+    if (currentProfile) {
+      Template.instance().formType.set('update');
+      return currentProfile
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  }
+});
+
+Template.upsertProgramsForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+    if (currentProfile) {
+      Template.instance().formType.set('update');
+      return currentProfile
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  }
+});
+
+Template.upsertAwardsForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+    if (currentProfile) {
+      Template.instance().formType.set('update');
+      return currentProfile
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  }
+});
 
 Template.upsertMusicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
@@ -272,6 +336,27 @@ Template.upsertMusicProfileForm.helpers ({
       Template.instance().formType.set('update');
       return currentProfile
     }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  },
+
+  instrumentList: function () {
+    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
+    "Zither"].map(function(obj){return {label: obj, value:obj}})
+  }
+});
+
+Template.upsertInstrumentForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+     if (currentProfile) {
+       Template.instance().formType.set('update');
+      return currentProfile
+     }
   },
 
   formType: function () {
@@ -430,11 +515,10 @@ var initAutoComplete = function() {
 };
 
 Template.EditAccompanistProfiles.events({
-	'click button': function(){
+  'click button': function(){
       Notifications.info('Test', 'Working Notification');
   }
 });
-
 
 Template.BookingRequest.events({
 	'click button': function(){
