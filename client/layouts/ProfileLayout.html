@@ -1,6 +1,7 @@
 <template name="ProfileLayout">
   
   <script>
+    // resize card with card-reveal
     $(document).ready(function() {
 
     $(document).on('click.card', '.card', function (e) {
@@ -27,32 +28,41 @@
       $('.card-reveal').closest('.card').css('overflow', 'hidden');
     });
   });
+
+  //parallaz
+ $(document).ready(function(){
+      $('.parallax').parallax();
+    });
+
   </script>
 
     <header>
-        <h1> Profile </h1>
         <link rel="stylesheet" href="styles/custom.css">
     </header>
     <main>
-      {{#if validId}}
-        {{#if isOwnProfile}}
-          {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
-          {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}<br>
-        {{else}}
-          {{#if routeAccompanistProfiles}} 
-            {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}} <br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}} <br>
-            {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
-            {{> bookAccompanist}}
-            
+          {{#if validId}}
+ <!--            <div class="parallax-container">
+              <div class="parallax"><img src="http://greensportsalliance.org/images/darkGreenSquare.gif">
+              </div>
+            </div> -->
+            {{#if isOwnProfile}}
+              {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+              {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}<br>
+            {{else}}
+              {{#if routeAccompanistProfiles}} 
+                {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}} <br>
+                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}} <br>
+                {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
+                {{> bookAccompanist}}
+                
+              {{else}}
+              {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+              {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
+              {{/if}}
+            {{/if}}
           {{else}}
-          {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
-          {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
+            {{> invalidId}}
           {{/if}}
-        {{/if}}
-      {{else}}
-        {{> invalidId}}
-      {{/if}}
     </main>
 </template>
 
@@ -62,14 +72,14 @@
 
 
 <template name="accountTemplate">
-  <div class="card grey lighten-5 z-depth-1">
+  <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
         <h10>{{name}}</h10><br>
         <h10>{{affiliation}}</h10> <br>
 
         {{#if isOwnProfile}}
-        <h10>Birthday: {{birthDate}}</h10> <br>
+        <h10>Birthday: {{formatBirthDate this.birthDate}}</h10> <br>
         <h10>Phone Number: {{phone}}</h10> <br>
         <i class="material-icons right">mode_edit</i>
         <br>
@@ -79,7 +89,7 @@
     </div>
 
     {{#if isOwnProfile}}
-      <div class="card-reveal grey lighten-5 z-depth-1">
+      <div class="card-reveal grey lighten-5 z-depth-0">
         <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
         {{> upsertBasicProfileForm}}
       </div>
@@ -92,7 +102,7 @@
 <template name="profileTemplate">
   <section class="myprofile">
         
-        <div class="card grey lighten-5 z-depth-1">
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
               <h5>Instruments Mastered</h5> <br>
@@ -107,15 +117,15 @@
           </div> 
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertInstrumentForm}}
             </div>
           {{/if}} 
 
         </div>
-      
-        <div class="card grey lighten-5 z-depth-1">
+
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
             <h5>Awards: </h5>
@@ -134,7 +144,7 @@
           </div> 
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertAwardsForm}}
             </div>
@@ -142,7 +152,7 @@
 
         </div>
       
-        <div class="card grey lighten-5 z-depth-1">
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
              <h5>Music Programs: </h5>
@@ -164,7 +174,7 @@
           </div> 
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertProgramsForm}}
             </div>
@@ -172,7 +182,7 @@
 
         </div>
       
-        <div class="card grey lighten-5 z-depth-1">
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
             <h5>Orchestras Participated in: </h5>
@@ -192,7 +202,7 @@
           </div> 
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertOrchestraForm}}
             </div>
@@ -203,7 +213,7 @@
 </template>
 
 <template name="accompanistProfileTemplate">
-  <div class="card grey lighten-5 z-depth-1">
+  <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
         <!--   

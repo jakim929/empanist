@@ -1,5 +1,14 @@
 /* CSS declarations go here */
 
+body {
+  background-color: #e6e6e6;
+  height:100%;
+}
+
+.container {
+  height:100%;
+}
+
 .no-padding{
 	padding: 0;
 }
@@ -76,25 +85,18 @@ div.blur {
 /* Myprofile Page*/
 
 .right {
-
- float:right
-
+  float:right
 }
 
-.card-panel{
+.card-panel {
   width: 100%;
-
 }
 
-.card-reveal{
+.card-reveal {
   height: 500px;
-
 }
 
-.hidden{
-    display:none;
+.parallax-container {
+  height: 100%;
 }
 
-.unhidden{
-    display:block;
-}

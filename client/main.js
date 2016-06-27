@@ -103,11 +103,9 @@ Template.registerHelper('navbarFields', () => {
       return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
     // Not Accompanist
-    console.log("Navbar Config 2")
     return ['becomeAnAccompanist','bookings', 'navbarAccount' ]
   // Not Logged In
   }else{
-    console.log("Navbar Config 3")
     return ['modalLogin','modalSignUp', 'becomeAnAccompanist']
 
   }
@@ -164,6 +162,10 @@ Template.registerHelper('receivedBookingRequests', (arg) =>{
 });
 
 Template.registerHelper('formatDate', function(date) {
+  return moment(date).format('MMM DD, YYYY');
+});
+
+Template.registerHelper('formatBirthDate', function(date) {
   return moment(date).format('MMM, YYYY');
 });
 
