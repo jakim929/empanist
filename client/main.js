@@ -16,25 +16,25 @@ window.Transactions = Transactions
 // Accounts
 
 AccountsTemplates.configure({
-    defaultLayoutType: 'blaze', // Optional, the default is 'blaze'
-    defaultLayout: 'MainLayout',
-    defaultLayoutRegions: {
-        nav: 'Navbar'
-    },
-    defaultContentRegion: 'main',
+  defaultLayoutType: 'blaze', // Optional, the default is 'blaze'
+  defaultLayout: 'MainLayout',
+  defaultLayoutRegions: {
+      nav: 'Navbar'
+  },
+  defaultContentRegion: 'main',
 
-    onSubmitHook: function(error, state){
-      if (!error){
-        if (state === "signIn"){
-          $('#signUp').closeModal();
-          $('#login').closeModal();
-        }
-        if (state === "signUp"){
-          $('#signUp').closeModal();
-          $('#login').closeModal();
-        }
+  onSubmitHook: function(error, state){
+    if (!error){
+      if (state === "signIn"){
+        $('#signUp').closeModal();
+        $('#login').closeModal();
+      }
+      if (state === "signUp"){
+        $('#signUp').closeModal();
+        $('#login').closeModal();
       }
     }
+  }
 });
 
 AccountsTemplates.configureRoute('signIn');
