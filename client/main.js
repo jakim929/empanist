@@ -12,6 +12,9 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 
+// Template Inheritance
+
+
 // Autoform Settings
 
 AutoForm.setDefaultTemplate('materialize');
@@ -56,7 +59,15 @@ Template.Navbar.onRendered(function () {
 Template.navbarAccount.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $(".dropdown-button").dropdown();
+    $(".dropdown-button").dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrain_width: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on click
+      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)
+      gutter: 0, // Spacing from edge
+      belowOrigin: true,
+    });
   });
 });
 
@@ -112,7 +123,7 @@ Template.registerHelper('navbarFields', () => {
   // Not Logged In
   }else{
     console.log("Navbar Config 3")
-    return ['modalLogin','modalSignUp', 'becomeAnAccompanist']
+    return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
 
   }
 });

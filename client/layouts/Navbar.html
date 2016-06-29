@@ -1,11 +1,11 @@
 <template name="Navbar">
 	<div class="navbar-fixed">
-		<nav>
-			<div class="nav-wrapper">
+		<nav class="deep-purple lighten-2">
+			<div class="nav-wrapper container">
 				<a href="/" class="brand-logo left">Empanist</a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
 						{{#each navbarFields}}
-							{{> Template.dynamic template=this}}
+							<li >{{> Template.dynamic template=this}}</li>
 						{{/each}}
 				</ul>
 			</div>
@@ -31,16 +31,19 @@
 </template>
 
 <template name="modalSignUp">
-  <li><a class="waves-effect waves-light modal-trigger " href="#signUp">Sign Up</a></li>
+	<a class="waves-effect waves-light modal-trigger " href="#signUp">Sign Up</a>
 </template>
 
 <template name="modalLogin">
-  <li><a class="waves-effect waves-light modal-trigger" href="#login">Login</a></li>
+  <a class="waves-effect waves-light modal-trigger" href="#login">Login</a>
 </template>
 
 <template name="navbarAccount">
-  <li><a class="dropdown-button" data-activates="accountDropdown">Account<i class="material-icons right">arrow_drop_down</i></a></li>
-  <ul id="accountDropdown" class="dropdown-content">
+
+		<a class="dropdown-button valign-wrapper" data-activates="accountDropdown">Account&nbsp;&nbsp;&nbsp;&nbsp;<img src="/images/profile.png" alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
+		</a>
+
+  <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>
     <li><a href={{getProfileRoute}}>My Profile</a></li>
     <li class="divider"></li>
     <li><a class='logout'>Logout</a></li>
@@ -48,21 +51,21 @@
 </template>
 
 <template name="myProfile">
-	<li><a href={{getProfileRoute}}>My Profile</a></li>
+	<a href={{getProfileRoute}}>My Profile</a>
 </template>
 
 <template name="accompanistDashboard">
-	<li><a href='/accompanistDashboard'>Accompanist Dashboard</a></li>
+	<a href='/accompanistDashboard'>Dashboard<i class="material-icons right">dashboard</i></a>
 </template>
 
 <template name="bookings">
-	<li><a href='/bookings'>Bookings</a></li>
+	<a href='/bookings'>Bookings<i class="material-icons right">book</i></a>
 </template>
 
 <template name="becomeAnAccompanist">
-	<li><a class='waves-effect waves-light btn' href='/newaccomp'>Become an Accompanist</a></li>
+	<a class='waves-effect waves-light btn' href='/newaccomp'>Become an Accompanist</a>
 </template>
 
 <template name="addProfile">
-	<li><a href='/addinfo'>Add Profile</a></li>
+	<a href='/addinfo'>Add Profile</a>
 </template>
