@@ -12,67 +12,42 @@
           <h2> "Cool story bruh...." </h2>
         </div>
       </div>
-    	{{> search}}
+    	
+      {{> search}}
       {{> makeAdmin}}
 
-
     </main>
-
 </template>
 
-
 <template name="search">
-	<!-- Code that makes enter work like tab in the home screen (place it in main.js client side ) -->
-  <script type='text/javascript'>
-    // Enter acts as tabs till time to submit form
-    $(document).ready(function(){
-        $('#searchform input').keydown(function(e){
-         if(e.keyCode==13){
-            if($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type')=='submit'){
-             return true;
-            }
-            $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
-           return false;
-         }
-        });
-    });
-
-     // Materialize date picker desing
-     $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15 // Creates a dropdown of 15 years to control year
-      });
-  </script>
-
   <div class="search_bar">
     <div class="container">
   	   <div class="row">
           <div class="span12">
-              <div class="blur">
-                <form class="col s12" id="searchform">
-    					   <div class="input-field col s4">
-                    <input name="address" class="autocomplete" id="autocomplete" type="text">
-                    <label>My location</label>
-                  </div>
+            <div class="blur">
+              <form class="col s12" id="searchform">
+  					   <div class="input-field col s4">
+                  <input name="address" class="autocomplete" id="autocomplete" type="text">
+                  <label>My location</label>
+                </div>
 
-                  <div class="input-field col s3">
-                    <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
-                  </div>
+                <div class="input-field col s3">
+                  <input name="start_date" class="datepicker" type="date"  placeholder="First day of session" >
+                </div>
 
-                  <div class="input-field col s3">
-                    <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
-                  </div>
+                <div class="input-field col s3">
+                  <input name="end_date" class="datepicker" type="date"  placeholder="Event day" >
+                </div>
 
-                  <div class="input-field col s1">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                  </div>
-                </form>
-              </div>
+                <div class="input-field col s1">
+                  <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+              </form>
+            </div>
           </div>
       </div>
     </div>
   </div>
-
 
 </template>
 

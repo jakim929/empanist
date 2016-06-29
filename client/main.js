@@ -16,7 +16,6 @@ window.Transactions = Transactions
 
 AutoForm.setDefaultTemplate('materialize');
 
-
 // Accounts
 
 AccountsTemplates.configure({
@@ -74,6 +73,12 @@ Template.modalSignUp.onRendered(function () {
   });
 });
 
+Template.ProfileLayout.onRendered(function () {
+  $(document).ready(function(){
+    $('.materialboxed').materialbox();
+  });
+});
+
 Template.CollapsibleStructure.onRendered(function () {
   $('.collapsible').collapsible({
     accordion : false
@@ -85,10 +90,63 @@ Template.TabStructure.onRendered(function () {
 });
 
 Template.NewAccompLayout.onRendered(function () {
-    // Initialize collapse button
-    $(".button-collapse").sideNav();
-    // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-    //$('.collapsible').collapsible();
+  // Initialize collapse button
+  $(".button-collapse").sideNav();
+  // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+  //$('.collapsible').collapsible();
+});
+
+Template.ProfileLayout.onRendered(function(){
+  // parallax
+  $(".parallax").parallax();
+
+  // resize card with card-reveal
+  $(document).ready(function() {
+    $(document).on('click.card', '.card', function (e) {
+      if ($(this).find('> .card-reveal').length) {
+        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
+          // Make Reveal animate down and display none
+          $(this).find('.card-reveal').velocity(
+            {translateY: 0}, {
+              duration: 225,
+              queue: false,
+              easing: 'easeInOutQuad',
+              complete: function() { $(this).css({ display: 'none'}); }
+            }
+          );
+            $(this).velocity({height:$(this).data('height')},{duration:225});
+        }
+        else if ($(e.target).is($('.card .activator')) ||
+                 $(e.target).is($('.card .activator i')) ) {
+          $(e.target).closest('.card').css('overflow', 'hidden');
+          $(this).data('height',$(this).css('height')).find('.card-reveal').css({ display: 'block',height:'auto'}).velocity("stop", false).velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
+              $(this).velocity({height:$(this).find('.card-reveal').height()+40},{duration:300});
+        }
+      }
+      $('.card-reveal').closest('.card').css('overflow', 'hidden');
+    });
+  });
+});
+
+Template.search.onRendered(function () {
+  // Enter acts as tabs till time to submit form
+  $(document).ready(function(){
+    $('#searchform input').keydown(function(e){
+      if(e.keyCode==13){
+        if($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type')=='submit'){
+          return true;
+        }
+        $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();
+        return false;
+      }
+    });
+  });
+
+  // Materialize date picker desing
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
 });
 
 
@@ -142,9 +200,7 @@ Template.registerHelper('routeMusicProfile', () => {
 
 // Get Current Route's Accompanist Profile
 Template.registerHelper('routeAccompanistProfile', () => {
-  var x =  AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
-  console.log(x)
-  return x
+  return AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")});
 });
 
 Template.registerHelper('sentBookingRequests', () =>{
@@ -173,6 +229,14 @@ Template.registerHelper('formatDate', function(date) {
 
 Template.registerHelper('formatBirthDate', function(date) {
   return moment(date).format('MMM, YYYY');
+});
+
+// Slice day string and capitalize it's first letter
+// All fixed in schema, only need the slicing functionality
+Template.registerHelper('formatDay', function(day) {
+  var Day = day.substr(0,3);
+  var new_day = Day.charAt(0).toUpperCase() + Day.slice(1);
+  return new_day;
 });
 
 Template.registerHelper('formatDuration', function(date1, date2) {
@@ -206,6 +270,11 @@ Template.registerHelper('routeTransaction', () =>{
 
 Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
+});
+
+Template.registerHelper('isAccompanist', () => {
+  var x = AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")})
+  return x !== null; 
 });
 
 Template.registerHelper('validId', () =>{
