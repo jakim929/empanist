@@ -179,11 +179,7 @@ Template.registerHelper('navbarFields', () => {
     return ['becomeAnAccompanist','bookings', 'navbarAccount' ]
   // Not Logged In
   }else{
-
-    // return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
-
-    return ['modalLogin','modalSignUp', 'becomeAnAccompanist']
-
+    return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
   }
 });
 
@@ -288,7 +284,7 @@ Template.registerHelper('isOwnProfile', () => {
 
 Template.registerHelper('isAccompanist', () => {
   var x = AccompanistProfiles.findOne({Id: FlowRouter.getParam("profileId")})
-  return x !== null; 
+  return x !== null;
 });
 
 Template.registerHelper('validId', () =>{
