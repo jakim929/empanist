@@ -37,9 +37,9 @@ AccompanistProfileSchema = new SimpleSchema({
   		autoform: {
   			type: "select-checkbox-inline",
   			options: [
-        	{label: "Morning (8am - 12pm)", value: "morning"},
-        	{label: "Afternoon (12pm - 6pm)", value: "afternoon"},
-        	{label: "Night (6pm - 11pm)", value: "night"}
+        	{label: "Morning (8am - 12pm)", value: "Morning"},
+        	{label: "Afternoon (12pm - 6pm)", value: "Afternoon"},
+        	{label: "Night (6pm - 11pm)", value: "Night"}
       		]
    		}
   	},
@@ -51,13 +51,13 @@ AccompanistProfileSchema = new SimpleSchema({
   		autoform: {
   			type: "select-checkbox-inline",
   			options: [
-        	{label: "Monday", value: "monday"},
-        	{label: "Tuesday", value: "tuesday"},
-        	{label: "Wednesday", value: "wednesday"},
-        	{label: "Thursday", value: "thursday"},
-        	{label: "Friday", value: "friday"},
-        	{label: "Saturday", value: "saturday"},
-        	{label: "Sunday", value: "sunday"},
+        	{label: "Monday", value: "Monday"},
+        	{label: "Tuesday", value: "Tuesday"},
+        	{label: "Wednesday", value: "Wednesday"},
+        	{label: "Thursday", value: "Thursday"},
+        	{label: "Friday", value: "Friday"},
+        	{label: "Saturday", value: "Saturday"},
+        	{label: "Sunday", value: "Sunday"},
       		]
    		}
   	},

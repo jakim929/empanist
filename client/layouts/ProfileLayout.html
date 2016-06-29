@@ -1,57 +1,37 @@
 <template name="ProfileLayout">
-
-  <script>
-    $(document).ready(function() {
-
-    $(document).on('click.card', '.card', function (e) {
-      if ($(this).find('> .card-reveal').length) {
-        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
-          // Make Reveal animate down and display none
-          $(this).find('.card-reveal').velocity(
-            {translateY: 0}, {
-              duration: 225,
-              queue: false,
-              easing: 'easeInOutQuad',
-              complete: function() { $(this).css({ display: 'none'}); }
-            }
-          );
-            $(this).velocity({height:$(this).data('height')},{duration:225});
-        }
-        else if ($(e.target).is($('.card .activator')) ||
-                 $(e.target).is($('.card .activator i')) ) {
-          $(e.target).closest('.card').css('overflow', 'hidden');
-          $(this).data('height',$(this).css('height')).find('.card-reveal').css({ display: 'block',height:'auto'}).velocity("stop", false).velocity({translateY: '-100%'}, {duration: 300, queue: false, easing: 'easeInOutQuad'});
-              $(this).velocity({height:$(this).find('.card-reveal').height()+40},{duration:300});
-        }
-      }
-      $('.card-reveal').closest('.card').css('overflow', 'hidden');
-    });
-  });
-  </script>
-
     <header>
-        <h1> Profile </h1>
         <link rel="stylesheet" href="styles/custom.css">
     </header>
+    
     <main>
-      {{#if validId}}
-        {{#if isOwnProfile}}
-          {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
-          {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}<br>
-        {{else}}
-          {{#if routeAccompanistProfile}}
-            {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}} <br>
-            {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}} <br>
-            {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
-            {{> bookAccompanist}}
+      <!-- Change parallax img according to what user inserts!! -->
+      <div class="parallax-container">
+        <div class="parallax">
+          <img src="http://materializecss.com/images/parallax1.jpg" />
+        </div>
+      </div>
+
+          {{#if validId}}
+            {{#if isOwnProfile}}
+              {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+              {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
+            {{else}}
+              {{#if isAccompanist}} 
+              <div class="accompProfileMargin">
+                {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+                {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
+                <!-- uncomment below when you add booking template -->
+                <!-- {{> bookAccompanist}} -->
+              </div>
+              {{else}}
+                {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+                {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
+              {{/if}}
+            {{/if}}
           {{else}}
-          {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
-          {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}<br>
+            {{> invalidId}}
           {{/if}}
-        {{/if}}
-      {{else}}
-        {{> invalidId}}
-      {{/if}}
     </main>
 </template>
 
@@ -61,24 +41,33 @@
 
 
 <template name="accountTemplate">
-  <div class="card grey lighten-5 z-depth-1">
-    <div class="card-content">
-      <span class="black-text activator">
-        <h10>{{name}}</h10><br>
-        <h10>{{affiliation}}</h10> <br>
+  <div id="first-card-container" class="card grey lighten-5 z-depth-0">
+    
 
-        {{#if isOwnProfile}}
-        <h10>Birthday: {{birthDate}}</h10> <br>
-        <h10>Phone Number: {{phone}}</h10> <br>
-        <i class="material-icons right">mode_edit</i>
-        <br>
-        {{/if}}
+    <div id="first-card-text" class="card-content">
+
+      <div id="profileImg" class="profImg-left">
+        <img class="materialboxed" src="http://whiskeyreviewer.com/wp-content/uploads/2015/07/amanda_cerny_1.jpg">
+      </div>
+      
+      <span class="black-text activator">
+        <div class="details">
+          <h5 class="bold">{{name}}</h5>
+          <h6>{{affiliation}}</h6> 
+
+          {{#if isOwnProfile}}
+          <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+          <h10>{{phone}}</h10> <br>
+          <i class="material-icons right">mode_edit</i>
+          <br>
+          {{/if}}
+        </div>
 
       </span>
     </div>
 
     {{#if isOwnProfile}}
-      <div class="card-reveal grey lighten-5 z-depth-1">
+      <div class="card-reveal grey lighten-5 z-depth-0">
         <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
         {{> upsertBasicProfileForm}}
       </div>
@@ -89,13 +78,15 @@
 
 
 <template name="profileTemplate">
-  <section class="myprofile">
-
-        <div class="card grey lighten-5 z-depth-1">
+  <section class="myprofile">        
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
-              <h5>Instruments Mastered</h5> <br>
-              <h10>Instruments Mastered: {{instrument}}</h10> <br>
+              <h5>
+                <i id="align_text" class="medium material-icons">add_shopping_cart</i>
+                Instruments Mastered
+              </h5><br>
+                <h10>Instruments Mastered: {{instrument}}</h10> <br>
               <h10>Years Played: {{yearsPlayed}}</h10>
 
                {{#if isOwnProfile}}
@@ -106,21 +97,25 @@
           </div>
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertInstrumentForm}}
             </div>
           {{/if}}
-
         </div>
 
-        <div class="card grey lighten-5 z-depth-1">
+
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
-            <h5>Awards: </h5>
+            <h5>
+              <i id="align_text" class="medium material-icons">verified_user</i>
+              Honors & Awards 
+            </h5>
             {{#each awards}}
               <span class="right">{{formatDate this.date}}</span>
-              {{name}}
+              <p class="bold">{{name}}</p>
+              {{award}}
               <br><br>
             {{/each}}
 
@@ -133,24 +128,24 @@
           </div>
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertAwardsForm}}
             </div>
           {{/if}}
 
         </div>
-
-        <div class="card grey lighten-5 z-depth-1">
+      
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
-             <h5>Music Programs: </h5>
+            <h5>
+              <i id="align_text" class="medium material-icons">music_note</i>
+              Music Programs 
+            </h5>
               {{#each musicPrograms}}
                 <span class="right">{{formatDuration this.startDate this.endDate}}</span>
-                {{programName}}<br>
-
-
-
+                {{programName}}
                 <br><br>
               {{/each}}
 
@@ -163,22 +158,25 @@
           </div>
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertProgramsForm}}
             </div>
           {{/if}}
 
         </div>
-
-        <div class="card grey lighten-5 z-depth-1">
+      
+        <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
-            <h5>Orchestras Participated in: </h5>
+            <h5>
+              <i id="align_text" class="medium material-icons">group_work</i>
+              Orchestras Participated in 
+            </h5>
               {{#each orchestras}}
                 <span class="right">{{formatDuration this.startDate this.endDate}}</span>
-                Name: {{name}}<br>
-                Position: {{position}}<br>
+                <p class="bold">{{name}}</p>
+                {{position}}
                 <br><br>
               {{/each}}
 
@@ -191,7 +189,7 @@
           </div>
 
           {{#if isOwnProfile}}
-            <div class="card-reveal grey lighten-5 z-depth-1">
+            <div class="card-reveal grey lighten-5 z-depth-0">
               <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
               {{> upsertOrchestraForm}}
             </div>
@@ -202,7 +200,7 @@
 </template>
 
 <template name="accompanistProfileTemplate">
-  <div class="card grey lighten-5 z-depth-1">
+  <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
         <!--
@@ -211,11 +209,30 @@
           {{this}}<br>
         {{/each}}
            <hr> -->
-        <h10>Hourly Rate: ${{charge}}</h10> <br>
-        <h10>Preferred Working Time: {{#each working_hours}}{{this}}/{{/each}}</h10><br>
-        <h10>Working Days: {{#each working_days}}{{this}}/{{/each}}</h10><br>
-        <h10>Location: {{mylocation}}</h10><br>
-        <h10>One Liner: {{one_liner}}</h10>
+        <div class="accopmCard-left">
+          <h10>
+            <i id="align_text" class="small material-icons">attach_money</i>
+            {{charge}}/hr
+          </h10> 
+          <br>
+          <h10>
+              <i id="align_text" class="small material-icons">access_time</i>
+              {{#each working_hours}}{{this}}/{{/each}}
+          </h10>
+        </div>
+        <div class="accopmCard-right">
+          <h10>
+            <i id="align_text" class="small material-icons">event</i>
+            {{#each working_days}}{{formatDay this}}/{{/each}}
+          </h10>
+          <br>
+          <h10>
+            <i id="align_text" class="small material-icons">location_on</i>
+            {{mylocation}}
+          </h10>
+          <br><br>
+        </div>
+        <p class="center_horizontal">{{one_liner}}</p>
       </span>
     </div>
   </div>

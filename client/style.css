@@ -1,5 +1,10 @@
 /* CSS declarations go here */
 
+body {
+  background-color: #e6e6e6;
+  height:100%;
+}
+
 .no-padding{
 	padding: 0;
 }
@@ -70,28 +75,83 @@ div.blur {
   right: 0;
 }
 
-/* Myprofile Page*/
+/* Myprofile Page + Accompanist Profile page*/
 
 .right {
-
- float:right
-
+  float:right
 }
 
-.card-panel{
+.card-panel {
   width: 100%;
-
 }
 
-.card-reveal{
+.card-reveal {
   height: 500px;
-
 }
 
-.hidden{
-    display:none;
+.parallax {
+  position:static;
 }
 
-.unhidden{
-    display:block;
+/*not consistant*/
+.parallax-container {
+  margin-left:-21.5%;
+  margin-right:-21.5%;
+}
+
+#align_text {
+  vertical-align:middle;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.accompProfileMargin {
+  margin-right: 30%;
+}
+
+.accopmCard-left {
+  float:left;
+  width:50%;
+  overflow:hidden;
+}
+
+.accopmCard-right {
+  width:50%;
+  overflow:hidden;
+}
+
+.center_horizontal {
+  text-align: center;
+  background-color: #e6e6e6;
+}
+
+/*not consistant*/
+#first-card-container {
+  margin-top:-5%;
+}
+
+.materialboxed {
+  display: block;
+  margin: 0 auto;
+  height:auto;
+  width:100%;
+}
+
+#profileImg {
+  width: 30%;
+  float:left;
+  overflow:hidden;
+  background-color: green;
+/*  margin-left:-3%;
+  margin-top:-3%;*/
+}
+
+#first-card-text {
+  overflow:hidden;
+}
+
+.details {
+  margin-left: 32%;
 }

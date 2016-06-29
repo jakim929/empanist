@@ -40,20 +40,20 @@ AwardSchema = new SimpleSchema({
   }
 });
 
-CompetitionSchema = new SimpleSchema({
-  name: {
-    type: String,
-    label: "Competition Name"
-  },
-  date: {
-    type: Date,
-    label: "Competition Date"
-  },
-  award: {
-    type: String,
-    label: "Award Type"
-  }
-});
+// CompetitionSchema = new SimpleSchema({
+//   name: {
+//     type: String,
+//     label: "Competition Name"
+//   },
+//   date: {
+//     type: Date,
+//     label: "Competition Date"
+//   },
+//   award: {
+//     type: String,
+//     label: "Award Type"
+//   }
+// });
 
 MusicProgramSchema = new SimpleSchema({
 
