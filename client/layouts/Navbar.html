@@ -1,6 +1,6 @@
 <template name="Navbar">
 	<div class="navbar-fixed">
-		<nav class="deep-purple lighten-2">
+		<nav class="z-depth-0">
 			<div class="nav-wrapper container">
 				<a href="/" class="brand-logo left">Empanist</a>
 				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
@@ -40,7 +40,7 @@
 
 <template name="navbarAccount">
 
-		<a class="dropdown-button valign-wrapper" data-activates="accountDropdown">Account&nbsp;&nbsp;&nbsp;&nbsp;<img src="/images/profile.png" alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
+		<a class="dropdown-button valign-wrapper" data-activates="accountDropdown">Account&nbsp;&nbsp;&nbsp;&nbsp;<img src={{profilePic}} alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
 		</a>
 
   <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>

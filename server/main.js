@@ -3,10 +3,17 @@ import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicProfiles } from '../collections/musicProfiles.js'
 import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 import { Transactions } from '../collections/transactions.js'
+import { Sessions } from '../collections/transactions.js'
 
 Meteor.startup(() => {
-
 });
+
+AWS.config.update({
+  accessKeyId: Meteor.settings.AWSAccessKeyId,
+  secretAccessKey: Meteor.settings.AWSSecretAccessKey
+});
+
+
 
 var geo = new GeoCoder();
 
@@ -19,7 +26,70 @@ getGeocode = function (arg) {
   }
 };
 
+
+Meteor.publish( 'files', function(){
+  var data = Images.find( { "userId": this.userId } );
+
+  if ( data ) {
+    return data;
+  }
+
+  return this.ready();
+});
+
+
 Meteor.methods({
+  // Add security measures
+  deleteImageFromS3: function(imageDatabaseId){
+    if(!this.userId){
+      throw new Meteor.error("Access Denied","User not logged in");
+    }else{
+      var found = Images.findOne({_id: imageDatabaseId, userId: this.userId})
+      if (!found){
+        throw new Meteor.error("Image search failed","Image not found");
+      }
+
+      if (found.url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
+      {
+        throw new Meteor.error("URL parse failed","Not a valid image url");
+      }
+
+      var newKey = found.url.replace("https://empanist-images.s3.amazonaws.com/", "")
+      var s3 = new AWS.S3();
+
+      var params = {
+        Bucket: "empanist-images",
+        Key:newKey
+      };
+
+      s3.deleteObject(params, Meteor.bindEnvironment(function(err,data){
+        if (err){
+          console.log(err)
+        }else{
+          Images.remove({_id: imageDatabaseId});
+          console.log("Successfully deleted from S3", imageDatabaseId);
+        }
+      }))
+    }
+
+  },
+
+  storeUrlInDatabase: function( url, type ) {
+    check( url, String );
+    Modules.both.checkUrlValidity( url );
+
+    try {
+      Images.insert({
+        url: url,
+        userId: Meteor.userId(),
+        picType: type,
+        added: new Date()
+      });
+    } catch( exception ) {
+      return exception;
+    }
+  },
+
   getGeocode: function (arg) {
     if (arg == 0){
       return null
@@ -52,6 +122,27 @@ Meteor.methods({
 
   divinify: function(userId) {
     Roles.addUsersToRoles(userId, 'admin');
+  },
+
+  confirmBookingRequest: function(transactionId) {
+    var transaction = Transactions.findOne({_id: transactionId});
+    if(transaction){
+      if(transaction.accompanist == this.userId){
+        var firstSession = Sessions.findOne({transaction: transactionId});
+        console.log(firstSession)
+        if(firstSession.startTime){
+          Transactions.update({_id: transactionId}, {$set: {status: "Ongoing"}});
+        }
+        else{
+          Meteor.Error("First session not set yet.")
+        }
+      }
+      else{
+        Meteor.Error("No permission to confirm booking.")
+      }
+    }else{
+      Meteor.Error("No such transaction.")
+    }
   }
 
 });

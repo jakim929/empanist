@@ -1,23 +1,146 @@
 <template name="BookingRequestLayout">
     <header>
-        <h1>Confirm/Reject A Booking Request</h1>
     </header>
     <main>
       {{> Template.dynamic template="BookingRequest" data=routeTransaction}}
     </main>
 </template>
 
+<template name="ConfirmBookingPagination">
+  <ul class="pagination">
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+    <li class="active"><a href="#!">Repertoire</a></li>
+    <li class="waves-effect"><a href="#!">Sessions</a></li>
+    <li class="waves-effect"><a href="#!">Payment</a></li>
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+  </ul>
+</template>
+
 <template name="BookingRequest">
       {{#with basicProfileById musician}}
-      <h2>Your Booking With {{name}}</h2>
+      <h4>Review Your Booking With {{name}}</h4>
       {{/with}}
-      Planned Repertoire:
-      {{#each repertoire}}
-        {{this}},
-      {{/each}}
-      <br>
-      Status: {{status}} <br>
-      Start Date: {{startDate}} <br>
-      End Date: {{endDate}} <br>
-      <button name="confirmRequest">Confirm Request</button>
+
+      <div class="row">
+        <div class="col s12 m7 l7">
+          <div class="center">
+              {{> ConfirmBookingPagination}}
+          </div>
+          {{> Template.dynamic template=currentStep}}
+        </div>
+
+        <div class="col hide-on-small-only m5 l5">
+          <div class="card grey lighten-5 z-depth-0">
+            <div class="card-content center">
+              <span class="black-text">
+                <h5>Booking Summary</h5><br>
+                {{#with basicProfileById musician}}
+                  {{name}} will be playing 3 pieces on the
+                {{/with}}
+                {{#with musicProfileById musician}}
+                  {{instrument}}
+                {{/with}}
+                for a final performance on {{formatDate endDate}}. <br><br>
+                 You will rehearse together a minimum of 5 sessions between {{formatDuration startDate endDate}}. <br><br>
+
+                Your first session will be on the
+             </span>
+            </div>
+          </div>
+        </div>
+      </div>
+</template>
+
+<template name="repertoireSection">
+  <div id="repertoire" class="section scrollspy">
+    <div class="card grey lighten-5 z-depth-0">
+      <div class="card-content">
+        <span class="black-text">
+          {{#with routeTransaction}}
+            <h5>Repertoire</h5><br>
+              <table class="striped centered">
+                <tbody>
+                  {{#each repertoire}}
+                  <tr>
+                    <td>{{this}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+
+            <br><br>
+            <div class="check-repertoire-confirm">
+              <input type="checkbox" id="repertoire-confirm"/>
+              <label for="repertoire-confirm">I can accompany the musician on the repertoire above.</label>
+            </div>
+          {{/with}}
+       </span>
+      </div>
+      <div class="card-action">
+          <a class={{getRepertoireConfirmButtonClass}}>Next</a><br><br>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="sessionsSection">
+  {{#with routeTransaction}}
+  <div id="sessions" class="section scrollspy">
+    <div class="card grey lighten-5 z-depth-0">
+      <div class="card-content">
+        <span class="black-text">
+          <h5>Sessions</h5><br>
+          5 Sessions Between {{formatDuration startDate endDate}}
+          <br>
+          <br>
+          {{> upsertSessionResponse}}
+
+          <div class="check-session-confirm">
+            <input type="checkbox" id="session-confirm"/>
+            <label for="session-confirm">Confirm 5 sessions between {{formatDuration startDate endDate}}.</label>
+          </div>
+       </span>
+      </div>
+      <div class="card-action">
+          <a class={{getSessionConfirmButtonClass}}>Next</a><br><br>
+      </div>
+    </div>
+  </div>
+  {{/with}}
+</template>
+
+<template name="paymentSection">
+  {{#with routeTransaction}}
+  <div id="sessions" class="section scrollspy">
+    <div class="card grey lighten-5 z-depth-0">
+      <div class="card-content">
+        <span class="black-text">
+          <h5>Payment</h5><br>
+
+          Total payment for the 5 hour booking at ${{getHourlyCharge musician}} per hour is ${{getTotalEstimated musician 5}}. You will receive payment after each completed session.
+          <br> <br> The musician may add more hours during the booking.
+          <br> <br>
+
+          <div class="check-payment-confirm">
+            <input type="checkbox" id="payment-confirm"/>
+            <label for="payment-confirm">Confirm Payment</label>
+          </div>
+       </span>
+      </div>
+      <div class="card-action">
+        <a class={{getFinalConfirmButtonClass}}>Confirm Booking</a><br><br>
+      </div>
+    </div>
+  </div>
+  {{/with}}
+</template>
+
+<template name='upsertSessionResponse'>
+  {{#autoForm collection='Sessions' id='upsertSessionResponse' doc=currentResponse type=formType }}
+    <fieldset>
+      <legend>Confirm Your First Session</legend>
+        {{>afFieldInput name='startTime' type='select-radio' options=optionArray}}
+    </fieldset>
+    <br>
+  {{/autoForm}}
 </template>

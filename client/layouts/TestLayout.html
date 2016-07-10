@@ -1,22 +1,93 @@
 <template name="TestLayout">
-  <head>
        <header>
-        <link rel="stylesheet" href="styles/custom.css">
+        <link rel="stylesheet" href="../style.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       </header>
-    </head>
-    <div class="container">
+
       <main>
-        <!-- {{>BookPanel}} -->
-        {{>modalConfirm}}
-        {{>collectionTest}}
-        {{>tester}}
+        {{> upload}}
+        <div class="container">
 
+              {{> upsertRepertoireResponse}}
+
+        </div>
       </main>
-    </div>
-
 </template>
 
+
+
+<template name="upload">
+  <h4 class="page-header">Upload a File to Amazon S3</h4>
+  {{> uploader}}
+  {{> files}}
+</template>
+
+<template name="files">
+  <div class="files">
+    {{#each files}}
+      {{> file}}
+    {{else}}
+      <p class="alert alert-warning">No files uploaded yet!</p>
+    {{/each}}
+  </div>
+</template>
+
+<template name="file">
+  <div class="file">
+    <div class="preview">
+      <a href="{{url}}" target="_blank"></a>
+      {{#if isImage url}}
+        <img src="{{url}}" alt="{{url}}" height="100px">
+      {{else}}
+        <i class="fa fa-file-o"></i>
+      {{/if}}
+    </div>
+    <div class="delete">
+      <button class="delete_button" value={{_id}}>Delete</button>
+    </div>
+    <input type="text" class="form-control" value="{{url}}">
+  </div>
+</template>
+
+
+
+<!-- <template name="uploader">
+  <div class="row">
+    <div class = "col s12 m5">
+      <div class= "card-panel teal">
+        <div class="upload-area">
+          <form id="upload">
+            <input type="file">
+            <div class="container">
+              <p class="alert alert-success text-center">
+                <span>Click or Drag a File Here to Upload</span>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template> -->
+
+<template name="uploader">
+  <div class="container">
+    <p class="alert alert-success text-center">
+      <span>Click or Drag a File Here to Upload</span>
+    </p>
+    <form action="#">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
 
 
 <!-- <template name="BookPanel">
@@ -52,22 +123,13 @@
   {{/autoForm}}
 </template> -->
 
+
 <template name="modalConfirm">
   <!-- Modal Trigger -->
-<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
 
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Review Booking Request</h4>
-    {{> Template.dynamic template="BookingRequest" data=(transactionById "2STt9vFsiQDmXXwK9")}}
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Confirm</a>
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Reject</a>
-  </div>
-</div>
+
 </template>
+
 
 <template name="tester">
   <div class="row">
