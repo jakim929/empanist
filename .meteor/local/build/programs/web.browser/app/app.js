@@ -1510,7 +1510,7 @@ Template["accountTemplate"] = new Template("Template.accountTemplate", (function
   return HTML.DIV({                                                                                                    // 100
     id: "first-card-container",                                                                                        // 101
     "class": "card grey lighten-5 z-depth-0"                                                                           // 102
-  }, HTML.Raw('\n<!-- <<<<<<< HEAD\n\n    <div id="first-card-text" class="card-content">\n\n      <img id="profileImg" class="materialboxed" src="http://whiskeyreviewer.com/wp-content/uploads/2015/07/amanda_cerny_1.jpg">\n\n\n      <span class="black-text activator">\n        <div class="details">\n          <h5 class="bold">{{name}}</h5>\n          <h6>{{affiliation}}</h6>\n          {{#if isOwnProfile}}\n          <h10>{{formatBirthDate this.birthDate}}</h10> <br>\n          <h10>{{phone}}</h10> <br>\n======= -->\n\n    '), HTML.DIV({
+  }, "\n\n    ", HTML.DIV({                                                                                            // 103
     id: "first-card-text",                                                                                             // 104
     "class": "card-content"                                                                                            // 105
   }, "\n\n      ", HTML.DIV({                                                                                          // 106
@@ -1537,7 +1537,7 @@ Template["accountTemplate"] = new Template("Template.accountTemplate", (function
       },                                                                                                               // 127
       height: "250px"                                                                                                  // 128
     }), "\n        "), "\n        " ];                                                                                 // 129
-  }), "\n      "), "\n\n      ", HTML.DIV({                                                                            // 130
+  }), "\n      "), "\n\n      ", HTML.Raw("<!-- Modal to change profile pic -->"), "\n      ", HTML.DIV({              // 130
     id: "changeProfileModal",                                                                                          // 131
     "class": "modal"                                                                                                   // 132
   }, "\n        ", HTML.DIV({                                                                                          // 133
@@ -1561,8 +1561,8 @@ Template["accountTemplate"] = new Template("Template.accountTemplate", (function
       return Spacebars.mustache(view.lookup("phone"));                                                                 // 151
     })), " ", HTML.BR(), "\n\n          ", HTML.I({                                                                    // 152
       "class": "material-icons right"                                                                                  // 153
-    }, "mode_edit"), "\n          ", HTML.BR(), "\n          " ];                                                      // 154
-  }), "\n        "), "\n        ", HTML.Raw("<br>"), HTML.Raw("<br>"), "\n       ", HTML.Raw('<!--  <i class="material-icons right">mode_edit</i> -->'), "\n      "), "\n    "), "\n\n    ", Blaze.If(function() {
+    }, "mode_edit"), "\n          ", HTML.BR(), "\n\n          " ];                                                    // 154
+  }), "\n        "), "\n      "), "\n    "), "\n\n    ", Blaze.If(function() {                                         // 155
     return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 156
   }, function() {                                                                                                      // 157
     return [ "\n      ", HTML.DIV({                                                                                    // 158
