@@ -1,0 +1,1 @@
+{"head":"","body":"","js":"\nTemplate.__checkName(\"AddInfoLayout\");\nTemplate[\"AddInfoLayout\"] = new Template(\"Template.AddInfoLayout\", (function() {\n  var view = this;\n  return HTML.Raw(\"<header>\\n        <h1> Create Your Profile </h1>\\n    </header>\\n    <main>\\n        \\n    </main>\");\n}));\n","bodyAttrs":{}}
