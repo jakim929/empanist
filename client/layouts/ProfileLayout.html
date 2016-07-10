@@ -38,7 +38,6 @@
 
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
-<!-- <<<<<<< HEAD
     
     <div id="first-card-text" class="card-content">
 
@@ -52,7 +51,7 @@
           {{#if isOwnProfile}}
           <h10>{{formatBirthDate this.birthDate}}</h10> <br>
           <h10>{{phone}}</h10> <br>
-======= -->
+<!-- =======
 
     <div id="first-card-text" class="card-content">
 
@@ -89,10 +88,13 @@
 
           <i class="material-icons right">mode_edit</i>
           <br>
+>>>>>>> b8ceeb12260e5bbcece025c76bc23a4548473b5d -->
           {{/if}}
         </div>
         <br><br>
-       <!--  <i class="material-icons right">mode_edit</i> -->
+         {{#if isOwnProfile}}
+                  <i class="material-icons right">mode_edit</i>
+                {{/if}}
       </span>
     </div>
 
