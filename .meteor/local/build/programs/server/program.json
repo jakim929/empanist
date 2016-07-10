@@ -1,0 +1,607 @@
+{
+  "format": "javascript-image-pre1",
+  "arch": "os.osx.x86_64",
+  "load": [
+    {
+      "sourceMap": "packages/underscore.js.map",
+      "path": "packages/underscore.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/meteor/node_modules",
+      "sourceMap": "packages/meteor.js.map",
+      "path": "packages/meteor.js"
+    },
+    {
+      "path": "packages/meteor-base.js"
+    },
+    {
+      "path": "packages/mobile-experience.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/npm-mongo/node_modules",
+      "sourceMap": "packages/npm-mongo.js.map",
+      "path": "packages/npm-mongo.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/modules-runtime/node_modules",
+      "sourceMap": "packages/modules-runtime.js.map",
+      "path": "packages/modules-runtime.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/modules/node_modules",
+      "sourceMap": "packages/modules.js.map",
+      "path": "packages/modules.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/es5-shim/node_modules",
+      "sourceMap": "packages/es5-shim.js.map",
+      "path": "packages/es5-shim.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/promise/node_modules",
+      "sourceMap": "packages/promise.js.map",
+      "path": "packages/promise.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ecmascript-runtime/node_modules",
+      "sourceMap": "packages/ecmascript-runtime.js.map",
+      "path": "packages/ecmascript-runtime.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/babel-compiler/node_modules",
+      "sourceMap": "packages/babel-compiler.js.map",
+      "path": "packages/babel-compiler.js"
+    },
+    {
+      "sourceMap": "packages/ecmascript.js.map",
+      "path": "packages/ecmascript.js"
+    },
+    {
+      "sourceMap": "packages/base64.js.map",
+      "path": "packages/base64.js"
+    },
+    {
+      "sourceMap": "packages/ejson.js.map",
+      "path": "packages/ejson.js"
+    },
+    {
+      "sourceMap": "packages/id-map.js.map",
+      "path": "packages/id-map.js"
+    },
+    {
+      "sourceMap": "packages/ordered-dict.js.map",
+      "path": "packages/ordered-dict.js"
+    },
+    {
+      "sourceMap": "packages/tracker.js.map",
+      "path": "packages/tracker.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/babel-runtime/node_modules",
+      "sourceMap": "packages/babel-runtime.js.map",
+      "path": "packages/babel-runtime.js"
+    },
+    {
+      "sourceMap": "packages/random.js.map",
+      "path": "packages/random.js"
+    },
+    {
+      "sourceMap": "packages/mongo-id.js.map",
+      "path": "packages/mongo-id.js"
+    },
+    {
+      "sourceMap": "packages/diff-sequence.js.map",
+      "path": "packages/diff-sequence.js"
+    },
+    {
+      "sourceMap": "packages/geojson-utils.js.map",
+      "path": "packages/geojson-utils.js"
+    },
+    {
+      "sourceMap": "packages/minimongo.js.map",
+      "path": "packages/minimongo.js"
+    },
+    {
+      "sourceMap": "packages/check.js.map",
+      "path": "packages/check.js"
+    },
+    {
+      "sourceMap": "packages/retry.js.map",
+      "path": "packages/retry.js"
+    },
+    {
+      "sourceMap": "packages/ddp-common.js.map",
+      "path": "packages/ddp-common.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ddp-client/node_modules",
+      "sourceMap": "packages/ddp-client.js.map",
+      "path": "packages/ddp-client.js"
+    },
+    {
+      "sourceMap": "packages/rate-limit.js.map",
+      "path": "packages/rate-limit.js"
+    },
+    {
+      "sourceMap": "packages/ddp-rate-limiter.js.map",
+      "path": "packages/ddp-rate-limiter.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/logging/node_modules",
+      "sourceMap": "packages/logging.js.map",
+      "path": "packages/logging.js"
+    },
+    {
+      "sourceMap": "packages/routepolicy.js.map",
+      "path": "packages/routepolicy.js"
+    },
+    {
+      "path": "packages/deps.js"
+    },
+    {
+      "sourceMap": "packages/htmljs.js.map",
+      "path": "packages/htmljs.js"
+    },
+    {
+      "sourceMap": "packages/html-tools.js.map",
+      "path": "packages/html-tools.js"
+    },
+    {
+      "sourceMap": "packages/blaze-tools.js.map",
+      "path": "packages/blaze-tools.js"
+    },
+    {
+      "sourceMap": "packages/spacebars-compiler.js.map",
+      "path": "packages/spacebars-compiler.js"
+    },
+    {
+      "path": "packages/jquery.js"
+    },
+    {
+      "sourceMap": "packages/observe-sequence.js.map",
+      "path": "packages/observe-sequence.js"
+    },
+    {
+      "sourceMap": "packages/reactive-var.js.map",
+      "path": "packages/reactive-var.js"
+    },
+    {
+      "sourceMap": "packages/blaze.js.map",
+      "path": "packages/blaze.js"
+    },
+    {
+      "sourceMap": "packages/spacebars.js.map",
+      "path": "packages/spacebars.js"
+    },
+    {
+      "path": "packages/ui.js"
+    },
+    {
+      "sourceMap": "packages/boilerplate-generator.js.map",
+      "path": "packages/boilerplate-generator.js",
+      "assets": {
+        "boilerplate_web.browser.html": "assets/packages/boilerplate-generator/boilerplate_web.browser.html",
+        "boilerplate_web.cordova.html": "assets/packages/boilerplate-generator/boilerplate_web.cordova.html"
+      }
+    },
+    {
+      "sourceMap": "packages/webapp-hashing.js.map",
+      "path": "packages/webapp-hashing.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/webapp/node_modules",
+      "sourceMap": "packages/webapp.js.map",
+      "path": "packages/webapp.js"
+    },
+    {
+      "path": "packages/autopublish.js"
+    },
+    {
+      "sourceMap": "packages/callback-hook.js.map",
+      "path": "packages/callback-hook.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/ddp-server/node_modules",
+      "sourceMap": "packages/ddp-server.js.map",
+      "path": "packages/ddp-server.js"
+    },
+    {
+      "path": "packages/ddp.js"
+    },
+    {
+      "sourceMap": "packages/allow-deny.js.map",
+      "path": "packages/allow-deny.js"
+    },
+    {
+      "sourceMap": "packages/binary-heap.js.map",
+      "path": "packages/binary-heap.js"
+    },
+    {
+      "path": "packages/insecure.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/mongo/node_modules",
+      "sourceMap": "packages/mongo.js.map",
+      "path": "packages/mongo.js"
+    },
+    {
+      "path": "packages/blaze-html-templates.js"
+    },
+    {
+      "path": "packages/standard-minifier-css.js"
+    },
+    {
+      "path": "packages/standard-minifier-js.js"
+    },
+    {
+      "sourceMap": "packages/reactive-dict.js.map",
+      "path": "packages/reactive-dict.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/kadira_flow-router/node_modules",
+      "sourceMap": "packages/kadira_flow-router.js.map",
+      "path": "packages/kadira_flow-router.js"
+    },
+    {
+      "path": "packages/templating.js"
+    },
+    {
+      "path": "packages/kadira_blaze-layout.js"
+    },
+    {
+      "sourceMap": "packages/erasaur_meteor-lodash.js.map",
+      "path": "packages/erasaur_meteor-lodash.js"
+    },
+    {
+      "path": "packages/stolinski_stylus-multi.js"
+    },
+    {
+      "path": "packages/fortawesome_fontawesome.js"
+    },
+    {
+      "sourceMap": "packages/spiderable.js.map",
+      "path": "packages/spiderable.js",
+      "assets": {
+        "phantom_script.js": "assets/packages/spiderable/phantom_script.js"
+      }
+    },
+    {
+      "path": "packages/fastclick.js"
+    },
+    {
+      "sourceMap": "packages/raix_handlebar-helpers.js.map",
+      "path": "packages/raix_handlebar-helpers.js"
+    },
+    {
+      "sourceMap": "packages/aldeed_simple-schema.js.map",
+      "path": "packages/aldeed_simple-schema.js"
+    },
+    {
+      "sourceMap": "packages/raix_eventemitter.js.map",
+      "path": "packages/raix_eventemitter.js"
+    },
+    {
+      "sourceMap": "packages/aldeed_collection2-core.js.map",
+      "path": "packages/aldeed_collection2-core.js"
+    },
+    {
+      "sourceMap": "packages/aldeed_schema-index.js.map",
+      "path": "packages/aldeed_schema-index.js"
+    },
+    {
+      "sourceMap": "packages/aldeed_schema-deny.js.map",
+      "path": "packages/aldeed_schema-deny.js"
+    },
+    {
+      "path": "packages/aldeed_collection2.js"
+    },
+    {
+      "sourceMap": "packages/aldeed_autoform.js.map",
+      "path": "packages/aldeed_autoform.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/npm-bcrypt/node_modules",
+      "sourceMap": "packages/npm-bcrypt.js.map",
+      "path": "packages/npm-bcrypt.js"
+    },
+    {
+      "sourceMap": "packages/accounts-base.js.map",
+      "path": "packages/accounts-base.js"
+    },
+    {
+      "sourceMap": "packages/sha.js.map",
+      "path": "packages/sha.js"
+    },
+    {
+      "sourceMap": "packages/srp.js.map",
+      "path": "packages/srp.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/email/node_modules",
+      "sourceMap": "packages/email.js.map",
+      "path": "packages/email.js"
+    },
+    {
+      "sourceMap": "packages/accounts-password.js.map",
+      "path": "packages/accounts-password.js"
+    },
+    {
+      "path": "packages/coffeescript.js"
+    },
+    {
+      "sourceMap": "packages/zimme_active-route.js.map",
+      "path": "packages/zimme_active-route.js"
+    },
+    {
+      "path": "packages/gwendall_auth-client-callbacks.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_toykit.js.map",
+      "path": "packages/meteortoys_toykit.js"
+    },
+    {
+      "sourceMap": "packages/msavin_mongol.js.map",
+      "path": "packages/msavin_mongol.js"
+    },
+    {
+      "path": "packages/msavin_jetsetter.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_blueprint.js.map",
+      "path": "packages/meteortoys_blueprint.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_authenticate.js.map",
+      "path": "packages/meteortoys_authenticate.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_shell.js.map",
+      "path": "packages/meteortoys_shell.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_method.js.map",
+      "path": "packages/meteortoys_method.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_result.js.map",
+      "path": "packages/meteortoys_result.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_autopub.js.map",
+      "path": "packages/meteortoys_autopub.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_pub.js.map",
+      "path": "packages/meteortoys_pub.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_sub.js.map",
+      "path": "packages/meteortoys_sub.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_email.js.map",
+      "path": "packages/meteortoys_email.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_listen.js.map",
+      "path": "packages/meteortoys_listen.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_throttle.js.map",
+      "path": "packages/meteortoys_throttle.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_status.js.map",
+      "path": "packages/meteortoys_status.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_hotreload.js.map",
+      "path": "packages/meteortoys_hotreload.js"
+    },
+    {
+      "sourceMap": "packages/meteortoys_allthings.js.map",
+      "path": "packages/meteortoys_allthings.js"
+    },
+    {
+      "path": "packages/less.js"
+    },
+    {
+      "sourceMap": "packages/notorii_array.js.map",
+      "path": "packages/notorii_array.js"
+    },
+    {
+      "path": "packages/lukemadera_autoform-autocomplete.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/meteorhacks_picker/node_modules",
+      "sourceMap": "packages/meteorhacks_picker.js.map",
+      "path": "packages/meteorhacks_picker.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/meteorhacks_search-source/node_modules",
+      "sourceMap": "packages/meteorhacks_search-source.js.map",
+      "path": "packages/meteorhacks_search-source.js"
+    },
+    {
+      "path": "packages/mpowaga_autoform-autocomplete.js"
+    },
+    {
+      "path": "packages/comerc_bs-typeahead.js"
+    },
+    {
+      "path": "packages/comerc_autoform-typeahead.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/sergeyt_typeahead/node_modules",
+      "path": "packages/sergeyt_typeahead.js"
+    },
+    {
+      "path": "packages/jeremy_selectize.js"
+    },
+    {
+      "path": "packages/comerc_autoform-selectize.js"
+    },
+    {
+      "sourceMap": "packages/easysearch_core.js.map",
+      "path": "packages/easysearch_core.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_assert.js.map",
+      "path": "packages/peerlibrary_assert.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_reactive-field.js.map",
+      "path": "packages/peerlibrary_reactive-field.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_computed-field.js.map",
+      "path": "packages/peerlibrary_computed-field.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_base-component.js.map",
+      "path": "packages/peerlibrary_base-component.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_data-lookup.js.map",
+      "path": "packages/peerlibrary_data-lookup.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_blaze-components.js.map",
+      "path": "packages/peerlibrary_blaze-components.js"
+    },
+    {
+      "path": "packages/easysearch_components.js"
+    },
+    {
+      "path": "packages/easy_search.js"
+    },
+    {
+      "path": "packages/easysearch_autosuggest.js"
+    },
+    {
+      "sourceMap": "packages/momentjs_moment.js.map",
+      "path": "packages/momentjs_moment.js"
+    },
+    {
+      "path": "packages/mrt_googlemaps.js"
+    },
+    {
+      "path": "packages/amplify.js"
+    },
+    {
+      "path": "packages/session.js"
+    },
+    {
+      "path": "packages/u2622_persistent-session.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/aldeed_geocoder/node_modules",
+      "sourceMap": "packages/aldeed_geocoder.js.map",
+      "path": "packages/aldeed_geocoder.js"
+    },
+    {
+      "sourceMap": "packages/url.js.map",
+      "path": "packages/url.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/http/node_modules",
+      "sourceMap": "packages/http.js.map",
+      "path": "packages/http.js"
+    },
+    {
+      "sourceMap": "packages/muriloventuroso_get-coordinates.js.map",
+      "path": "packages/muriloventuroso_get-coordinates.js"
+    },
+    {
+      "path": "packages/mdg_geolocation.js"
+    },
+    {
+      "sourceMap": "packages/matb33_collection-hooks.js.map",
+      "path": "packages/matb33_collection-hooks.js"
+    },
+    {
+      "path": "packages/gfk_notifications.js"
+    },
+    {
+      "sourceMap": "packages/useraccounts_core.js.map",
+      "path": "packages/useraccounts_core.js"
+    },
+    {
+      "sourceMap": "packages/softwarerero_accounts-t9n.js.map",
+      "path": "packages/softwarerero_accounts-t9n.js"
+    },
+    {
+      "sourceMap": "packages/useraccounts_flow-routing.js.map",
+      "path": "packages/useraccounts_flow-routing.js"
+    },
+    {
+      "path": "packages/useraccounts_materialize.js"
+    },
+    {
+      "path": "packages/materialize_materialize.js"
+    },
+    {
+      "sourceMap": "packages/alanning_roles.js.map",
+      "path": "packages/alanning_roles.js"
+    },
+    {
+      "path": "packages/aldeed_template-extension.js"
+    },
+    {
+      "path": "packages/gildaspk_autoform-materialize.js"
+    },
+    {
+      "path": "packages/planettraining_material-design-icons.js"
+    },
+    {
+      "sourceMap": "packages/edgee_slingshot.js.map",
+      "path": "packages/edgee_slingshot.js"
+    },
+    {
+      "path": "packages/themeteorchef_bert.js"
+    },
+    {
+      "sourceMap": "packages/peerlibrary_blocking.js.map",
+      "path": "packages/peerlibrary_blocking.js"
+    },
+    {
+      "node_modules": "npm/node_modules/meteor/peerlibrary_aws-sdk/node_modules",
+      "sourceMap": "packages/peerlibrary_aws-sdk.js.map",
+      "path": "packages/peerlibrary_aws-sdk.js"
+    },
+    {
+      "path": "packages/rzymek_fullcalendar.js"
+    },
+    {
+      "path": "packages/livedata.js"
+    },
+    {
+      "path": "packages/hot-code-push.js"
+    },
+    {
+      "path": "packages/launch-screen.js"
+    },
+    {
+      "sourceMap": "packages/autoupdate.js.map",
+      "path": "packages/autoupdate.js"
+    },
+    {
+      "path": "packages/reload.js"
+    },
+    {
+      "path": "packages/global-imports.js"
+    },
+    {
+      "sourceMap": "app/app.js.map",
+      "path": "app/app.js"
+    },
+    {
+      "sourceMap": "packages/mdg_validation-error.js.map",
+      "path": "packages/mdg_validation-error.js"
+    },
+    {
+      "sourceMap": "packages/service-configuration.js.map",
+      "path": "packages/service-configuration.js"
+    }
+  ]
+}

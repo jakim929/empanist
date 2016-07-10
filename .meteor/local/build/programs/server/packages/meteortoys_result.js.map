@@ -1,0 +1,1 @@
+{"version":3,"sources":["meteor://💻app/packages/meteortoys_result/config/config.js"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AACA;AACA;AACA;AACA;AACA,E","file":"/packages/meteortoys_result.js","sourcesContent":["ToyKit = {\n\tname:     \"Result\",\n\tversion:  \"1.0.0\",\n\ttemplate: \"MeteorToys_result\",\n\tToyKit:   \"1.0.0\"\n};"]}

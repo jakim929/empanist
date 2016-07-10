@@ -3,9 +3,8 @@ import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
-import { AccompanistResponses } from '../collections/transactions.js'
-import { Sessions } from '../collections/transactions.js'
 
+import { TestAccountData } from '../collections/testData.js'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfiles = AccompanistProfiles
@@ -269,6 +268,7 @@ Template.file.events({
 // });
 
 
+
 // Template Inheritance
 
 
@@ -305,31 +305,22 @@ AccountsTemplates.configureRoute('signUp');
 
 // Javascript Component Initialization
 
-Template.AccompanistDashboard.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $(".button-collapse").sideNav({
-      menuWidth: 150, // Default is 240
-      edge: 'left', // Choose the horizontal origin
-      //closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    });
-  });
-});
-
-
-Template.accountTemplate.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
-  });
-});
-
 Template.Navbar.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $(".dropdown-button").dropdown();
   });
 });
+
+// Template.upsertBasicProfileForm.onRendered(function () {
+
+//   // Materialize date picker desing
+//   $('.datepicker').pickadate({
+//     selectMonths: true, // Creates a dropdown to control month
+//     selectYears: 15 // Creates a dropdown of 15 years to control year
+//   });
+// });
+
 
 Template.navbarAccount.onRendered(function () {
   $(document).ready(function(){
@@ -345,18 +336,6 @@ Template.navbarAccount.onRendered(function () {
     });
   });
 });
-
-Template.request.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal(
-      {ready: function() {
-        $('ul.tabs').tabs('select_tab', 'repertoire');
-      }}
-    );
-  });
-});
-
 
 Template.modalLogin.onRendered(function () {
   $(document).ready(function(){
@@ -455,17 +434,12 @@ Template.search.onRendered(function () {
 
 // ==Global Template Helpers==
 
-
-Template.registerHelper('profilePic',  () => {
-  return Images.findOne({userId: Meteor.userId(), picType: "profile"}).url
-});
-
-
 Template.registerHelper('navbarFields', () => {
   // Logged In
   if (Meteor.user()){
     // Accompanist
     if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
+      console.log("Navbar Config 1")
       return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
     // Not Accompanist
@@ -474,16 +448,6 @@ Template.registerHelper('navbarFields', () => {
   }else{
     return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
   }
-});
-
-
-Template.registerHelper('pictureUrl', () => {
-  var x =  Images.findOne({filename: "banjo.png"});
-
-  if (x) {
-    return "/gridfs/images/" + x.md5
-  }
-  return x;
 });
 
 // Get Current User's Account
@@ -582,6 +546,25 @@ Template.registerHelper('routeTransaction', () =>{
 
 Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
+});
+
+Template.registerHelper('and',function(a,b){
+  return a && b;
+});
+Template.registerHelper('or',function(a,b){
+  return a || b;
+});
+
+Template.registerHelper('basicProfileExists', () => {
+  return undefined !== BasicProfiles.findOne({userId: Meteor.userId()});
+});
+
+Template.registerHelper('musicProfileExists', () => {
+  return undefined !== MusicProfiles.findOne({userId: Meteor.userId()});
+});
+
+Template.registerHelper('accompanistProfileExists', () => {
+  return undefined !== AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
 Template.registerHelper('isAccompanist', () => {
@@ -936,13 +919,13 @@ Template.modalSignUp.events({
   }
 });
 
-
 // Logout from the navbar
 Template.Navbar.events({
   'click .logout': function(){
     AccountsTemplates.logout();
   }
 });
+
 
 
 // For Debugging

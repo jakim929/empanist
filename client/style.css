@@ -111,7 +111,7 @@ div.blur {
   font-weight: bold;
 }
 
-.accompProfileMargin {
+.smallMargin {
   margin-right: 30%;
 }
 
@@ -144,13 +144,10 @@ div.blur {
 }
 
 #profileImg {
-  width: 30%;
-  float:left;
-  overflow:hidden;
   max-width: 250px;
   max-height: 250px;
-/*  margin-left:-3%;
-  margin-top:-3%;*/
+  float:left;
+  overflow:hidden;
 }
 
 #first-card-text {
@@ -158,7 +155,33 @@ div.blur {
 }
 
 .details {
-  margin-left: 32%;
+  margin-left: 265px;
+}
+
+.add-btn {
+  width:100%;
+  height:30px;
+  padding: 0;
+  border: none;
+}
+
+/*newaccomp page*/
+.step_number {
+  color: #D3D3D3;
+   margin:0 ;
+}
+
+.step_main {
+  font-size:150%; 
+  margin-top:5px ;
+  margin-bottom:5px ;
+/*  font-weight:bold;
+*/
+}
+
+.step_info {
+  color: grey;
+   margin:0 ;
 }
 
 .upload-area {

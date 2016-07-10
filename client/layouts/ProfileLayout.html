@@ -1,8 +1,4 @@
-<template name="ProfileLayout">
-    <header>
-        <link rel="stylesheet" href="styles/custom.css">
-    </header>
-
+<template name="ProfileLayout">    
     <main>
       <!-- Change parallax img according to what user inserts!! -->
       <div class="parallax-container">
@@ -16,8 +12,8 @@
               {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
               {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
             {{else}}
-              {{#if isAccompanist}}
-              <div class="accompProfileMargin">
+              {{#if isAccompanist}} 
+              <div class="smallMargin">
                 {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
                 {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
                 {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
@@ -42,6 +38,21 @@
 
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
+<!-- <<<<<<< HEAD
+    
+    <div id="first-card-text" class="card-content">
+
+      <img id="profileImg" class="materialboxed" src="http://whiskeyreviewer.com/wp-content/uploads/2015/07/amanda_cerny_1.jpg">
+     
+      
+      <span class="black-text activator">
+        <div class="details">
+          <h5 class="bold">{{name}}</h5>
+          <h6>{{affiliation}}</h6> 
+          {{#if isOwnProfile}}
+          <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+          <h10>{{phone}}</h10> <br>
+======= -->
 
     <div id="first-card-text" class="card-content">
 
@@ -80,7 +91,8 @@
           <br>
           {{/if}}
         </div>
-
+        <br><br>
+       <!--  <i class="material-icons right">mode_edit</i> -->
       </span>
     </div>
 
