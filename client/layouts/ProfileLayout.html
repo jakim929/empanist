@@ -1,4 +1,4 @@
-<template name="ProfileLayout">    
+<template name="ProfileLayout">
     <main>
       <!-- Change parallax img according to what user inserts!! -->
       <div class="parallax-container">
@@ -12,7 +12,7 @@
               {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
               {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
             {{else}}
-              {{#if isAccompanist}} 
+              {{#if isAccompanist}}
               <div class="smallMargin">
                 {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
                 {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
@@ -39,16 +39,16 @@
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
 <!-- <<<<<<< HEAD
-    
+
     <div id="first-card-text" class="card-content">
 
       <img id="profileImg" class="materialboxed" src="http://whiskeyreviewer.com/wp-content/uploads/2015/07/amanda_cerny_1.jpg">
-     
-      
+
+
       <span class="black-text activator">
         <div class="details">
           <h5 class="bold">{{name}}</h5>
-          <h6>{{affiliation}}</h6> 
+          <h6>{{affiliation}}</h6>
           {{#if isOwnProfile}}
           <h10>{{formatBirthDate this.birthDate}}</h10> <br>
           <h10>{{phone}}</h10> <br>
@@ -57,18 +57,21 @@
     <div id="first-card-text" class="card-content">
 
       <div id="profileImg" class="profImg-left">
-        <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+        {{#unless isOwnProfile}}
+        <a class="waves-effect waves-light">
           <img class="materialboxed" src={{profilePic}}>
         </a>
+        {{else}}
+        <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+          <img src={{profilePic}} height="250px">
+        </a>
+        {{/unless}}
       </div>
 
       <div id="changeProfileModal" class="modal">
         <div class="modal-content">
-          <h4>Change Profile Picture</h4>
+          <h5>Change Profile Picture <i class="material-icons modal-action modal-close right">close</i></h5>
           {{> upload}}
-        </div>
-        <div class="modal-footer">
-          <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
         </div>
       </div>
 
@@ -80,12 +83,6 @@
           {{#if isOwnProfile}}
           <h10>{{formatBirthDate this.birthDate}}</h10> <br>
           <h10>{{phone}}</h10> <br>
-          <h4>Transactions</h4>
-          {{> quickForm id="quickform1" collection="Transactions" type="insert"}}
-          <br><br><br>
-          <h4>Sessions</h4>
-          {{> quickForm id="quickform3" collection="Sessions" type="insert"}}
-          <br><br><br>
 
           <i class="material-icons right">mode_edit</i>
           <br>
@@ -322,4 +319,62 @@
     <button type="submit" class="btn btn-primary">{Save</button>
     {{/autoForm}}
   {{/if}}
+</template>
+
+
+<!-- ADD PIC PROFILE -->
+
+<template name="upload">
+  <fieldset>
+    {{> uploader}}
+    {{> files}}
+  </fieldset>
+</template>
+
+
+<template name="files">
+  <div class="files">
+    {{#each files}}
+      {{> file}}
+    {{else}}
+      <p class="alert alert-warning">No files uploaded yet!</p>
+    {{/each}}
+  </div>
+</template>
+
+<template name="file">
+  <div class="file">
+    <div class="preview container center">
+      <h5>Preview</h5>
+      <a href="{{url}}" target="_blank"></a>
+      {{#if isImage url}}
+        <img src="{{url}}" alt="{{url}}" height="200px">
+      {{else}}
+        <i class="fa fa-file-o"></i>
+      {{/if}}
+    </div>
+    <div class="delete center">
+      <button class="btn waves-light red lighten-2 delete_button" value={{_id}}>Delete</button>
+    </div>
+  </div>
+</template>
+
+
+<template name="uploader">
+  <div class="container">
+    <p class="alert alert-success text-center">
+      <span>Click Here to Upload</span>
+    </p>
+    <form action="#">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </form>
+  </div>
 </template>

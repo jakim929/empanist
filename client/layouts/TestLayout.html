@@ -17,79 +17,6 @@
 
 
 
-<template name="upload">
-  <h4 class="page-header">Upload a File to Amazon S3</h4>
-  {{> uploader}}
-  {{> files}}
-</template>
-
-
-<template name="files">
-  <div class="files">
-    {{#each files}}
-      {{> file}}
-    {{else}}
-      <p class="alert alert-warning">No files uploaded yet!</p>
-    {{/each}}
-  </div>
-</template>
-
-<template name="file">
-  <div class="file">
-    <div class="preview">
-      <a href="{{url}}" target="_blank"></a>
-      {{#if isImage url}}
-        <img src="{{url}}" alt="{{url}}" height="100px">
-      {{else}}
-        <i class="fa fa-file-o"></i>
-      {{/if}}
-    </div>
-    <div class="delete">
-      <button class="delete_button" value={{_id}}>Delete</button>
-    </div>
-    <input type="text" class="form-control" value="{{url}}">
-  </div>
-</template>
-
-
-
-<!-- <template name="uploader">
-  <div class="row">
-    <div class = "col s12 m5">
-      <div class= "card-panel teal">
-        <div class="upload-area">
-          <form id="upload">
-            <input type="file">
-            <div class="container">
-              <p class="alert alert-success text-center">
-                <span>Click or Drag a File Here to Upload</span>
-              </p>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</template> -->
-
-<template name="uploader">
-  <div class="container">
-    <p class="alert alert-success text-center">
-      <span>Click or Drag a File Here to Upload</span>
-    </p>
-    <form action="#">
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>File</span>
-          <input type="file">
-        </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-      </div>
-    </form>
-  </div>
-</template>
 
 
 <!-- <template name="BookPanel">
@@ -148,7 +75,7 @@
 <template name="modalConfirm">
 
 
-<!-- </template>
+ </template>
 
 
 <template name="tester">
@@ -176,8 +103,8 @@
     </div>
 
   </div>
-</template> --> 
-<!-- 
+</template> -->
+<!--
 <template name="collectionTest">  -->
   <!-- <ul class="collection with-header">
     <li class="collection-header"><h4>First Names</h4></li>
@@ -271,7 +198,7 @@
     </div>
   </div>
 </template> -->
- 
+
 <!-- <template name="bookAccompanist">
 
   {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}
