@@ -3,14 +3,56 @@
     <div class="container">
       <main>
         <!-- {{>BookPanel}} -->
-        {{>modalConfirm}}
+     <!--    {{>modalConfirm}}
         {{>collectionTest}}
-        {{>tester}}
+        {{>tester}} -->
+        <!-- {{>upsertMusicProfileFormTesting}} -->
 
       </main>
     </div>
 
 </template>
+
+<!-- <template name="upsertMusicProfileFormTesting">
+  {{#if isInRole 'makeMusicProfile'}}
+
+  {{#autoForm collection='MusicProfiles' id='upsertMusicProfileForm-form' type=formType doc=currentProfile}}
+
+   {{> afArrayField name="awards" template="customArrayField"}}                        
+{{/autoForm}}
+
+{{/if}}
+
+</template> -->
+
+<!-- <template name="afArrayField_customArrayField">
+
+    {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+
+        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+            <button type="button" class="btn btn-primary autoform-remove-item pull-left">REMOVE</button>
+        {{/if}} <br><br>
+        
+        <div class="row">
+          <div class="input-field col s6">
+            {{>afFieldInput name=this.atts.name type="text"}}
+            <label for="icon_prefix">Competition Name</label>
+          </div>
+           <div class="input-field col s6">
+            {{>afFieldInput name=this.atts.awards type="text"}}
+            <label>Award Title</label>
+          </div>
+        </div>
+        <div class="input-field col s6">
+            {{>afFieldInput name=this.atts.date type="date"}}
+        </div>
+
+    {{/afEachArrayItem}}
+
+    {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">ADD</button>
+    {{/if}}
+</template> -->
 
 <!-- <template name="BookPanel">
   <div class="row">
@@ -45,12 +87,12 @@
   {{/autoForm}}
 </template> -->
 
-<template name="modalConfirm">
-  <!-- Modal Trigger -->
-<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
+<!-- <template name="modalConfirm">
+   Modal Trigger -->
+<!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+ -->
 <!-- Modal Structure -->
-<div id="modal1" class="modal">
+<!-- <div id="modal1" class="modal">
   <div class="modal-content">
     <h4>Review Booking Request</h4>
     {{> Template.dynamic template="BookingRequest" data=(transactionById "2STt9vFsiQDmXXwK9")}}
@@ -60,9 +102,9 @@
     <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Reject</a>
   </div>
 </div>
-</template>
+</template> -->
 
-<template name="tester">
+<!-- <template name="tester">
   <div class="row">
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
@@ -86,9 +128,9 @@
     </div>
 
   </div>
-</template>
-
-<template name="collectionTest">
+</template> -->
+<!-- 
+<template name="collectionTest">  -->
   <!-- <ul class="collection with-header">
     <li class="collection-header"><h4>First Names</h4></li>
     <div class="row"><li class="collection-item"><div class="col s11"><input type="text"></div><div class="col s1"><a href="#!" class="secondary-content"><i class="material-icons">remove_circle</i></a></div></li></div>
@@ -97,7 +139,7 @@
     <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">remove_circle</i></a></div></li>
   </ul> -->
 
-  <table>
+ <!--  <table>
     <thead>
       <tr>
           <th data-field="id">Name</th>
@@ -124,9 +166,9 @@
   <div class="collection">
     <div class="collection-item">
     {{afFieldLabelText name=atts.name}}
-      <!-- First Line (with Add icon) -->
+      <! First Line (with Add icon) -->
 
-      {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+   <!--    {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
         <a
           class="secondary-content waves-effect waves-light autoform-add-item"
           data-autoform-field="{{atts.name}}"
@@ -153,8 +195,8 @@
     {{/afEachArrayItem}}
   </div>
 </template>
-
-<template name="afQuickField_changed">
+ -->
+<!-- <template name="afQuickField_changed">
   {{#if isGroup atts=this}}
     {{> afObjectField_changed}}
   {{else}}
@@ -164,9 +206,9 @@
       {{> afFormGroup_materialize groupAtts}}
     {{/if}}
   {{/if}}
-</template>
+</template> -->
 
-<template name="afObjectField_changed">
+<!-- <template name="afObjectField_changed">
   <div class="card-panel autoform-object-field">
     <div class="card-content">
       {{#with afFieldLabelText name=this.name}}
@@ -180,8 +222,8 @@
       {{> afQuickFields name=this.name}}
     </div>
   </div>
-</template>
-
+</template> -->
+ 
 <!-- <template name="bookAccompanist">
 
   {{#autoForm collection="Transactions" doc=defaultTransaction id="bookAccompanist" type="insert"}}

@@ -55,6 +55,16 @@ Template.Navbar.onRendered(function () {
   });
 });
 
+// Template.upsertBasicProfileForm.onRendered(function () {
+
+//   // Materialize date picker desing
+//   $('.datepicker').pickadate({
+//     selectMonths: true, // Creates a dropdown to control month
+//     selectYears: 15 // Creates a dropdown of 15 years to control year
+//   });
+// });
+
+
 Template.navbarAccount.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
@@ -183,7 +193,6 @@ Template.registerHelper('navbarFields', () => {
   }
 });
 
-
 // Get Current User's Account
 Template.registerHelper('myBasicProfile', () => {
   return BasicProfiles.findOne({userId: Meteor.userId()});
@@ -280,6 +289,25 @@ Template.registerHelper('routeTransaction', () =>{
 
 Template.registerHelper('isOwnProfile', () => {
   return FlowRouter.getParam("profileId") == Meteor.userId();
+});
+
+Template.registerHelper('and',function(a,b){
+  return a && b;
+});
+Template.registerHelper('or',function(a,b){
+  return a || b;
+});
+
+Template.registerHelper('basicProfileExists', () => {
+  return undefined !== BasicProfiles.findOne({userId: Meteor.userId()});
+});
+
+Template.registerHelper('musicProfileExists', () => {
+  return undefined !== MusicProfiles.findOne({userId: Meteor.userId()});
+});
+
+Template.registerHelper('accompanistProfileExists', () => {
+  return undefined !== AccompanistProfiles.findOne({Id: Meteor.userId()});
 });
 
 Template.registerHelper('isAccompanist', () => {
@@ -634,13 +662,13 @@ Template.modalSignUp.events({
   }
 });
 
-
 // Logout from the navbar
 Template.Navbar.events({
   'click .logout': function(){
     AccountsTemplates.logout();
   }
 });
+
 
 
 // For Debugging
