@@ -8,11 +8,9 @@
 
 <template name="ConfirmBookingPagination">
   <ul class="pagination">
-    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
     <li class="active"><a href="#!">Repertoire</a></li>
     <li class="waves-effect"><a href="#!">Sessions</a></li>
     <li class="waves-effect"><a href="#!">Payment</a></li>
-    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
   </ul>
 </template>
 
@@ -22,10 +20,8 @@
       {{/with}}
 
       <div class="row">
+
         <div class="col s12 m7 l7">
-          <div class="center">
-              {{> ConfirmBookingPagination}}
-          </div>
           {{> Template.dynamic template=currentStep}}
         </div>
 
