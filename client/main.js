@@ -17,6 +17,7 @@ window.Sessions = Sessions
 
 // Booking Tests
 
+
 Template.BookingRequest.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
 });
@@ -28,7 +29,9 @@ Template.BookingRequest.onRendered(function () {
 Template.BookingRequest.helpers({
   currentStep() {
     return Template.instance().currentStep.get()
-  }
+  },
+
+
 });
 
 Template.BookingRequest.events({
