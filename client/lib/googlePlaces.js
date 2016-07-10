@@ -1,5 +1,5 @@
 GoogleMaps.init({
-  'sensor': true, //optional
+  'sensor': false,
   'key': 'AIzaSyBborL-F_GWmjbUgtTw2P1QwPHYrDJIaCo', //optional
   'language': 'en',  //optional
   'libraries': 'places'

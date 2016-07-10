@@ -43,12 +43,14 @@ easysearch:components@2.0.9
 easysearch:core@2.0.9
 ecmascript@0.4.6
 ecmascript-runtime@0.2.11
+edgee:slingshot@0.7.1
 ejson@1.0.12
 email@1.0.14
 erasaur:meteor-lodash@4.0.0
 es5-shim@4.5.12
 fastclick@1.0.12
 fortawesome:fontawesome@4.5.0
+fourseven:scss@3.3.3_3
 geojson-utils@1.0.9
 gfk:notifications@1.1.4
 gildaspk:autoform-materialize@0.0.26
@@ -115,8 +117,10 @@ npm-mongo@1.4.44
 observe-sequence@1.0.12
 ordered-dict@1.0.8
 peerlibrary:assert@0.2.5
+peerlibrary:aws-sdk@2.2.42_1
 peerlibrary:base-component@0.14.0
 peerlibrary:blaze-components@0.16.2
+peerlibrary:blocking@0.5.2
 peerlibrary:computed-field@0.3.1
 peerlibrary:data-lookup@0.1.0
 peerlibrary:reactive-field@0.1.0
@@ -131,6 +135,7 @@ reactive-var@1.0.10
 reload@1.1.10
 retry@1.0.8
 routepolicy@1.0.11
+rzymek:fullcalendar@2.7.2
 sergeyt:typeahead@0.11.1_9
 service-configuration@1.0.10
 session@1.1.6
@@ -145,6 +150,7 @@ standard-minifier-js@1.0.7
 stolinski:stylus-multi@1.4.3
 templating@1.1.12
 templating-tools@1.0.4
+themeteorchef:bert@2.1.0
 tracker@1.0.14
 u2622:persistent-session@0.4.4
 ui@1.0.11

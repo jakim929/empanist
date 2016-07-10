@@ -38,6 +38,7 @@
 
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
+<!-- <<<<<<< HEAD
     
     <div id="first-card-text" class="card-content">
 
@@ -51,6 +52,44 @@
           {{#if isOwnProfile}}
           <h10>{{formatBirthDate this.birthDate}}</h10> <br>
           <h10>{{phone}}</h10> <br>
+======= -->
+
+    <div id="first-card-text" class="card-content">
+
+      <div id="profileImg" class="profImg-left">
+        <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+          <img class="materialboxed" src={{profilePic}}>
+        </a>
+      </div>
+
+      <div id="changeProfileModal" class="modal">
+        <div class="modal-content">
+          <h4>Change Profile Picture</h4>
+          {{> upload}}
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+      </div>
+
+      <span class="black-text activator">
+        <div class="details">
+          <h5 class="bold">{{name}}</h5>
+          <h6>{{affiliation}}</h6>
+
+          {{#if isOwnProfile}}
+          <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+          <h10>{{phone}}</h10> <br>
+          <h4>Transactions</h4>
+          {{> quickForm id="quickform1" collection="Transactions" type="insert"}}
+          <br><br><br>
+          <h4>Sessions</h4>
+          {{> quickForm id="quickform3" collection="Sessions" type="insert"}}
+          <br><br><br>
+
+<!--           <i class="material-icons right">mode_edit</i>
+          <br>
+>>>>>>> b8ceeb12260e5bbcece025c76bc23a4548473b5d -->
           {{/if}}
         </div>
         <br><br>
@@ -70,7 +109,7 @@
 
 
 <template name="profileTemplate">
-  <section class="myprofile">        
+  <section class="myprofile">
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
@@ -102,7 +141,7 @@
             <span class="black-text activator">
             <h5>
               <i id="align_text" class="medium material-icons">verified_user</i>
-              Honors & Awards 
+              Honors & Awards
             </h5>
             {{#each awards}}
               <span class="right">{{formatDate this.date}}</span>
@@ -127,13 +166,13 @@
           {{/if}}
 
         </div>
-      
+
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
             <h5>
               <i id="align_text" class="medium material-icons">music_note</i>
-              Music Programs 
+              Music Programs
             </h5>
               {{#each musicPrograms}}
                 <span class="right">{{formatDuration this.startDate this.endDate}}</span>
@@ -157,13 +196,13 @@
           {{/if}}
 
         </div>
-      
+
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <span class="black-text activator">
             <h5>
               <i id="align_text" class="medium material-icons">group_work</i>
-              Orchestras Participated in 
+              Orchestras Participated in
             </h5>
               {{#each orchestras}}
                 <span class="right">{{formatDuration this.startDate this.endDate}}</span>
@@ -205,7 +244,7 @@
           <h10>
             <i id="align_text" class="small material-icons">attach_money</i>
             {{charge}}/hr
-          </h10> 
+          </h10>
           <br>
           <h10>
               <i id="align_text" class="small material-icons">access_time</i>

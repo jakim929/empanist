@@ -3,14 +3,260 @@ import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
+import { AccompanistResponses } from '../collections/transactions.js'
+import { Sessions } from '../collections/transactions.js'
 
-import { TestAccountData } from '../collections/testData.js'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfiles = AccompanistProfiles
 window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
+window.AccompanistResponses = AccompanistResponses
+window.Sessions = Sessions
+
+// Booking Tests
+
+Template.BookingRequest.onCreated(function () {
+  this.currentStep = new ReactiveVar("repertoireSection");
+});
+
+Template.BookingRequest.onRendered(function () {
+
+});
+
+Template.BookingRequest.helpers({
+  currentStep() {
+    return Template.instance().currentStep.get()
+  }
+});
+
+Template.BookingRequest.events({
+  'click .next-session' (event, instance) {
+    instance.currentStep.set("sessionsSection");
+  },
+  'click .next-payment' (event, instance) {
+    instance.currentStep.set("paymentSection");
+  },
+  'click .final-confirm' (event, instance) {
+    Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
+  },
+
+});
+
+// Modal Review Booking Tests
+
+
+Template.repertoireSection.onCreated(function () {
+  this.RepertoireConfirmCheck = new ReactiveVar(false);
+});
+
+Template.repertoireSection.onRendered(function () {
+  this.RepertoireConfirmCheck.set(false);
+});
+
+Template.repertoireSection.events({
+  'change .check-repertoire-confirm input' (event, instance) {
+    instance.RepertoireConfirmCheck.set(event.target.checked);
+  },
+});
+
+Template.repertoireSection.helpers({
+  getRepertoireConfirmButtonClass() {
+    if (Template.instance().RepertoireConfirmCheck.get()){
+      return "btn col s12 next-session"
+    }else{
+      return "btn col s12 next-session disabled"
+    }
+  }
+});
+
+
+Template.sessionsSection.onCreated(function () {
+  this.SessionConfirmCheck = new ReactiveVar(false);
+});
+
+Template.sessionsSection.onRendered(function () {
+  this.SessionConfirmCheck.set(false);
+});
+
+Template.sessionsSection.events({
+  'change .check-session-confirm input' (event, instance) {
+    instance.SessionConfirmCheck.set(event.target.checked);
+  },
+
+  'click .next-payment' (event, instance) {
+     $('#upsertSessionResponse').submit()
+  }
+});
+
+Template.sessionsSection.helpers({
+  getSessionConfirmButtonClass() {
+    if (Template.instance().SessionConfirmCheck.get()){
+      return "btn col s12 next-payment"
+    }else{
+      return "btn col s12 next-payment disabled"
+    }
+  }
+});
+
+Template.paymentSection.onCreated(function () {
+  this.PaymentConfirmCheck = new ReactiveVar(false);
+});
+
+Template.paymentSection.onRendered(function () {
+  this.PaymentConfirmCheck.set(false);
+});
+
+Template.paymentSection.events({
+  'change .check-payment-confirm input' (event, instance) {
+    instance.PaymentConfirmCheck.set(event.target.checked);
+  }
+});
+
+Template.paymentSection.helpers({
+  getHourlyCharge(musician) {
+    var x = AccompanistProfiles.findOne({Id: musician}, {charge: 1})
+    if (x){
+      return x.charge
+    }
+  },
+  getTotalEstimated(musician, hours) {
+    var x = AccompanistProfiles.findOne({Id: musician}, {charge: 1})
+    if (x){
+      return hours * x.charge
+    }
+  },
+  getFinalConfirmButtonClass() {
+    if (Template.instance().PaymentConfirmCheck.get()){
+      return "btn col s12 final-confirm"
+    }else{
+      return "btn col s12 final-confirm disabled"
+    }
+  }
+});
+
+Template.AccompanistDashboard.onCreated(function() {
+  Session.set('sessionTransaction', undefined);
+});
+
+Template.request.events({
+  'click .review-booking' (event) {
+    Session.set('sessionTransaction', this._id);
+  }
+});
+
+Template.registerHelper('getSessionTransaction', () => {
+  return x =  Session.get('sessionTransaction')
+});
+
+
+Template.upsertSessionResponse.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  // FIXTHIS check if there are more than one transaction
+  currentResponse: function () {
+    var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId")});
+    if (currentResponse) {
+      Template.instance().formType.set('update');
+      return currentResponse
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  },
+
+  optionArray: function() {
+    var currentSession = Sessions.findOne({transaction: FlowRouter.getParam("transactionId")});
+    var optionsArray = currentSession.suggestedTimes.map(function(time){
+      return {label:time.toString(), value:time.toString()};
+    });
+    return optionsArray
+  }
+});
+
+Template.upsertSessionResponse.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
+
+Template.upsertSessionResponse.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  // FIXTHIS check if there are more than one transaction
+  currentResponse: function () {
+    var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId")});
+    if (currentResponse) {
+      Template.instance().formType.set('update');
+      return currentResponse
+    }
+  },
+
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  },
+
+  optionArray: function() {
+    var currentSession = Sessions.findOne({transaction: FlowRouter.getParam("transactionId")});
+    var optionsArray = currentSession.suggestedTimes.map(function(time){
+      return {label:time.toString(), value:time.toString()};
+    });
+    return optionsArray
+  }
+});
+
+// Uploader Tests
+
+Template.uploader.events({
+  'change input[type="file"]' ( event, template ) {
+    Modules.client.uploadToAmazonS3( { event: event, template: template, type:"profile" } );
+  }
+});
+
+Template.files.onCreated( () => Template.instance().subscribe( 'files' ) );
+
+Template.files.helpers({
+  files() {
+    var files = Images.find({userId: Meteor.userId()}, { sort: { "added": -1 } } );
+    if ( files ) {
+      return files;
+    }
+  }
+});
+
+Template.file.helpers({
+  isImage( url ) {
+    const formats = [ 'jpg', 'jpeg', 'png', 'gif' ];
+    return _.find( formats, ( format ) => url.indexOf( format ) > -1 );
+  }
+});
+
+Template.file.events({
+  'click .delete_button' ( event, template ) {
+    Meteor.call('deleteImageFromS3',event.target.value);
+  }
+});
+//
+// Template.uploader.events({
+//   'dragover' : function (event, template){
+//     event.preventDefault();
+//     console.log("entered")
+//     $('.card-panel').addClass('green lighten-1 white-text');
+//   },
+//
+//   'dragleave' : function (event, template){
+//     event.preventDefault();
+//     console.log("left")
+//     $('.card-panel').addClass('white black-text').removeClass('green lighten-1 white-text');
+//   },
+//
+//   'drop' : function (event, template){
+//     console.log("dropped")
+//     $('.card-panel').addClass('white black-text').removeClass('green lighten-1 white-text');
+//   },
+// });
+
 
 // Template Inheritance
 
@@ -48,6 +294,25 @@ AccountsTemplates.configureRoute('signUp');
 
 // Javascript Component Initialization
 
+Template.AccompanistDashboard.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $(".button-collapse").sideNav({
+      menuWidth: 150, // Default is 240
+      edge: 'left', // Choose the horizontal origin
+      //closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    });
+  });
+});
+
+
+Template.accountTemplate.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+});
+
 Template.Navbar.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
@@ -79,6 +344,18 @@ Template.navbarAccount.onRendered(function () {
     });
   });
 });
+
+Template.request.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal(
+      {ready: function() {
+        $('ul.tabs').tabs('select_tab', 'repertoire');
+      }}
+    );
+  });
+});
+
 
 Template.modalLogin.onRendered(function () {
   $(document).ready(function(){
@@ -177,12 +454,17 @@ Template.search.onRendered(function () {
 
 // ==Global Template Helpers==
 
+
+Template.registerHelper('profilePic',  () => {
+  return Images.findOne({userId: Meteor.userId(), picType: "profile"}).url
+});
+
+
 Template.registerHelper('navbarFields', () => {
   // Logged In
   if (Meteor.user()){
     // Accompanist
     if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
-      console.log("Navbar Config 1")
       return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
     // Not Accompanist
@@ -191,6 +473,15 @@ Template.registerHelper('navbarFields', () => {
   }else{
     return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
   }
+});
+
+Template.registerHelper('pictureUrl', () => {
+  var x =  Images.findOne({filename: "banjo.png"});
+
+  if (x) {
+    return "/gridfs/images/" + x.md5
+  }
+  return x;
 });
 
 // Get Current User's Account
@@ -328,17 +619,13 @@ Template.registerHelper( 'userId', () => {
     return Meteor.userId();
 });
 
-
 // Old Global Template Helpers
-
 
 Template.registerHelper('defaultTransaction', () => {
   return {musician: Meteor.userId(),
           accompanist: FlowRouter.getParam("profileId"),
           status: 'Pending'}
 });
-
-
 
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
@@ -348,20 +635,17 @@ Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return "/bookingRequest/"+bookingId
 });
 
-
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
     event.preventDefault();
     // Only return if the user is the accompanist listed
     return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
-
 Template.registerHelper( 'musicCompetitionsDoc', () => {
     event.preventDefault();
     // array =  MusicCompetitions.find().fetch();
     return [{label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition"}]
 });
-
 
 // Local Template On Created
 
@@ -519,10 +803,8 @@ Template.upsertAccompanistForm.helpers ({
 
 
 Template.results.helpers({
-
   accompanists: function() {
   //var coords = Session.get('coords')
-
     var address = FlowRouter.getQueryParam("address")
     var start_date = FlowRouter.getQueryParam("start_date")
     var end_date = FlowRouter.getQueryParam("end_date")
@@ -668,8 +950,6 @@ Template.Navbar.events({
     AccountsTemplates.logout();
   }
 });
-
-
 
 // For Debugging
  SimpleSchema.debug = true;
