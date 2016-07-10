@@ -1161,7 +1161,7 @@ Template["Navbar"] = new Template("Template.Navbar", (function() {              
   return [ HTML.DIV({                                                                                                  // 5
     "class": "navbar-fixed"                                                                                            // 6
   }, "\n		", HTML.NAV({                                                                                                // 7
-    "class": "z-depth-0"                                                                                               // 8
+    "class": "purple lighten-2 z-depth-0"                                                                              // 8
   }, "\n			", HTML.DIV({                                                                                               // 9
     "class": "nav-wrapper container"                                                                                   // 10
   }, "\n				", HTML.Raw('<a href="/" class="brand-logo left">Empanist</a>'), "\n				", HTML.UL({                       // 11
@@ -1960,12 +1960,90 @@ Template["advancedSearch"] = new Template("Template.advancedSearch", (function()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
                                                                                                                        // 1
-Template.__checkName("uploader");                                                                                      // 2
-Template["uploader"] = new Template("Template.uploader", (function() {                                                 // 3
+Template.__checkName("TestLayout");                                                                                    // 2
+Template["TestLayout"] = new Template("Template.TestLayout", (function() {                                             // 3
   var view = this;                                                                                                     // 4
-  return HTML.Raw('<div class="container">\n    <p class="alert alert-success text-center">\n      <span>Click or Drag a File Here to Upload</span>\n    </p>\n    <form action="#">\n      <div class="file-field input-field">\n        <div class="btn">\n          <span>File</span>\n          <input type="file">\n        </div>\n        <div class="file-path-wrapper">\n          <input class="file-path validate" type="text">\n        </div>\n      </div>\n    </form>\n  </div>');
+  return [ HTML.Raw('<header>\n        <link rel="stylesheet" href="../style.css">\n        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n      </header>\n\n\n      '), HTML.MAIN("\n\n        ", Spacebars.include(view.lookupTemplate("upload")), "\n        ", HTML.Raw('<div class="container">\n\n\n\n        </div>'), "\n      ") ];
 }));                                                                                                                   // 6
                                                                                                                        // 7
+Template.__checkName("upload");                                                                                        // 8
+Template["upload"] = new Template("Template.upload", (function() {                                                     // 9
+  var view = this;                                                                                                     // 10
+  return [ HTML.Raw('<h4 class="page-header">Upload a File to Amazon S3</h4>\n  '), Spacebars.include(view.lookupTemplate("uploader")), "\n  ", Spacebars.include(view.lookupTemplate("files")) ];
+}));                                                                                                                   // 12
+                                                                                                                       // 13
+Template.__checkName("files");                                                                                         // 14
+Template["files"] = new Template("Template.files", (function() {                                                       // 15
+  var view = this;                                                                                                     // 16
+  return HTML.DIV({                                                                                                    // 17
+    "class": "files"                                                                                                   // 18
+  }, "\n    ", Blaze.Each(function() {                                                                                 // 19
+    return Spacebars.call(view.lookup("files"));                                                                       // 20
+  }, function() {                                                                                                      // 21
+    return [ "\n      ", Spacebars.include(view.lookupTemplate("file")), "\n    " ];                                   // 22
+  }, function() {                                                                                                      // 23
+    return [ "\n      ", HTML.P({                                                                                      // 24
+      "class": "alert alert-warning"                                                                                   // 25
+    }, "No files uploaded yet!"), "\n    " ];                                                                          // 26
+  }), "\n  ");                                                                                                         // 27
+}));                                                                                                                   // 28
+                                                                                                                       // 29
+Template.__checkName("file");                                                                                          // 30
+Template["file"] = new Template("Template.file", (function() {                                                         // 31
+  var view = this;                                                                                                     // 32
+  return HTML.DIV({                                                                                                    // 33
+    "class": "file"                                                                                                    // 34
+  }, "\n    ", HTML.DIV({                                                                                              // 35
+    "class": "preview"                                                                                                 // 36
+  }, "\n      ", HTML.A({                                                                                              // 37
+    href: function() {                                                                                                 // 38
+      return Spacebars.mustache(view.lookup("url"));                                                                   // 39
+    },                                                                                                                 // 40
+    target: "_blank"                                                                                                   // 41
+  }), "\n      ", Blaze.If(function() {                                                                                // 42
+    return Spacebars.dataMustache(view.lookup("isImage"), view.lookup("url"));                                         // 43
+  }, function() {                                                                                                      // 44
+    return [ "\n        ", HTML.IMG({                                                                                  // 45
+      src: function() {                                                                                                // 46
+        return Spacebars.mustache(view.lookup("url"));                                                                 // 47
+      },                                                                                                               // 48
+      alt: function() {                                                                                                // 49
+        return Spacebars.mustache(view.lookup("url"));                                                                 // 50
+      },                                                                                                               // 51
+      height: "100px"                                                                                                  // 52
+    }), "\n      " ];                                                                                                  // 53
+  }, function() {                                                                                                      // 54
+    return [ "\n        ", HTML.I({                                                                                    // 55
+      "class": "fa fa-file-o"                                                                                          // 56
+    }), "\n      " ];                                                                                                  // 57
+  }), "\n    "), "\n    ", HTML.DIV({                                                                                  // 58
+    "class": "delete"                                                                                                  // 59
+  }, "\n      ", HTML.BUTTON({                                                                                         // 60
+    "class": "delete_button",                                                                                          // 61
+    value: function() {                                                                                                // 62
+      return Spacebars.mustache(view.lookup("_id"));                                                                   // 63
+    }                                                                                                                  // 64
+  }, "Delete"), "\n    "), "\n    ", HTML.INPUT({                                                                      // 65
+    type: "text",                                                                                                      // 66
+    "class": "form-control",                                                                                           // 67
+    value: function() {                                                                                                // 68
+      return Spacebars.mustache(view.lookup("url"));                                                                   // 69
+    }                                                                                                                  // 70
+  }), "\n  ");                                                                                                         // 71
+}));                                                                                                                   // 72
+                                                                                                                       // 73
+Template.__checkName("uploader");                                                                                      // 74
+Template["uploader"] = new Template("Template.uploader", (function() {                                                 // 75
+  var view = this;                                                                                                     // 76
+  return HTML.Raw('<div class="container">\n    <p class="alert alert-success text-center">\n      <span>Click or Drag a File Here to Upload</span>\n    </p>\n    <form action="#">\n      <div class="file-field input-field">\n        <div class="btn">\n          <span>File</span>\n          <input type="file">\n        </div>\n        <div class="file-path-wrapper">\n          <input class="file-path validate" type="text">\n        </div>\n      </div>\n    </form>\n  </div>');
+}));                                                                                                                   // 78
+                                                                                                                       // 79
+Template.__checkName("tester");                                                                                        // 80
+Template["tester"] = new Template("Template.tester", (function() {                                                     // 81
+  var view = this;                                                                                                     // 82
+  return HTML.Raw('<div class="row">\n    <div class="col s12 m6">\n      <div class="card blue-grey darken-1">\n        <div class="row">\n          <div class="card-content white-text valign-wrapper">\n            <div class="col s2">\n              <a href="#!" class="valign">Account     </a>\n            </div>\n            <div class="col s10">\n            <img src="https://avatars1.githubusercontent.com/u/49341?v=3&amp;s=40" alt="" class="circle valign responsive-img">\n            </div>\n\n\n          </div>\n          <div class="card-action">\n            <a href="#">This is a link</a>\n            <a href="#">This is a link</a>\n          </div>\n        </div>\n      </div>\n    </div>\n\n  </div>');
+}));                                                                                                                   // 84
+                                                                                                                       // 85
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }},"lib":{"googlePlaces.js":function(){
@@ -2051,7 +2129,7 @@ var upload = function upload(options) {                                         
 Modules.client.uploadToAmazonS3 = upload;                                                                              // 43
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}},"main.js":["../collections/musicProfiles.js","../collections/accompanistProfiles.js","../collections/basicProfiles.js","../collections/competitions.js","../collections/transactions.js",function(require,exports,module){
+}},"main.js":["../collections/musicProfiles.js","../collections/accompanistProfiles.js","../collections/basicProfiles.js","../collections/competitions.js","../collections/transactions.js","../collections/testData.js",function(require,exports,module){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                     //
@@ -2059,419 +2137,65 @@ Modules.client.uploadToAmazonS3 = upload;                                       
 //                                                                                                                     //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
-var MusicProfiles;module.import('../collections/musicProfiles.js',{"MusicProfiles":function(v){MusicProfiles=v}});var AccompanistProfiles;module.import('../collections/accompanistProfiles.js',{"AccompanistProfiles":function(v){AccompanistProfiles=v}});var BasicProfiles;module.import('../collections/basicProfiles.js',{"BasicProfiles":function(v){BasicProfiles=v}});var MusicCompetitions;module.import('../collections/competitions.js',{"MusicCompetitions":function(v){MusicCompetitions=v}});var Transactions;module.import('../collections/transactions.js',{"Transactions":function(v){Transactions=v}});var AccompanistResponses;module.import('../collections/transactions.js',{"AccompanistResponses":function(v){AccompanistResponses=v}});var Sessions;module.import('../collections/transactions.js',{"Sessions":function(v){Sessions=v}});
+var MusicProfiles;module.import('../collections/musicProfiles.js',{"MusicProfiles":function(v){MusicProfiles=v}});var AccompanistProfiles;module.import('../collections/accompanistProfiles.js',{"AccompanistProfiles":function(v){AccompanistProfiles=v}});var BasicProfiles;module.import('../collections/basicProfiles.js',{"BasicProfiles":function(v){BasicProfiles=v}});var MusicCompetitions;module.import('../collections/competitions.js',{"MusicCompetitions":function(v){MusicCompetitions=v}});var Transactions;module.import('../collections/transactions.js',{"Transactions":function(v){Transactions=v}});var TestAccountData;module.import('../collections/testData.js',{"TestAccountData":function(v){TestAccountData=v}});
                                                                                                                        // 2
                                                                                                                        // 3
                                                                                                                        // 4
                                                                                                                        // 5
-                                                                                                                       // 6
+                                                                                                                       //
                                                                                                                        // 7
                                                                                                                        //
-window.MusicProfiles = MusicProfiles;                                                                                  // 10
-window.AccompanistProfiles = AccompanistProfiles;                                                                      // 11
-window.BasicProfiles = BasicProfiles;                                                                                  // 12
-window.MusicCompetitions = MusicCompetitions;                                                                          // 13
-window.Transactions = Transactions;                                                                                    // 14
-window.AccompanistResponses = AccompanistResponses;                                                                    // 15
-window.Sessions = Sessions;                                                                                            // 16
-                                                                                                                       //
-// Booking Tests                                                                                                       //
-                                                                                                                       //
-Template.BookingRequest.onCreated(function () {                                                                        // 20
-  this.currentStep = new ReactiveVar("repertoireSection");                                                             // 21
-});                                                                                                                    // 22
-                                                                                                                       //
-Template.BookingRequest.onRendered(function () {});                                                                    // 24
-                                                                                                                       //
-Template.BookingRequest.helpers({                                                                                      // 28
-  currentStep: function () {                                                                                           // 29
-    function currentStep() {                                                                                           // 28
-      return Template.instance().currentStep.get();                                                                    // 30
-    }                                                                                                                  // 31
-                                                                                                                       //
-    return currentStep;                                                                                                // 28
-  }()                                                                                                                  // 28
-});                                                                                                                    // 28
-                                                                                                                       //
-Template.BookingRequest.events({                                                                                       // 34
-  'click .next-session': function () {                                                                                 // 35
-    function clickNextSession(event, instance) {                                                                       // 34
-      instance.currentStep.set("sessionsSection");                                                                     // 36
-    }                                                                                                                  // 37
-                                                                                                                       //
-    return clickNextSession;                                                                                           // 34
-  }(),                                                                                                                 // 34
-  'click .next-payment': function () {                                                                                 // 38
-    function clickNextPayment(event, instance) {                                                                       // 34
-      instance.currentStep.set("paymentSection");                                                                      // 39
-    }                                                                                                                  // 40
-                                                                                                                       //
-    return clickNextPayment;                                                                                           // 34
-  }(),                                                                                                                 // 34
-  'click .final-confirm': function () {                                                                                // 41
-    function clickFinalConfirm(event, instance) {                                                                      // 34
-      Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId"));                                      // 42
-    }                                                                                                                  // 43
-                                                                                                                       //
-    return clickFinalConfirm;                                                                                          // 34
-  }()                                                                                                                  // 34
-});                                                                                                                    // 34
-                                                                                                                       //
-// Modal Review Booking Tests                                                                                          //
-                                                                                                                       //
-Template.repertoireSection.onCreated(function () {                                                                     // 50
-  this.RepertoireConfirmCheck = new ReactiveVar(false);                                                                // 51
-});                                                                                                                    // 52
-                                                                                                                       //
-Template.repertoireSection.onRendered(function () {                                                                    // 54
-  this.RepertoireConfirmCheck.set(false);                                                                              // 55
-});                                                                                                                    // 56
-                                                                                                                       //
-Template.repertoireSection.events({                                                                                    // 58
-  'change .check-repertoire-confirm input': function () {                                                              // 59
-    function changeCheckRepertoireConfirmInput(event, instance) {                                                      // 58
-      instance.RepertoireConfirmCheck.set(event.target.checked);                                                       // 60
-    }                                                                                                                  // 61
-                                                                                                                       //
-    return changeCheckRepertoireConfirmInput;                                                                          // 58
-  }()                                                                                                                  // 58
-});                                                                                                                    // 58
-                                                                                                                       //
-Template.repertoireSection.helpers({                                                                                   // 64
-  getRepertoireConfirmButtonClass: function () {                                                                       // 65
-    function getRepertoireConfirmButtonClass() {                                                                       // 64
-      if (Template.instance().RepertoireConfirmCheck.get()) {                                                          // 66
-        return "btn col s12 next-session";                                                                             // 67
-      } else {                                                                                                         // 68
-        return "btn col s12 next-session disabled";                                                                    // 69
-      }                                                                                                                // 70
-    }                                                                                                                  // 71
-                                                                                                                       //
-    return getRepertoireConfirmButtonClass;                                                                            // 64
-  }()                                                                                                                  // 64
-});                                                                                                                    // 64
-                                                                                                                       //
-Template.sessionsSection.onCreated(function () {                                                                       // 75
-  this.SessionConfirmCheck = new ReactiveVar(false);                                                                   // 76
-});                                                                                                                    // 77
-                                                                                                                       //
-Template.sessionsSection.onRendered(function () {                                                                      // 79
-  this.SessionConfirmCheck.set(false);                                                                                 // 80
-});                                                                                                                    // 81
-                                                                                                                       //
-Template.sessionsSection.events({                                                                                      // 83
-  'change .check-session-confirm input': function () {                                                                 // 84
-    function changeCheckSessionConfirmInput(event, instance) {                                                         // 83
-      instance.SessionConfirmCheck.set(event.target.checked);                                                          // 85
-    }                                                                                                                  // 86
-                                                                                                                       //
-    return changeCheckSessionConfirmInput;                                                                             // 83
-  }(),                                                                                                                 // 83
-  'click .next-payment': function () {                                                                                 // 88
-    function clickNextPayment(event, instance) {                                                                       // 83
-      $('#upsertSessionResponse').submit();                                                                            // 89
-    }                                                                                                                  // 90
-                                                                                                                       //
-    return clickNextPayment;                                                                                           // 83
-  }()                                                                                                                  // 83
-});                                                                                                                    // 83
-                                                                                                                       //
-Template.sessionsSection.helpers({                                                                                     // 93
-  getSessionConfirmButtonClass: function () {                                                                          // 94
-    function getSessionConfirmButtonClass() {                                                                          // 93
-      if (Template.instance().SessionConfirmCheck.get()) {                                                             // 95
-        return "btn col s12 next-payment";                                                                             // 96
-      } else {                                                                                                         // 97
-        return "btn col s12 next-payment disabled";                                                                    // 98
-      }                                                                                                                // 99
-    }                                                                                                                  // 100
-                                                                                                                       //
-    return getSessionConfirmButtonClass;                                                                               // 93
-  }()                                                                                                                  // 93
-});                                                                                                                    // 93
-                                                                                                                       //
-Template.paymentSection.onCreated(function () {                                                                        // 103
-  this.PaymentConfirmCheck = new ReactiveVar(false);                                                                   // 104
-});                                                                                                                    // 105
-                                                                                                                       //
-Template.paymentSection.onRendered(function () {                                                                       // 107
-  this.PaymentConfirmCheck.set(false);                                                                                 // 108
-});                                                                                                                    // 109
-                                                                                                                       //
-Template.paymentSection.events({                                                                                       // 111
-  'change .check-payment-confirm input': function () {                                                                 // 112
-    function changeCheckPaymentConfirmInput(event, instance) {                                                         // 111
-      instance.PaymentConfirmCheck.set(event.target.checked);                                                          // 113
-    }                                                                                                                  // 114
-                                                                                                                       //
-    return changeCheckPaymentConfirmInput;                                                                             // 111
-  }()                                                                                                                  // 111
-});                                                                                                                    // 111
-                                                                                                                       //
-Template.paymentSection.helpers({                                                                                      // 117
-  getHourlyCharge: function () {                                                                                       // 118
-    function getHourlyCharge(musician) {                                                                               // 117
-      var x = AccompanistProfiles.findOne({ Id: musician }, { charge: 1 });                                            // 119
-      if (x) {                                                                                                         // 120
-        return x.charge;                                                                                               // 121
-      }                                                                                                                // 122
-    }                                                                                                                  // 123
-                                                                                                                       //
-    return getHourlyCharge;                                                                                            // 117
-  }(),                                                                                                                 // 117
-  getTotalEstimated: function () {                                                                                     // 124
-    function getTotalEstimated(musician, hours) {                                                                      // 117
-      var x = AccompanistProfiles.findOne({ Id: musician }, { charge: 1 });                                            // 125
-      if (x) {                                                                                                         // 126
-        return hours * x.charge;                                                                                       // 127
-      }                                                                                                                // 128
-    }                                                                                                                  // 129
-                                                                                                                       //
-    return getTotalEstimated;                                                                                          // 117
-  }(),                                                                                                                 // 117
-  getFinalConfirmButtonClass: function () {                                                                            // 130
-    function getFinalConfirmButtonClass() {                                                                            // 117
-      if (Template.instance().PaymentConfirmCheck.get()) {                                                             // 131
-        return "btn col s12 final-confirm";                                                                            // 132
-      } else {                                                                                                         // 133
-        return "btn col s12 final-confirm disabled";                                                                   // 134
-      }                                                                                                                // 135
-    }                                                                                                                  // 136
-                                                                                                                       //
-    return getFinalConfirmButtonClass;                                                                                 // 117
-  }()                                                                                                                  // 117
-});                                                                                                                    // 117
-                                                                                                                       //
-Template.AccompanistDashboard.onCreated(function () {                                                                  // 139
-  Session.set('sessionTransaction', undefined);                                                                        // 140
-});                                                                                                                    // 141
-                                                                                                                       //
-Template.request.events({                                                                                              // 143
-  'click .review-booking': function () {                                                                               // 144
-    function clickReviewBooking(event) {                                                                               // 143
-      Session.set('sessionTransaction', this._id);                                                                     // 145
-    }                                                                                                                  // 146
-                                                                                                                       //
-    return clickReviewBooking;                                                                                         // 143
-  }()                                                                                                                  // 143
-});                                                                                                                    // 143
-                                                                                                                       //
-Template.registerHelper('getSessionTransaction', function () {                                                         // 149
-  return x = Session.get('sessionTransaction');                                                                        // 150
-});                                                                                                                    // 151
-                                                                                                                       //
-Template.upsertSessionResponse.helpers({                                                                               // 154
-  // Helps set up fields for deciding between "insert" and "update"                                                    //
-  // FIXTHIS check if there are more than one transaction                                                              //
-  currentResponse: function () {                                                                                       // 157
-    function currentResponse() {                                                                                       // 157
-      var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                   // 158
-      if (currentResponse) {                                                                                           // 159
-        Template.instance().formType.set('update');                                                                    // 160
-        return currentResponse;                                                                                        // 161
-      }                                                                                                                // 162
-    }                                                                                                                  // 163
-                                                                                                                       //
-    return currentResponse;                                                                                            // 157
-  }(),                                                                                                                 // 157
-                                                                                                                       //
-  formType: function () {                                                                                              // 165
-    function formType() {                                                                                              // 165
-      var formType = Template.instance().formType.get();                                                               // 166
-      return formType;                                                                                                 // 167
-    }                                                                                                                  // 168
-                                                                                                                       //
-    return formType;                                                                                                   // 165
-  }(),                                                                                                                 // 165
-                                                                                                                       //
-  optionArray: function () {                                                                                           // 170
-    function optionArray() {                                                                                           // 170
-      var currentSession = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                    // 171
-      var optionsArray = currentSession.suggestedTimes.map(function (time) {                                           // 172
-        return { label: time.toString(), value: time.toString() };                                                     // 173
-      });                                                                                                              // 174
-      return optionsArray;                                                                                             // 175
-    }                                                                                                                  // 176
-                                                                                                                       //
-    return optionArray;                                                                                                // 170
-  }()                                                                                                                  // 170
-});                                                                                                                    // 154
-                                                                                                                       //
-Template.upsertSessionResponse.onCreated(function () {                                                                 // 179
-  this.formType = new ReactiveVar('insert');                                                                           // 180
-});                                                                                                                    // 181
-                                                                                                                       //
-Template.upsertSessionResponse.helpers({                                                                               // 184
-  // Helps set up fields for deciding between "insert" and "update"                                                    //
-  // FIXTHIS check if there are more than one transaction                                                              //
-  currentResponse: function () {                                                                                       // 187
-    function currentResponse() {                                                                                       // 187
-      var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                   // 188
-      if (currentResponse) {                                                                                           // 189
-        Template.instance().formType.set('update');                                                                    // 190
-        return currentResponse;                                                                                        // 191
-      }                                                                                                                // 192
-    }                                                                                                                  // 193
-                                                                                                                       //
-    return currentResponse;                                                                                            // 187
-  }(),                                                                                                                 // 187
-                                                                                                                       //
-  formType: function () {                                                                                              // 195
-    function formType() {                                                                                              // 195
-      var formType = Template.instance().formType.get();                                                               // 196
-      return formType;                                                                                                 // 197
-    }                                                                                                                  // 198
-                                                                                                                       //
-    return formType;                                                                                                   // 195
-  }(),                                                                                                                 // 195
-                                                                                                                       //
-  optionArray: function () {                                                                                           // 200
-    function optionArray() {                                                                                           // 200
-      var currentSession = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                    // 201
-      var optionsArray = currentSession.suggestedTimes.map(function (time) {                                           // 202
-        return { label: time.toString(), value: time.toString() };                                                     // 203
-      });                                                                                                              // 204
-      return optionsArray;                                                                                             // 205
-    }                                                                                                                  // 206
-                                                                                                                       //
-    return optionArray;                                                                                                // 200
-  }()                                                                                                                  // 200
-});                                                                                                                    // 184
-                                                                                                                       //
-// Uploader Tests                                                                                                      //
-                                                                                                                       //
-Template.uploader.events({                                                                                             // 211
-  'change input[type="file"]': function () {                                                                           // 212
-    function changeInputTypeFile(event, template) {                                                                    // 211
-      Modules.client.uploadToAmazonS3({ event: event, template: template, type: "profile" });                          // 213
-    }                                                                                                                  // 214
-                                                                                                                       //
-    return changeInputTypeFile;                                                                                        // 211
-  }()                                                                                                                  // 211
-});                                                                                                                    // 211
-                                                                                                                       //
-Template.files.onCreated(function () {                                                                                 // 217
-  return Template.instance().subscribe('files');                                                                       // 217
-});                                                                                                                    // 217
-                                                                                                                       //
-Template.files.helpers({                                                                                               // 219
-  files: function () {                                                                                                 // 220
-    function files() {                                                                                                 // 219
-      var files = Images.find({ userId: Meteor.userId() }, { sort: { "added": -1 } });                                 // 221
-      if (files) {                                                                                                     // 222
-        return files;                                                                                                  // 223
-      }                                                                                                                // 224
-    }                                                                                                                  // 225
-                                                                                                                       //
-    return files;                                                                                                      // 219
-  }()                                                                                                                  // 219
-});                                                                                                                    // 219
-                                                                                                                       //
-Template.file.helpers({                                                                                                // 228
-  isImage: function () {                                                                                               // 229
-    function isImage(url) {                                                                                            // 228
-      var formats = ['jpg', 'jpeg', 'png', 'gif'];                                                                     // 230
-      return _.find(formats, function (format) {                                                                       // 231
-        return url.indexOf(format) > -1;                                                                               // 231
-      });                                                                                                              // 231
-    }                                                                                                                  // 232
-                                                                                                                       //
-    return isImage;                                                                                                    // 228
-  }()                                                                                                                  // 228
-});                                                                                                                    // 228
-                                                                                                                       //
-Template.file.events({                                                                                                 // 235
-  'click .delete_button': function () {                                                                                // 236
-    function clickDelete_button(event, template) {                                                                     // 235
-      Meteor.call('deleteImageFromS3', event.target.value);                                                            // 237
-    }                                                                                                                  // 238
-                                                                                                                       //
-    return clickDelete_button;                                                                                         // 235
-  }()                                                                                                                  // 235
-});                                                                                                                    // 235
-//                                                                                                                     //
-// Template.uploader.events({                                                                                          //
-//   'dragover' : function (event, template){                                                                          //
-//     event.preventDefault();                                                                                         //
-//     console.log("entered")                                                                                          //
-//     $('.card-panel').addClass('green lighten-1 white-text');                                                        //
-//   },                                                                                                                //
-//                                                                                                                     //
-//   'dragleave' : function (event, template){                                                                         //
-//     event.preventDefault();                                                                                         //
-//     console.log("left")                                                                                             //
-//     $('.card-panel').addClass('white black-text').removeClass('green lighten-1 white-text');                        //
-//   },                                                                                                                //
-//                                                                                                                     //
-//   'drop' : function (event, template){                                                                              //
-//     console.log("dropped")                                                                                          //
-//     $('.card-panel').addClass('white black-text').removeClass('green lighten-1 white-text');                        //
-//   },                                                                                                                //
-// });                                                                                                                 //
+window.MusicProfiles = MusicProfiles;                                                                                  // 9
+window.AccompanistProfiles = AccompanistProfiles;                                                                      // 10
+window.BasicProfiles = BasicProfiles;                                                                                  // 11
+window.MusicCompetitions = MusicCompetitions;                                                                          // 12
+window.Transactions = Transactions;                                                                                    // 13
                                                                                                                        //
 // Template Inheritance                                                                                                //
                                                                                                                        //
 // Autoform Settings                                                                                                   //
                                                                                                                        //
-AutoForm.setDefaultTemplate('materialize');                                                                            // 266
+AutoForm.setDefaultTemplate('materialize');                                                                            // 20
                                                                                                                        //
 // Accounts                                                                                                            //
                                                                                                                        //
-AccountsTemplates.configure({                                                                                          // 270
-  defaultLayoutType: 'blaze', // Optional, the default is 'blaze'                                                      // 271
-  defaultLayout: 'MainLayout',                                                                                         // 272
-  defaultLayoutRegions: {                                                                                              // 273
-    nav: 'Navbar'                                                                                                      // 274
-  },                                                                                                                   // 273
-  defaultContentRegion: 'main',                                                                                        // 276
+AccountsTemplates.configure({                                                                                          // 24
+  defaultLayoutType: 'blaze', // Optional, the default is 'blaze'                                                      // 25
+  defaultLayout: 'MainLayout',                                                                                         // 26
+  defaultLayoutRegions: {                                                                                              // 27
+    nav: 'Navbar'                                                                                                      // 28
+  },                                                                                                                   // 27
+  defaultContentRegion: 'main',                                                                                        // 30
                                                                                                                        //
-  onSubmitHook: function () {                                                                                          // 278
-    function onSubmitHook(error, state) {                                                                              // 278
-      if (!error) {                                                                                                    // 279
-        if (state === "signIn") {                                                                                      // 280
-          $('#signUp').closeModal();                                                                                   // 281
-          $('#login').closeModal();                                                                                    // 282
-        }                                                                                                              // 283
-        if (state === "signUp") {                                                                                      // 284
-          $('#signUp').closeModal();                                                                                   // 285
-          $('#login').closeModal();                                                                                    // 286
-        }                                                                                                              // 287
-      }                                                                                                                // 288
-    }                                                                                                                  // 289
+  onSubmitHook: function () {                                                                                          // 32
+    function onSubmitHook(error, state) {                                                                              // 32
+      if (!error) {                                                                                                    // 33
+        if (state === "signIn") {                                                                                      // 34
+          $('#signUp').closeModal();                                                                                   // 35
+          $('#login').closeModal();                                                                                    // 36
+        }                                                                                                              // 37
+        if (state === "signUp") {                                                                                      // 38
+          $('#signUp').closeModal();                                                                                   // 39
+          $('#login').closeModal();                                                                                    // 40
+        }                                                                                                              // 41
+      }                                                                                                                // 42
+    }                                                                                                                  // 43
                                                                                                                        //
-    return onSubmitHook;                                                                                               // 278
-  }()                                                                                                                  // 278
-});                                                                                                                    // 270
+    return onSubmitHook;                                                                                               // 32
+  }()                                                                                                                  // 32
+});                                                                                                                    // 24
                                                                                                                        //
-AccountsTemplates.configureRoute('signIn');                                                                            // 292
-AccountsTemplates.configureRoute('signUp');                                                                            // 293
+AccountsTemplates.configureRoute('signIn');                                                                            // 46
+AccountsTemplates.configureRoute('signUp');                                                                            // 47
                                                                                                                        //
 // Javascript Component Initialization                                                                                 //
                                                                                                                        //
-Template.AccompanistDashboard.onRendered(function () {                                                                 // 297
-  $(document).ready(function () {                                                                                      // 298
+Template.Navbar.onRendered(function () {                                                                               // 51
+  $(document).ready(function () {                                                                                      // 52
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $(".button-collapse").sideNav({                                                                                    // 300
-      menuWidth: 150, // Default is 240                                                                                // 301
-      edge: 'left' });                                                                                                 // 302
-  });                                                                                                                  // 305
-});                                                                                                                    // 306
-                                                                                                                       //
-// Choose the horizontal origin                                                                                        //
-//closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor                                       //
-Template.accountTemplate.onRendered(function () {                                                                      // 309
-  $(document).ready(function () {                                                                                      // 310
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $('.modal-trigger').leanModal();                                                                                   // 312
-  });                                                                                                                  // 313
-});                                                                                                                    // 314
-                                                                                                                       //
-Template.Navbar.onRendered(function () {                                                                               // 316
-  $(document).ready(function () {                                                                                      // 317
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $(".dropdown-button").dropdown();                                                                                  // 319
-  });                                                                                                                  // 320
-});                                                                                                                    // 321
+    $(".dropdown-button").dropdown();                                                                                  // 54
+  });                                                                                                                  // 55
+});                                                                                                                    // 56
                                                                                                                        //
 // Template.upsertBasicProfileForm.onRendered(function () {                                                            //
                                                                                                                        //
@@ -2482,721 +2206,698 @@ Template.Navbar.onRendered(function () {                                        
 //   });                                                                                                               //
 // });                                                                                                                 //
                                                                                                                        //
-Template.navbarAccount.onRendered(function () {                                                                        // 333
-  $(document).ready(function () {                                                                                      // 334
+Template.navbarAccount.onRendered(function () {                                                                        // 68
+  $(document).ready(function () {                                                                                      // 69
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $(".dropdown-button").dropdown({                                                                                   // 336
-      inDuration: 300,                                                                                                 // 337
-      outDuration: 225,                                                                                                // 338
-      constrain_width: true, // Does not change width of dropdown to that of the activator                             // 339
-      hover: true, // Activate on click                                                                                // 340
-      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)                        // 341
-      gutter: 0, // Spacing from edge                                                                                  // 342
-      belowOrigin: true                                                                                                // 343
-    });                                                                                                                // 336
-  });                                                                                                                  // 345
-});                                                                                                                    // 346
+    $(".dropdown-button").dropdown({                                                                                   // 71
+      inDuration: 300,                                                                                                 // 72
+      outDuration: 225,                                                                                                // 73
+      constrain_width: true, // Does not change width of dropdown to that of the activator                             // 74
+      hover: true, // Activate on click                                                                                // 75
+      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)                        // 76
+      gutter: 0, // Spacing from edge                                                                                  // 77
+      belowOrigin: true                                                                                                // 78
+    });                                                                                                                // 71
+  });                                                                                                                  // 80
+});                                                                                                                    // 81
                                                                                                                        //
-Template.request.onRendered(function () {                                                                              // 348
-  $(document).ready(function () {                                                                                      // 349
+Template.modalLogin.onRendered(function () {                                                                           // 83
+  $(document).ready(function () {                                                                                      // 84
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $('.modal-trigger').leanModal({ ready: function () {                                                               // 351
-        function ready() {                                                                                             // 352
-          $('ul.tabs').tabs('select_tab', 'repertoire');                                                               // 353
-        }                                                                                                              // 354
+    $('.modal-trigger').leanModal();                                                                                   // 86
+  });                                                                                                                  // 87
+});                                                                                                                    // 88
                                                                                                                        //
-        return ready;                                                                                                  // 352
-      }() });                                                                                                          // 352
-  });                                                                                                                  // 356
-});                                                                                                                    // 357
-                                                                                                                       //
-Template.modalLogin.onRendered(function () {                                                                           // 360
-  $(document).ready(function () {                                                                                      // 361
+Template.modalSignUp.onRendered(function () {                                                                          // 90
+  $(document).ready(function () {                                                                                      // 91
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $('.modal-trigger').leanModal();                                                                                   // 363
-  });                                                                                                                  // 364
-});                                                                                                                    // 365
+    $('.modal-trigger').leanModal();                                                                                   // 93
+  });                                                                                                                  // 94
+});                                                                                                                    // 95
                                                                                                                        //
-Template.modalSignUp.onRendered(function () {                                                                          // 367
-  $(document).ready(function () {                                                                                      // 368
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
-    $('.modal-trigger').leanModal();                                                                                   // 370
-  });                                                                                                                  // 371
-});                                                                                                                    // 372
+Template.ProfileLayout.onRendered(function () {                                                                        // 97
+  $(document).ready(function () {                                                                                      // 98
+    $('.materialboxed').materialbox();                                                                                 // 99
+  });                                                                                                                  // 100
+});                                                                                                                    // 101
                                                                                                                        //
-Template.ProfileLayout.onRendered(function () {                                                                        // 374
-  $(document).ready(function () {                                                                                      // 375
-    $('.materialboxed').materialbox();                                                                                 // 376
-  });                                                                                                                  // 377
-});                                                                                                                    // 378
+Template.CollapsibleStructure.onRendered(function () {                                                                 // 103
+  $('.collapsible').collapsible({                                                                                      // 104
+    accordion: false                                                                                                   // 105
+  });                                                                                                                  // 104
+});                                                                                                                    // 107
                                                                                                                        //
-Template.CollapsibleStructure.onRendered(function () {                                                                 // 380
-  $('.collapsible').collapsible({                                                                                      // 381
-    accordion: false                                                                                                   // 382
-  });                                                                                                                  // 381
-});                                                                                                                    // 384
+Template.TabStructure.onRendered(function () {                                                                         // 109
+  $('ul.tabs').tabs();                                                                                                 // 110
+});                                                                                                                    // 111
                                                                                                                        //
-Template.TabStructure.onRendered(function () {                                                                         // 386
-  $('ul.tabs').tabs();                                                                                                 // 387
-});                                                                                                                    // 388
-                                                                                                                       //
-Template.NewAccompLayout.onRendered(function () {                                                                      // 390
+Template.NewAccompLayout.onRendered(function () {                                                                      // 113
   // Initialize collapse button                                                                                        //
-  $(".button-collapse").sideNav();                                                                                     // 392
+  $(".button-collapse").sideNav();                                                                                     // 115
   // Initialize collapsible (uncomment the line below if you use the dropdown variation)                               //
   //$('.collapsible').collapsible();                                                                                   //
-});                                                                                                                    // 395
+});                                                                                                                    // 118
                                                                                                                        //
-Template.ProfileLayout.onRendered(function () {                                                                        // 397
+Template.ProfileLayout.onRendered(function () {                                                                        // 120
   // parallax                                                                                                          //
-  $(".parallax").parallax();                                                                                           // 399
+  $(".parallax").parallax();                                                                                           // 122
                                                                                                                        //
   // resize card with card-reveal                                                                                      //
-  $(document).ready(function () {                                                                                      // 402
-    $(document).on('click.card', '.card', function (e) {                                                               // 403
-      if ($(this).find('> .card-reveal').length) {                                                                     // 404
-        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {        // 405
+  $(document).ready(function () {                                                                                      // 125
+    $(document).on('click.card', '.card', function (e) {                                                               // 126
+      if ($(this).find('> .card-reveal').length) {                                                                     // 127
+        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {        // 128
           // Make Reveal animate down and display none                                                                 //
-          $(this).find('.card-reveal').velocity({ translateY: 0 }, {                                                   // 407
-            duration: 225,                                                                                             // 409
-            queue: false,                                                                                              // 410
-            easing: 'easeInOutQuad',                                                                                   // 411
-            complete: function () {                                                                                    // 412
-              function complete() {                                                                                    // 412
-                $(this).css({ display: 'none' });                                                                      // 412
-              }                                                                                                        // 412
+          $(this).find('.card-reveal').velocity({ translateY: 0 }, {                                                   // 130
+            duration: 225,                                                                                             // 132
+            queue: false,                                                                                              // 133
+            easing: 'easeInOutQuad',                                                                                   // 134
+            complete: function () {                                                                                    // 135
+              function complete() {                                                                                    // 135
+                $(this).css({ display: 'none' });                                                                      // 135
+              }                                                                                                        // 135
                                                                                                                        //
-              return complete;                                                                                         // 412
-            }()                                                                                                        // 412
-          });                                                                                                          // 408
-          $(this).velocity({ height: $(this).data('height') }, { duration: 225 });                                     // 415
-        } else if ($(e.target).is($('.card .activator')) || $(e.target).is($('.card .activator i'))) {                 // 416
-          $(e.target).closest('.card').css('overflow', 'hidden');                                                      // 419
+              return complete;                                                                                         // 135
+            }()                                                                                                        // 135
+          });                                                                                                          // 131
+          $(this).velocity({ height: $(this).data('height') }, { duration: 225 });                                     // 138
+        } else if ($(e.target).is($('.card .activator')) || $(e.target).is($('.card .activator i'))) {                 // 139
+          $(e.target).closest('.card').css('overflow', 'hidden');                                                      // 142
           $(this).data('height', $(this).css('height')).find('.card-reveal').css({ display: 'block', height: 'auto' }).velocity("stop", false).velocity({ translateY: '-100%' }, { duration: 300, queue: false, easing: 'easeInOutQuad' });
-          $(this).velocity({ height: $(this).find('.card-reveal').height() + 40 }, { duration: 300 });                 // 421
-        }                                                                                                              // 422
-      }                                                                                                                // 423
-      $('.card-reveal').closest('.card').css('overflow', 'hidden');                                                    // 424
-    });                                                                                                                // 425
-  });                                                                                                                  // 426
-});                                                                                                                    // 427
+          $(this).velocity({ height: $(this).find('.card-reveal').height() + 40 }, { duration: 300 });                 // 144
+        }                                                                                                              // 145
+      }                                                                                                                // 146
+      $('.card-reveal').closest('.card').css('overflow', 'hidden');                                                    // 147
+    });                                                                                                                // 148
+  });                                                                                                                  // 149
+});                                                                                                                    // 150
                                                                                                                        //
-Template.search.onRendered(function () {                                                                               // 429
+Template.search.onRendered(function () {                                                                               // 152
   // Enter acts as tabs till time to submit form                                                                       //
-  $(document).ready(function () {                                                                                      // 431
-    $('#searchform input').keydown(function (e) {                                                                      // 432
-      if (e.keyCode == 13) {                                                                                           // 433
-        if ($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type') == 'submit') {                          // 434
-          return true;                                                                                                 // 435
-        }                                                                                                              // 436
-        $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();                                                 // 437
-        return false;                                                                                                  // 438
-      }                                                                                                                // 439
-    });                                                                                                                // 440
-  });                                                                                                                  // 441
+  $(document).ready(function () {                                                                                      // 154
+    $('#searchform input').keydown(function (e) {                                                                      // 155
+      if (e.keyCode == 13) {                                                                                           // 156
+        if ($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type') == 'submit') {                          // 157
+          return true;                                                                                                 // 158
+        }                                                                                                              // 159
+        $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();                                                 // 160
+        return false;                                                                                                  // 161
+      }                                                                                                                // 162
+    });                                                                                                                // 163
+  });                                                                                                                  // 164
                                                                                                                        //
   // Materialize date picker desing                                                                                    //
-  $('.datepicker').pickadate({                                                                                         // 444
-    selectMonths: true, // Creates a dropdown to control month                                                         // 445
-    selectYears: 15 // Creates a dropdown of 15 years to control year                                                  // 446
-  });                                                                                                                  // 444
-});                                                                                                                    // 448
+  $('.datepicker').pickadate({                                                                                         // 167
+    selectMonths: true, // Creates a dropdown to control month                                                         // 168
+    selectYears: 15 // Creates a dropdown of 15 years to control year                                                  // 169
+  });                                                                                                                  // 167
+});                                                                                                                    // 171
                                                                                                                        //
 // On creation                                                                                                         //
                                                                                                                        //
 // ==Global Template Helpers==                                                                                         //
                                                                                                                        //
-Template.registerHelper('profilePic', function () {                                                                    // 458
-  return Images.findOne({ userId: Meteor.userId(), picType: "profile" }).url;                                          // 459
-});                                                                                                                    // 460
-                                                                                                                       //
-Template.registerHelper('navbarFields', function () {                                                                  // 463
+Template.registerHelper('navbarFields', function () {                                                                  // 180
   // Logged In                                                                                                         //
-  if (Meteor.user()) {                                                                                                 // 465
+  if (Meteor.user()) {                                                                                                 // 182
     // Accompanist                                                                                                     //
-    if (Roles.userIsInRole(Meteor.userId(), 'accompanist')) {                                                          // 467
-      return ['accompanistDashboard', 'bookings', 'navbarAccount'];                                                    // 468
-    }                                                                                                                  // 469
+    if (Roles.userIsInRole(Meteor.userId(), 'accompanist')) {                                                          // 184
+      console.log("Navbar Config 1");                                                                                  // 185
+      return ['accompanistDashboard', 'bookings', 'navbarAccount'];                                                    // 186
+    }                                                                                                                  // 187
     // Not Accompanist                                                                                                 //
-    return ['becomeAnAccompanist', 'bookings', 'navbarAccount'];                                                       // 471
+    return ['becomeAnAccompanist', 'bookings', 'navbarAccount'];                                                       // 189
     // Not Logged In                                                                                                   //
-  } else {                                                                                                             // 473
-      return ['becomeAnAccompanist', 'modalSignUp', 'modalLogin'];                                                     // 474
-    }                                                                                                                  // 475
-});                                                                                                                    // 476
-                                                                                                                       //
-Template.registerHelper('pictureUrl', function () {                                                                    // 478
-  var x = Images.findOne({ filename: "banjo.png" });                                                                   // 479
-                                                                                                                       //
-  if (x) {                                                                                                             // 481
-    return "/gridfs/images/" + x.md5;                                                                                  // 482
-  }                                                                                                                    // 483
-  return x;                                                                                                            // 484
-});                                                                                                                    // 485
+  } else {                                                                                                             // 191
+      return ['becomeAnAccompanist', 'modalSignUp', 'modalLogin'];                                                     // 192
+    }                                                                                                                  // 193
+});                                                                                                                    // 194
                                                                                                                        //
 // Get Current User's Account                                                                                          //
-Template.registerHelper('myBasicProfile', function () {                                                                // 488
-  return BasicProfiles.findOne({ userId: Meteor.userId() });                                                           // 489
-});                                                                                                                    // 490
+Template.registerHelper('myBasicProfile', function () {                                                                // 197
+  return BasicProfiles.findOne({ userId: Meteor.userId() });                                                           // 198
+});                                                                                                                    // 199
                                                                                                                        //
 // Get Current User's Music Profile                                                                                    //
-Template.registerHelper('myMusicProfile', function () {                                                                // 493
-  return MusicProfiles.findOne({ userId: Meteor.userId() });                                                           // 494
-});                                                                                                                    // 495
+Template.registerHelper('myMusicProfile', function () {                                                                // 202
+  return MusicProfiles.findOne({ userId: Meteor.userId() });                                                           // 203
+});                                                                                                                    // 204
                                                                                                                        //
 // Get Current Route's Accompanist Profile                                                                             //
-Template.registerHelper('myAccompanistProfile', function () {                                                          // 498
-  return AccompanistProfiles.findOne({ Id: Meteor.userId() });                                                         // 499
-});                                                                                                                    // 500
+Template.registerHelper('myAccompanistProfile', function () {                                                          // 207
+  return AccompanistProfiles.findOne({ Id: Meteor.userId() });                                                         // 208
+});                                                                                                                    // 209
                                                                                                                        //
-Template.registerHelper('routeBasicProfile', function () {                                                             // 502
-  return BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 503
-});                                                                                                                    // 504
+Template.registerHelper('routeBasicProfile', function () {                                                             // 211
+  return BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 212
+});                                                                                                                    // 213
                                                                                                                        //
 // Get Current Route's Music Profile                                                                                   //
-Template.registerHelper('routeMusicProfile', function () {                                                             // 507
-  return MusicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 508
-});                                                                                                                    // 509
+Template.registerHelper('routeMusicProfile', function () {                                                             // 216
+  return MusicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 217
+});                                                                                                                    // 218
                                                                                                                        //
 // Get Current Route's Accompanist Profile                                                                             //
-Template.registerHelper('routeAccompanistProfile', function () {                                                       // 512
-  return AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                        // 513
-});                                                                                                                    // 514
+Template.registerHelper('routeAccompanistProfile', function () {                                                       // 221
+  return AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                        // 222
+});                                                                                                                    // 223
                                                                                                                        //
-Template.registerHelper('sentBookingRequests', function () {                                                           // 516
-  return Transactions.find({ musician: Meteor.userId() }).fetch();                                                     // 517
-});                                                                                                                    // 518
+Template.registerHelper('sentBookingRequests', function () {                                                           // 225
+  return Transactions.find({ musician: Meteor.userId() }).fetch();                                                     // 226
+});                                                                                                                    // 227
                                                                                                                        //
-Template.registerHelper('receivedBookingRequests', function (arg) {                                                    // 520
-  var splitRequests = { pending: [], ongoing: [], completed: [], cancelled: [] };                                      // 521
-  Transactions.find({ accompanist: Meteor.userId() }).forEach(function (doc) {                                         // 522
-    if (doc.status == "Pending") {                                                                                     // 523
-      splitRequests.pending.push(doc);                                                                                 // 524
-    } else if (doc.status == "Ongoing") {                                                                              // 525
-      splitRequests.ongoing.push(doc);                                                                                 // 526
-    } else if (doc.status == "Completed") {                                                                            // 527
-      splitRequests.completed.push(doc);                                                                               // 528
-    } else {                                                                                                           // 529
-      splitRequests.cancelled.push(doc);                                                                               // 530
-    }                                                                                                                  // 531
-  });                                                                                                                  // 532
-  return splitRequests;                                                                                                // 533
-});                                                                                                                    // 534
+Template.registerHelper('receivedBookingRequests', function (arg) {                                                    // 229
+  var splitRequests = { pending: [], ongoing: [], completed: [], cancelled: [] };                                      // 230
+  Transactions.find({ accompanist: Meteor.userId() }).forEach(function (doc) {                                         // 231
+    if (doc.status == "Pending") {                                                                                     // 232
+      splitRequests.pending.push(doc);                                                                                 // 233
+    } else if (doc.status == "Ongoing") {                                                                              // 234
+      splitRequests.ongoing.push(doc);                                                                                 // 235
+    } else if (doc.status == "Completed") {                                                                            // 236
+      splitRequests.completed.push(doc);                                                                               // 237
+    } else {                                                                                                           // 238
+      splitRequests.cancelled.push(doc);                                                                               // 239
+    }                                                                                                                  // 240
+  });                                                                                                                  // 241
+  return splitRequests;                                                                                                // 242
+});                                                                                                                    // 243
                                                                                                                        //
-Template.registerHelper('formatDate', function (date) {                                                                // 536
-  return moment(date).format('MMM DD, YYYY');                                                                          // 537
-});                                                                                                                    // 538
+Template.registerHelper('formatDate', function (date) {                                                                // 245
+  return moment(date).format('MMM DD, YYYY');                                                                          // 246
+});                                                                                                                    // 247
                                                                                                                        //
-Template.registerHelper('formatBirthDate', function (date) {                                                           // 540
-  return moment(date).format('MMM, YYYY');                                                                             // 541
-});                                                                                                                    // 542
+Template.registerHelper('formatBirthDate', function (date) {                                                           // 249
+  return moment(date).format('MMM, YYYY');                                                                             // 250
+});                                                                                                                    // 251
                                                                                                                        //
 // Slice day string and capitalize it's first letter                                                                   //
 // All fixed in schema, only need the slicing functionality                                                            //
-Template.registerHelper('formatDay', function (day) {                                                                  // 546
-  var Day = day.substr(0, 3);                                                                                          // 547
-  var new_day = Day.charAt(0).toUpperCase() + Day.slice(1);                                                            // 548
-  return new_day;                                                                                                      // 549
-});                                                                                                                    // 550
+Template.registerHelper('formatDay', function (day) {                                                                  // 255
+  var Day = day.substr(0, 3);                                                                                          // 256
+  var new_day = Day.charAt(0).toUpperCase() + Day.slice(1);                                                            // 257
+  return new_day;                                                                                                      // 258
+});                                                                                                                    // 259
                                                                                                                        //
-Template.registerHelper('formatDuration', function (date1, date2) {                                                    // 552
-  var start = moment(date1);                                                                                           // 553
-  var end = moment(date2);                                                                                             // 554
-  if (start.year() == end.year()) {                                                                                    // 555
+Template.registerHelper('formatDuration', function (date1, date2) {                                                    // 261
+  var start = moment(date1);                                                                                           // 262
+  var end = moment(date2);                                                                                             // 263
+  if (start.year() == end.year()) {                                                                                    // 264
     // Year is the same                                                                                                //
-    if (start.month() == end.month()) {                                                                                // 557
-      return start.format('MMM DD - ') + end.format('DD, YYYY');                                                       // 558
-    }                                                                                                                  // 559
-    return start.format('MMM DD - ') + end.format('MMM DD, YYYY');                                                     // 560
-  }                                                                                                                    // 561
-  return start.format('MMM DD, YYYY - ') + end.format('MMM DD, YYYY');                                                 // 562
-});                                                                                                                    // 563
+    if (start.month() == end.month()) {                                                                                // 266
+      return start.format('MMM DD - ') + end.format('DD, YYYY');                                                       // 267
+    }                                                                                                                  // 268
+    return start.format('MMM DD - ') + end.format('MMM DD, YYYY');                                                     // 269
+  }                                                                                                                    // 270
+  return start.format('MMM DD, YYYY - ') + end.format('MMM DD, YYYY');                                                 // 271
+});                                                                                                                    // 272
                                                                                                                        //
-Template.registerHelper('basicProfileById', function (id) {                                                            // 565
-  return BasicProfiles.findOne({ userId: id });                                                                        // 566
-});                                                                                                                    // 567
+Template.registerHelper('basicProfileById', function (id) {                                                            // 274
+  return BasicProfiles.findOne({ userId: id });                                                                        // 275
+});                                                                                                                    // 276
                                                                                                                        //
-Template.registerHelper('musicProfileById', function (id) {                                                            // 569
-  return MusicProfiles.findOne({ userId: id });                                                                        // 570
-});                                                                                                                    // 571
+Template.registerHelper('musicProfileById', function (id) {                                                            // 278
+  return MusicProfiles.findOne({ userId: id });                                                                        // 279
+});                                                                                                                    // 280
                                                                                                                        //
-Template.registerHelper('accompanistProfileById', function (id) {                                                      // 573
-  return AccompanistProfiles.findOne({ Id: id });                                                                      // 574
-});                                                                                                                    // 575
+Template.registerHelper('accompanistProfileById', function (id) {                                                      // 282
+  return AccompanistProfiles.findOne({ Id: id });                                                                      // 283
+});                                                                                                                    // 284
                                                                                                                        //
-Template.registerHelper('routeTransaction', function () {                                                              // 577
-  return Transactions.findOne({ _id: FlowRouter.getParam("transactionId") });                                          // 578
-});                                                                                                                    // 579
+Template.registerHelper('routeTransaction', function () {                                                              // 286
+  return Transactions.findOne({ _id: FlowRouter.getParam("transactionId") });                                          // 287
+});                                                                                                                    // 288
                                                                                                                        //
-Template.registerHelper('isOwnProfile', function () {                                                                  // 581
-  return FlowRouter.getParam("profileId") == Meteor.userId();                                                          // 582
-});                                                                                                                    // 583
+Template.registerHelper('isOwnProfile', function () {                                                                  // 290
+  return FlowRouter.getParam("profileId") == Meteor.userId();                                                          // 291
+});                                                                                                                    // 292
                                                                                                                        //
-Template.registerHelper('and', function (a, b) {                                                                       // 585
-  return a && b;                                                                                                       // 586
-});                                                                                                                    // 587
-Template.registerHelper('or', function (a, b) {                                                                        // 588
-  return a || b;                                                                                                       // 589
-});                                                                                                                    // 590
+Template.registerHelper('and', function (a, b) {                                                                       // 294
+  return a && b;                                                                                                       // 295
+});                                                                                                                    // 296
+Template.registerHelper('or', function (a, b) {                                                                        // 297
+  return a || b;                                                                                                       // 298
+});                                                                                                                    // 299
                                                                                                                        //
-Template.registerHelper('basicProfileExists', function () {                                                            // 592
-  return undefined !== BasicProfiles.findOne({ userId: Meteor.userId() });                                             // 593
-});                                                                                                                    // 594
+Template.registerHelper('basicProfileExists', function () {                                                            // 301
+  return undefined !== BasicProfiles.findOne({ userId: Meteor.userId() });                                             // 302
+});                                                                                                                    // 303
                                                                                                                        //
-Template.registerHelper('musicProfileExists', function () {                                                            // 596
-  return undefined !== MusicProfiles.findOne({ userId: Meteor.userId() });                                             // 597
-});                                                                                                                    // 598
+Template.registerHelper('musicProfileExists', function () {                                                            // 305
+  return undefined !== MusicProfiles.findOne({ userId: Meteor.userId() });                                             // 306
+});                                                                                                                    // 307
                                                                                                                        //
-Template.registerHelper('accompanistProfileExists', function () {                                                      // 600
-  return undefined !== AccompanistProfiles.findOne({ Id: Meteor.userId() });                                           // 601
-});                                                                                                                    // 602
+Template.registerHelper('accompanistProfileExists', function () {                                                      // 309
+  return undefined !== AccompanistProfiles.findOne({ Id: Meteor.userId() });                                           // 310
+});                                                                                                                    // 311
                                                                                                                        //
-Template.registerHelper('isAccompanist', function () {                                                                 // 604
-  var x = AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                       // 605
-  return x !== null;                                                                                                   // 606
-});                                                                                                                    // 607
+Template.registerHelper('isAccompanist', function () {                                                                 // 313
+  var x = AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                       // 314
+  return x !== null;                                                                                                   // 315
+});                                                                                                                    // 316
                                                                                                                        //
-Template.registerHelper('validId', function () {                                                                       // 609
-  if (BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") })) {                                           // 610
-    return true;                                                                                                       // 611
-  } else {                                                                                                             // 612
-    return false;                                                                                                      // 613
-  }                                                                                                                    // 614
-});                                                                                                                    // 615
+Template.registerHelper('validId', function () {                                                                       // 318
+  if (BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") })) {                                           // 319
+    return true;                                                                                                       // 320
+  } else {                                                                                                             // 321
+    return false;                                                                                                      // 322
+  }                                                                                                                    // 323
+});                                                                                                                    // 324
                                                                                                                        //
-Template.registerHelper('userId', function () {                                                                        // 617
-  event.preventDefault();                                                                                              // 618
-  return Meteor.userId();                                                                                              // 619
-});                                                                                                                    // 620
+Template.registerHelper('userId', function () {                                                                        // 326
+  event.preventDefault();                                                                                              // 327
+  return Meteor.userId();                                                                                              // 328
+});                                                                                                                    // 329
                                                                                                                        //
 // Old Global Template Helpers                                                                                         //
                                                                                                                        //
-Template.registerHelper('defaultTransaction', function () {                                                            // 624
-  return { musician: Meteor.userId(),                                                                                  // 625
-    accompanist: FlowRouter.getParam("profileId"),                                                                     // 626
-    status: 'Pending' };                                                                                               // 627
-});                                                                                                                    // 628
+Template.registerHelper('defaultTransaction', function () {                                                            // 335
+  return { musician: Meteor.userId(),                                                                                  // 336
+    accompanist: FlowRouter.getParam("profileId"),                                                                     // 337
+    status: 'Pending' };                                                                                               // 338
+});                                                                                                                    // 339
                                                                                                                        //
-Template.registerHelper('getProfileRoute', function () {                                                               // 630
-  var id = arguments.length <= 0 || arguments[0] === undefined ? Meteor.userId() : arguments[0];                       // 630
+Template.registerHelper('getProfileRoute', function () {                                                               // 343
+  var id = arguments.length <= 0 || arguments[0] === undefined ? Meteor.userId() : arguments[0];                       // 343
                                                                                                                        //
-  return "/profile/" + id;                                                                                             // 631
-});                                                                                                                    // 632
+  return "/profile/" + id;                                                                                             // 344
+});                                                                                                                    // 345
                                                                                                                        //
-Template.registerHelper('getBookingRoute', function (bookingId) {                                                      // 634
-  return "/bookingRequest/" + bookingId;                                                                               // 635
-});                                                                                                                    // 636
+Template.registerHelper('getBookingRoute', function (bookingId) {                                                      // 347
+  return "/bookingRequest/" + bookingId;                                                                               // 348
+});                                                                                                                    // 349
                                                                                                                        //
-Template.registerHelper('transactionById', function () {                                                               // 638
-  var id = arguments.length <= 0 || arguments[0] === undefined ? FlowRouter.getParam("transactionId") : arguments[0];  // 638
+Template.registerHelper('transactionById', function () {                                                               // 352
+  var id = arguments.length <= 0 || arguments[0] === undefined ? FlowRouter.getParam("transactionId") : arguments[0];  // 352
                                                                                                                        //
-  event.preventDefault();                                                                                              // 639
+  event.preventDefault();                                                                                              // 353
   // Only return if the user is the accompanist listed                                                                 //
-  return Transactions.findOne({ _id: id, accompanist: Meteor.userId() });                                              // 641
-});                                                                                                                    // 642
+  return Transactions.findOne({ _id: id, accompanist: Meteor.userId() });                                              // 355
+});                                                                                                                    // 356
                                                                                                                        //
-Template.registerHelper('musicCompetitionsDoc', function () {                                                          // 644
-  event.preventDefault();                                                                                              // 645
+Template.registerHelper('musicCompetitionsDoc', function () {                                                          // 359
+  event.preventDefault();                                                                                              // 360
   // array =  MusicCompetitions.find().fetch();                                                                        //
   return [{ label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition" }];
-});                                                                                                                    // 648
+});                                                                                                                    // 363
                                                                                                                        //
 // Local Template On Created                                                                                           //
                                                                                                                        //
-Template.upsertMusicProfileForm.onCreated(function () {                                                                // 652
-  this.formType = new ReactiveVar('insert');                                                                           // 653
-});                                                                                                                    // 654
+Template.upsertMusicProfileForm.onCreated(function () {                                                                // 368
+  this.formType = new ReactiveVar('insert');                                                                           // 369
+});                                                                                                                    // 370
                                                                                                                        //
-Template.upsertBasicProfileForm.onCreated(function () {                                                                // 656
-  this.formType = new ReactiveVar('insert');                                                                           // 657
-});                                                                                                                    // 658
+Template.upsertBasicProfileForm.onCreated(function () {                                                                // 372
+  this.formType = new ReactiveVar('insert');                                                                           // 373
+});                                                                                                                    // 374
                                                                                                                        //
-Template.upsertAccompanistForm.onCreated(function () {                                                                 // 660
-  this.formType = new ReactiveVar('insert');                                                                           // 661
-});                                                                                                                    // 662
+Template.upsertAccompanistForm.onCreated(function () {                                                                 // 376
+  this.formType = new ReactiveVar('insert');                                                                           // 377
+});                                                                                                                    // 378
                                                                                                                        //
-Template.upsertInstrumentForm.onCreated(function () {                                                                  // 664
-  this.formType = new ReactiveVar('insert');                                                                           // 665
-});                                                                                                                    // 666
+Template.upsertInstrumentForm.onCreated(function () {                                                                  // 380
+  this.formType = new ReactiveVar('insert');                                                                           // 381
+});                                                                                                                    // 382
                                                                                                                        //
-Template.upsertAwardsForm.onCreated(function () {                                                                      // 668
-  this.formType = new ReactiveVar('insert');                                                                           // 669
-});                                                                                                                    // 670
+Template.upsertAwardsForm.onCreated(function () {                                                                      // 384
+  this.formType = new ReactiveVar('insert');                                                                           // 385
+});                                                                                                                    // 386
                                                                                                                        //
-Template.upsertProgramsForm.onCreated(function () {                                                                    // 672
-  this.formType = new ReactiveVar('insert');                                                                           // 673
-});                                                                                                                    // 674
+Template.upsertProgramsForm.onCreated(function () {                                                                    // 388
+  this.formType = new ReactiveVar('insert');                                                                           // 389
+});                                                                                                                    // 390
                                                                                                                        //
-Template.upsertOrchestraForm.onCreated(function () {                                                                   // 676
-  this.formType = new ReactiveVar('insert');                                                                           // 677
-});                                                                                                                    // 678
+Template.upsertOrchestraForm.onCreated(function () {                                                                   // 392
+  this.formType = new ReactiveVar('insert');                                                                           // 393
+});                                                                                                                    // 394
                                                                                                                        //
 // Local Template Helpers                                                                                              //
                                                                                                                        //
-Template.upsertOrchestraForm.helpers({                                                                                 // 682
+Template.upsertOrchestraForm.helpers({                                                                                 // 398
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentProfile: function () {                                                                                        // 684
-    function currentProfile() {                                                                                        // 684
-      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 685
-      if (currentProfile) {                                                                                            // 686
-        Template.instance().formType.set('update');                                                                    // 687
-        return currentProfile;                                                                                         // 688
-      }                                                                                                                // 689
-    }                                                                                                                  // 690
+  currentProfile: function () {                                                                                        // 400
+    function currentProfile() {                                                                                        // 400
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 401
+      if (currentProfile) {                                                                                            // 402
+        Template.instance().formType.set('update');                                                                    // 403
+        return currentProfile;                                                                                         // 404
+      }                                                                                                                // 405
+    }                                                                                                                  // 406
                                                                                                                        //
-    return currentProfile;                                                                                             // 684
-  }(),                                                                                                                 // 684
+    return currentProfile;                                                                                             // 400
+  }(),                                                                                                                 // 400
                                                                                                                        //
-  formType: function () {                                                                                              // 692
-    function formType() {                                                                                              // 692
-      var formType = Template.instance().formType.get();                                                               // 693
-      return formType;                                                                                                 // 694
-    }                                                                                                                  // 695
+  formType: function () {                                                                                              // 408
+    function formType() {                                                                                              // 408
+      var formType = Template.instance().formType.get();                                                               // 409
+      return formType;                                                                                                 // 410
+    }                                                                                                                  // 411
                                                                                                                        //
-    return formType;                                                                                                   // 692
-  }()                                                                                                                  // 692
-});                                                                                                                    // 682
+    return formType;                                                                                                   // 408
+  }()                                                                                                                  // 408
+});                                                                                                                    // 398
                                                                                                                        //
-Template.upsertProgramsForm.helpers({                                                                                  // 698
+Template.upsertProgramsForm.helpers({                                                                                  // 414
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentProfile: function () {                                                                                        // 700
-    function currentProfile() {                                                                                        // 700
-      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 701
-      if (currentProfile) {                                                                                            // 702
-        Template.instance().formType.set('update');                                                                    // 703
-        return currentProfile;                                                                                         // 704
-      }                                                                                                                // 705
-    }                                                                                                                  // 706
+  currentProfile: function () {                                                                                        // 416
+    function currentProfile() {                                                                                        // 416
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 417
+      if (currentProfile) {                                                                                            // 418
+        Template.instance().formType.set('update');                                                                    // 419
+        return currentProfile;                                                                                         // 420
+      }                                                                                                                // 421
+    }                                                                                                                  // 422
                                                                                                                        //
-    return currentProfile;                                                                                             // 700
-  }(),                                                                                                                 // 700
+    return currentProfile;                                                                                             // 416
+  }(),                                                                                                                 // 416
                                                                                                                        //
-  formType: function () {                                                                                              // 708
-    function formType() {                                                                                              // 708
-      var formType = Template.instance().formType.get();                                                               // 709
-      return formType;                                                                                                 // 710
-    }                                                                                                                  // 711
+  formType: function () {                                                                                              // 424
+    function formType() {                                                                                              // 424
+      var formType = Template.instance().formType.get();                                                               // 425
+      return formType;                                                                                                 // 426
+    }                                                                                                                  // 427
                                                                                                                        //
-    return formType;                                                                                                   // 708
-  }()                                                                                                                  // 708
-});                                                                                                                    // 698
+    return formType;                                                                                                   // 424
+  }()                                                                                                                  // 424
+});                                                                                                                    // 414
                                                                                                                        //
-Template.upsertAwardsForm.helpers({                                                                                    // 714
+Template.upsertAwardsForm.helpers({                                                                                    // 430
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentProfile: function () {                                                                                        // 716
-    function currentProfile() {                                                                                        // 716
-      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 717
-      if (currentProfile) {                                                                                            // 718
-        Template.instance().formType.set('update');                                                                    // 719
-        return currentProfile;                                                                                         // 720
-      }                                                                                                                // 721
-    }                                                                                                                  // 722
+  currentProfile: function () {                                                                                        // 432
+    function currentProfile() {                                                                                        // 432
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 433
+      if (currentProfile) {                                                                                            // 434
+        Template.instance().formType.set('update');                                                                    // 435
+        return currentProfile;                                                                                         // 436
+      }                                                                                                                // 437
+    }                                                                                                                  // 438
                                                                                                                        //
-    return currentProfile;                                                                                             // 716
-  }(),                                                                                                                 // 716
+    return currentProfile;                                                                                             // 432
+  }(),                                                                                                                 // 432
                                                                                                                        //
-  formType: function () {                                                                                              // 724
-    function formType() {                                                                                              // 724
-      var formType = Template.instance().formType.get();                                                               // 725
-      return formType;                                                                                                 // 726
-    }                                                                                                                  // 727
+  formType: function () {                                                                                              // 440
+    function formType() {                                                                                              // 440
+      var formType = Template.instance().formType.get();                                                               // 441
+      return formType;                                                                                                 // 442
+    }                                                                                                                  // 443
                                                                                                                        //
-    return formType;                                                                                                   // 724
-  }()                                                                                                                  // 724
-});                                                                                                                    // 714
+    return formType;                                                                                                   // 440
+  }()                                                                                                                  // 440
+});                                                                                                                    // 430
                                                                                                                        //
-Template.upsertMusicProfileForm.helpers({                                                                              // 730
+Template.upsertMusicProfileForm.helpers({                                                                              // 446
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentProfile: function () {                                                                                        // 732
-    function currentProfile() {                                                                                        // 732
-      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 733
-      if (currentProfile) {                                                                                            // 734
-        Template.instance().formType.set('update');                                                                    // 735
-        return currentProfile;                                                                                         // 736
-      }                                                                                                                // 737
-    }                                                                                                                  // 738
+  currentProfile: function () {                                                                                        // 448
+    function currentProfile() {                                                                                        // 448
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 449
+      if (currentProfile) {                                                                                            // 450
+        Template.instance().formType.set('update');                                                                    // 451
+        return currentProfile;                                                                                         // 452
+      }                                                                                                                // 453
+    }                                                                                                                  // 454
                                                                                                                        //
-    return currentProfile;                                                                                             // 732
-  }(),                                                                                                                 // 732
+    return currentProfile;                                                                                             // 448
+  }(),                                                                                                                 // 448
                                                                                                                        //
-  formType: function () {                                                                                              // 740
-    function formType() {                                                                                              // 740
-      var formType = Template.instance().formType.get();                                                               // 741
-      return formType;                                                                                                 // 742
-    }                                                                                                                  // 743
+  formType: function () {                                                                                              // 456
+    function formType() {                                                                                              // 456
+      var formType = Template.instance().formType.get();                                                               // 457
+      return formType;                                                                                                 // 458
+    }                                                                                                                  // 459
                                                                                                                        //
-    return formType;                                                                                                   // 740
-  }(),                                                                                                                 // 740
+    return formType;                                                                                                   // 456
+  }(),                                                                                                                 // 456
                                                                                                                        //
-  instrumentList: function () {                                                                                        // 745
-    function instrumentList() {                                                                                        // 745
+  instrumentList: function () {                                                                                        // 461
+    function instrumentList() {                                                                                        // 461
       return ["Voice", "Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone", "Zither"].map(function (obj) {
-        return { label: obj, value: obj };                                                                             // 747
-      });                                                                                                              // 747
-    }                                                                                                                  // 748
+        return { label: obj, value: obj };                                                                             // 463
+      });                                                                                                              // 463
+    }                                                                                                                  // 464
                                                                                                                        //
-    return instrumentList;                                                                                             // 745
-  }()                                                                                                                  // 745
-});                                                                                                                    // 730
+    return instrumentList;                                                                                             // 461
+  }()                                                                                                                  // 461
+});                                                                                                                    // 446
                                                                                                                        //
-Template.upsertInstrumentForm.helpers({                                                                                // 751
+Template.upsertInstrumentForm.helpers({                                                                                // 467
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentProfile: function () {                                                                                        // 753
-    function currentProfile() {                                                                                        // 753
-      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 754
-      if (currentProfile) {                                                                                            // 755
-        Template.instance().formType.set('update');                                                                    // 756
-        return currentProfile;                                                                                         // 757
-      }                                                                                                                // 758
-    }                                                                                                                  // 759
+  currentProfile: function () {                                                                                        // 469
+    function currentProfile() {                                                                                        // 469
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 470
+      if (currentProfile) {                                                                                            // 471
+        Template.instance().formType.set('update');                                                                    // 472
+        return currentProfile;                                                                                         // 473
+      }                                                                                                                // 474
+    }                                                                                                                  // 475
                                                                                                                        //
-    return currentProfile;                                                                                             // 753
-  }(),                                                                                                                 // 753
+    return currentProfile;                                                                                             // 469
+  }(),                                                                                                                 // 469
                                                                                                                        //
-  formType: function () {                                                                                              // 761
-    function formType() {                                                                                              // 761
-      var formType = Template.instance().formType.get();                                                               // 762
-      return formType;                                                                                                 // 763
-    }                                                                                                                  // 764
+  formType: function () {                                                                                              // 477
+    function formType() {                                                                                              // 477
+      var formType = Template.instance().formType.get();                                                               // 478
+      return formType;                                                                                                 // 479
+    }                                                                                                                  // 480
                                                                                                                        //
-    return formType;                                                                                                   // 761
-  }(),                                                                                                                 // 761
+    return formType;                                                                                                   // 477
+  }(),                                                                                                                 // 477
                                                                                                                        //
-  instrumentList: function () {                                                                                        // 766
-    function instrumentList() {                                                                                        // 766
+  instrumentList: function () {                                                                                        // 482
+    function instrumentList() {                                                                                        // 482
       return ["Voice", "Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone", "Zither"].map(function (obj) {
-        return { label: obj, value: obj };                                                                             // 768
-      });                                                                                                              // 768
-    }                                                                                                                  // 769
+        return { label: obj, value: obj };                                                                             // 484
+      });                                                                                                              // 484
+    }                                                                                                                  // 485
                                                                                                                        //
-    return instrumentList;                                                                                             // 766
-  }()                                                                                                                  // 766
-});                                                                                                                    // 751
+    return instrumentList;                                                                                             // 482
+  }()                                                                                                                  // 482
+});                                                                                                                    // 467
                                                                                                                        //
-Template.upsertBasicProfileForm.helpers({                                                                              // 772
+Template.upsertBasicProfileForm.helpers({                                                                              // 488
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentBasicProfile: function () {                                                                                   // 774
-    function currentBasicProfile() {                                                                                   // 774
-      var currentAccount = BasicProfiles.findOne({ userId: Meteor.userId() });                                         // 775
-      if (currentAccount) {                                                                                            // 776
-        Template.instance().formType.set('update');                                                                    // 777
-        return currentAccount;                                                                                         // 778
-      }                                                                                                                // 779
-    }                                                                                                                  // 780
+  currentBasicProfile: function () {                                                                                   // 490
+    function currentBasicProfile() {                                                                                   // 490
+      var currentAccount = BasicProfiles.findOne({ userId: Meteor.userId() });                                         // 491
+      if (currentAccount) {                                                                                            // 492
+        Template.instance().formType.set('update');                                                                    // 493
+        return currentAccount;                                                                                         // 494
+      }                                                                                                                // 495
+    }                                                                                                                  // 496
                                                                                                                        //
-    return currentBasicProfile;                                                                                        // 774
-  }(),                                                                                                                 // 774
+    return currentBasicProfile;                                                                                        // 490
+  }(),                                                                                                                 // 490
                                                                                                                        //
-  formType: function () {                                                                                              // 782
-    function formType() {                                                                                              // 782
-      var formType = Template.instance().formType.get();                                                               // 783
-      return formType;                                                                                                 // 784
-    }                                                                                                                  // 785
+  formType: function () {                                                                                              // 498
+    function formType() {                                                                                              // 498
+      var formType = Template.instance().formType.get();                                                               // 499
+      return formType;                                                                                                 // 500
+    }                                                                                                                  // 501
                                                                                                                        //
-    return formType;                                                                                                   // 782
-  }()                                                                                                                  // 782
-});                                                                                                                    // 772
+    return formType;                                                                                                   // 498
+  }()                                                                                                                  // 498
+});                                                                                                                    // 488
                                                                                                                        //
-Template.upsertAccompanistForm.helpers({                                                                               // 788
+Template.upsertAccompanistForm.helpers({                                                                               // 504
   // Helps set up fields for deciding between "insert" and "update"                                                    //
-  currentAccompanistProfiles: function () {                                                                            // 790
-    function currentAccompanistProfiles() {                                                                            // 790
-      var currentAccompanistProfiles = AccompanistProfiles.findOne({ Id: Meteor.userId() });                           // 791
-      if (currentAccompanistProfiles) {                                                                                // 792
-        Template.instance().formType.set('update');                                                                    // 793
-        return currentAccompanistProfiles;                                                                             // 794
-      }                                                                                                                // 795
-    }                                                                                                                  // 796
+  currentAccompanistProfiles: function () {                                                                            // 506
+    function currentAccompanistProfiles() {                                                                            // 506
+      var currentAccompanistProfiles = AccompanistProfiles.findOne({ Id: Meteor.userId() });                           // 507
+      if (currentAccompanistProfiles) {                                                                                // 508
+        Template.instance().formType.set('update');                                                                    // 509
+        return currentAccompanistProfiles;                                                                             // 510
+      }                                                                                                                // 511
+    }                                                                                                                  // 512
                                                                                                                        //
-    return currentAccompanistProfiles;                                                                                 // 790
-  }(),                                                                                                                 // 790
+    return currentAccompanistProfiles;                                                                                 // 506
+  }(),                                                                                                                 // 506
                                                                                                                        //
-  formType: function () {                                                                                              // 798
-    function formType() {                                                                                              // 798
-      var formType = Template.instance().formType.get();                                                               // 799
-      return formType;                                                                                                 // 800
-    }                                                                                                                  // 801
+  formType: function () {                                                                                              // 514
+    function formType() {                                                                                              // 514
+      var formType = Template.instance().formType.get();                                                               // 515
+      return formType;                                                                                                 // 516
+    }                                                                                                                  // 517
                                                                                                                        //
-    return formType;                                                                                                   // 798
-  }()                                                                                                                  // 798
-});                                                                                                                    // 788
+    return formType;                                                                                                   // 514
+  }()                                                                                                                  // 514
+});                                                                                                                    // 504
                                                                                                                        //
-Template.results.helpers({                                                                                             // 805
-  accompanists: function () {                                                                                          // 806
-    function accompanists() {                                                                                          // 806
+Template.results.helpers({                                                                                             // 521
+                                                                                                                       //
+  accompanists: function () {                                                                                          // 523
+    function accompanists() {                                                                                          // 523
       //var coords = Session.get('coords')                                                                             //
-      var address = FlowRouter.getQueryParam("address");                                                               // 808
-      var start_date = FlowRouter.getQueryParam("start_date");                                                         // 809
-      var end_date = FlowRouter.getQueryParam("end_date");                                                             // 810
                                                                                                                        //
-      Meteor.call('getGeocode', address, function (err, result) {                                                      // 812
-        console.log("Meteor call worked");                                                                             // 813
+      var address = FlowRouter.getQueryParam("address");                                                               // 526
+      var start_date = FlowRouter.getQueryParam("start_date");                                                         // 527
+      var end_date = FlowRouter.getQueryParam("end_date");                                                             // 528
                                                                                                                        //
-        if (result !== null) {                                                                                         // 815
-          var lat = Number(result[0].latitude);                                                                        // 816
-          var lng = Number(result[0].longitude);                                                                       // 817
-          var coords = [lng, lat];                                                                                     // 818
-        }                                                                                                              // 819
+      Meteor.call('getGeocode', address, function (err, result) {                                                      // 530
+        console.log("Meteor call worked");                                                                             // 531
+                                                                                                                       //
+        if (result !== null) {                                                                                         // 533
+          var lat = Number(result[0].latitude);                                                                        // 534
+          var lng = Number(result[0].longitude);                                                                       // 535
+          var coords = [lng, lat];                                                                                     // 536
+        }                                                                                                              // 537
                                                                                                                        //
         //convert dates to dates that can be compared with Mongo schema                                                //
-        var sd = new Date(start_date);                                                                                 // 822
-        var ed = new Date(end_date);                                                                                   // 823
+        var sd = new Date(start_date);                                                                                 // 540
+        var ed = new Date(end_date);                                                                                   // 541
                                                                                                                        //
-        if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {                                    // 825
-          var results = AccompanistProfiles.find({                                                                     // 826
-            loc: { $near: {                                                                                            // 827
-                $geometry: { type: "Point", coordinates: coords },                                                     // 830
-                $maxDistance: 20000                                                                                    // 831
-              }                                                                                                        // 829
-            },                                                                                                         // 828
-            startDate: { $lte: sd, $lte: ed },                                                                         // 834
-            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 835
-        } else if (moment(sd).isValid() && moment(ed).isValid()) {                                                     // 836
-          var results = AccompanistProfiles.find({                                                                     // 839
-            startDate: { $lte: sd, $lte: ed },                                                                         // 841
-            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 842
-        } else if (moment(ed).isValid()) {                                                                             // 843
-          var results = AccompanistProfiles.find({                                                                     // 846
-            startDate: { $lte: ed },                                                                                   // 848
-            endDate: { $gte: ed } }).fetch();                                                                          // 849
-        } else if (moment(sd).isValid()) {                                                                             // 850
-          var results = AccompanistProfiles.find({                                                                     // 853
-            startDate: { $lte: sd },                                                                                   // 855
-            endDate: { $gte: sd } }).fetch();                                                                          // 856
-        } else if (coords !== undefined) {                                                                             // 857
-          var results = AccompanistProfiles.find({                                                                     // 860
-            loc: { $near: {                                                                                            // 861
-                $geometry: { type: "Point", coordinates: coords },                                                     // 864
-                $maxDistance: 20000                                                                                    // 865
-              }                                                                                                        // 863
-            } }).fetch();                                                                                              // 862
-        } else {                                                                                                       // 868
-          var results = null;                                                                                          // 871
-        }                                                                                                              // 872
+        if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {                                    // 543
+          var results = AccompanistProfiles.find({                                                                     // 544
+            loc: { $near: {                                                                                            // 545
+                $geometry: { type: "Point", coordinates: coords },                                                     // 548
+                $maxDistance: 20000                                                                                    // 549
+              }                                                                                                        // 547
+            },                                                                                                         // 546
+            startDate: { $lte: sd, $lte: ed },                                                                         // 552
+            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 553
+        } else if (moment(sd).isValid() && moment(ed).isValid()) {                                                     // 554
+          var results = AccompanistProfiles.find({                                                                     // 557
+            startDate: { $lte: sd, $lte: ed },                                                                         // 559
+            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 560
+        } else if (moment(ed).isValid()) {                                                                             // 561
+          var results = AccompanistProfiles.find({                                                                     // 564
+            startDate: { $lte: ed },                                                                                   // 566
+            endDate: { $gte: ed } }).fetch();                                                                          // 567
+        } else if (moment(sd).isValid()) {                                                                             // 568
+          var results = AccompanistProfiles.find({                                                                     // 571
+            startDate: { $lte: sd },                                                                                   // 573
+            endDate: { $gte: sd } }).fetch();                                                                          // 574
+        } else if (coords !== undefined) {                                                                             // 575
+          var results = AccompanistProfiles.find({                                                                     // 578
+            loc: { $near: {                                                                                            // 579
+                $geometry: { type: "Point", coordinates: coords },                                                     // 582
+                $maxDistance: 20000                                                                                    // 583
+              }                                                                                                        // 581
+            } }).fetch();                                                                                              // 580
+        } else {                                                                                                       // 586
+          var results = null;                                                                                          // 589
+        }                                                                                                              // 590
                                                                                                                        //
-        Session.set('results', results);                                                                               // 874
-      });                                                                                                              // 875
+        Session.set('results', results);                                                                               // 592
+      });                                                                                                              // 593
                                                                                                                        //
-      return Session.get('results');                                                                                   // 877
-    }                                                                                                                  // 878
+      return Session.get('results');                                                                                   // 595
+    }                                                                                                                  // 596
                                                                                                                        //
-    return accompanists;                                                                                               // 806
-  }(),                                                                                                                 // 806
-  accompname: function () {                                                                                            // 879
-    function accompname() {                                                                                            // 879
-      var names = BasicProfiles.findOne({ userId: this.Id });                                                          // 880
-      return names;                                                                                                    // 881
-    }                                                                                                                  // 882
+    return accompanists;                                                                                               // 523
+  }(),                                                                                                                 // 523
+  accompname: function () {                                                                                            // 597
+    function accompname() {                                                                                            // 597
+      var names = BasicProfiles.findOne({ userId: this.Id });                                                          // 598
+      return names;                                                                                                    // 599
+    }                                                                                                                  // 600
                                                                                                                        //
-    return accompname;                                                                                                 // 879
-  }()                                                                                                                  // 879
+    return accompname;                                                                                                 // 597
+  }()                                                                                                                  // 597
                                                                                                                        //
-});                                                                                                                    // 805
+});                                                                                                                    // 521
                                                                                                                        //
 // Events                                                                                                              //
                                                                                                                        //
-Template.search.events({                                                                                               // 888
-  'submit form': function () {                                                                                         // 889
-    function submitForm() {                                                                                            // 889
-      console.log("Form Submitted");                                                                                   // 890
-      FlowRouter.go('results?');                                                                                       // 891
-    }                                                                                                                  // 892
+Template.search.events({                                                                                               // 606
+  'submit form': function () {                                                                                         // 607
+    function submitForm() {                                                                                            // 607
+      console.log("Form Submitted");                                                                                   // 608
+      FlowRouter.go('results?');                                                                                       // 609
+    }                                                                                                                  // 610
                                                                                                                        //
-    return submitForm;                                                                                                 // 889
-  }()                                                                                                                  // 889
-});                                                                                                                    // 888
+    return submitForm;                                                                                                 // 607
+  }()                                                                                                                  // 607
+});                                                                                                                    // 606
                                                                                                                        //
 // Google search autocomplete                                                                                          //
-Template.search.events({                                                                                               // 896
-  'click #autocomplete': function () {                                                                                 // 897
-    function clickAutocomplete(e, search) {                                                                            // 897
-      initAutoComplete();                                                                                              // 898
-    }                                                                                                                  // 899
+Template.search.events({                                                                                               // 614
+  'click #autocomplete': function () {                                                                                 // 615
+    function clickAutocomplete(e, search) {                                                                            // 615
+      initAutoComplete();                                                                                              // 616
+    }                                                                                                                  // 617
                                                                                                                        //
-    return clickAutocomplete;                                                                                          // 897
-  }()                                                                                                                  // 897
-});                                                                                                                    // 896
+    return clickAutocomplete;                                                                                          // 615
+  }()                                                                                                                  // 615
+});                                                                                                                    // 614
                                                                                                                        //
-Template.NewAccompLayout.events({                                                                                      // 902
-  'click #autocomplete': function () {                                                                                 // 903
-    function clickAutocomplete(e, NewAccompLayout) {                                                                   // 903
-      initAutoComplete();                                                                                              // 904
-    }                                                                                                                  // 905
+Template.NewAccompLayout.events({                                                                                      // 620
+  'click #autocomplete': function () {                                                                                 // 621
+    function clickAutocomplete(e, NewAccompLayout) {                                                                   // 621
+      initAutoComplete();                                                                                              // 622
+    }                                                                                                                  // 623
                                                                                                                        //
-    return clickAutocomplete;                                                                                          // 903
-  }()                                                                                                                  // 903
-});                                                                                                                    // 902
+    return clickAutocomplete;                                                                                          // 621
+  }()                                                                                                                  // 621
+});                                                                                                                    // 620
                                                                                                                        //
-var initAutoComplete = function initAutoComplete() {                                                                   // 908
+var initAutoComplete = function initAutoComplete() {                                                                   // 626
   var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), { types: ['geocode'] });
-};                                                                                                                     // 912
+};                                                                                                                     // 630
                                                                                                                        //
-Template.EditAccompanistProfiles.events({                                                                              // 914
-  'click button': function () {                                                                                        // 915
-    function clickButton() {                                                                                           // 915
-      Notifications.info('Test', 'Working Notification');                                                              // 916
-    }                                                                                                                  // 917
+Template.EditAccompanistProfiles.events({                                                                              // 632
+  'click button': function () {                                                                                        // 633
+    function clickButton() {                                                                                           // 633
+      Notifications.info('Test', 'Working Notification');                                                              // 634
+    }                                                                                                                  // 635
                                                                                                                        //
-    return clickButton;                                                                                                // 915
-  }()                                                                                                                  // 915
-});                                                                                                                    // 914
+    return clickButton;                                                                                                // 633
+  }()                                                                                                                  // 633
+});                                                                                                                    // 632
                                                                                                                        //
-Template.BookingRequest.events({                                                                                       // 920
-  'click button': function () {                                                                                        // 921
-    function clickButton() {                                                                                           // 921
-      Transactions.update({ _id: FlowRouter.getParam("transactionId") }, { $set: { status: "Confirmed" } });           // 922
-      Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');                       // 923
-    }                                                                                                                  // 924
+Template.BookingRequest.events({                                                                                       // 638
+  'click button': function () {                                                                                        // 639
+    function clickButton() {                                                                                           // 639
+      Transactions.update({ _id: FlowRouter.getParam("transactionId") }, { $set: { status: "Confirmed" } });           // 640
+      Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');                       // 641
+    }                                                                                                                  // 642
                                                                                                                        //
-    return clickButton;                                                                                                // 921
-  }()                                                                                                                  // 921
-});                                                                                                                    // 920
+    return clickButton;                                                                                                // 639
+  }()                                                                                                                  // 639
+});                                                                                                                    // 638
                                                                                                                        //
-Template.makeAdmin.events({                                                                                            // 927
-  'click button': function () {                                                                                        // 928
-    function clickButton() {                                                                                           // 928
-      userId = Meteor.userId();                                                                                        // 929
-      Meteor.call('divinify', userId);                                                                                 // 930
-    }                                                                                                                  // 931
+Template.makeAdmin.events({                                                                                            // 645
+  'click button': function () {                                                                                        // 646
+    function clickButton() {                                                                                           // 646
+      userId = Meteor.userId();                                                                                        // 647
+      Meteor.call('divinify', userId);                                                                                 // 648
+    }                                                                                                                  // 649
                                                                                                                        //
-    return clickButton;                                                                                                // 928
-  }()                                                                                                                  // 928
-});                                                                                                                    // 927
+    return clickButton;                                                                                                // 646
+  }()                                                                                                                  // 646
+});                                                                                                                    // 645
                                                                                                                        //
 // Decide Modal Login/SignUp Popup                                                                                     //
-Template.modalLogin.events({                                                                                           // 935
-  'click .modal-trigger': function () {                                                                                // 936
-    function clickModalTrigger() {                                                                                     // 936
-      AccountsTemplates.setState('signIn');                                                                            // 937
-    }                                                                                                                  // 938
+Template.modalLogin.events({                                                                                           // 653
+  'click .modal-trigger': function () {                                                                                // 654
+    function clickModalTrigger() {                                                                                     // 654
+      AccountsTemplates.setState('signIn');                                                                            // 655
+    }                                                                                                                  // 656
                                                                                                                        //
-    return clickModalTrigger;                                                                                          // 936
-  }()                                                                                                                  // 936
-});                                                                                                                    // 935
+    return clickModalTrigger;                                                                                          // 654
+  }()                                                                                                                  // 654
+});                                                                                                                    // 653
                                                                                                                        //
-Template.modalSignUp.events({                                                                                          // 941
-  'click .modal-trigger': function () {                                                                                // 942
-    function clickModalTrigger() {                                                                                     // 942
-      AccountsTemplates.setState('signUp');                                                                            // 943
-    }                                                                                                                  // 944
+Template.modalSignUp.events({                                                                                          // 659
+  'click .modal-trigger': function () {                                                                                // 660
+    function clickModalTrigger() {                                                                                     // 660
+      AccountsTemplates.setState('signUp');                                                                            // 661
+    }                                                                                                                  // 662
                                                                                                                        //
-    return clickModalTrigger;                                                                                          // 942
-  }()                                                                                                                  // 942
-});                                                                                                                    // 941
+    return clickModalTrigger;                                                                                          // 660
+  }()                                                                                                                  // 660
+});                                                                                                                    // 659
                                                                                                                        //
 // Logout from the navbar                                                                                              //
-Template.Navbar.events({                                                                                               // 948
-  'click .logout': function () {                                                                                       // 949
-    function clickLogout() {                                                                                           // 949
-      AccountsTemplates.logout();                                                                                      // 950
-    }                                                                                                                  // 951
+Template.Navbar.events({                                                                                               // 666
+  'click .logout': function () {                                                                                       // 667
+    function clickLogout() {                                                                                           // 667
+      AccountsTemplates.logout();                                                                                      // 668
+    }                                                                                                                  // 669
                                                                                                                        //
-    return clickLogout;                                                                                                // 949
-  }()                                                                                                                  // 949
-});                                                                                                                    // 948
+    return clickLogout;                                                                                                // 667
+  }()                                                                                                                  // 667
+});                                                                                                                    // 666
                                                                                                                        //
 // For Debugging                                                                                                       //
-SimpleSchema.debug = true;                                                                                             // 955
+SimpleSchema.debug = true;                                                                                             // 675
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }]},"lib":{"routes.js":function(){

@@ -1,4 +1,4 @@
-<!-- <template name="TestLayout">
+<template name="TestLayout">
 
        <header>
         <link rel="stylesheet" href="../style.css">
@@ -7,6 +7,11 @@
 
 
       <main>
+
+        {{> upload}}
+        <div class="container">
+
+
 
         </div>
       </main>
@@ -47,7 +52,7 @@
     <input type="text" class="form-control" value="{{url}}">
   </div>
 </template>
- -->
+
 
 
 <!-- <template name="uploader">
@@ -88,46 +93,7 @@
   </div>
 </template>
 
-<!-- <template name="upsertMusicProfileFormTesting">
-  {{#if isInRole 'makeMusicProfile'}}
 
-  {{#autoForm collection='MusicProfiles' id='upsertMusicProfileForm-form' type=formType doc=currentProfile}}
-
-   {{> afArrayField name="awards" template="customArrayField"}}                        
-{{/autoForm}}
-
-{{/if}}
-
-</template> -->
-
-<!-- <template name="afArrayField_customArrayField">
-
-    {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-
-        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-            <button type="button" class="btn btn-primary autoform-remove-item pull-left">REMOVE</button>
-        {{/if}} <br><br>
-        
-        <div class="row">
-          <div class="input-field col s6">
-            {{>afFieldInput name=this.atts.name type="text"}}
-            <label for="icon_prefix">Competition Name</label>
-          </div>
-           <div class="input-field col s6">
-            {{>afFieldInput name=this.atts.awards type="text"}}
-            <label>Award Title</label>
-          </div>
-        </div>
-        <div class="input-field col s6">
-            {{>afFieldInput name=this.atts.date type="date"}}
-        </div>
-
-    {{/afEachArrayItem}}
-
-    {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">ADD</button>
-    {{/if}}
-</template> -->
 
 <!-- <template name="BookPanel">
   <div class="row">
@@ -162,30 +128,6 @@
   {{/autoForm}}
 </template> -->
 
-<!-- <template name="modalConfirm">
-   Modal Trigger -->
-<!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
- -->
-<!-- Modal Structure -->
-<!-- <div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Review Booking Request</h4>
-    {{> Template.dynamic template="BookingRequest" data=(transactionById "2STt9vFsiQDmXXwK9")}}
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Confirm</a>
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Reject</a>
-  </div>
-</div>
-</template> -->
-
-<!-- <template name="tester">
-=======
-
-<template name="modalConfirm">
-
-
-</template>
 
 
 <template name="tester">
@@ -212,7 +154,7 @@
     </div>
 
   </div>
-</template> -->
+</template> 
 <!-- 
 <template name="collectionTest">  -->
   <!-- <ul class="collection with-header">
