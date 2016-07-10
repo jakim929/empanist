@@ -36,6 +36,7 @@ Template.BookingRequest.helpers({
 
 Template.BookingRequest.events({
   'click .next-session' (event, instance) {
+    if ()
     instance.currentStep.set("sessionsSection");
   },
   'click .next-payment' (event, instance) {
