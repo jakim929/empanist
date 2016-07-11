@@ -33,19 +33,6 @@ Template.BookingRequest.helpers({
 
 });
 
-<<<<<<< HEAD
-// Template.BookingRequest.events({
-//   'click .next-session' (event, instance) {
-//     // if ()
-//     instance.currentStep.set("sessionsSection");
-//   },
-//   'click .next-payment' (event, instance) {
-//     instance.currentStep.set("paymentSection");
-//   },
-//   'click .final-confirm' (event, instance) {
-//     Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
-//   },
-=======
 Template.BookingRequest.events({
   'click .next-session' (event, instance) {
     instance.currentStep.set("sessionsSection");
@@ -56,7 +43,6 @@ Template.BookingRequest.events({
   'click .final-confirm' (event, instance) {
     Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
   },
->>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 
 // });
 
