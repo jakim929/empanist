@@ -20,16 +20,21 @@
             <p class="step_main">Lets clarify some basics</p>
             <p class="step_info">Name, location, number, and more</p>
             <br>
-            {{#unless and musicProfileExists accompanistProfileExists }}
+            {{#unless musicProfileExists  }}
+              {{#unless accompanistProfileExists}}
               {{#unless basicProfileExists}}
                 <a class="waves-effect waves-light btn" href="/newaccomp/step1">
                   Continue
                 </a>
-              {{else}}
+                {{/unless}}
+             
+                {{/unless}}
+                 {{else}}
+
+
                 <a href="/newaccomp/step1">
                   Edit
                 </a>
-              {{/unless}}
             {{/unless}}
           </div>
         </li>

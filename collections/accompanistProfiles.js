@@ -2,6 +2,13 @@ import { Mongo } from 'meteor/mongo';
 
 export const AccompanistProfiles = new Mongo.Collection('accompanistProfiles');
 
+RepertoireSchema = new SimpleSchema({
+  concerto: {
+    type:String,
+    label: "Concerto",
+  },
+});
+
 AccompanistProfileSchema = new SimpleSchema({
 		Id: {
 			type: String,
@@ -15,7 +22,7 @@ AccompanistProfileSchema = new SimpleSchema({
 		},
 
 		repertoire: {
-    	type: [String],
+    	type: [RepertoireSchema],
     	label: "Repertoire"
   	},
 

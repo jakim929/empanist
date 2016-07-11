@@ -30,7 +30,6 @@ Template.BookingRequest.helpers({
     return Template.instance().currentStep.get()
   },
 
-
 });
 
 Template.BookingRequest.events({
@@ -44,7 +43,138 @@ Template.BookingRequest.events({
     Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
   },
 
+});
+
+// Template.upsertMusicProfileForm.events({
+//   'click #next-instrument' {
+//     award.display = block;
+//   }
+
 // });
+
+// Template.upsertMusicProfileForm.onCreated(function() {
+//   this.formType = new ReactiveVar('true')
+// });
+
+// Template.registerHelper('showInstrument', () => {
+//   return true
+// });
+
+// Template.registerHelper('showAward', () => {
+//   return false
+// });
+
+// Template.upsertMusicProfileForm.events({
+//   'click .next-instrument': function(){
+//     showAward = true;
+//   }
+// });
+
+Template.upsertMusicProfileForm.events({
+  'click .next-instrument':function(){
+    $(".award").css('display', 'block');
+    $(".instrument").css('display', 'none');
+    $(".determinate").css('width', '50%');
+    },
+    'click .next-award':function(){
+    $(".award").css('display', 'none');
+    $(".program").css('display', 'block');
+    $(".determinate").css('width', '75%');
+    },
+    'click .next-program':function(){
+    $(".program").css('display', 'none');
+    $(".orchestra").css('display', 'block');
+    $(".determinate").css('width', '100%');
+    },
+    'click .back-award':function(){
+    $(".award").css('display', 'none');
+    $(".instrument").css('display', 'block');
+    },
+    'click .back-program':function(){
+    $(".program").css('display', 'none');
+    $(".award").css('display', 'block');
+    },
+    'click .back-orchestra':function(){
+    $(".orchestra").css('display', 'none');
+    $(".program").css('display', 'block');
+    }
+  });
+
+Template.upsertAccompanistForm.events({
+  'click .next-repertoire':function(){
+    $(".charge").css('display', 'block');
+    $(".repertoire").css('display', 'none');
+    $(".determinate").css('width', '12.5%');
+    },
+    'click .next-charge':function(){
+    $(".charge").css('display', 'none');
+    $(".working_hours").css('display', 'block');
+    $(".determinate").css('width', '25%');
+    },
+    'click .next-working_hours':function(){
+    $(".working_hours").css('display', 'none');
+    $(".working_days").css('display', 'block');
+    $(".determinate").css('width', '37.5%');
+    },
+    'click .next-working_days':function(){
+    $(".startDate").css('display', 'block');
+    $(".working_days").css('display', 'none');
+    $(".determinate").css('width', '50%');
+    },
+    'click .next-startDate':function(){
+    $(".startDate").css('display', 'none');
+    $(".endDate").css('display', 'block');
+    $(".determinate").css('width', '62.5%');
+    },
+    'click .next-endDate':function(){
+    $(".endDate").css('display', 'none');
+    $(".session_location").css('display', 'block');
+    $(".determinate").css('width', '85%');
+    },
+    'click .next-session_location':function(){
+    $(".mylocation").css('display', 'block');
+    $(".session_location").css('display', 'none');
+    $(".determinate").css('width', '95%');
+    },
+    'click .next-mylocation':function(){
+    $(".mylocation").css('display', 'none');
+    $(".one_liner").css('display', 'block');
+    $(".determinate").css('width', '100%');
+    }
+    ,
+    'click .back-charge':function(){
+    $(".charge").css('display', 'none');
+    $(".repertoire").css('display', 'block');
+    },
+    'click .back-working_hours':function(){
+    $(".working_hours").css('display', 'none');
+    $(".charge").css('display', 'block');
+    },
+    'click .back-working_days':function(){
+    $(".working_hours").css('display', 'block');
+    $(".working_days").css('display', 'none');
+    },
+    'click .back-startDate':function(){
+    $(".startDate").css('display', 'none');
+    $(".working_days").css('display', 'block');
+    },
+    'click .back-endDate':function(){
+    $(".endDate").css('display', 'none');
+    $(".startDate").css('display', 'block');
+    },
+    'click .back-session_location':function(){
+    $(".endDate").css('display', 'block');
+    $(".session_location").css('display', 'none');
+    },
+    'click .back-mylocation':function(){
+    $(".mylocation").css('display', 'none');
+    $(".session_location").css('display', 'block');
+    },
+    'click .back-one_liner':function(){
+    $(".one_liner").css('display', 'none');
+    $(".mylocation").css('display', 'block');
+    }
+  });
 
 // Modal Review Booking Tests
 
@@ -71,7 +201,6 @@ Template.repertoireSection.helpers({
     }
   }
 });
-
 
 Template.sessionsSection.onCreated(function () {
   this.SessionConfirmCheck = new ReactiveVar(false);

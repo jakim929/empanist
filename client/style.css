@@ -326,3 +326,65 @@ div.blur {
 .pinned {
   position: fixed !important;
 }
+
+/* AddInfoLayout.html Style*/
+
+.instrument {
+}
+
+.award {
+display: none;
+}
+
+.program {
+  display: none;
+}
+
+.orchestra {
+  display: none;
+}
+
+.repertoire {
+}
+
+.charge {
+  display: none;
+}
+
+.award {
+display: none;
+}
+
+.working_hours {
+  display: none;
+}
+
+.working_days {
+  display: none;
+}
+.startDate {
+  display: none;
+}
+
+.endDate {
+display: none;
+}
+
+.session_location {
+  display: none;
+}
+
+.mylocation {
+  display: none;
+}
+
+.one_liner {
+  display: none;
+}
+
+.formsTopMargin {
+  margin-top: 10%;
+}
+
+
+

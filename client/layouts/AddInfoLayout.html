@@ -1,7 +1,6 @@
-<!-- <template name="AddInfoLayout">
-    <header>
-    </header>
-    <main>
+<template name="newAccompStructure">
+
+<!--     <main>
       {{> upsertBasicProfileForm}}
       <br><br>
       {{> upsertMusicProfileForm}}
@@ -13,33 +12,77 @@
    
     {{> upsertAccompanistForm}}
 
-    </main>
-</template> -->
+    </main> -->
+</template>
 
 <!-- Accompanist Profile -->
 
 <template name="upsertAccompanistForm">
-  <div class="smallMargin">
+  <div class="progress">
+      <div class="determinate" style="width: 0%"></div>
+  </div>
+  <div class="smallMargin formsTopMargin">
     {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-      <!-- {{> afQuickField name="repertoire"}} -->
-      {{> afArrayField name="repertoire" template="repertoireCustomArrayField"}} 
-      {{> afQuickField name="charge"}}
-      {{> afQuickField name="working_hours"}}
-      {{> afQuickField name="working_days"}}
-      {{> afQuickField name="startDate"}}
-      {{> afQuickField name="endDate"}}
-      {{> afQuickField name="session_location"}}
-      {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-      {{> afQuickField name="one_liner"}}
-    <br>
-    <button type="submit" class="btn btn-primary">{{formType}} Accompanist Profile</button>
+      
+      <div class="repertoire">
+        {{> afArrayField name="repertoire" template="repertoireCustomArrayField"}}
+        <a class="next-repertoire right waves-effect waves-light btn">Next</a>
+      </div>
+      
+      <div class="charge">
+        {{> afQuickField name="charge"}}
+        <a class="next-charge right waves-effect waves-light btn">Next</a>
+         <a class="back-charge left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="working_hours">
+        {{> afQuickField name="working_hours"}}
+        <a class="next-working_hours right waves-effect waves-light btn">Next</a>
+         <a class="back-working_hours left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="working_days">
+        {{> afQuickField name="working_days"}}
+        <a class="next-working_days right waves-effect waves-light btn">Next</a>
+         <a class="back-working_days left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="startDate">
+        {{> afQuickField name="startDate"}}
+        <a class="next-startDate right waves-effect waves-light btn">Next</a>
+         <a class="back-startDate left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="endDate">
+        {{> afQuickField name="endDate"}}
+        <a class="next-endDate right waves-effect waves-light btn">Next</a>
+         <a class="back-endDate left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="session_location">
+        {{> afQuickField name="session_location"}}
+        <a class="next-session_location right waves-effect waves-light btn">Next</a>
+         <a class="back-session_location left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="mylocation">
+        {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+        <a class="next-mylocation right waves-effect waves-light btn">Next</a>
+         <a class="back-mylocation left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="one_liner">
+        {{> afQuickField name="one_liner"}}
+        <button type="submit" class="btn right btn-primary">{{formType}} Accompanist Profile</button>
+         <a class="back-one_liner left waves-effect waves-light btn">Back</a>
+      </div>
     {{/autoForm}}
   </div>
 </template>
 
 <template name="afArrayField_repertoireCustomArrayField">
   {{#if afFieldIsInvalid name=atts.name}}
-    <span>{{{afFieldMessage name=atts.name}}}</span>
+    shit just got real
   {{/if}}
   <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
@@ -52,8 +95,8 @@
         {{/if}}
         <br>
         <div class="input-field col s12">
-            {{> afFieldInput name=this.current.repertoire id="comp.name" type="text"}}
-          <label for="comp.name">Repertoire</label>
+            {{> afFieldInput name=this.current.concerto id="rep" type="text"}}
+          <label for="rep">Repertoire</label>
         </div>
       {{/afEachArrayItem}}
     </div>
@@ -75,8 +118,11 @@
 <!-- Basic Profile -->
 
 <template name="upsertBasicProfileForm">
+  <div class="progress">
+      <div class="determinate" style="width: 100%"></div>
+  </div>
   {{#if isInRole 'makeBasicProfile'}}
-    <div class="smallMargin">
+    <div class="smallMargin formsTopMargin">
       <h3>Basic Profile</h3>
       {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
           <div class="row">
@@ -101,7 +147,7 @@
             <label >Affiliation</label>   
           </div>
       <br>
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn right btn-primary">Save</button>
       {{/autoForm}}
     </div>
   {{/if}}
@@ -110,27 +156,46 @@
 <!-- Music Profile -->
 
 <template name="upsertMusicProfileForm">
+  <div class="progress">
+      <div class="determinate" style="width: 25%"></div>
+  </div>
   {{#if isInRole 'makeMusicProfile'}}
-    <div class="smallMargin">
+    <div class="smallMargin formsTopMargin">
       {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
 
-      <div class="card grey lighten-5 z-depth-0">
-        <div class="card-content">
-          <h5>
-            <i id="align_text" class="medium material-icons">brush</i>
-            Instruments you master
-          </h5>
-          {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
-          {{>afQuickField name="yearsPlayed"}}
+      <div class="instrument"> 
+        <div class="card grey lighten-5 z-depth-0">
+          <div class="card-content">
+            <h5>
+              <i id="align_text" class="medium material-icons">brush</i>
+              Instruments you master
+            </h5>
+            {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
+            {{>afQuickField name="yearsPlayed"}}
+          </div>
         </div>
+        <a class="next-instrument right waves-effect waves-light btn">Next</a>
       </div>
-          
-        {{> afArrayField name="awards" template="awardsCustomArrayField"}}   
-        {{> afArrayField name="musicPrograms" template="musicCustomArrayField"}} 
-        {{> afArrayField name="orchestras" template="orchestraCustomArrayField"}}
 
-      <br>
-      <button type="submit" class="btn btn-primary">Save</button>
+      <div class="award">  
+        {{> afArrayField name="awards" template="awardsCustomArrayField"}}
+        <a class="next-award right waves-effect waves-light btn">Next</a>
+        <a class="back-award left waves-effect waves-light btn">Back</a>
+      </div> 
+      
+      <div class="program"> 
+        {{> afArrayField name="musicPrograms" template="musicCustomArrayField"}}
+        <a class="next-program right waves-effect waves-light btn">Next</a>
+        <a class="back-program left waves-effect waves-light btn">Back</a> 
+      </div> 
+      
+      <div class="orchestra"> 
+        {{> afArrayField name="orchestras" template="orchestraCustomArrayField"}}
+        <button type="submit" class="right btn btn-primary">Save</button>
+        <a class="back-orchestra left waves-effect waves-light btn">Back</a>
+      </div> 
+      
+       
       {{/autoForm}}
     </div>
   {{/if}}
