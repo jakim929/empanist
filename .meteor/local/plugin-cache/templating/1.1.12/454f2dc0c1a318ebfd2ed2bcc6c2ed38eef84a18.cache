@@ -1,1 +1,0 @@
-{"head":"","body":"","js":"\nTemplate.__checkName(\"fullcalendar\");\nTemplate[\"fullcalendar\"] = new Template(\"Template.fullcalendar\", (function() {\n  var view = this;\n  return HTML.Raw(\"<div></div>\");\n}));\n","bodyAttrs":{}}
