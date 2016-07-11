@@ -1441,7 +1441,7 @@ Template["ProfileLayout"] = new Template("Template.ProfileLayout", (function() {
       return [ "\n              ", Blaze.If(function() {                                                               // 31
         return Spacebars.call(view.lookup("isAccompanist"));                                                           // 32
       }, function() {                                                                                                  // 33
-        return [ " \n              ", HTML.DIV({                                                                       // 34
+        return [ "\n              ", HTML.DIV({                                                                        // 34
           "class": "smallMargin"                                                                                       // 35
         }, "\n                ", Blaze._TemplateWith(function() {                                                      // 36
           return {                                                                                                     // 37
@@ -1510,6 +1510,7 @@ Template["accountTemplate"] = new Template("Template.accountTemplate", (function
   return HTML.DIV({                                                                                                    // 100
     id: "first-card-container",                                                                                        // 101
     "class": "card grey lighten-5 z-depth-0"                                                                           // 102
+<<<<<<< HEAD
   }, "\n    \n    ", HTML.DIV({                                                                                        // 103
     id: "first-card-text",                                                                                             // 104
     "class": "card-content"                                                                                            // 105
@@ -1858,6 +1859,453 @@ Template["upsertOrchestraForm"] = new Template("Template.upsertOrchestraForm", (
   });                                                                                                                  // 448
 }));                                                                                                                   // 449
                                                                                                                        // 450
+=======
+  }, "\n\n    ", HTML.DIV({                                                                                            // 103
+    id: "first-card-text",                                                                                             // 104
+    "class": "card-content"                                                                                            // 105
+  }, "\n\n      ", HTML.DIV({                                                                                          // 106
+    id: "profileImg",                                                                                                  // 107
+    "class": "profImg-left"                                                                                            // 108
+  }, "\n        ", Blaze.Unless(function() {                                                                           // 109
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 110
+  }, function() {                                                                                                      // 111
+    return [ "\n        ", HTML.A({                                                                                    // 112
+      "class": "waves-effect waves-light"                                                                              // 113
+    }, "\n          ", HTML.IMG({                                                                                      // 114
+      "class": "materialboxed",                                                                                        // 115
+      src: function() {                                                                                                // 116
+        return Spacebars.mustache(view.lookup("profilePic"));                                                          // 117
+      }                                                                                                                // 118
+    }), "\n        "), "\n        " ];                                                                                 // 119
+  }, function() {                                                                                                      // 120
+    return [ "\n        ", HTML.A({                                                                                    // 121
+      "class": "waves-effect waves-light modal-trigger",                                                               // 122
+      href: "#changeProfileModal"                                                                                      // 123
+    }, "\n          ", HTML.IMG({                                                                                      // 124
+      src: function() {                                                                                                // 125
+        return Spacebars.mustache(view.lookup("profilePic"));                                                          // 126
+      },                                                                                                               // 127
+      height: "250px"                                                                                                  // 128
+    }), "\n        "), "\n        " ];                                                                                 // 129
+  }), "\n      "), "\n\n      ", HTML.Raw("<!-- Modal to change profile pic -->"), "\n      ", HTML.DIV({              // 130
+    id: "changeProfileModal",                                                                                          // 131
+    "class": "modal"                                                                                                   // 132
+  }, "\n        ", HTML.DIV({                                                                                          // 133
+    "class": "modal-content"                                                                                           // 134
+  }, "\n          ", HTML.Raw('<h5>Change Profile Picture <i class="material-icons modal-action modal-close right">close</i></h5>'), "\n          ", Spacebars.include(view.lookupTemplate("upload")), "\n        "), "\n      "), "\n\n      ", HTML.SPAN({
+    "class": "black-text activator"                                                                                    // 136
+  }, "\n        ", HTML.DIV({                                                                                          // 137
+    "class": "details"                                                                                                 // 138
+  }, "\n          ", HTML.H5({                                                                                         // 139
+    "class": "bold"                                                                                                    // 140
+  }, Blaze.View("lookup:name", function() {                                                                            // 141
+    return Spacebars.mustache(view.lookup("name"));                                                                    // 142
+  })), "\n          ", HTML.H6(Blaze.View("lookup:affiliation", function() {                                           // 143
+    return Spacebars.mustache(view.lookup("affiliation"));                                                             // 144
+  })), "\n\n          ", Blaze.If(function() {                                                                         // 145
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 146
+  }, function() {                                                                                                      // 147
+    return [ "\n          ", HTML.getTag("h10")(Blaze.View("lookup:formatBirthDate", function() {                      // 148
+      return Spacebars.mustache(view.lookup("formatBirthDate"), Spacebars.dot(view.lookup("."), "birthDate"));         // 149
+    })), " ", HTML.BR(), "\n          ", HTML.getTag("h10")(Blaze.View("lookup:phone", function() {                    // 150
+      return Spacebars.mustache(view.lookup("phone"));                                                                 // 151
+    })), " ", HTML.BR(), "\n\n          ", HTML.I({                                                                    // 152
+      "class": "material-icons right"                                                                                  // 153
+    }, "mode_edit"), "\n          ", HTML.BR(), "\n\n          " ];                                                    // 154
+  }), "\n        "), "\n      "), "\n    "), "\n\n    ", Blaze.If(function() {                                         // 155
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 156
+  }, function() {                                                                                                      // 157
+    return [ "\n      ", HTML.DIV({                                                                                    // 158
+      "class": "card-reveal grey lighten-5 z-depth-0"                                                                  // 159
+    }, "\n        ", HTML.SPAN({                                                                                       // 160
+      "class": "card-title grey-text text-darken-4"                                                                    // 161
+    }, HTML.I({                                                                                                        // 162
+      "class": "material-icons right"                                                                                  // 163
+    }, "close")), "\n        ", Spacebars.include(view.lookupTemplate("upsertBasicProfileForm")), "\n      "), "\n    " ];
+  }), "\n\n  ");                                                                                                       // 165
+}));                                                                                                                   // 166
+                                                                                                                       // 167
+Template.__checkName("profileTemplate");                                                                               // 168
+Template["profileTemplate"] = new Template("Template.profileTemplate", (function() {                                   // 169
+  var view = this;                                                                                                     // 170
+  return HTML.SECTION({                                                                                                // 171
+    "class": "myprofile"                                                                                               // 172
+  }, "\n        ", HTML.DIV({                                                                                          // 173
+    "class": "card grey lighten-5 z-depth-0"                                                                           // 174
+  }, "\n          ", HTML.DIV({                                                                                        // 175
+    "class": "card-content"                                                                                            // 176
+  }, "\n            ", HTML.SPAN({                                                                                     // 177
+    "class": "black-text activator"                                                                                    // 178
+  }, "\n              ", HTML.Raw('<h5>\n                <i id="align_text" class="medium material-icons">add_shopping_cart</i>\n                Instruments Mastered\n              </h5>'), HTML.Raw("<br>"), "\n                ", HTML.getTag("h10")("Instruments Mastered: ", Blaze.View("lookup:instrument", function() {
+    return Spacebars.mustache(view.lookup("instrument"));                                                              // 180
+  })), " ", HTML.Raw("<br>"), "\n              ", HTML.getTag("h10")("Years Played: ", Blaze.View("lookup:yearsPlayed", function() {
+    return Spacebars.mustache(view.lookup("yearsPlayed"));                                                             // 182
+  })), "\n\n               ", Blaze.If(function() {                                                                    // 183
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 184
+  }, function() {                                                                                                      // 185
+    return [ "\n                  ", HTML.I({                                                                          // 186
+      "class": "material-icons right"                                                                                  // 187
+    }, "mode_edit"), "\n                " ];                                                                           // 188
+  }), "\n\n           "), "\n          "), "\n\n          ", Blaze.If(function() {                                     // 189
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 190
+  }, function() {                                                                                                      // 191
+    return [ "\n            ", HTML.DIV({                                                                              // 192
+      "class": "card-reveal grey lighten-5 z-depth-0"                                                                  // 193
+    }, "\n              ", HTML.SPAN({                                                                                 // 194
+      "class": "card-title grey-text text-darken-4"                                                                    // 195
+    }, HTML.I({                                                                                                        // 196
+      "class": "material-icons right"                                                                                  // 197
+    }, "close")), "\n              ", Spacebars.include(view.lookupTemplate("upsertInstrumentForm")), "\n            "), "\n          " ];
+  }), "\n        "), "\n\n\n        ", HTML.DIV({                                                                      // 199
+    "class": "card grey lighten-5 z-depth-0"                                                                           // 200
+  }, "\n          ", HTML.DIV({                                                                                        // 201
+    "class": "card-content"                                                                                            // 202
+  }, "\n            ", HTML.SPAN({                                                                                     // 203
+    "class": "black-text activator"                                                                                    // 204
+  }, "\n            ", HTML.Raw('<h5>\n              <i id="align_text" class="medium material-icons">verified_user</i>\n              Honors &amp; Awards\n            </h5>'), "\n            ", Blaze.Each(function() {
+    return Spacebars.call(view.lookup("awards"));                                                                      // 206
+  }, function() {                                                                                                      // 207
+    return [ "\n              ", HTML.SPAN({                                                                           // 208
+      "class": "right"                                                                                                 // 209
+    }, Blaze.View("lookup:formatDate", function() {                                                                    // 210
+      return Spacebars.mustache(view.lookup("formatDate"), Spacebars.dot(view.lookup("."), "date"));                   // 211
+    })), "\n              ", HTML.P({                                                                                  // 212
+      "class": "bold"                                                                                                  // 213
+    }, Blaze.View("lookup:name", function() {                                                                          // 214
+      return Spacebars.mustache(view.lookup("name"));                                                                  // 215
+    })), "\n              ", Blaze.View("lookup:award", function() {                                                   // 216
+      return Spacebars.mustache(view.lookup("award"));                                                                 // 217
+    }), "\n              ", HTML.BR(), HTML.BR(), "\n            " ];                                                  // 218
+  }), "\n\n            ", Blaze.If(function() {                                                                        // 219
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 220
+  }, function() {                                                                                                      // 221
+    return [ "\n              ", HTML.I({                                                                              // 222
+      "class": "material-icons right"                                                                                  // 223
+    }, "mode_edit"), "\n            " ];                                                                               // 224
+  }), "\n            ", HTML.Raw("<br>"), "\n\n           "), "\n          "), "\n\n          ", Blaze.If(function() {
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 226
+  }, function() {                                                                                                      // 227
+    return [ "\n            ", HTML.DIV({                                                                              // 228
+      "class": "card-reveal grey lighten-5 z-depth-0"                                                                  // 229
+    }, "\n              ", HTML.SPAN({                                                                                 // 230
+      "class": "card-title grey-text text-darken-4"                                                                    // 231
+    }, HTML.I({                                                                                                        // 232
+      "class": "material-icons right"                                                                                  // 233
+    }, "close")), "\n              ", Spacebars.include(view.lookupTemplate("upsertAwardsForm")), "\n            "), "\n          " ];
+  }), "\n\n        "), "\n\n        ", HTML.DIV({                                                                      // 235
+    "class": "card grey lighten-5 z-depth-0"                                                                           // 236
+  }, "\n          ", HTML.DIV({                                                                                        // 237
+    "class": "card-content"                                                                                            // 238
+  }, "\n            ", HTML.SPAN({                                                                                     // 239
+    "class": "black-text activator"                                                                                    // 240
+  }, "\n            ", HTML.Raw('<h5>\n              <i id="align_text" class="medium material-icons">music_note</i>\n              Music Programs\n            </h5>'), "\n              ", Blaze.Each(function() {
+    return Spacebars.call(view.lookup("musicPrograms"));                                                               // 242
+  }, function() {                                                                                                      // 243
+    return [ "\n                ", HTML.SPAN({                                                                         // 244
+      "class": "right"                                                                                                 // 245
+    }, Blaze.View("lookup:formatDuration", function() {                                                                // 246
+      return Spacebars.mustache(view.lookup("formatDuration"), Spacebars.dot(view.lookup("."), "startDate"), Spacebars.dot(view.lookup("."), "endDate"));
+    })), "\n                ", Blaze.View("lookup:programName", function() {                                           // 248
+      return Spacebars.mustache(view.lookup("programName"));                                                           // 249
+    }), "\n                ", HTML.BR(), HTML.BR(), "\n              " ];                                              // 250
+  }), "\n\n              ", Blaze.If(function() {                                                                      // 251
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 252
+  }, function() {                                                                                                      // 253
+    return [ "\n                ", HTML.I({                                                                            // 254
+      "class": "material-icons right"                                                                                  // 255
+    }, "mode_edit"), "\n              " ];                                                                             // 256
+  }), "\n              ", HTML.Raw("<br>"), "\n\n           "), "\n          "), "\n\n          ", Blaze.If(function() {
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 258
+  }, function() {                                                                                                      // 259
+    return [ "\n            ", HTML.DIV({                                                                              // 260
+      "class": "card-reveal grey lighten-5 z-depth-0"                                                                  // 261
+    }, "\n              ", HTML.SPAN({                                                                                 // 262
+      "class": "card-title grey-text text-darken-4"                                                                    // 263
+    }, HTML.I({                                                                                                        // 264
+      "class": "material-icons right"                                                                                  // 265
+    }, "close")), "\n              ", Spacebars.include(view.lookupTemplate("upsertProgramsForm")), "\n            "), "\n          " ];
+  }), "\n\n        "), "\n\n        ", HTML.DIV({                                                                      // 267
+    "class": "card grey lighten-5 z-depth-0"                                                                           // 268
+  }, "\n          ", HTML.DIV({                                                                                        // 269
+    "class": "card-content"                                                                                            // 270
+  }, "\n            ", HTML.SPAN({                                                                                     // 271
+    "class": "black-text activator"                                                                                    // 272
+  }, "\n            ", HTML.Raw('<h5>\n              <i id="align_text" class="medium material-icons">group_work</i>\n              Orchestras Participated in\n            </h5>'), "\n              ", Blaze.Each(function() {
+    return Spacebars.call(view.lookup("orchestras"));                                                                  // 274
+  }, function() {                                                                                                      // 275
+    return [ "\n                ", HTML.SPAN({                                                                         // 276
+      "class": "right"                                                                                                 // 277
+    }, Blaze.View("lookup:formatDuration", function() {                                                                // 278
+      return Spacebars.mustache(view.lookup("formatDuration"), Spacebars.dot(view.lookup("."), "startDate"), Spacebars.dot(view.lookup("."), "endDate"));
+    })), "\n                ", HTML.P({                                                                                // 280
+      "class": "bold"                                                                                                  // 281
+    }, Blaze.View("lookup:name", function() {                                                                          // 282
+      return Spacebars.mustache(view.lookup("name"));                                                                  // 283
+    })), "\n                ", Blaze.View("lookup:position", function() {                                              // 284
+      return Spacebars.mustache(view.lookup("position"));                                                              // 285
+    }), "\n                ", HTML.BR(), HTML.BR(), "\n              " ];                                              // 286
+  }), "\n\n            ", Blaze.If(function() {                                                                        // 287
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 288
+  }, function() {                                                                                                      // 289
+    return [ "\n              ", HTML.I({                                                                              // 290
+      "class": "material-icons right"                                                                                  // 291
+    }, "mode_edit"), "\n            " ];                                                                               // 292
+  }), "\n            ", HTML.Raw("<br>"), "\n\n           "), "\n          "), "\n\n          ", Blaze.If(function() {
+    return Spacebars.call(view.lookup("isOwnProfile"));                                                                // 294
+  }, function() {                                                                                                      // 295
+    return [ "\n            ", HTML.DIV({                                                                              // 296
+      "class": "card-reveal grey lighten-5 z-depth-0"                                                                  // 297
+    }, "\n              ", HTML.SPAN({                                                                                 // 298
+      "class": "card-title grey-text text-darken-4"                                                                    // 299
+    }, HTML.I({                                                                                                        // 300
+      "class": "material-icons right"                                                                                  // 301
+    }, "close")), "\n              ", Spacebars.include(view.lookupTemplate("upsertOrchestraForm")), "\n            "), "\n          " ];
+  }), "\n        "), "\n\n  ");                                                                                        // 303
+}));                                                                                                                   // 304
+                                                                                                                       // 305
+Template.__checkName("accompanistProfileTemplate");                                                                    // 306
+Template["accompanistProfileTemplate"] = new Template("Template.accompanistProfileTemplate", (function() {             // 307
+  var view = this;                                                                                                     // 308
+  return HTML.DIV({                                                                                                    // 309
+    "class": "card grey lighten-5 z-depth-0"                                                                           // 310
+  }, "\n    ", HTML.DIV({                                                                                              // 311
+    "class": "card-content"                                                                                            // 312
+  }, "\n      ", HTML.SPAN({                                                                                           // 313
+    "class": "black-text activator"                                                                                    // 314
+  }, "\n        ", HTML.Raw("<!--\n        <h5>Repertoire: </h5>\n        {{#each repertoire}}\n          {{this}}<br>\n        {{/each}}\n           <hr> -->"), "\n        ", HTML.DIV({
+    "class": "accopmCard-left"                                                                                         // 316
+  }, "\n          ", HTML.getTag("h10")("\n            ", HTML.I({                                                     // 317
+    id: "align_text",                                                                                                  // 318
+    "class": "small material-icons"                                                                                    // 319
+  }, "attach_money"), "\n            ", Blaze.View("lookup:charge", function() {                                       // 320
+    return Spacebars.mustache(view.lookup("charge"));                                                                  // 321
+  }), "/hr\n          "), "\n          ", HTML.Raw("<br>"), "\n          ", HTML.getTag("h10")("\n              ", HTML.I({
+    id: "align_text",                                                                                                  // 323
+    "class": "small material-icons"                                                                                    // 324
+  }, "access_time"), "\n              ", Blaze.Each(function() {                                                       // 325
+    return Spacebars.call(view.lookup("working_hours"));                                                               // 326
+  }, function() {                                                                                                      // 327
+    return [ Blaze.View("lookup:.", function() {                                                                       // 328
+      return Spacebars.mustache(view.lookup("."));                                                                     // 329
+    }), "/" ];                                                                                                         // 330
+  }), "\n          "), "\n        "), "\n        ", HTML.DIV({                                                         // 331
+    "class": "accopmCard-right"                                                                                        // 332
+  }, "\n          ", HTML.getTag("h10")("\n            ", HTML.I({                                                     // 333
+    id: "align_text",                                                                                                  // 334
+    "class": "small material-icons"                                                                                    // 335
+  }, "event"), "\n            ", Blaze.Each(function() {                                                               // 336
+    return Spacebars.call(view.lookup("working_days"));                                                                // 337
+  }, function() {                                                                                                      // 338
+    return [ Blaze.View("lookup:formatDay", function() {                                                               // 339
+      return Spacebars.mustache(view.lookup("formatDay"), view.lookup("."));                                           // 340
+    }), "/" ];                                                                                                         // 341
+  }), "\n          "), "\n          ", HTML.Raw("<br>"), "\n          ", HTML.getTag("h10")("\n            ", HTML.I({
+    id: "align_text",                                                                                                  // 343
+    "class": "small material-icons"                                                                                    // 344
+  }, "location_on"), "\n            ", Blaze.View("lookup:mylocation", function() {                                    // 345
+    return Spacebars.mustache(view.lookup("mylocation"));                                                              // 346
+  }), "\n          "), "\n          ", HTML.Raw("<br>"), HTML.Raw("<br>"), "\n        "), "\n        ", HTML.P({       // 347
+    "class": "center_horizontal"                                                                                       // 348
+  }, Blaze.View("lookup:one_liner", function() {                                                                       // 349
+    return Spacebars.mustache(view.lookup("one_liner"));                                                               // 350
+  })), "\n      "), "\n    "), "\n  ");                                                                                // 351
+}));                                                                                                                   // 352
+                                                                                                                       // 353
+Template.__checkName("upsertInstrumentForm");                                                                          // 354
+Template["upsertInstrumentForm"] = new Template("Template.upsertInstrumentForm", (function() {                         // 355
+  var view = this;                                                                                                     // 356
+  return Blaze.If(function() {                                                                                         // 357
+    return Spacebars.dataMustache(view.lookup("isInRole"), "makeMusicProfile");                                        // 358
+  }, function() {                                                                                                      // 359
+    return [ "\n    ", Blaze._TemplateWith(function() {                                                                // 360
+      return {                                                                                                         // 361
+        collection: Spacebars.call("MusicProfiles"),                                                                   // 362
+        doc: Spacebars.call(view.lookup("currentProfile")),                                                            // 363
+        id: Spacebars.call("upsertInstraForm"),                                                                        // 364
+        type: Spacebars.call(view.lookup("formType"))                                                                  // 365
+      };                                                                                                               // 366
+    }, function() {                                                                                                    // 367
+      return Spacebars.include(view.lookupTemplate("autoForm"), function() {                                           // 368
+        return [ "\n      ", HTML.FIELDSET("\n        ", Blaze._TemplateWith(function() {                              // 369
+          return {                                                                                                     // 370
+            name: Spacebars.call("instrument"),                                                                        // 371
+            type: Spacebars.call("selectize"),                                                                         // 372
+            options: Spacebars.call(view.lookup("instrumentList"))                                                     // 373
+          };                                                                                                           // 374
+        }, function() {                                                                                                // 375
+          return Spacebars.include(view.lookupTemplate("afQuickField"));                                               // 376
+        }), "\n        ", Blaze._TemplateWith(function() {                                                             // 377
+          return {                                                                                                     // 378
+            name: Spacebars.call("yearsPlayed")                                                                        // 379
+          };                                                                                                           // 380
+        }, function() {                                                                                                // 381
+          return Spacebars.include(view.lookupTemplate("afQuickField"));                                               // 382
+        }), "\n      "), "\n      ", HTML.BR(), "\n    ", HTML.BUTTON({                                                // 383
+          type: "submit",                                                                                              // 384
+          "class": "btn btn-primary"                                                                                   // 385
+        }, "Save"), "\n    " ];                                                                                        // 386
+      });                                                                                                              // 387
+    }), "\n  " ];                                                                                                      // 388
+  });                                                                                                                  // 389
+}));                                                                                                                   // 390
+                                                                                                                       // 391
+Template.__checkName("upsertAwardsForm");                                                                              // 392
+Template["upsertAwardsForm"] = new Template("Template.upsertAwardsForm", (function() {                                 // 393
+  var view = this;                                                                                                     // 394
+  return Blaze.If(function() {                                                                                         // 395
+    return Spacebars.dataMustache(view.lookup("isInRole"), "makeMusicProfile");                                        // 396
+  }, function() {                                                                                                      // 397
+    return [ "\n    ", Blaze._TemplateWith(function() {                                                                // 398
+      return {                                                                                                         // 399
+        collection: Spacebars.call("MusicProfiles"),                                                                   // 400
+        doc: Spacebars.call(view.lookup("currentProfile")),                                                            // 401
+        id: Spacebars.call("upsertAwardsForm"),                                                                        // 402
+        type: Spacebars.call(view.lookup("formType"))                                                                  // 403
+      };                                                                                                               // 404
+    }, function() {                                                                                                    // 405
+      return Spacebars.include(view.lookupTemplate("autoForm"), function() {                                           // 406
+        return [ "\n      ", HTML.FIELDSET("\n        ", Blaze._TemplateWith(function() {                              // 407
+          return {                                                                                                     // 408
+            name: Spacebars.call("awards")                                                                             // 409
+          };                                                                                                           // 410
+        }, function() {                                                                                                // 411
+          return Spacebars.include(view.lookupTemplate("afQuickField"));                                               // 412
+        }), "\n      "), "\n      ", HTML.BR(), "\n    ", HTML.BUTTON({                                                // 413
+          type: "submit",                                                                                              // 414
+          "class": "btn btn-primary"                                                                                   // 415
+        }, "Save"), "\n    " ];                                                                                        // 416
+      });                                                                                                              // 417
+    }), "\n  " ];                                                                                                      // 418
+  });                                                                                                                  // 419
+}));                                                                                                                   // 420
+                                                                                                                       // 421
+Template.__checkName("upsertProgramsForm");                                                                            // 422
+Template["upsertProgramsForm"] = new Template("Template.upsertProgramsForm", (function() {                             // 423
+  var view = this;                                                                                                     // 424
+  return Blaze.If(function() {                                                                                         // 425
+    return Spacebars.dataMustache(view.lookup("isInRole"), "makeMusicProfile");                                        // 426
+  }, function() {                                                                                                      // 427
+    return [ "\n    ", Blaze._TemplateWith(function() {                                                                // 428
+      return {                                                                                                         // 429
+        collection: Spacebars.call("MusicProfiles"),                                                                   // 430
+        doc: Spacebars.call(view.lookup("currentProfile")),                                                            // 431
+        id: Spacebars.call("upsertProgramsForm"),                                                                      // 432
+        type: Spacebars.call(view.lookup("formType"))                                                                  // 433
+      };                                                                                                               // 434
+    }, function() {                                                                                                    // 435
+      return Spacebars.include(view.lookupTemplate("autoForm"), function() {                                           // 436
+        return [ "\n      ", HTML.FIELDSET("\n        ", Blaze._TemplateWith(function() {                              // 437
+          return {                                                                                                     // 438
+            name: Spacebars.call("musicPrograms")                                                                      // 439
+          };                                                                                                           // 440
+        }, function() {                                                                                                // 441
+          return Spacebars.include(view.lookupTemplate("afQuickField"));                                               // 442
+        }), "\n      "), "\n      ", HTML.BR(), "\n    ", HTML.BUTTON({                                                // 443
+          type: "submit",                                                                                              // 444
+          "class": "btn btn-primary"                                                                                   // 445
+        }, "Save"), "\n    " ];                                                                                        // 446
+      });                                                                                                              // 447
+    }), "\n  " ];                                                                                                      // 448
+  });                                                                                                                  // 449
+}));                                                                                                                   // 450
+                                                                                                                       // 451
+Template.__checkName("upsertOrchestraForm");                                                                           // 452
+Template["upsertOrchestraForm"] = new Template("Template.upsertOrchestraForm", (function() {                           // 453
+  var view = this;                                                                                                     // 454
+  return Blaze.If(function() {                                                                                         // 455
+    return Spacebars.dataMustache(view.lookup("isInRole"), "makeMusicProfile");                                        // 456
+  }, function() {                                                                                                      // 457
+    return [ "\n    ", Blaze._TemplateWith(function() {                                                                // 458
+      return {                                                                                                         // 459
+        collection: Spacebars.call("MusicProfiles"),                                                                   // 460
+        doc: Spacebars.call(view.lookup("currentProfile")),                                                            // 461
+        id: Spacebars.call("upsertOrchestraForm"),                                                                     // 462
+        type: Spacebars.call(view.lookup("formType"))                                                                  // 463
+      };                                                                                                               // 464
+    }, function() {                                                                                                    // 465
+      return Spacebars.include(view.lookupTemplate("autoForm"), function() {                                           // 466
+        return [ "\n      ", HTML.FIELDSET("\n        ", Blaze._TemplateWith(function() {                              // 467
+          return {                                                                                                     // 468
+            name: Spacebars.call("orchestras")                                                                         // 469
+          };                                                                                                           // 470
+        }, function() {                                                                                                // 471
+          return Spacebars.include(view.lookupTemplate("afQuickField"));                                               // 472
+        }), "\n      "), "\n      ", HTML.BR(), "\n    ", HTML.BUTTON({                                                // 473
+          type: "submit",                                                                                              // 474
+          "class": "btn btn-primary"                                                                                   // 475
+        }, "{Save"), "\n    " ];                                                                                       // 476
+      });                                                                                                              // 477
+    }), "\n  " ];                                                                                                      // 478
+  });                                                                                                                  // 479
+}));                                                                                                                   // 480
+                                                                                                                       // 481
+Template.__checkName("upload");                                                                                        // 482
+Template["upload"] = new Template("Template.upload", (function() {                                                     // 483
+  var view = this;                                                                                                     // 484
+  return HTML.FIELDSET("\n    ", Spacebars.include(view.lookupTemplate("uploader")), "\n    ", Spacebars.include(view.lookupTemplate("files")), "\n  ");
+}));                                                                                                                   // 486
+                                                                                                                       // 487
+Template.__checkName("files");                                                                                         // 488
+Template["files"] = new Template("Template.files", (function() {                                                       // 489
+  var view = this;                                                                                                     // 490
+  return HTML.DIV({                                                                                                    // 491
+    "class": "files"                                                                                                   // 492
+  }, "\n    ", Blaze.Each(function() {                                                                                 // 493
+    return Spacebars.call(view.lookup("files"));                                                                       // 494
+  }, function() {                                                                                                      // 495
+    return [ "\n      ", Spacebars.include(view.lookupTemplate("file")), "\n    " ];                                   // 496
+  }, function() {                                                                                                      // 497
+    return [ "\n      ", HTML.P({                                                                                      // 498
+      "class": "alert alert-warning"                                                                                   // 499
+    }, "No files uploaded yet!"), "\n    " ];                                                                          // 500
+  }), "\n  ");                                                                                                         // 501
+}));                                                                                                                   // 502
+                                                                                                                       // 503
+Template.__checkName("file");                                                                                          // 504
+Template["file"] = new Template("Template.file", (function() {                                                         // 505
+  var view = this;                                                                                                     // 506
+  return HTML.DIV({                                                                                                    // 507
+    "class": "file"                                                                                                    // 508
+  }, "\n    ", HTML.DIV({                                                                                              // 509
+    "class": "preview container center"                                                                                // 510
+  }, "\n      ", HTML.Raw("<h5>Preview</h5>"), "\n      ", HTML.A({                                                    // 511
+    href: function() {                                                                                                 // 512
+      return Spacebars.mustache(view.lookup("url"));                                                                   // 513
+    },                                                                                                                 // 514
+    target: "_blank"                                                                                                   // 515
+  }), "\n      ", Blaze.If(function() {                                                                                // 516
+    return Spacebars.dataMustache(view.lookup("isImage"), view.lookup("url"));                                         // 517
+  }, function() {                                                                                                      // 518
+    return [ "\n        ", HTML.IMG({                                                                                  // 519
+      src: function() {                                                                                                // 520
+        return Spacebars.mustache(view.lookup("url"));                                                                 // 521
+      },                                                                                                               // 522
+      alt: function() {                                                                                                // 523
+        return Spacebars.mustache(view.lookup("url"));                                                                 // 524
+      },                                                                                                               // 525
+      height: "200px"                                                                                                  // 526
+    }), "\n      " ];                                                                                                  // 527
+  }, function() {                                                                                                      // 528
+    return [ "\n        ", HTML.I({                                                                                    // 529
+      "class": "fa fa-file-o"                                                                                          // 530
+    }), "\n      " ];                                                                                                  // 531
+  }), "\n    "), "\n    ", HTML.DIV({                                                                                  // 532
+    "class": "delete center"                                                                                           // 533
+  }, "\n      ", HTML.BUTTON({                                                                                         // 534
+    "class": "btn waves-light red lighten-2 delete_button",                                                            // 535
+    value: function() {                                                                                                // 536
+      return Spacebars.mustache(view.lookup("_id"));                                                                   // 537
+    }                                                                                                                  // 538
+  }, "Delete"), "\n    "), "\n  ");                                                                                    // 539
+}));                                                                                                                   // 540
+                                                                                                                       // 541
+Template.__checkName("uploader");                                                                                      // 542
+Template["uploader"] = new Template("Template.uploader", (function() {                                                 // 543
+  var view = this;                                                                                                     // 544
+  return HTML.Raw('<div class="container">\n    <p class="alert alert-success text-center">\n      <span>Click Here to Upload</span>\n    </p>\n    <form action="#">\n      <div class="file-field input-field">\n        <div class="btn">\n          <span>File</span>\n          <input type="file">\n        </div>\n        <div class="file-path-wrapper">\n          <input class="file-path validate" type="text">\n        </div>\n      </div>\n    </form>\n  </div>');
+}));                                                                                                                   // 546
+                                                                                                                       // 547
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 },"template.ResultsLayout.js":function(){
@@ -1932,6 +2380,7 @@ Template["TestLayout"] = new Template("Template.TestLayout", (function() {      
   return [ HTML.Raw('<header>\n        <link rel="stylesheet" href="../style.css">\n        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n      </header>\n\n\n      '), HTML.MAIN("\n\n        ", Spacebars.include(view.lookupTemplate("upload")), "\n        ", HTML.Raw('<div class="container">\n\n        </div>'), "\n      ") ];
 }));                                                                                                                   // 6
                                                                                                                        // 7
+<<<<<<< HEAD
 Template.__checkName("upload");                                                                                        // 8
 Template["upload"] = new Template("Template.upload", (function() {                                                     // 9
   var view = this;                                                                                                     // 10
@@ -2004,6 +2453,8 @@ Template["uploader"] = new Template("Template.uploader", (function() {          
   return HTML.Raw('<div class="container">\n    <p class="alert alert-success text-center">\n      <span>Click or Drag a File Here to Upload</span>\n    </p>\n    <form action="#">\n      <div class="file-field input-field">\n        <div class="btn">\n          <span>File</span>\n          <input type="file">\n        </div>\n        <div class="file-path-wrapper">\n          <input class="file-path validate" type="text">\n        </div>\n      </div>\n    </form>\n  </div>');
 }));                                                                                                                   // 78
                                                                                                                        // 79
+=======
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }},"lib":{"googlePlaces.js":function(){
@@ -2097,14 +2548,25 @@ Modules.client.uploadToAmazonS3 = upload;                                       
 //                                                                                                                     //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                                                                                        //
-var MusicProfiles;module.import('../collections/musicProfiles.js',{"MusicProfiles":function(v){MusicProfiles=v}});var AccompanistProfiles;module.import('../collections/accompanistProfiles.js',{"AccompanistProfiles":function(v){AccompanistProfiles=v}});var BasicProfiles;module.import('../collections/basicProfiles.js',{"BasicProfiles":function(v){BasicProfiles=v}});var MusicCompetitions;module.import('../collections/competitions.js',{"MusicCompetitions":function(v){MusicCompetitions=v}});var Transactions;module.import('../collections/transactions.js',{"Transactions":function(v){Transactions=v}});var TestAccountData;module.import('../collections/testData.js',{"TestAccountData":function(v){TestAccountData=v}});
+var MusicProfiles;module.import('../collections/musicProfiles.js',{"MusicProfiles":function(v){MusicProfiles=v}});var AccompanistProfiles;module.import('../collections/accompanistProfiles.js',{"AccompanistProfiles":function(v){AccompanistProfiles=v}});var BasicProfiles;module.import('../collections/basicProfiles.js',{"BasicProfiles":function(v){BasicProfiles=v}});var MusicCompetitions;module.import('../collections/competitions.js',{"MusicCompetitions":function(v){MusicCompetitions=v}});var Transactions;module.import('../collections/transactions.js',{"Transactions":function(v){Transactions=v}});var Sessions;module.import('../collections/transactions.js',{"Sessions":function(v){Sessions=v}});var TestAccountData;module.import('../collections/testData.js',{"TestAccountData":function(v){TestAccountData=v}});
                                                                                                                        // 2
                                                                                                                        // 3
                                                                                                                        // 4
                                                                                                                        // 5
+                                                                                                                       // 6
                                                                                                                        //
-                                                                                                                       // 7
+                                                                                                                       // 8
                                                                                                                        //
+window.MusicProfiles = MusicProfiles;                                                                                  // 10
+window.AccompanistProfiles = AccompanistProfiles;                                                                      // 11
+window.BasicProfiles = BasicProfiles;                                                                                  // 12
+window.MusicCompetitions = MusicCompetitions;                                                                          // 13
+window.Transactions = Transactions;                                                                                    // 14
+window.Sessions = Sessions;                                                                                            // 15
+                                                                                                                       //
+// Booking Tests                                                                                                       //
+                                                                                                                       //
+<<<<<<< HEAD
 window.MusicProfiles = MusicProfiles;                                                                                  // 9
 window.AccompanistProfiles = AccompanistProfiles;                                                                      // 10
 window.BasicProfiles = BasicProfiles;                                                                                  // 11
@@ -2115,6 +2577,8 @@ window.Sessions = Sessions;                                                     
                                                                                                                        //
 // Booking Tests                                                                                                       //
                                                                                                                        //
+=======
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 Template.BookingRequest.onCreated(function () {                                                                        // 20
   this.currentStep = new ReactiveVar("repertoireSection");                                                             // 21
 });                                                                                                                    // 22
@@ -2131,6 +2595,7 @@ Template.BookingRequest.helpers({                                               
   }()                                                                                                                  // 28
 });                                                                                                                    // 28
                                                                                                                        //
+<<<<<<< HEAD
 // Template.BookingRequest.events({                                                                                    //
 //   'click .next-session' (event, instance) {                                                                         //
 //     // if ()                                                                                                        //
@@ -2417,6 +2882,311 @@ Template.file.events({                                                          
     return clickDelete_button;                                                                                         // 245
   }()                                                                                                                  // 245
 });                                                                                                                    // 245
+=======
+Template.BookingRequest.events({                                                                                       // 36
+  'click .next-session': function () {                                                                                 // 37
+    function clickNextSession(event, instance) {                                                                       // 36
+      instance.currentStep.set("sessionsSection");                                                                     // 38
+    }                                                                                                                  // 39
+                                                                                                                       //
+    return clickNextSession;                                                                                           // 36
+  }(),                                                                                                                 // 36
+  'click .next-payment': function () {                                                                                 // 40
+    function clickNextPayment(event, instance) {                                                                       // 36
+      instance.currentStep.set("paymentSection");                                                                      // 41
+    }                                                                                                                  // 42
+                                                                                                                       //
+    return clickNextPayment;                                                                                           // 36
+  }(),                                                                                                                 // 36
+  'click .final-confirm': function () {                                                                                // 43
+    function clickFinalConfirm(event, instance) {                                                                      // 36
+      Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId"));                                      // 44
+    }                                                                                                                  // 45
+                                                                                                                       //
+    return clickFinalConfirm;                                                                                          // 36
+  }()                                                                                                                  // 36
+});                                                                                                                    // 36
+                                                                                                                       //
+// Modal Review Booking Tests                                                                                          //
+                                                                                                                       //
+Template.repertoireSection.onCreated(function () {                                                                     // 51
+  this.RepertoireConfirmCheck = new ReactiveVar(false);                                                                // 52
+});                                                                                                                    // 53
+                                                                                                                       //
+Template.repertoireSection.onRendered(function () {                                                                    // 55
+  this.RepertoireConfirmCheck.set(false);                                                                              // 56
+});                                                                                                                    // 57
+                                                                                                                       //
+Template.repertoireSection.events({                                                                                    // 59
+  'change .check-repertoire-confirm input': function () {                                                              // 60
+    function changeCheckRepertoireConfirmInput(event, instance) {                                                      // 59
+      instance.RepertoireConfirmCheck.set(event.target.checked);                                                       // 61
+    }                                                                                                                  // 62
+                                                                                                                       //
+    return changeCheckRepertoireConfirmInput;                                                                          // 59
+  }()                                                                                                                  // 59
+});                                                                                                                    // 59
+                                                                                                                       //
+Template.repertoireSection.helpers({                                                                                   // 65
+  getRepertoireConfirmButtonClass: function () {                                                                       // 66
+    function getRepertoireConfirmButtonClass() {                                                                       // 65
+      if (Template.instance().RepertoireConfirmCheck.get()) {                                                          // 67
+        return "btn col s12 next-session";                                                                             // 68
+      } else {                                                                                                         // 69
+        return "btn col s12 next-session disabled";                                                                    // 70
+      }                                                                                                                // 71
+    }                                                                                                                  // 72
+                                                                                                                       //
+    return getRepertoireConfirmButtonClass;                                                                            // 65
+  }()                                                                                                                  // 65
+});                                                                                                                    // 65
+                                                                                                                       //
+Template.sessionsSection.onCreated(function () {                                                                       // 76
+  this.SessionConfirmCheck = new ReactiveVar(false);                                                                   // 77
+});                                                                                                                    // 78
+                                                                                                                       //
+Template.sessionsSection.onRendered(function () {                                                                      // 80
+  this.SessionConfirmCheck.set(false);                                                                                 // 81
+});                                                                                                                    // 82
+                                                                                                                       //
+Template.sessionsSection.events({                                                                                      // 84
+  'change .check-session-confirm input': function () {                                                                 // 85
+    function changeCheckSessionConfirmInput(event, instance) {                                                         // 84
+      instance.SessionConfirmCheck.set(event.target.checked);                                                          // 86
+    }                                                                                                                  // 87
+                                                                                                                       //
+    return changeCheckSessionConfirmInput;                                                                             // 84
+  }(),                                                                                                                 // 84
+  'click .next-payment': function () {                                                                                 // 89
+    function clickNextPayment(event, instance) {                                                                       // 84
+      $('#upsertSessionResponse').submit();                                                                            // 90
+    }                                                                                                                  // 91
+                                                                                                                       //
+    return clickNextPayment;                                                                                           // 84
+  }()                                                                                                                  // 84
+});                                                                                                                    // 84
+                                                                                                                       //
+Template.sessionsSection.helpers({                                                                                     // 94
+  getSessionConfirmButtonClass: function () {                                                                          // 95
+    function getSessionConfirmButtonClass() {                                                                          // 94
+      if (Template.instance().SessionConfirmCheck.get()) {                                                             // 96
+        return "btn col s12 next-payment";                                                                             // 97
+      } else {                                                                                                         // 98
+        return "btn col s12 next-payment disabled";                                                                    // 99
+      }                                                                                                                // 100
+    }                                                                                                                  // 101
+                                                                                                                       //
+    return getSessionConfirmButtonClass;                                                                               // 94
+  }()                                                                                                                  // 94
+});                                                                                                                    // 94
+                                                                                                                       //
+Template.paymentSection.onCreated(function () {                                                                        // 104
+  this.PaymentConfirmCheck = new ReactiveVar(false);                                                                   // 105
+});                                                                                                                    // 106
+                                                                                                                       //
+Template.paymentSection.onRendered(function () {                                                                       // 108
+  this.PaymentConfirmCheck.set(false);                                                                                 // 109
+});                                                                                                                    // 110
+                                                                                                                       //
+Template.paymentSection.events({                                                                                       // 112
+  'change .check-payment-confirm input': function () {                                                                 // 113
+    function changeCheckPaymentConfirmInput(event, instance) {                                                         // 112
+      instance.PaymentConfirmCheck.set(event.target.checked);                                                          // 114
+    }                                                                                                                  // 115
+                                                                                                                       //
+    return changeCheckPaymentConfirmInput;                                                                             // 112
+  }()                                                                                                                  // 112
+});                                                                                                                    // 112
+                                                                                                                       //
+Template.paymentSection.helpers({                                                                                      // 118
+  getHourlyCharge: function () {                                                                                       // 119
+    function getHourlyCharge(musician) {                                                                               // 118
+      var x = AccompanistProfiles.findOne({ Id: musician }, { charge: 1 });                                            // 120
+      if (x) {                                                                                                         // 121
+        return x.charge;                                                                                               // 122
+      }                                                                                                                // 123
+    }                                                                                                                  // 124
+                                                                                                                       //
+    return getHourlyCharge;                                                                                            // 118
+  }(),                                                                                                                 // 118
+  getTotalEstimated: function () {                                                                                     // 125
+    function getTotalEstimated(musician, hours) {                                                                      // 118
+      var x = AccompanistProfiles.findOne({ Id: musician }, { charge: 1 });                                            // 126
+      if (x) {                                                                                                         // 127
+        return hours * x.charge;                                                                                       // 128
+      }                                                                                                                // 129
+    }                                                                                                                  // 130
+                                                                                                                       //
+    return getTotalEstimated;                                                                                          // 118
+  }(),                                                                                                                 // 118
+  getFinalConfirmButtonClass: function () {                                                                            // 131
+    function getFinalConfirmButtonClass() {                                                                            // 118
+      if (Template.instance().PaymentConfirmCheck.get()) {                                                             // 132
+        return "btn col s12 final-confirm";                                                                            // 133
+      } else {                                                                                                         // 134
+        return "btn col s12 final-confirm disabled";                                                                   // 135
+      }                                                                                                                // 136
+    }                                                                                                                  // 137
+                                                                                                                       //
+    return getFinalConfirmButtonClass;                                                                                 // 118
+  }()                                                                                                                  // 118
+});                                                                                                                    // 118
+                                                                                                                       //
+Template.AccompanistDashboard.onCreated(function () {                                                                  // 147
+  Session.set('sessionTransaction', undefined);                                                                        // 148
+});                                                                                                                    // 149
+                                                                                                                       //
+Template.request.events({                                                                                              // 151
+  'click .review-booking': function () {                                                                               // 152
+    function clickReviewBooking(event) {                                                                               // 151
+      Session.set('sessionTransaction', this._id);                                                                     // 153
+    }                                                                                                                  // 154
+                                                                                                                       //
+    return clickReviewBooking;                                                                                         // 151
+  }()                                                                                                                  // 151
+});                                                                                                                    // 151
+                                                                                                                       //
+Template.registerHelper('getSessionTransaction', function () {                                                         // 157
+  return x = Session.get('sessionTransaction');                                                                        // 158
+});                                                                                                                    // 159
+                                                                                                                       //
+Template.upsertSessionResponse.helpers({                                                                               // 162
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  // FIXTHIS check if there are more than one sessions/transaction                                                     //
+  currentResponse: function () {                                                                                       // 165
+    function currentResponse() {                                                                                       // 165
+      var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                   // 166
+      if (currentResponse) {                                                                                           // 167
+        Template.instance().formType.set('update');                                                                    // 168
+        return currentResponse;                                                                                        // 169
+      }                                                                                                                // 170
+    }                                                                                                                  // 171
+                                                                                                                       //
+    return currentResponse;                                                                                            // 165
+  }(),                                                                                                                 // 165
+                                                                                                                       //
+  formType: function () {                                                                                              // 173
+    function formType() {                                                                                              // 173
+      var formType = Template.instance().formType.get();                                                               // 174
+      return formType;                                                                                                 // 175
+    }                                                                                                                  // 176
+                                                                                                                       //
+    return formType;                                                                                                   // 173
+  }(),                                                                                                                 // 173
+                                                                                                                       //
+  optionArray: function () {                                                                                           // 178
+    function optionArray() {                                                                                           // 178
+      var currentSession = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                    // 179
+      var optionsArray = currentSession.suggestedTimes.map(function (time) {                                           // 180
+        return { label: time.toString(), value: time.toString() };                                                     // 181
+      });                                                                                                              // 182
+      return optionsArray;                                                                                             // 183
+    }                                                                                                                  // 184
+                                                                                                                       //
+    return optionArray;                                                                                                // 178
+  }()                                                                                                                  // 178
+});                                                                                                                    // 162
+                                                                                                                       //
+Template.upsertSessionResponse.onCreated(function () {                                                                 // 187
+  this.formType = new ReactiveVar('insert');                                                                           // 188
+});                                                                                                                    // 189
+                                                                                                                       //
+Template.upsertSessionResponse.helpers({                                                                               // 192
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  // FIXTHIS check if there are more than one transaction                                                              //
+  currentResponse: function () {                                                                                       // 195
+    function currentResponse() {                                                                                       // 195
+      var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                   // 196
+      if (currentResponse) {                                                                                           // 197
+        Template.instance().formType.set('update');                                                                    // 198
+        return currentResponse;                                                                                        // 199
+      }                                                                                                                // 200
+    }                                                                                                                  // 201
+                                                                                                                       //
+    return currentResponse;                                                                                            // 195
+  }(),                                                                                                                 // 195
+                                                                                                                       //
+  formType: function () {                                                                                              // 203
+    function formType() {                                                                                              // 203
+      var formType = Template.instance().formType.get();                                                               // 204
+      return formType;                                                                                                 // 205
+    }                                                                                                                  // 206
+                                                                                                                       //
+    return formType;                                                                                                   // 203
+  }(),                                                                                                                 // 203
+                                                                                                                       //
+  optionArray: function () {                                                                                           // 208
+    function optionArray() {                                                                                           // 208
+      var currentSession = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId") });                    // 209
+      var optionsArray = currentSession.suggestedTimes.map(function (time) {                                           // 210
+        return { label: time.toString(), value: time.toString() };                                                     // 211
+      });                                                                                                              // 212
+      return optionsArray;                                                                                             // 213
+    }                                                                                                                  // 214
+                                                                                                                       //
+    return optionArray;                                                                                                // 208
+  }()                                                                                                                  // 208
+});                                                                                                                    // 192
+                                                                                                                       //
+// Uploader Tests                                                                                                      //
+                                                                                                                       //
+Template.uploader.events({                                                                                             // 219
+  'change input[type="file"]': function () {                                                                           // 220
+    function changeInputTypeFile(event, template) {                                                                    // 219
+      Modules.client.uploadToAmazonS3({ event: event, template: template, type: "profile" });                          // 221
+    }                                                                                                                  // 222
+                                                                                                                       //
+    return changeInputTypeFile;                                                                                        // 219
+  }()                                                                                                                  // 219
+});                                                                                                                    // 219
+                                                                                                                       //
+Template.files.onCreated(function () {                                                                                 // 225
+  return Template.instance().subscribe('files');                                                                       // 225
+});                                                                                                                    // 225
+                                                                                                                       //
+Template.files.helpers({                                                                                               // 227
+  files: function () {                                                                                                 // 228
+    function files() {                                                                                                 // 227
+      var files = Images.find({ userId: Meteor.userId() }, { sort: { "added": -1 } });                                 // 229
+      if (files) {                                                                                                     // 230
+        return files;                                                                                                  // 231
+      }                                                                                                                // 232
+    }                                                                                                                  // 233
+                                                                                                                       //
+    return files;                                                                                                      // 227
+  }()                                                                                                                  // 227
+});                                                                                                                    // 227
+                                                                                                                       //
+Template.accountTemplate.onRendered(function () {                                                                      // 236
+  $(document).ready(function () {                                                                                      // 237
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
+    $('.modal-trigger').leanModal();                                                                                   // 239
+  });                                                                                                                  // 240
+});                                                                                                                    // 242
+                                                                                                                       //
+Template.file.helpers({                                                                                                // 244
+  isImage: function () {                                                                                               // 245
+    function isImage(url) {                                                                                            // 244
+      var formats = ['jpg', 'jpeg', 'png', 'gif'];                                                                     // 246
+      return _.find(formats, function (format) {                                                                       // 247
+        return url.indexOf(format) > -1;                                                                               // 247
+      });                                                                                                              // 247
+    }                                                                                                                  // 248
+                                                                                                                       //
+    return isImage;                                                                                                    // 244
+  }()                                                                                                                  // 244
+});                                                                                                                    // 244
+                                                                                                                       //
+Template.file.events({                                                                                                 // 251
+  'click .delete_button': function () {                                                                                // 252
+    function clickDelete_button(event, template) {                                                                     // 251
+      Meteor.call('deleteImageFromS3', event.target.value);                                                            // 253
+    }                                                                                                                  // 254
+                                                                                                                       //
+    return clickDelete_button;                                                                                         // 251
+  }()                                                                                                                  // 251
+});                                                                                                                    // 251
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 //                                                                                                                     //
 // Template.uploader.events({                                                                                          //
 //   'dragover' : function (event, template){                                                                          //
@@ -2441,6 +3211,7 @@ Template.file.events({                                                          
                                                                                                                        //
 // Autoform Settings                                                                                                   //
                                                                                                                        //
+<<<<<<< HEAD
 AutoForm.setDefaultTemplate('materialize');                                                                            // 277
                                                                                                                        //
 // Accounts                                                                                                            //
@@ -2482,6 +3253,49 @@ Template.Navbar.onRendered(function () {                                        
     $(".dropdown-button").dropdown();                                                                                  // 311
   });                                                                                                                  // 312
 });                                                                                                                    // 313
+=======
+AutoForm.setDefaultTemplate('materialize');                                                                            // 283
+                                                                                                                       //
+// Accounts                                                                                                            //
+                                                                                                                       //
+AccountsTemplates.configure({                                                                                          // 287
+  defaultLayoutType: 'blaze', // Optional, the default is 'blaze'                                                      // 288
+  defaultLayout: 'MainLayout',                                                                                         // 289
+  defaultLayoutRegions: {                                                                                              // 290
+    nav: 'Navbar'                                                                                                      // 291
+  },                                                                                                                   // 290
+  defaultContentRegion: 'main',                                                                                        // 293
+                                                                                                                       //
+  onSubmitHook: function () {                                                                                          // 295
+    function onSubmitHook(error, state) {                                                                              // 295
+      if (!error) {                                                                                                    // 296
+        if (state === "signIn") {                                                                                      // 297
+          $('#signUp').closeModal();                                                                                   // 298
+          $('#login').closeModal();                                                                                    // 299
+        }                                                                                                              // 300
+        if (state === "signUp") {                                                                                      // 301
+          $('#signUp').closeModal();                                                                                   // 302
+          $('#login').closeModal();                                                                                    // 303
+        }                                                                                                              // 304
+      }                                                                                                                // 305
+    }                                                                                                                  // 306
+                                                                                                                       //
+    return onSubmitHook;                                                                                               // 295
+  }()                                                                                                                  // 295
+});                                                                                                                    // 287
+                                                                                                                       //
+AccountsTemplates.configureRoute('signIn');                                                                            // 309
+AccountsTemplates.configureRoute('signUp');                                                                            // 310
+                                                                                                                       //
+// Javascript Component Initialization                                                                                 //
+                                                                                                                       //
+Template.Navbar.onRendered(function () {                                                                               // 314
+  $(document).ready(function () {                                                                                      // 315
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
+    $(".dropdown-button").dropdown();                                                                                  // 317
+  });                                                                                                                  // 318
+});                                                                                                                    // 319
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
                                                                                                                        //
 // Template.upsertBasicProfileForm.onRendered(function () {                                                            //
                                                                                                                        //
@@ -2492,6 +3306,7 @@ Template.Navbar.onRendered(function () {                                        
 //   });                                                                                                               //
 // });                                                                                                                 //
                                                                                                                        //
+<<<<<<< HEAD
 Template.navbarAccount.onRendered(function () {                                                                        // 325
   $(document).ready(function () {                                                                                      // 326
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
@@ -2598,11 +3413,120 @@ Template.search.onRendered(function () {                                        
     selectYears: 15 // Creates a dropdown of 15 years to control year                                                  // 426
   });                                                                                                                  // 424
 });                                                                                                                    // 428
+=======
+Template.navbarAccount.onRendered(function () {                                                                        // 331
+  $(document).ready(function () {                                                                                      // 332
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
+    $(".dropdown-button").dropdown({                                                                                   // 334
+      inDuration: 300,                                                                                                 // 335
+      outDuration: 225,                                                                                                // 336
+      constrain_width: true, // Does not change width of dropdown to that of the activator                             // 337
+      hover: true, // Activate on click                                                                                // 338
+      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)                        // 339
+      gutter: 0, // Spacing from edge                                                                                  // 340
+      belowOrigin: true                                                                                                // 341
+    });                                                                                                                // 334
+  });                                                                                                                  // 343
+});                                                                                                                    // 344
+                                                                                                                       //
+Template.modalLogin.onRendered(function () {                                                                           // 346
+  $(document).ready(function () {                                                                                      // 347
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
+    $('.modal-trigger').leanModal();                                                                                   // 349
+  });                                                                                                                  // 350
+});                                                                                                                    // 351
+                                                                                                                       //
+Template.modalSignUp.onRendered(function () {                                                                          // 353
+  $(document).ready(function () {                                                                                      // 354
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered                     //
+    $('.modal-trigger').leanModal();                                                                                   // 356
+  });                                                                                                                  // 357
+});                                                                                                                    // 358
+                                                                                                                       //
+Template.ProfileLayout.onRendered(function () {                                                                        // 360
+  $(document).ready(function () {                                                                                      // 361
+    $('.materialboxed').materialbox();                                                                                 // 362
+  });                                                                                                                  // 363
+});                                                                                                                    // 364
+                                                                                                                       //
+Template.CollapsibleStructure.onRendered(function () {                                                                 // 366
+  $('.collapsible').collapsible({                                                                                      // 367
+    accordion: false                                                                                                   // 368
+  });                                                                                                                  // 367
+});                                                                                                                    // 370
+                                                                                                                       //
+Template.TabStructure.onRendered(function () {                                                                         // 372
+  $('ul.tabs').tabs();                                                                                                 // 373
+});                                                                                                                    // 374
+                                                                                                                       //
+Template.NewAccompLayout.onRendered(function () {                                                                      // 376
+  // Initialize collapse button                                                                                        //
+  $(".button-collapse").sideNav();                                                                                     // 378
+  // Initialize collapsible (uncomment the line below if you use the dropdown variation)                               //
+  //$('.collapsible').collapsible();                                                                                   //
+});                                                                                                                    // 381
+                                                                                                                       //
+Template.ProfileLayout.onRendered(function () {                                                                        // 383
+  // parallax                                                                                                          //
+  $(".parallax").parallax();                                                                                           // 385
+                                                                                                                       //
+  // resize card with card-reveal                                                                                      //
+  $(document).ready(function () {                                                                                      // 388
+    $(document).on('click.card', '.card', function (e) {                                                               // 389
+      if ($(this).find('> .card-reveal').length) {                                                                     // 390
+        if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {        // 391
+          // Make Reveal animate down and display none                                                                 //
+          $(this).find('.card-reveal').velocity({ translateY: 0 }, {                                                   // 393
+            duration: 225,                                                                                             // 395
+            queue: false,                                                                                              // 396
+            easing: 'easeInOutQuad',                                                                                   // 397
+            complete: function () {                                                                                    // 398
+              function complete() {                                                                                    // 398
+                $(this).css({ display: 'none' });                                                                      // 398
+              }                                                                                                        // 398
+                                                                                                                       //
+              return complete;                                                                                         // 398
+            }()                                                                                                        // 398
+          });                                                                                                          // 394
+          $(this).velocity({ height: $(this).data('height') }, { duration: 225 });                                     // 401
+        } else if ($(e.target).is($('.card .activator')) || $(e.target).is($('.card .activator i'))) {                 // 402
+          $(e.target).closest('.card').css('overflow', 'hidden');                                                      // 405
+          $(this).data('height', $(this).css('height')).find('.card-reveal').css({ display: 'block', height: 'auto' }).velocity("stop", false).velocity({ translateY: '-100%' }, { duration: 300, queue: false, easing: 'easeInOutQuad' });
+          $(this).velocity({ height: $(this).find('.card-reveal').height() + 40 }, { duration: 300 });                 // 407
+        }                                                                                                              // 408
+      }                                                                                                                // 409
+      $('.card-reveal').closest('.card').css('overflow', 'hidden');                                                    // 410
+    });                                                                                                                // 411
+  });                                                                                                                  // 412
+});                                                                                                                    // 413
+                                                                                                                       //
+Template.search.onRendered(function () {                                                                               // 415
+  // Enter acts as tabs till time to submit form                                                                       //
+  $(document).ready(function () {                                                                                      // 417
+    $('#searchform input').keydown(function (e) {                                                                      // 418
+      if (e.keyCode == 13) {                                                                                           // 419
+        if ($(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('type') == 'submit') {                          // 420
+          return true;                                                                                                 // 421
+        }                                                                                                              // 422
+        $(':input:eq(' + ($(':input').index(this) + 1) + ')').focus();                                                 // 423
+        return false;                                                                                                  // 424
+      }                                                                                                                // 425
+    });                                                                                                                // 426
+  });                                                                                                                  // 427
+                                                                                                                       //
+  // Materialize date picker desing                                                                                    //
+  $('.datepicker').pickadate({                                                                                         // 430
+    selectMonths: true, // Creates a dropdown to control month                                                         // 431
+    selectYears: 15 // Creates a dropdown of 15 years to control year                                                  // 432
+  });                                                                                                                  // 430
+});                                                                                                                    // 434
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
                                                                                                                        //
 // On creation                                                                                                         //
                                                                                                                        //
 // ==Global Template Helpers==                                                                                         //
                                                                                                                        //
+<<<<<<< HEAD
 Template.registerHelper('navbarFields', function () {                                                                  // 437
   // Logged In                                                                                                         //
   if (Meteor.user()) {                                                                                                 // 439
@@ -3184,6 +4108,595 @@ Template.Navbar.events({                                                        
                                                                                                                        //
 // For Debugging                                                                                                       //
 SimpleSchema.debug = true;                                                                                             // 932
+=======
+Template.registerHelper('profilePic', function () {                                                                    // 443
+  var imageDoc = Images.findOne({ userId: Meteor.userId(), picType: "profile" });                                      // 444
+  if (imageDoc) {                                                                                                      // 445
+    return imageDoc.url;                                                                                               // 446
+  }                                                                                                                    // 447
+});                                                                                                                    // 448
+                                                                                                                       //
+Template.registerHelper('navbarFields', function () {                                                                  // 450
+  // Logged In                                                                                                         //
+  if (Meteor.user()) {                                                                                                 // 452
+    // Accompanist                                                                                                     //
+    if (Roles.userIsInRole(Meteor.userId(), 'accompanist')) {                                                          // 454
+      return ['accompanistDashboard', 'bookings', 'navbarAccount'];                                                    // 455
+    }                                                                                                                  // 456
+    // Not Accompanist                                                                                                 //
+    return ['becomeAnAccompanist', 'bookings', 'navbarAccount'];                                                       // 458
+    // Not Logged In                                                                                                   //
+  } else {                                                                                                             // 460
+      return ['becomeAnAccompanist', 'modalSignUp', 'modalLogin'];                                                     // 461
+    }                                                                                                                  // 462
+});                                                                                                                    // 463
+                                                                                                                       //
+// Get Current User's Account                                                                                          //
+Template.registerHelper('myBasicProfile', function () {                                                                // 466
+  return BasicProfiles.findOne({ userId: Meteor.userId() });                                                           // 467
+});                                                                                                                    // 468
+                                                                                                                       //
+// Get Current User's Music Profile                                                                                    //
+Template.registerHelper('myMusicProfile', function () {                                                                // 471
+  return MusicProfiles.findOne({ userId: Meteor.userId() });                                                           // 472
+});                                                                                                                    // 473
+                                                                                                                       //
+// Get Current Route's Accompanist Profile                                                                             //
+Template.registerHelper('myAccompanistProfile', function () {                                                          // 476
+  return AccompanistProfiles.findOne({ Id: Meteor.userId() });                                                         // 477
+});                                                                                                                    // 478
+                                                                                                                       //
+Template.registerHelper('routeBasicProfile', function () {                                                             // 480
+  return BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 481
+});                                                                                                                    // 482
+                                                                                                                       //
+// Get Current Route's Music Profile                                                                                   //
+Template.registerHelper('routeMusicProfile', function () {                                                             // 485
+  return MusicProfiles.findOne({ userId: FlowRouter.getParam("profileId") });                                          // 486
+});                                                                                                                    // 487
+                                                                                                                       //
+// Get Current Route's Accompanist Profile                                                                             //
+Template.registerHelper('routeAccompanistProfile', function () {                                                       // 490
+  return AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                        // 491
+});                                                                                                                    // 492
+                                                                                                                       //
+Template.registerHelper('sentBookingRequests', function () {                                                           // 494
+  return Transactions.find({ musician: Meteor.userId() }).fetch();                                                     // 495
+});                                                                                                                    // 496
+                                                                                                                       //
+Template.registerHelper('receivedBookingRequests', function (arg) {                                                    // 498
+  var splitRequests = { pending: [], ongoing: [], completed: [], cancelled: [] };                                      // 499
+  Transactions.find({ accompanist: Meteor.userId() }).forEach(function (doc) {                                         // 500
+    if (doc.status == "Pending") {                                                                                     // 501
+      splitRequests.pending.push(doc);                                                                                 // 502
+    } else if (doc.status == "Ongoing") {                                                                              // 503
+      splitRequests.ongoing.push(doc);                                                                                 // 504
+    } else if (doc.status == "Completed") {                                                                            // 505
+      splitRequests.completed.push(doc);                                                                               // 506
+    } else {                                                                                                           // 507
+      splitRequests.cancelled.push(doc);                                                                               // 508
+    }                                                                                                                  // 509
+  });                                                                                                                  // 510
+  return splitRequests;                                                                                                // 511
+});                                                                                                                    // 512
+                                                                                                                       //
+Template.registerHelper('formatDate', function (date) {                                                                // 514
+  return moment(date).format('MMM DD, YYYY');                                                                          // 515
+});                                                                                                                    // 516
+                                                                                                                       //
+Template.registerHelper('formatBirthDate', function (date) {                                                           // 518
+  return moment(date).format('MMM, YYYY');                                                                             // 519
+});                                                                                                                    // 520
+                                                                                                                       //
+// Slice day string and capitalize it's first letter                                                                   //
+// All fixed in schema, only need the slicing functionality                                                            //
+Template.registerHelper('formatDay', function (day) {                                                                  // 524
+  var Day = day.substr(0, 3);                                                                                          // 525
+  var new_day = Day.charAt(0).toUpperCase() + Day.slice(1);                                                            // 526
+  return new_day;                                                                                                      // 527
+});                                                                                                                    // 528
+                                                                                                                       //
+Template.registerHelper('formatDuration', function (date1, date2) {                                                    // 530
+  var start = moment(date1);                                                                                           // 531
+  var end = moment(date2);                                                                                             // 532
+  if (start.year() == end.year()) {                                                                                    // 533
+    // Year is the same                                                                                                //
+    if (start.month() == end.month()) {                                                                                // 535
+      return start.format('MMM DD - ') + end.format('DD, YYYY');                                                       // 536
+    }                                                                                                                  // 537
+    return start.format('MMM DD - ') + end.format('MMM DD, YYYY');                                                     // 538
+  }                                                                                                                    // 539
+  return start.format('MMM DD, YYYY - ') + end.format('MMM DD, YYYY');                                                 // 540
+});                                                                                                                    // 541
+                                                                                                                       //
+Template.registerHelper('basicProfileById', function (id) {                                                            // 543
+  return BasicProfiles.findOne({ userId: id });                                                                        // 544
+});                                                                                                                    // 545
+                                                                                                                       //
+Template.registerHelper('musicProfileById', function (id) {                                                            // 547
+  return MusicProfiles.findOne({ userId: id });                                                                        // 548
+});                                                                                                                    // 549
+                                                                                                                       //
+Template.registerHelper('accompanistProfileById', function (id) {                                                      // 551
+  return AccompanistProfiles.findOne({ Id: id });                                                                      // 552
+});                                                                                                                    // 553
+                                                                                                                       //
+Template.registerHelper('routeTransaction', function () {                                                              // 555
+  return Transactions.findOne({ _id: FlowRouter.getParam("transactionId") });                                          // 556
+});                                                                                                                    // 557
+                                                                                                                       //
+Template.registerHelper('isOwnProfile', function () {                                                                  // 559
+  return FlowRouter.getParam("profileId") == Meteor.userId();                                                          // 560
+});                                                                                                                    // 561
+                                                                                                                       //
+Template.registerHelper('and', function (a, b) {                                                                       // 563
+  return a && b;                                                                                                       // 564
+});                                                                                                                    // 565
+Template.registerHelper('or', function (a, b) {                                                                        // 566
+  return a || b;                                                                                                       // 567
+});                                                                                                                    // 568
+                                                                                                                       //
+Template.registerHelper('basicProfileExists', function () {                                                            // 570
+  return undefined !== BasicProfiles.findOne({ userId: Meteor.userId() });                                             // 571
+});                                                                                                                    // 572
+                                                                                                                       //
+Template.registerHelper('musicProfileExists', function () {                                                            // 574
+  return undefined !== MusicProfiles.findOne({ userId: Meteor.userId() });                                             // 575
+});                                                                                                                    // 576
+                                                                                                                       //
+Template.registerHelper('accompanistProfileExists', function () {                                                      // 578
+  return undefined !== AccompanistProfiles.findOne({ Id: Meteor.userId() });                                           // 579
+});                                                                                                                    // 580
+                                                                                                                       //
+Template.registerHelper('isAccompanist', function () {                                                                 // 582
+  var x = AccompanistProfiles.findOne({ Id: FlowRouter.getParam("profileId") });                                       // 583
+  return x !== null;                                                                                                   // 584
+});                                                                                                                    // 585
+                                                                                                                       //
+Template.registerHelper('validId', function () {                                                                       // 587
+  if (BasicProfiles.findOne({ userId: FlowRouter.getParam("profileId") })) {                                           // 588
+    return true;                                                                                                       // 589
+  } else {                                                                                                             // 590
+    return false;                                                                                                      // 591
+  }                                                                                                                    // 592
+});                                                                                                                    // 593
+                                                                                                                       //
+Template.registerHelper('userId', function () {                                                                        // 595
+  event.preventDefault();                                                                                              // 596
+  return Meteor.userId();                                                                                              // 597
+});                                                                                                                    // 598
+                                                                                                                       //
+// Old Global Template Helpers                                                                                         //
+                                                                                                                       //
+Template.registerHelper('defaultTransaction', function () {                                                            // 604
+  return { musician: Meteor.userId(),                                                                                  // 605
+    accompanist: FlowRouter.getParam("profileId"),                                                                     // 606
+    status: 'Pending' };                                                                                               // 607
+});                                                                                                                    // 608
+                                                                                                                       //
+Template.registerHelper('getProfileRoute', function () {                                                               // 612
+  var id = arguments.length <= 0 || arguments[0] === undefined ? Meteor.userId() : arguments[0];                       // 612
+                                                                                                                       //
+  return "/profile/" + id;                                                                                             // 613
+});                                                                                                                    // 614
+                                                                                                                       //
+Template.registerHelper('getBookingRoute', function (bookingId) {                                                      // 616
+  return "/bookingRequest/" + bookingId;                                                                               // 617
+});                                                                                                                    // 618
+                                                                                                                       //
+Template.registerHelper('transactionById', function () {                                                               // 621
+  var id = arguments.length <= 0 || arguments[0] === undefined ? FlowRouter.getParam("transactionId") : arguments[0];  // 621
+                                                                                                                       //
+  event.preventDefault();                                                                                              // 622
+  // Only return if the user is the accompanist listed                                                                 //
+  return Transactions.findOne({ _id: id, accompanist: Meteor.userId() });                                              // 624
+});                                                                                                                    // 625
+                                                                                                                       //
+Template.registerHelper('musicCompetitionsDoc', function () {                                                          // 628
+  event.preventDefault();                                                                                              // 629
+  // array =  MusicCompetitions.find().fetch();                                                                        //
+  return [{ label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition" }];
+});                                                                                                                    // 632
+                                                                                                                       //
+// Local Template On Created                                                                                           //
+                                                                                                                       //
+Template.upsertMusicProfileForm.onCreated(function () {                                                                // 637
+  this.formType = new ReactiveVar('insert');                                                                           // 638
+});                                                                                                                    // 639
+                                                                                                                       //
+Template.upsertBasicProfileForm.onCreated(function () {                                                                // 641
+  this.formType = new ReactiveVar('insert');                                                                           // 642
+});                                                                                                                    // 643
+                                                                                                                       //
+Template.upsertAccompanistForm.onCreated(function () {                                                                 // 645
+  this.formType = new ReactiveVar('insert');                                                                           // 646
+});                                                                                                                    // 647
+                                                                                                                       //
+Template.upsertInstrumentForm.onCreated(function () {                                                                  // 649
+  this.formType = new ReactiveVar('insert');                                                                           // 650
+});                                                                                                                    // 651
+                                                                                                                       //
+Template.upsertAwardsForm.onCreated(function () {                                                                      // 653
+  this.formType = new ReactiveVar('insert');                                                                           // 654
+});                                                                                                                    // 655
+                                                                                                                       //
+Template.upsertProgramsForm.onCreated(function () {                                                                    // 657
+  this.formType = new ReactiveVar('insert');                                                                           // 658
+});                                                                                                                    // 659
+                                                                                                                       //
+Template.upsertOrchestraForm.onCreated(function () {                                                                   // 661
+  this.formType = new ReactiveVar('insert');                                                                           // 662
+});                                                                                                                    // 663
+                                                                                                                       //
+// Local Template Helpers                                                                                              //
+                                                                                                                       //
+Template.upsertOrchestraForm.helpers({                                                                                 // 667
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentProfile: function () {                                                                                        // 669
+    function currentProfile() {                                                                                        // 669
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 670
+      if (currentProfile) {                                                                                            // 671
+        Template.instance().formType.set('update');                                                                    // 672
+        return currentProfile;                                                                                         // 673
+      }                                                                                                                // 674
+    }                                                                                                                  // 675
+                                                                                                                       //
+    return currentProfile;                                                                                             // 669
+  }(),                                                                                                                 // 669
+                                                                                                                       //
+  formType: function () {                                                                                              // 677
+    function formType() {                                                                                              // 677
+      var formType = Template.instance().formType.get();                                                               // 678
+      return formType;                                                                                                 // 679
+    }                                                                                                                  // 680
+                                                                                                                       //
+    return formType;                                                                                                   // 677
+  }()                                                                                                                  // 677
+});                                                                                                                    // 667
+                                                                                                                       //
+Template.upsertProgramsForm.helpers({                                                                                  // 683
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentProfile: function () {                                                                                        // 685
+    function currentProfile() {                                                                                        // 685
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 686
+      if (currentProfile) {                                                                                            // 687
+        Template.instance().formType.set('update');                                                                    // 688
+        return currentProfile;                                                                                         // 689
+      }                                                                                                                // 690
+    }                                                                                                                  // 691
+                                                                                                                       //
+    return currentProfile;                                                                                             // 685
+  }(),                                                                                                                 // 685
+                                                                                                                       //
+  formType: function () {                                                                                              // 693
+    function formType() {                                                                                              // 693
+      var formType = Template.instance().formType.get();                                                               // 694
+      return formType;                                                                                                 // 695
+    }                                                                                                                  // 696
+                                                                                                                       //
+    return formType;                                                                                                   // 693
+  }()                                                                                                                  // 693
+});                                                                                                                    // 683
+                                                                                                                       //
+Template.upsertAwardsForm.helpers({                                                                                    // 699
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentProfile: function () {                                                                                        // 701
+    function currentProfile() {                                                                                        // 701
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 702
+      if (currentProfile) {                                                                                            // 703
+        Template.instance().formType.set('update');                                                                    // 704
+        return currentProfile;                                                                                         // 705
+      }                                                                                                                // 706
+    }                                                                                                                  // 707
+                                                                                                                       //
+    return currentProfile;                                                                                             // 701
+  }(),                                                                                                                 // 701
+                                                                                                                       //
+  formType: function () {                                                                                              // 709
+    function formType() {                                                                                              // 709
+      var formType = Template.instance().formType.get();                                                               // 710
+      return formType;                                                                                                 // 711
+    }                                                                                                                  // 712
+                                                                                                                       //
+    return formType;                                                                                                   // 709
+  }()                                                                                                                  // 709
+});                                                                                                                    // 699
+                                                                                                                       //
+Template.upsertMusicProfileForm.helpers({                                                                              // 715
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentProfile: function () {                                                                                        // 717
+    function currentProfile() {                                                                                        // 717
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 718
+      if (currentProfile) {                                                                                            // 719
+        Template.instance().formType.set('update');                                                                    // 720
+        return currentProfile;                                                                                         // 721
+      }                                                                                                                // 722
+    }                                                                                                                  // 723
+                                                                                                                       //
+    return currentProfile;                                                                                             // 717
+  }(),                                                                                                                 // 717
+                                                                                                                       //
+  formType: function () {                                                                                              // 725
+    function formType() {                                                                                              // 725
+      var formType = Template.instance().formType.get();                                                               // 726
+      return formType;                                                                                                 // 727
+    }                                                                                                                  // 728
+                                                                                                                       //
+    return formType;                                                                                                   // 725
+  }(),                                                                                                                 // 725
+                                                                                                                       //
+  instrumentList: function () {                                                                                        // 730
+    function instrumentList() {                                                                                        // 730
+      return ["Voice", "Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone", "Zither"].map(function (obj) {
+        return { label: obj, value: obj };                                                                             // 732
+      });                                                                                                              // 732
+    }                                                                                                                  // 733
+                                                                                                                       //
+    return instrumentList;                                                                                             // 730
+  }()                                                                                                                  // 730
+});                                                                                                                    // 715
+                                                                                                                       //
+Template.upsertInstrumentForm.helpers({                                                                                // 736
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentProfile: function () {                                                                                        // 738
+    function currentProfile() {                                                                                        // 738
+      var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId() });                                         // 739
+      if (currentProfile) {                                                                                            // 740
+        Template.instance().formType.set('update');                                                                    // 741
+        return currentProfile;                                                                                         // 742
+      }                                                                                                                // 743
+    }                                                                                                                  // 744
+                                                                                                                       //
+    return currentProfile;                                                                                             // 738
+  }(),                                                                                                                 // 738
+                                                                                                                       //
+  formType: function () {                                                                                              // 746
+    function formType() {                                                                                              // 746
+      var formType = Template.instance().formType.get();                                                               // 747
+      return formType;                                                                                                 // 748
+    }                                                                                                                  // 749
+                                                                                                                       //
+    return formType;                                                                                                   // 746
+  }(),                                                                                                                 // 746
+                                                                                                                       //
+  instrumentList: function () {                                                                                        // 751
+    function instrumentList() {                                                                                        // 751
+      return ["Voice", "Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone", "Zither"].map(function (obj) {
+        return { label: obj, value: obj };                                                                             // 753
+      });                                                                                                              // 753
+    }                                                                                                                  // 754
+                                                                                                                       //
+    return instrumentList;                                                                                             // 751
+  }()                                                                                                                  // 751
+});                                                                                                                    // 736
+                                                                                                                       //
+Template.upsertBasicProfileForm.helpers({                                                                              // 757
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentBasicProfile: function () {                                                                                   // 759
+    function currentBasicProfile() {                                                                                   // 759
+      var currentAccount = BasicProfiles.findOne({ userId: Meteor.userId() });                                         // 760
+      if (currentAccount) {                                                                                            // 761
+        Template.instance().formType.set('update');                                                                    // 762
+        return currentAccount;                                                                                         // 763
+      }                                                                                                                // 764
+    }                                                                                                                  // 765
+                                                                                                                       //
+    return currentBasicProfile;                                                                                        // 759
+  }(),                                                                                                                 // 759
+                                                                                                                       //
+  formType: function () {                                                                                              // 767
+    function formType() {                                                                                              // 767
+      var formType = Template.instance().formType.get();                                                               // 768
+      return formType;                                                                                                 // 769
+    }                                                                                                                  // 770
+                                                                                                                       //
+    return formType;                                                                                                   // 767
+  }()                                                                                                                  // 767
+});                                                                                                                    // 757
+                                                                                                                       //
+Template.upsertAccompanistForm.helpers({                                                                               // 773
+  // Helps set up fields for deciding between "insert" and "update"                                                    //
+  currentAccompanistProfiles: function () {                                                                            // 775
+    function currentAccompanistProfiles() {                                                                            // 775
+      var currentAccompanistProfiles = AccompanistProfiles.findOne({ Id: Meteor.userId() });                           // 776
+      if (currentAccompanistProfiles) {                                                                                // 777
+        Template.instance().formType.set('update');                                                                    // 778
+        return currentAccompanistProfiles;                                                                             // 779
+      }                                                                                                                // 780
+    }                                                                                                                  // 781
+                                                                                                                       //
+    return currentAccompanistProfiles;                                                                                 // 775
+  }(),                                                                                                                 // 775
+                                                                                                                       //
+  formType: function () {                                                                                              // 783
+    function formType() {                                                                                              // 783
+      var formType = Template.instance().formType.get();                                                               // 784
+      return formType;                                                                                                 // 785
+    }                                                                                                                  // 786
+                                                                                                                       //
+    return formType;                                                                                                   // 783
+  }()                                                                                                                  // 783
+});                                                                                                                    // 773
+                                                                                                                       //
+Template.results.helpers({                                                                                             // 790
+                                                                                                                       //
+  accompanists: function () {                                                                                          // 792
+    function accompanists() {                                                                                          // 792
+      //var coords = Session.get('coords')                                                                             //
+                                                                                                                       //
+      var address = FlowRouter.getQueryParam("address");                                                               // 795
+      var start_date = FlowRouter.getQueryParam("start_date");                                                         // 796
+      var end_date = FlowRouter.getQueryParam("end_date");                                                             // 797
+                                                                                                                       //
+      Meteor.call('getGeocode', address, function (err, result) {                                                      // 799
+        console.log("Meteor call worked");                                                                             // 800
+                                                                                                                       //
+        if (result !== null) {                                                                                         // 802
+          var lat = Number(result[0].latitude);                                                                        // 803
+          var lng = Number(result[0].longitude);                                                                       // 804
+          var coords = [lng, lat];                                                                                     // 805
+        }                                                                                                              // 806
+                                                                                                                       //
+        //convert dates to dates that can be compared with Mongo schema                                                //
+        var sd = new Date(start_date);                                                                                 // 809
+        var ed = new Date(end_date);                                                                                   // 810
+                                                                                                                       //
+        if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {                                    // 812
+          var results = AccompanistProfiles.find({                                                                     // 813
+            loc: { $near: {                                                                                            // 814
+                $geometry: { type: "Point", coordinates: coords },                                                     // 817
+                $maxDistance: 20000                                                                                    // 818
+              }                                                                                                        // 816
+            },                                                                                                         // 815
+            startDate: { $lte: sd, $lte: ed },                                                                         // 821
+            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 822
+        } else if (moment(sd).isValid() && moment(ed).isValid()) {                                                     // 823
+          var results = AccompanistProfiles.find({                                                                     // 826
+            startDate: { $lte: sd, $lte: ed },                                                                         // 828
+            endDate: { $gte: sd, $gte: ed } }).fetch();                                                                // 829
+        } else if (moment(ed).isValid()) {                                                                             // 830
+          var results = AccompanistProfiles.find({                                                                     // 833
+            startDate: { $lte: ed },                                                                                   // 835
+            endDate: { $gte: ed } }).fetch();                                                                          // 836
+        } else if (moment(sd).isValid()) {                                                                             // 837
+          var results = AccompanistProfiles.find({                                                                     // 840
+            startDate: { $lte: sd },                                                                                   // 842
+            endDate: { $gte: sd } }).fetch();                                                                          // 843
+        } else if (coords !== undefined) {                                                                             // 844
+          var results = AccompanistProfiles.find({                                                                     // 847
+            loc: { $near: {                                                                                            // 848
+                $geometry: { type: "Point", coordinates: coords },                                                     // 851
+                $maxDistance: 20000                                                                                    // 852
+              }                                                                                                        // 850
+            } }).fetch();                                                                                              // 849
+        } else {                                                                                                       // 855
+          var results = null;                                                                                          // 858
+        }                                                                                                              // 859
+                                                                                                                       //
+        Session.set('results', results);                                                                               // 861
+      });                                                                                                              // 862
+                                                                                                                       //
+      return Session.get('results');                                                                                   // 864
+    }                                                                                                                  // 865
+                                                                                                                       //
+    return accompanists;                                                                                               // 792
+  }(),                                                                                                                 // 792
+  accompname: function () {                                                                                            // 866
+    function accompname() {                                                                                            // 866
+      var names = BasicProfiles.findOne({ userId: this.Id });                                                          // 867
+      return names;                                                                                                    // 868
+    }                                                                                                                  // 869
+                                                                                                                       //
+    return accompname;                                                                                                 // 866
+  }()                                                                                                                  // 866
+                                                                                                                       //
+});                                                                                                                    // 790
+                                                                                                                       //
+// Events                                                                                                              //
+                                                                                                                       //
+Template.search.events({                                                                                               // 875
+  'submit form': function () {                                                                                         // 876
+    function submitForm() {                                                                                            // 876
+      console.log("Form Submitted");                                                                                   // 877
+      FlowRouter.go('results?');                                                                                       // 878
+    }                                                                                                                  // 879
+                                                                                                                       //
+    return submitForm;                                                                                                 // 876
+  }()                                                                                                                  // 876
+});                                                                                                                    // 875
+                                                                                                                       //
+// Google search autocomplete                                                                                          //
+Template.search.events({                                                                                               // 883
+  'click #autocomplete': function () {                                                                                 // 884
+    function clickAutocomplete(e, search) {                                                                            // 884
+      initAutoComplete();                                                                                              // 885
+    }                                                                                                                  // 886
+                                                                                                                       //
+    return clickAutocomplete;                                                                                          // 884
+  }()                                                                                                                  // 884
+});                                                                                                                    // 883
+                                                                                                                       //
+Template.NewAccompLayout.events({                                                                                      // 889
+  'click #autocomplete': function () {                                                                                 // 890
+    function clickAutocomplete(e, NewAccompLayout) {                                                                   // 890
+      initAutoComplete();                                                                                              // 891
+    }                                                                                                                  // 892
+                                                                                                                       //
+    return clickAutocomplete;                                                                                          // 890
+  }()                                                                                                                  // 890
+});                                                                                                                    // 889
+                                                                                                                       //
+var initAutoComplete = function initAutoComplete() {                                                                   // 895
+  var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), { types: ['geocode'] });
+};                                                                                                                     // 899
+                                                                                                                       //
+Template.EditAccompanistProfiles.events({                                                                              // 901
+  'click button': function () {                                                                                        // 902
+    function clickButton() {                                                                                           // 902
+      Notifications.info('Test', 'Working Notification');                                                              // 903
+    }                                                                                                                  // 904
+                                                                                                                       //
+    return clickButton;                                                                                                // 902
+  }()                                                                                                                  // 902
+});                                                                                                                    // 901
+                                                                                                                       //
+Template.BookingRequest.events({                                                                                       // 907
+  'click button': function () {                                                                                        // 908
+    function clickButton() {                                                                                           // 908
+      Transactions.update({ _id: FlowRouter.getParam("transactionId") }, { $set: { status: "Confirmed" } });           // 909
+      Notifications.info('Successful Confirmation', 'You successfully confirmed your booking!');                       // 910
+    }                                                                                                                  // 911
+                                                                                                                       //
+    return clickButton;                                                                                                // 908
+  }()                                                                                                                  // 908
+});                                                                                                                    // 907
+                                                                                                                       //
+Template.makeAdmin.events({                                                                                            // 914
+  'click button': function () {                                                                                        // 915
+    function clickButton() {                                                                                           // 915
+      userId = Meteor.userId();                                                                                        // 916
+      Meteor.call('divinify', userId);                                                                                 // 917
+    }                                                                                                                  // 918
+                                                                                                                       //
+    return clickButton;                                                                                                // 915
+  }()                                                                                                                  // 915
+});                                                                                                                    // 914
+                                                                                                                       //
+// Decide Modal Login/SignUp Popup                                                                                     //
+Template.modalLogin.events({                                                                                           // 922
+  'click .modal-trigger': function () {                                                                                // 923
+    function clickModalTrigger() {                                                                                     // 923
+      AccountsTemplates.setState('signIn');                                                                            // 924
+    }                                                                                                                  // 925
+                                                                                                                       //
+    return clickModalTrigger;                                                                                          // 923
+  }()                                                                                                                  // 923
+});                                                                                                                    // 922
+                                                                                                                       //
+Template.modalSignUp.events({                                                                                          // 928
+  'click .modal-trigger': function () {                                                                                // 929
+    function clickModalTrigger() {                                                                                     // 929
+      AccountsTemplates.setState('signUp');                                                                            // 930
+    }                                                                                                                  // 931
+                                                                                                                       //
+    return clickModalTrigger;                                                                                          // 929
+  }()                                                                                                                  // 929
+});                                                                                                                    // 928
+                                                                                                                       //
+// Logout from the navbar                                                                                              //
+Template.Navbar.events({                                                                                               // 935
+  'click .logout': function () {                                                                                       // 936
+    function clickLogout() {                                                                                           // 936
+      AccountsTemplates.logout();                                                                                      // 937
+    }                                                                                                                  // 938
+                                                                                                                       //
+    return clickLogout;                                                                                                // 936
+  }()                                                                                                                  // 936
+});                                                                                                                    // 935
+                                                                                                                       //
+// For Debugging                                                                                                       //
+SimpleSchema.debug = true;                                                                                             // 944
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }]},"lib":{"routes.js":function(){

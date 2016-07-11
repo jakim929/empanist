@@ -3,6 +3,7 @@ import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
+import { Sessions } from '../collections/transactions.js'
 
 import { TestAccountData } from '../collections/testData.js'
 
@@ -11,7 +12,6 @@ window.AccompanistProfiles = AccompanistProfiles
 window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
-window.AccompanistResponses = AccompanistResponses
 window.Sessions = Sessions
 
 // Booking Tests
@@ -33,6 +33,7 @@ Template.BookingRequest.helpers({
 
 });
 
+<<<<<<< HEAD
 // Template.BookingRequest.events({
 //   'click .next-session' (event, instance) {
 //     // if ()
@@ -44,11 +45,22 @@ Template.BookingRequest.helpers({
 //   'click .final-confirm' (event, instance) {
 //     Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
 //   },
+=======
+Template.BookingRequest.events({
+  'click .next-session' (event, instance) {
+    instance.currentStep.set("sessionsSection");
+  },
+  'click .next-payment' (event, instance) {
+    instance.currentStep.set("paymentSection");
+  },
+  'click .final-confirm' (event, instance) {
+    Meteor.call('confirmBookingRequest', FlowRouter.getParam("transactionId") )
+  },
+>>>>>>> f5f6c2a972201171c701db8e61789716517a784b
 
 // });
 
 // Modal Review Booking Tests
-
 
 Template.repertoireSection.onCreated(function () {
   this.RepertoireConfirmCheck = new ReactiveVar(false);
@@ -163,7 +175,7 @@ Template.registerHelper('getSessionTransaction', () => {
 
 Template.upsertSessionResponse.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
-  // FIXTHIS check if there are more than one transaction
+  // FIXTHIS check if there are more than one sessions/transaction
   currentResponse: function () {
     var currentResponse = Sessions.findOne({ transaction: FlowRouter.getParam("transactionId")});
     if (currentResponse) {
@@ -233,6 +245,14 @@ Template.files.helpers({
       return files;
     }
   }
+});
+
+Template.accountTemplate.onRendered(function () {
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal();
+  });
+
 });
 
 Template.file.helpers({
@@ -434,12 +454,18 @@ Template.search.onRendered(function () {
 
 // ==Global Template Helpers==
 
+Template.registerHelper('profilePic', () => {
+  var imageDoc = Images.findOne({userId: Meteor.userId(), picType: "profile"});
+  if(imageDoc){
+    return imageDoc.url
+  }
+});
+
 Template.registerHelper('navbarFields', () => {
   // Logged In
   if (Meteor.user()){
     // Accompanist
     if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
-      console.log("Navbar Config 1")
       return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
     // Not Accompanist
