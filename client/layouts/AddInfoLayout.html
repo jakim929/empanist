@@ -1,83 +1,22 @@
-<!-- <template name="AddInfoLayout">
-    <header>
-    </header>
-    <main>
-      {{> upsertBasicProfileForm}}
-      <br><br>
-      {{> upsertMusicProfileForm}}
 
-    {{> Template.dynamic template=form}}
-    {{> upsertBasicProfileForm}}
+<!-- SECTION: Basic Profile -->
 
-    {{> upsertMusicProfileForm}}
-   
-    {{> upsertAccompanistForm}}
+<template name="basicMyProfile">
+  {{> upsertBasicProfileForm}}
+</template>
 
-    </main>
-</template> -->
-
-<!-- Accompanist Profile -->
-
-<template name="upsertAccompanistForm">
-  <div class="smallMargin">
-    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-      <!-- {{> afQuickField name="repertoire"}} -->
-      {{> afArrayField name="repertoire" template="repertoireCustomArrayField"}} 
-      {{> afQuickField name="charge"}}
-      {{> afQuickField name="working_hours"}}
-      {{> afQuickField name="working_days"}}
-      {{> afQuickField name="startDate"}}
-      {{> afQuickField name="endDate"}}
-      {{> afQuickField name="session_location"}}
-      {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-      {{> afQuickField name="one_liner"}}
-    <br>
-    <button type="submit" class="btn btn-primary">{{formType}} Accompanist Profile</button>
-    {{/autoForm}}
+<template name="basicNewAccomp">
+   <div class="progress">
+      <div class="determinate" style="width: 100%"></div>
+  </div>
+  <div class="smallMargin formsTopMargin">
+    {{> upsertBasicProfileForm }}
   </div>
 </template>
 
-<template name="afArrayField_repertoireCustomArrayField">
-  {{#if afFieldIsInvalid name=atts.name}}
-    <span>{{{afFieldMessage name=atts.name}}}</span>
-  {{/if}}
-  <div class="card grey lighten-5 z-depth-0">
-    <div class="card-content">
-      <h5>
-        Repertoire 
-      </h5>
-      {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-          <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-        {{/if}}
-        <br>
-        <div class="input-field col s12">
-            {{> afFieldInput name=this.current.repertoire id="comp.name" type="text"}}
-          <label for="comp.name">Repertoire</label>
-        </div>
-      {{/afEachArrayItem}}
-    </div>
-  {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-    <center>
-      <button
-        type="button"
-        class="add-btn autoform-add-item grey"
-        data-autoform-field="{{atts.name}}"
-        data-autoform-minCount="{{atts.minCount}}"
-        data-autoform-maxCount="{{atts.maxCount}}">
-          Add Repertoire
-      </button>
-    </center>
-  {{/if}}
-  </div>
-</template>
-
-<!-- Basic Profile -->
-
+<!-- SECTION: Upsert Forms -->
 <template name="upsertBasicProfileForm">
   {{#if isInRole 'makeBasicProfile'}}
-    <div class="smallMargin">
-      <h3>Basic Profile</h3>
       {{#autoForm collection="BasicProfiles" doc=currentBasicProfile id="upsertBasicProfileForm" type=formType}}
           <div class="row">
             <div class="input-field col s6">
@@ -101,69 +40,139 @@
             <label >Affiliation</label>   
           </div>
       <br>
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn right btn-primary">Save</button>
       {{/autoForm}}
-    </div>
   {{/if}}
 </template>
-
-<!-- Music Profile -->
 
 <template name="upsertMusicProfileForm">
+  <div class="progress">
+      <div class="determinate" style="width: 25%"></div>
+  </div>
   {{#if isInRole 'makeMusicProfile'}}
-    <div class="smallMargin">
+    <div class="smallMargin formsTopMargin">
       {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
 
-      <div class="card grey lighten-5 z-depth-0">
-        <div class="card-content">
-          <h5>
-            <i id="align_text" class="medium material-icons">brush</i>
-            Instruments you master
-          </h5>
-          {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
-          {{>afQuickField name="yearsPlayed"}}
+      <div class="instrument"> 
+        <div class="card grey lighten-5 z-depth-0">
+          <div class="card-content">
+            <h5>
+              <i id="align_text" class="medium material-icons">brush</i>
+              Instruments you master
+            </h5>
+            {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
+            {{>afQuickField name="yearsPlayed"}}
+          </div>
         </div>
+        <a class="next-instrument right waves-effect waves-light btn">Next</a>
       </div>
-          
-        {{> afArrayField name="awards" template="awardsCustomArrayField"}}   
-        {{> afArrayField name="musicPrograms" template="musicCustomArrayField"}} 
-        {{> afArrayField name="orchestras" template="orchestraCustomArrayField"}}
 
-      <br>
-      <button type="submit" class="btn btn-primary">Save</button>
+      <div class="award">  
+        {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
+        <a class="next-award right waves-effect waves-light btn">Next</a>
+        <a class="back-award left waves-effect waves-light btn">Back</a>
+      </div> 
+      
+      <div class="program"> 
+        {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
+        <a class="next-program right waves-effect waves-light btn">Next</a>
+        <a class="back-program left waves-effect waves-light btn">Back</a> 
+      </div> 
+      
+      <div class="orchestra"> 
+        {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
+        <button type="submit" class="right btn btn-primary">Save</button>
+        <a class="back-orchestra left waves-effect waves-light btn">Back</a>
+      </div> 
+       
       {{/autoForm}}
     </div>
   {{/if}}
 </template>
 
-<template name="afArrayField_awardsCustomArrayField">
+<template name="upsertAccompanistForm">
+  <div class="progress">
+      <div class="determinate" style="width: 0%"></div>
+  </div>
+  <div class="smallMargin formsTopMargin">
+    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
+      
+      <div class="repertoire">
+        {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
+        <a class="next-repertoire right waves-effect waves-light btn">Next</a>
+      </div>
+      
+      <div class="charge">
+        {{> afQuickField name="charge"}}
+        <a class="next-charge right waves-effect waves-light btn">Next</a>
+         <a class="back-charge left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="working_hours">
+        {{> afQuickField name="working_hours"}}
+        <a class="next-working_hours right waves-effect waves-light btn">Next</a>
+         <a class="back-working_hours left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="working_days">
+        {{> afQuickField name="working_days"}}
+        <a class="next-working_days right waves-effect waves-light btn">Next</a>
+         <a class="back-working_days left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="startDate">
+        {{> afQuickField name="startDate"}}
+        <a class="next-startDate right waves-effect waves-light btn">Next</a>
+         <a class="back-startDate left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="endDate">
+        {{> afQuickField name="endDate"}}
+        <a class="next-endDate right waves-effect waves-light btn">Next</a>
+         <a class="back-endDate left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="session_location">
+        {{> afQuickField name="session_location"}}
+        <a class="next-session_location right waves-effect waves-light btn">Next</a>
+         <a class="back-session_location left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="mylocation">
+        {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+        <a class="next-mylocation right waves-effect waves-light btn">Next</a>
+         <a class="back-mylocation left waves-effect waves-light btn">Back</a>
+      </div>
+      
+      <div class="one_liner">
+        {{> afQuickField name="one_liner"}}
+        <button type="submit" class=" btn right btn-primary">{{formType}} Accompanist Profile</button>
+         <a class="back-one_liner left waves-effect waves-light btn">Back</a>
+      </div>
+    {{/autoForm}}
+  </div>
+</template>
+
+<!-- SECTION: New Accompanist CustomArrayField-->
+
+<template name="afArrayField_newAccompCustomArrayField">
   {{#if afFieldIsInvalid name=atts.name}}
     <span>{{{afFieldMessage name=atts.name}}}</span>
   {{/if}}
   <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
       <h5>
-        <i id="align_text" class="medium material-icons">verified_user</i>
-        Honors & Awards 
+        <i id="align_text" class="medium material-icons">{{icon atts.name}}</i>
+        {{mainTitle atts.name}}
       </h5>
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-            <div class="row">
-              {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-              <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-              {{/if}}
-            <br>
-              <div class="input-field col s6">
-                  {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
-                <label for="comp.name">Competition Name</label>
-              </div>
-               <div class="input-field col s6">
-                  {{> afFieldInput name=this.current.award id="icon_name" type="text"}}
-                <label for="icon_name">Award Title</label>
-              </div>
-            </div>
-            <div class="input-field col s6">
-              {{> afFieldInput name=this.current.date type="date"}}
-            </div>
+        
+        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+          <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
+        {{/if}}      
+        
+        {{> UI.dynamic template=../atts.name}}
+
       {{/afEachArrayItem}}
    </div>
   {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
@@ -174,107 +183,95 @@
         data-autoform-field="{{atts.name}}"
         data-autoform-minCount="{{atts.minCount}}"
         data-autoform-maxCount="{{atts.maxCount}}">
-          Add Award
+          Add {{add_title atts.name}}
       </button>
     </center>
   {{/if}}
   </div>
 </template>
 
-<template name="afArrayField_musicCustomArrayField">
+<!-- SECTION: Edit My Profile CustomArrayField -->
+
+<template name="afArrayField_editProfileCustomArrayField">
   {{#if afFieldIsInvalid name=atts.name}}
     <span>{{{afFieldMessage name=atts.name}}}</span>
   {{/if}}
-  <div class="card grey lighten-5 z-depth-0">
-    <div class="card-content">
       <h5>
-      <i id="align_text" class="medium material-icons">music_note</i>
-      Music Programs 
+        <i id="align_text" class="medium material-icons">{{icon atts.name}}</i>
+        {{mainTitle atts.name}} 
       </h5>
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-            <div class="row">
-              {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-              <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-              {{/if}}
-            <br>
-              <div class="input-field col s6">
-                  {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
-                <label for="comp.name">Program Name</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s6">
-                {{> afFieldInput name=this.current.startDate type="date"}}
-              </div>
-               <div class="input-field col s6">
-                {{> afFieldInput name=this.current.endDate type="date"}}
-              </div>
-            </div>
+        {{> UI.dynamic template=../atts.name}}
       {{/afEachArrayItem}}
-   </div>
-  {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-    <center>
-      <button
-        type="button"
-        class="add-btn autoform-add-item grey"
-        data-autoform-field="{{atts.name}}"
-        data-autoform-minCount="{{atts.minCount}}"
-        data-autoform-maxCount="{{atts.maxCount}}">
-          Add Music Program
-      </button>
-    </center>
-  {{/if}}
+</template>
+
+<!-- SECTION: Block HTML content for array construction...stle fields in array html -->
+
+<!-- MusicProfile Array -->
+<template name="awards">
+   <div class="row">
+    <br>
+      <div class="input-field col s6">
+          {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
+        <label for="comp.name">Competition Name</label>
+      </div>
+       <div class="input-field col s6">
+          {{> afFieldInput name=this.current.award id="icon_name" type="text"}}
+        <label for="icon_name">Award Title</label>
+      </div>
+    </div>
+    <div class="input-field col s6">
+      {{> afFieldInput name=this.current.date type="date"}}
+    </div>
+  </template>
+
+<template name="musicPrograms"> 
+  <div class="row">
+  <br>
+    <div class="input-field col s6">
+        {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
+      <label for="comp.name">Program Name</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s6">
+      {{> afFieldInput name=this.current.startDate type="date"}}
+    </div>
+     <div class="input-field col s6">
+      {{> afFieldInput name=this.current.endDate type="date"}}
+    </div>
   </div>
 </template>
 
-<template name="afArrayField_orchestraCustomArrayField">
-  {{#if afFieldIsInvalid name=atts.name}}
-    <span>{{{afFieldMessage name=atts.name}}}</span>
-  {{/if}}
-  <div class="card grey lighten-5 z-depth-0">
-    <div class="card-content">
-      <h5>
-        <i id="align_text" class="medium material-icons">group_work</i>
-        Orchestras Participated in 
-      </h5>
-      {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-            <div class="row">
-              {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-              <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-              {{/if}}
-              <br>
-              <div class="input-field col s6">
-                  {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
-                <label for="comp.name">Orchestra Name</label>
-              </div>
-              <div class="input-field col s6">
-                  {{> afFieldInput name=this.current.position id="comp.name" type="text"}}
-                <label for="comp.name">Position</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s6">
-                {{> afFieldInput name=this.current.startDate type="date"}}
-              </div>
-               <div class="input-field col s6">
-                {{> afFieldInput name=this.current.endDate type="date"}}
-              </div>
-            </div>
-      {{/afEachArrayItem}}
-   </div>
-  {{#if afArrayFieldHasLessThanMaximum name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-    <center>
-      <button
-        type="button"
-        class="add-btn autoform-add-item grey"
-        data-autoform-field="{{atts.name}}"
-        data-autoform-minCount="{{atts.minCount}}"
-        data-autoform-maxCount="{{atts.maxCount}}">
-          Add Orchestra
-      </button>
-    </center>
-  {{/if}}
+<template name="orchestras">
+  <div class="row">
+    <br>
+    <div class="input-field col s6">
+        {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
+      <label for="comp.name">Orchestra Name</label>
+    </div>
+    <div class="input-field col s6">
+        {{> afFieldInput name=this.current.position id="comp.name" type="text"}}
+      <label for="comp.name">Position</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s6">
+      {{> afFieldInput name=this.current.startDate type="date"}}
+    </div>
+     <div class="input-field col s6">
+      {{> afFieldInput name=this.current.endDate type="date"}}
+    </div>
   </div>
 </template>
 
+<!-- Accompanist Profile Arrays -->
+
+<template name="repertoire">
+  <br>
+  <div class="input-field col s12">
+      {{> afFieldInput name=this.current.concerto id="rep" type="text"}}
+    <label for="rep">Repertoire</label>
+  </div>
+</template>
 
