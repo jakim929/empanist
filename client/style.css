@@ -1,14 +1,13 @@
 /* CSS declarations go here */
 
 body {
-  background-color: #e6e6e6;
+  background-color: #eeeeee;
   height:100%;
 }
 
 .no-padding{
 	padding: 0;
 }
-
 
 .dropdown-content.login {
   background-color: #FFFFFF;
@@ -29,10 +28,6 @@ body {
 .sidenavOffset {
   padding-left: 150px;
 }
-
-
-
-
 
 @media only screen and (max-width : 992px) {
   .sidenavOffset {
@@ -112,7 +107,7 @@ div.blur {
 }
 
 .smallMargin {
-  margin-right: 30%;
+  margin-right: 40%;
 }
 
 .accopmCard-left {
@@ -385,6 +380,24 @@ display: none;
 .formsTopMargin {
   margin-top: 10%;
 }
+
+.advice {
+  width:38%;
+  overflow:hidden;
+  margin-left:62%;
+  /* need to make this alignend with card on left*/
+  padding-top:10%;
+}
+
+.left-card {
+width: 60%;
+float:left;
+overflow:hidden;
+}
+
+
+
+
 
 
 

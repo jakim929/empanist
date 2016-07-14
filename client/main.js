@@ -21,8 +21,11 @@ Template.BookingRequest.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
 });
 
-Template.BookingRequest.onRendered(function () {
-
+Template.NewAccompLayout.onRendered(function () {
+  $(document).ready(function(){
+    $('.pushpin').pushpin({ top: 100 });
+  });
+  console.log("pushpin should be working")
 });
 
 Template.BookingRequest.helpers({
@@ -44,31 +47,6 @@ Template.BookingRequest.events({
   },
 
 });
-
-// Template.upsertMusicProfileForm.events({
-//   'click #next-instrument' {
-//     award.display = block;
-//   }
-
-// });
-
-// Template.upsertMusicProfileForm.onCreated(function() {
-//   this.formType = new ReactiveVar('true')
-// });
-
-// Template.registerHelper('showInstrument', () => {
-//   return true
-// });
-
-// Template.registerHelper('showAward', () => {
-//   return false
-// });
-
-// Template.upsertMusicProfileForm.events({
-//   'click .next-instrument': function(){
-//     showAward = true;
-//   }
-// });
 
 Template.upsertMusicProfileForm.events({
   'click .next-instrument':function(){
@@ -97,6 +75,15 @@ Template.upsertMusicProfileForm.events({
     'click .back-orchestra':function(){
     $(".orchestra").css('display', 'none');
     $(".program").css('display', 'block');
+    },
+    'submit form': function(){
+      FlowRouter.go('/newaccomp');
+    }
+  });
+
+Template.basicNewAccomp.events({
+  'submit form': function(){
+      FlowRouter.go('/newaccomp');
     }
   });
 
@@ -140,8 +127,7 @@ Template.upsertAccompanistForm.events({
     $(".mylocation").css('display', 'none');
     $(".one_liner").css('display', 'block');
     $(".determinate").css('width', '100%');
-    }
-    ,
+    },
     'click .back-charge':function(){
     $(".charge").css('display', 'none');
     $(".repertoire").css('display', 'block');
@@ -173,6 +159,9 @@ Template.upsertAccompanistForm.events({
     'click .back-one_liner':function(){
     $(".one_liner").css('display', 'none');
     $(".mylocation").css('display', 'block');
+    },
+    'submit form': function(){
+      FlowRouter.go('/newaccomp');
     }
   });
 
@@ -265,13 +254,6 @@ Template.paymentSection.helpers({
     }
   }
 });
-
-
-
-
-
-
-
 
 Template.AccompanistDashboard.onCreated(function() {
   Session.set('sessionTransaction', undefined);
@@ -402,8 +384,6 @@ Template.file.events({
 //   },
 // });
 
-
-
 // Template Inheritance
 
 
@@ -446,16 +426,6 @@ Template.Navbar.onRendered(function () {
     $(".dropdown-button").dropdown();
   });
 });
-
-// Template.upsertBasicProfileForm.onRendered(function () {
-
-//   // Materialize date picker desing
-//   $('.datepicker').pickadate({
-//     selectMonths: true, // Creates a dropdown to control month
-//     selectYears: 15 // Creates a dropdown of 15 years to control year
-//   });
-// });
-
 
 Template.navbarAccount.onRendered(function () {
   $(document).ready(function(){
@@ -562,10 +532,7 @@ Template.search.onRendered(function () {
   });
 });
 
-
-
 // On creation
-
 
 // ==Global Template Helpers==
 
@@ -746,20 +713,17 @@ Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return "/bookingRequest/"+bookingId
 });
 
-
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
     event.preventDefault();
     // Only return if the user is the accompanist listed
     return Transactions.findOne({_id:id, accompanist: Meteor.userId()})
 });
 
-
 Template.registerHelper( 'musicCompetitionsDoc', () => {
     event.preventDefault();
     // array =  MusicCompetitions.find().fetch();
     return [{label: "First Manhattan International Music Competition", value: "First Manhattan International Music Competition"}]
 });
-
 
 // Local Template On Created
 
@@ -775,25 +739,13 @@ Template.upsertAccompanistForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
-Template.upsertInstrumentForm.onCreated(function() {
-  this.formType = new ReactiveVar('insert')
-});
-
-Template.upsertAwardsForm.onCreated(function() {
-  this.formType = new ReactiveVar('insert')
-});
-
-Template.upsertProgramsForm.onCreated(function() {
-  this.formType = new ReactiveVar('insert')
-});
-
-Template.upsertOrchestraForm.onCreated(function() {
+Template.EditingForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
 // Local Template Helpers
 
-Template.upsertOrchestraForm.helpers ({
+Template.EditingForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
   currentProfile: function () {
     var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
@@ -802,42 +754,16 @@ Template.upsertOrchestraForm.helpers ({
       return currentProfile
     }
   },
-
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
-  }
-});
-
-Template.upsertProgramsForm.helpers ({
-  // Helps set up fields for deciding between "insert" and "update"
-  currentProfile: function () {
-    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
-    if (currentProfile) {
-      Template.instance().formType.set('update');
-      return currentProfile
-    }
   },
-
-  formType: function () {
-    var formType = Template.instance().formType.get();
-    return formType;
-  }
-});
-
-Template.upsertAwardsForm.helpers ({
-  // Helps set up fields for deciding between "insert" and "update"
-  currentProfile: function () {
-    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
-    if (currentProfile) {
-      Template.instance().formType.set('update');
-      return currentProfile
-    }
+  instrumentList: function () {
+    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
+    "Zither"].map(function(obj){return {label: obj, value:obj}})
   },
-
-  formType: function () {
-    var formType = Template.instance().formType.get();
-    return formType;
+  notArray: function(name) {
+  return (name == undefined)
   }
 });
 
@@ -850,36 +776,85 @@ Template.upsertMusicProfileForm.helpers ({
       return currentProfile
     }
   },
-
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
   },
-
   instrumentList: function () {
     return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
     "Zither"].map(function(obj){return {label: obj, value:obj}})
   }
 });
 
-Template.upsertInstrumentForm.helpers ({
-  // Helps set up fields for deciding between "insert" and "update"
-  currentProfile: function () {
-    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
-     if (currentProfile) {
-       Template.instance().formType.set('update');
-      return currentProfile
-     }
-  },
+Template.profileTemplate.helpers({
+    arrayProfileCards: function(inst, yrs, awards, programs, orchestras) {   
+      var mydata =[
+        {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: [inst, yrs]}, //FIX THIS
+        {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards"},
+        {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms"},
+        {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras"}
+      ]
+      return mydata;
+    }
+});
 
-  formType: function () {
-    var formType = Template.instance().formType.get();
-    return formType;
-  },
+Template.afArrayField_newAccompCustomArrayField.helpers({
+    icon: function(name) {
+      switch(name){
+          case 'awards':   return "verified_user";
+          case 'musicPrograms': return "music_note";
+          case 'orchestras':    return "group_work";
+          case 'repertoire':    return "group_work";
+      }
+    }, 
+    mainTitle: function(name) {
+      switch(name){
+          case 'awards':   return "Awards & Honors";
+          case 'musicPrograms': return "Music Programs ";
+          case 'orchestras':    return "Orchestras Participated in";
+          case 'repertoire':    return "Repertoire";
+      }
+    }
+    ,
+    add_title: function(name) {
+        switch(name){
+            case 'awards':   return "Award";
+            case 'musicPrograms': return "Music Program";
+            case 'orchestras':    return "Orchestra";
+            case 'repertoire':    return "Repertoire";
+        }
+    }
+});
 
-  instrumentList: function () {
-    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
-    "Zither"].map(function(obj){return {label: obj, value:obj}})
+Template.afArrayField_editProfileCustomArrayField.helpers({
+    icon: function(name) {
+      switch(name){
+          case 'awards':   return "verified_user";
+          case 'musicPrograms': return "music_note";
+          case 'orchestras':    return "group_work";
+      }
+    }, 
+    mainTitle: function(name) {
+      switch(name){
+          case 'awards':   return "Awards & Honors";
+          case 'musicPrograms': return "Music Programs";
+          case 'orchestras':    return "Orchestras Participated in";
+      }
+    }
+});
+
+// deletes null values in arrays (hack fix, change if autoform gets updated and solves this problem)
+AutoForm.addHooks(null, {
+  before: {
+    update: function(doc) {
+      _.each(doc.$set, function(value, setter) {
+        if (_.isArray(value)) {
+          var newValue = _.compact(value);
+          doc.$set[setter] = newValue;
+        }
+      });
+      return doc;
+    }
   }
 });
 
@@ -892,7 +867,6 @@ Template.upsertBasicProfileForm.helpers ({
       return currentAccount;
     }
   },
-
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
@@ -908,13 +882,11 @@ Template.upsertAccompanistForm.helpers ({
       return currentAccompanistProfiles;
     }
   },
-
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
   }
 });
-
 
 Template.results.helpers({
 

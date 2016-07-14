@@ -2,15 +2,15 @@
     <main>
   
     {{> NewAccompanist}}
+    {{> newAccompAdvice}}
         
     </main>
 </template>
 
 <template name="NewAccompanist">
-  <div class="smallMargin">
+  <div class="left-card">
     <h3>Become an accompanist</h3>
     <ul class="collection">
-        
         <li class="collection-item">
           <div>
             <p class="step_number"> STEP 1 </p>
@@ -27,18 +27,14 @@
                   Continue
                 </a>
                 {{/unless}}
-             
                 {{/unless}}
                  {{else}}
-
-
                 <a href="/newaccomp/step1">
                   Edit
                 </a>
             {{/unless}}
           </div>
         </li>
-
         <li class="collection-item">
           <div>
             <p class="step_number"> STEP 2 </p>
@@ -63,7 +59,6 @@
             {{/if}}
           </div>
         </li>
-
         <li class="collection-item">
           <div>
             <p class="step_number"> STEP 3 </p> 
@@ -86,26 +81,20 @@
             {{/if}}
           </div>
         </li>
-
       </ul>
   </div>
-
 </template>
 
-<!-- <template name="upsertAccompanistForm">
-    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-    <fieldset>
-      {{> afQuickField name="repertoire"}}
-      {{> afQuickField name="charge"}}
-      {{> afQuickField name="working_hours"}}
-      {{> afQuickField name="working_days"}}
-      {{> afQuickField name="startDate"}}
-      {{> afQuickField name="endDate"}}
-      {{> afQuickField name="session_location"}}
-      {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-      {{> afQuickField name="one_liner"}}
-    </fieldset>
-    <br>
-    <button type="submit" class="btn btn-primary">{{formType}} Accompanist Profile</button>
-    {{/autoForm}}
-</template> -->
+<template name="newAccompAdvice">
+  <div class=" advice">
+    <div class="card grey lighten-5 z-depth-0">
+      <div class="card-content">
+        <h5>
+          Advice box!! 
+        </h5>
+      </div>
+    </div>
+  </div>
+</template>
+
+
