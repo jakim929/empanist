@@ -8,9 +8,18 @@ TransactionSchema = new SimpleSchema({
   musician: {
     type: String,
     label: "Musician ID",
-    // autoform: {
-    //   type: "hidden"
-    // }
+    autoform: {
+      type: "hidden"
+    },
+    autoValue:
+      function() {
+        if(this.isSet){
+          return this.value
+        }else{
+          return Meteor.userId()
+        }
+
+      }
   },
 
   accompanist: {
@@ -21,6 +30,12 @@ TransactionSchema = new SimpleSchema({
     // }
   },
 
+  sessionCount: {
+    type: Number,
+    label: "Session Count",
+    optional: true
+  },
+
   repertoire: {
     type: [String],
     label: "Planned Repertoire"
@@ -29,7 +44,7 @@ TransactionSchema = new SimpleSchema({
   status: {
     type: String,
     label: "Booking Status",
-    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Rejected', 'Cancelled'],
+    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Rejected', 'Cancelled']
     // autoform: {
     //   type: "hidden"
     // }
@@ -61,7 +76,6 @@ SessionSchema = new SimpleSchema({
   transaction: {
     type: String,
     label: "Transaction ID",
-    optional: true,
     // autoform: {
     //   type: "hidden"
     // }
@@ -85,7 +99,8 @@ SessionSchema = new SimpleSchema({
 
   duration: {
     type: Number,
-    label: "Duration in Hours"
+    label: "Duration in Hours",
+    optional: true
   },
 
   status: {

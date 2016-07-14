@@ -124,13 +124,13 @@ Meteor.methods({
     Roles.addUsersToRoles(userId, 'admin');
   },
 
-  confirmBookingRequest: function(transactionId) {
+  confirmBookingRequest: function(transactionId, sessionSelector, sessionDoc) {
     var transaction = Transactions.findOne({_id: transactionId});
-    if(transaction){
+    var session = Sessions.findOne(sessionSelector);
+    if(transaction && session){
       if(transaction.accompanist == this.userId){
-        var firstSession = Sessions.findOne({transaction: transactionId});
-        console.log(firstSession)
-        if(firstSession.startTime){
+
+        if(Sessions.update(sessionSelector, sessionDoc)){
           Transactions.update({_id: transactionId}, {$set: {status: "Ongoing"}});
         }
         else{
@@ -143,7 +143,9 @@ Meteor.methods({
     }else{
       Meteor.Error("No such transaction.")
     }
-  }
+  },
+
+
 
 });
 
@@ -169,7 +171,7 @@ BasicProfiles.before.insert(function (userId, doc){
 BasicProfiles.after.insert(function(userId, doc){
   console.log("Basic Profile Made for",doc.userId);
   Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
-  Roles.addUsersToRoles(doc.userId, 'bookAccompanist');
+
 });
 
 
@@ -187,6 +189,7 @@ MusicProfiles.before.insert(function (userId, doc){
 
 MusicProfiles.after.insert(function(userId, doc){
   Roles.addUsersToRoles(doc.userId, ['becomeAccompanist', 'musician']);
+  Roles.addUsersToRoles(doc.userId, 'bookAccompanist');
 });
 
 

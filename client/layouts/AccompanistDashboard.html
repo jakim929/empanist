@@ -38,24 +38,24 @@
 
 <template name="CollapsibleStructure">
   {{#with receivedBookingRequests}}
-    <ul class="collapsible" data-collapsible="expandable">
+    <ul class="collapsible z-depth-0" data-collapsible="expandable">
       <li>
-        <div class="collapsible-header active"><i class="material-icons">people</i>Pending Bookings ({{this.pending.length}})</div>
+        <div class="collapsible-header grey lighten-2 active"><i class="material-icons">people</i>Pending Bookings ({{this.pending.length}})</div>
         <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.pending }}</div>
       </li>
 
       <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Ongoing Bookings ({{this.ongoing.length}})</div>
+        <div class="collapsible-header grey lighten-2 active"><i class="material-icons">filter_drama</i>Ongoing Bookings ({{this.ongoing.length}})</div>
         <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.ongoing }}</div>
       </li>
 
       <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Previous Bookings ({{this.completed.length}})</div>
+        <div class="collapsible-header grey lighten-2 active"><i class="material-icons">filter_drama</i>Previous Bookings ({{this.completed.length}})</div>
         <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.completed }}</div>
       </li>
 
       <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Cancelled Bookings ({{this.cancelled.length}})</div>
+        <div class="collapsible-header grey lighten-2 active"><i class="material-icons">filter_drama</i>Cancelled Bookings ({{this.cancelled.length}})</div>
         <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.cancelled }}</div>
       </li>
     </ul>
@@ -69,7 +69,11 @@
 <template name="request">
 
     <li class="collection-item avatar">
-      <img src="/images/profile.png" alt="" class="circle">
+      {{#with profilePicUrlById}}
+        <img src={{this}} alt="" class="circle">
+      {{else}}
+        <img src="/images/musician.png" alt="" class="circle">
+      {{/with}}
       {{#with basicProfileById musician}}
         <span class="title"><a href={{getProfileRoute _id}}>{{name}}</a></span>
       {{/with}}
@@ -77,7 +81,7 @@
         <p class="no-padding">{{instrument}} </p>
       {{/with}}
         <p class="no-padding">{{formatDuration this.startDate this.endDate}}</p>
-      <a href={{getBookingRoute _id}} class="secondary-content modal-trigger waves-effect waves-light review-booking"><i class="material-icons">grade</i></a>
+      <a href={{getBookingRoute _id}} class="secondary-content btn waves-effect waves-light review-booking">Confirm/Reject</a>
     </li>
 
 </template>

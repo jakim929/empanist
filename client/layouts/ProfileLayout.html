@@ -13,12 +13,24 @@
               {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
             {{else}}
               {{#if isAccompanist}}
-              <div class="smallMargin">
-                {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
-                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
-                {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
-                <!-- uncomment below when you add booking template -->
-                <!-- {{> bookAccompanist}} -->
+              <div class="row">
+                <div class="col s8">
+                  {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+                  {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+                  {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
+                  <!-- uncomment below when you add booking template -->
+                  <!-- {{> bookAccompanist}} -->
+                </div>
+                <div class="col s4">
+                  <div class="overlap-into-top">
+                    <div class="card grey lighten-5 z-depth-0">
+                      <div class="card-content">
+                        <h6><b><div class="center">Book This Accompanist</div></b></h6>
+                          {{> bookAccompanistForm}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               {{else}}
                 {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
@@ -29,6 +41,22 @@
             {{> invalidId}}
           {{/if}}
     </main>
+</template>
+
+<template name="bookAccompanistForm">
+  {{#with routeAccompanist}}
+    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert" doc=partialTransaction}}
+      {{> afQuickField name="musician" }}
+      {{> afQuickField name="accompanist" value=this type="hidden"}}
+      {{> afQuickField name="status" value="Pending" type="hidden"}}
+      {{> afQuickField name="startDate"}}
+      {{> afQuickField name="endDate"}}
+      {{> afQuickField name="repertoire"}}
+    {{/autoForm}}
+    <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
+  {{else}}
+    Not on an accompanist page.
+  {{/with}}
 </template>
 
 <template name="invalidId">
@@ -43,13 +71,21 @@
 
       <div id="profileImg" class="profImg-left">
         {{#unless isOwnProfile}}
-        <a class="waves-effect waves-light">
-          <img class="materialboxed" src={{profilePic}}>
-        </a>
+          {{#with currentProfilePic}}
+            <a class="waves-effect waves-light">
+              <img class="materialboxed" src={{currentProfilePic}}>
+            </a>
+          {{/with}}
         {{else}}
-        <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
-          <img src={{profilePic}} height="250px">
-        </a>
+          {{#with currentProfilePic}}
+            <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+              <img src={{this}} height="250px">
+            </a>
+          {{else}}
+            <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
+              <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
+            </a>
+          {{/with}}
         {{/unless}}
       </div>
 
@@ -319,11 +355,12 @@
 
 <template name="files">
   <div class="files">
-    {{#each files}}
-      {{> file}}
-    {{else}}
-      <p class="alert alert-warning">No files uploaded yet!</p>
-    {{/each}}
+      {{#with profileFile}}
+        {{>file}}
+      {{else}}
+        <p class="alert alert-warning">No files uploaded yet!</p>
+      {{/with}}
+
   </div>
 </template>
 

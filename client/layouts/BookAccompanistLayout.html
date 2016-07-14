@@ -1,0 +1,183 @@
+<template name="BookAccompanistLayout">
+  <header>
+  </header>
+  <main>
+    <br>
+    {{>ReviewView}}
+
+
+  </main>
+</template>
+
+<template name="ReviewView">
+  <div class="row">
+    <div class="col s12 m7 l7">
+      {{>ReviewLeftFormPanel}}
+    </div>
+
+    <div class="col s12 m5 l5">
+      {{>ReviewRightSummaryPanel}}
+    </div>
+  </div>
+</template>
+
+<template name="ReviewLeftFormPanel">
+  <div class="card z-depth-0">
+    <div class="card-content">
+      <span class="black-text">
+        {{> Template.dynamic template=currentStep}}
+     </span>
+    </div>
+    <div class="card-action">
+      <a class={{getNextButtonClass}}>Next</a><br><br>
+    </div>
+  </div>
+</template>
+
+<template name="ReviewRightSummaryPanel">
+  <div class="card z-depth-0">
+    <div class="card-content center">
+      <span class="black-text">
+        <h5>Booking Summary</h5>
+          <div class="divider"></div>
+          <img class="responsive-img" src="http://materializecss.com/images/parallax1.jpg"/>
+          <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+
+        <div class="container">
+
+        {{#with currentBooking}}
+
+
+          {{#with basicProfileById accompanist}}
+            <h6>{{name}}</h6>
+            A pianist from {{affiliation}}<br>
+          {{/with}}<br>
+          <div class="divider"></div><br>
+
+          <h6>{{formatDate startDate}}&nbsp;&nbsp;<i class="material-icons vertical-align-middle padding-bottom-3">keyboard_arrow_right</i>&nbsp;&nbsp;{{formatDate endDate}}</h6>
+          <br>
+
+
+          {{#with priceDetails accompanist sessionCount}}
+          <div class="divider"></div>
+          <table>
+             <tbody>
+               <tr>
+                 <td>{{sessionCount}} Sessions</td>
+                 <td><div class="right"><h6>${{total}}.00</h6></div></td>
+               </tr>
+             </tbody>
+           </table>
+          {{/with}}
+
+        {{/with}}
+
+      </div>
+     </span>
+    </div>
+  </div>
+</template>
+
+<template name="SessionReview">
+  <h5>1. Sessions</h5>
+
+  <div class="divider"></div><br>
+  {{#with currentTransaction}}
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        <!-- Pre-Filled from previous page -->
+        {{> afQuickField name="startDate" type="hidden"}}
+        {{> afQuickField name="endDate" type="hidden"}}
+        {{> afQuickField name="status" type="hidden"}}
+        {{> afQuickField name="repertoire" type="hidden"}}
+        {{> afQuickField name="accompanist" type="hidden"}}
+
+          How many sessions? (Rehearsal and Performance)
+          <div class="row">
+            <div class="col s4">
+              {{> afQuickField name="sessionCount" label=false type="select"  options=sessionsOptions }}
+            </div>
+          </div>
+      {{/autoForm}}
+  {{else}}
+      <!-- Some kind of error prevented transaction from being carried over-->
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        {{> afQuickField name="startDate"}}
+        {{> afQuickField name="endDate"}}
+        {{> afQuickField name="repertoire"}}
+        {{> afQuickField name="status" type="hidden" value="Pending"}}
+        {{> afQuickField name="accompanist" type="hidden" value=routeAccompanist}}
+
+          How many sessions? (Rehearsal and Performance)
+          <div class="row">
+            <div class="col s4">
+              {{> afQuickField name="sessionCount" label=false type="select" defaultValue=defaultSessionCount firstOption="1 session" options=sessionsOptions }}
+            </div>
+          </div>
+      {{/autoForm}}
+  {{/with}}
+
+  <br>
+  {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
+
+    Suggest some times for the FIRST session? (At least 2)<br><br>
+    {{> afQuickField name="suggestedTimes" }}
+    <br><br>
+
+    Where would you like to rehearse?<br>
+    {{> afQuickField name="location" label="Rehearsal Location"}}
+  {{/autoForm}}
+</template>
+
+<template name="PaymentReview">
+  <h5>2. Payment</h5>
+    <div class="divider"></div>
+
+</template>
+
+<template name="SuccessLayout">
+  <div class="row">
+  <div class="col s12 m6 l6 push-m3 push-l3">
+    <div class="card z-depth-0">
+      <div class="card-content center">
+        <span class="black-text">
+          <h5>Booking Successful!</h5>
+
+            <div class="divider"></div>
+            <img class="responsive-img" src="http://materializecss.com/images/parallax1.jpg"/>
+            <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+
+          <div class="container">
+
+          {{#with routeTransaction}}
+
+            {{#with basicProfileById accompanist}}
+              <h6>{{name}}</h6>
+              A pianist from {{affiliation}}<br>
+            {{/with}}<br>
+            <div class="divider"></div><br>
+
+            <h6>{{formatDate startDate}}&nbsp;&nbsp;<i class="material-icons vertical-align-middle padding-bottom-3">keyboard_arrow_right</i>&nbsp;&nbsp;{{formatDate endDate}}</h6>
+            <br>
+
+
+            {{#with priceDetails accompanist sessionCount}}
+            <div class="divider"></div>
+            <table>
+               <tbody>
+                 <tr>
+                   <td>{{sessionCount}} Sessions</td>
+                   <td><div class="right"><h6>${{total}}.00</h6></div></td>
+                 </tr>
+               </tbody>
+             </table>
+            {{/with}}
+
+          {{/with}}
+
+        </div>
+       </span>
+      </div>
+    </div>
+  </div>
+  </div>
+</template>
