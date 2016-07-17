@@ -1,28 +1,61 @@
 <template name="ResultsLayout">
-    <header>
-        <h1> Search Results </h1>
-    </header>
     <main>
-		{{> advancedSearch}}
+		<!-- {{> advancedSearch}} -->
 		{{> results}}
     </main>
 </template>
 
 <template name="results">
 	{{#each accompanists}}
+		<a class="keep-date" href={{getProfileRoute Id}}>
+			<div  href={{getProfileRoute Id}} class="card {{currentState}} grey lighten-5 z-depth-0">
+				<div class="card-content">
+					
+					<div id="resultsImg">
+		   			<!--{{#with currentProfilePic}}
+		        <a class="waves-effect waves-light">
+            	<img class="materialboxed" src={{currentProfilePic accompname.Id}}>
+          	</a>
+		        {{/with}} -->
+		        <a class="waves-effect waves-light">
+		          <img class="materialboxed" src="http://www.famousbirthdays.com/faces/cerny-amanda-image.jpg">
+		        </a>
+	        </div>
 
-		<h5>Name: {{accompname.name}}</h5>
-		<h5>Affiliation: {{accompname.affiliation}}</h5>
+					<p class="bold">{{accompname.name}}</p> 
+					
+					<p>{{accompname.affiliation}}</p>
+					<br>
+					<p>
+						<i id="align_text" class="small material-icons">attach_money</i>
+						{{charge}}/hr
+					</p>
 
-		<h5>Session Location: {{mylocation}}</h5>
-		<h5>Charge: ${{charge}}/Hour</h5>
-		<h5>Session Time Pref: {{working_hours}}</h5>
-		<h5>Working Days: {{working_days}}</h5>
-		<h5>About: {{one_liner}}</h5>
-		<a class="keep-date" href={{getProfileRoute Id}}>View Profile</a>
-		<hr>
+					<p>
+						<i id="align_text" class="small material-icons">location_on</i>
+						{{mylocation}}
+					</p> 
+					<br><br><br>
+					<p>
+						<i id="align_text" class="small material-icons">access_time</i>
+						{{working_hours}}
+					</p>
+					
+					<p>
+						<i id="align_text" class="small material-icons">event</i>
+						{{#each working_days}}
+							{{formatDay this}}/
+						{{/each}}
+					</p> 
+					
+					<p class="oneLiner"> {{one_liner}}</p>
+
+				</div>
+			</div>
+		</a>
 	{{/each}}
 </template>
+
 
 <template name="advancedSearch">
  	<div class="container">

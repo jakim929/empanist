@@ -27,7 +27,7 @@ OrchestraSchema = new SimpleSchema({
 AwardSchema = new SimpleSchema({
   name: {
     type:String,
-    label: "Competition Name",
+    label: "Competition Name"
   },
 
   award: {
@@ -56,9 +56,21 @@ MusicProgramSchema = new SimpleSchema({
     type: Date,
     label: "End Date"
   }
-})
+});
 
+InstrumentSchema = new SimpleSchema({
+  instrument: {
+    type: String,
+    label: "Instrument Played",
+    optional: true
+  },
 
+  yearsPlayed: {
+    type: Number,
+    label: "Years Played",
+    optional: true
+  }
+});
 
 MusicProfileSchema = new SimpleSchema({
   userId: {
@@ -71,18 +83,23 @@ MusicProfileSchema = new SimpleSchema({
       return this.userId;
     }
   },
-
-  instrument: {
-    type: String,
+  instruments: {
+    type: [InstrumentSchema],
     label: "Instrument Played",
     optional: true
   },
 
-  yearsPlayed: {
-    type: Number,
-    label: "Years Played",
-    optional: true
-  },
+  // instrument: {
+  //   type: String,
+  //   label: "Instrument Played",
+  //   optional: true
+  // },
+
+  // yearsPlayed: {
+  //   type: Number,
+  //   label: "Years Played",
+  //   optional: true
+  // },
 
   awards: {
     type: [AwardSchema],

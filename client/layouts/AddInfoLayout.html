@@ -2,7 +2,7 @@
 <!-- SECTION: Basic Profile -->
 
 <template name="basicMyProfile">
-  {{> upsertBasicProfileForm}}
+  {{> Template.dynamic template="upsertBasicProfileForm" data="card-title"}}
 </template>
 
 <template name="basicNewAccomp">
@@ -40,7 +40,7 @@
             <label >Affiliation</label>   
           </div>
       <br>
-      <button type="submit" class="btn right btn-primary">Save</button>
+      <button type="submit" class=" {{this}} btn right btn-primary">Save</button>
       {{/autoForm}}
   {{/if}}
 </template>
@@ -53,7 +53,7 @@
     <div class="smallMargin formsTopMargin">
       {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
 
-      <div class="instrument"> 
+   <!--    <div class="instrument"> 
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             <h5>
@@ -65,7 +65,13 @@
           </div>
         </div>
         <a class="next-instrument right waves-effect waves-light btn">Next</a>
-      </div>
+      </div> -->
+
+       <div class="instrument">  
+        {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
+        <a class="next-instrument right waves-effect waves-light btn">Next</a>
+        <a class="back-instrument left waves-effect waves-light btn">Back</a>
+      </div> 
 
       <div class="award">  
         {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
@@ -162,8 +168,12 @@
   <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
       <h5>
-        <i id="align_text" class="medium material-icons">{{icon atts.name}}</i>
-        {{mainTitle atts.name}}
+        {{#unless fromBookingTime this}}
+          {{#if fromBooking this}}
+            <i id="align_text" class="medium material-icons">{{icon atts.name}}</i>
+          {{/if}}
+          {{mainTitle atts.name}}
+        {{/unless}}
       </h5>
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
         
@@ -201,15 +211,36 @@
         {{mainTitle atts.name}} 
       </h5>
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+       {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+          <span class="autoform-remove-item"><i class="material-icons right">delete</i></span>
+        {{/if}} 
         {{> UI.dynamic template=../atts.name}}
       {{/afEachArrayItem}}
 </template>
 
-<!-- SECTION: Block HTML content for array construction...stle fields in array html -->
+<!-- SECTION: Block HTML content for array construction... fields in array html -->
 
 <!-- MusicProfile Array -->
 <template name="awards">
-   <div class="row">
+ {{#if fromProfile this}}
+    <div class="row">
+      <br>
+      <div class="input-field col s6">
+          {{> afFieldInput name="name" id="comp.name" type="text"}}
+        <label for="comp.name">Competition Name</label>
+      </div>
+       <div class="input-field col s6">
+          {{> afFieldInput name="award" id="icon_name" type="text"}}
+          <label for="icon_name">Award Title</label>
+      </div>
+    </div>
+    <div class="input-field col s6">
+      {{> afFieldInput name="date" id="test"  type="date"}}
+       <button type="submit" class="btn right btn-primary">Submit</button>
+       <br><br><br>
+    </div>
+    {{else}}
+     <div class="row">
     <br>
       <div class="input-field col s6">
           {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
@@ -223,27 +254,71 @@
     <div class="input-field col s6">
       {{> afFieldInput name=this.current.date type="date"}}
     </div>
+  {{/if}}
   </template>
 
 <template name="musicPrograms"> 
-  <div class="row">
-  <br>
-    <div class="input-field col s6">
-        {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
-      <label for="comp.name">Program Name</label>
+  {{#if fromProfile this}}
+    <div class="row">
+    <br>
+      <div class="input-field col s6">
+          {{> afFieldInput name="programName" id="comp.name" type="text"}}
+        <label for="comp.name">Program Name</label>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="input-field col s6">
-      {{> afFieldInput name=this.current.startDate type="date"}}
+    <div class="row">
+      <div class="input-field col s6">
+        {{> afFieldInput name="startDate" type="date"}}
+      </div>
+       <div class="input-field col s6">
+        {{> afFieldInput name="endDate" type="date"}}
+      </div>
+       <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+       <br>
     </div>
-     <div class="input-field col s6">
-      {{> afFieldInput name=this.current.endDate type="date"}}
+    {{else}}
+    <div class="row">
+    <br>
+      <div class="input-field col s6">
+          {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
+        <label for="comp.name">Program Name</label>
+      </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="input-field col s6">
+        {{> afFieldInput name=this.current.startDate type="date"}}
+      </div>
+       <div class="input-field col s6">
+        {{> afFieldInput name=this.current.endDate type="date"}}
+      </div>
+    </div>
+    {{/if}}
 </template>
 
 <template name="orchestras">
+  {{#if fromProfile this}}
+  <div class="row">
+    <br>
+    <div class="input-field col s6">
+        {{> afFieldInput name="name" id="comp.name" type="text"}}
+      <label for="comp.name">Orchestra Name</label>
+    </div>
+    <div class="input-field col s6">
+        {{> afFieldInput name="position" id="comp.name" type="text"}}
+      <label for="comp.name">Position</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s6">
+      {{> afFieldInput name="startDate" type="date"}}
+    </div>
+     <div class="input-field col s6">
+      {{> afFieldInput name="endDate" type="date"}}
+    </div>
+    <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+       <br>
+  </div>
+  {{else}}
   <div class="row">
     <br>
     <div class="input-field col s6">
@@ -263,6 +338,37 @@
       {{> afFieldInput name=this.current.endDate type="date"}}
     </div>
   </div>
+  {{/if}}
+</template>
+
+<template name="instruments">
+  {{#if fromProfile this}}
+  <div class="row">
+    <br>
+    <div class="input-field col s6">
+        {{> afFieldInput name="instrument" id="comp.name" type="selectize" options=instrumentList}}
+      <label for="comp.name">Instrument Name</label>
+    </div>
+    <div class="input-field col s6">
+        {{> afFieldInput name="yearsPlayed" id="comp.name" type="text"}}
+      <label for="comp.name">Years Played</label>
+    </div>
+    <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+       <br>
+  </div>
+  {{else}}
+   <div class="row">
+    <br>
+    <div class="input-field col s6">
+        {{> afFieldInput name=this.current.instrument id="comp.name" type="selectize" options=instrumentList}}
+      <label for="comp.name">Instrument Name</label>
+    </div>
+    <div class="input-field col s6">
+        {{> afFieldInput name=this.current.yearsPlayed id="comp.name" type="text"}}
+      <label for="comp.name">Years Played</label>
+    </div>
+  </div>
+  {{/if}}
 </template>
 
 <!-- Accompanist Profile Arrays -->
@@ -272,6 +378,16 @@
   <div class="input-field col s12">
       {{> afFieldInput name=this.current.concerto id="rep" type="text"}}
     <label for="rep">Repertoire</label>
+  </div>
+</template>
+
+<!-- Booking Accompanist Arrays (- repertoire array) -->
+
+<template name="suggestedTimes">
+  <br>
+  <div class="input-field col s12">
+      {{> afFieldInput name=this.current.suggestedTimes id="time" type="date"}}
+    <label for="time">Suggested Times</label>
   </div>
 </template>
 

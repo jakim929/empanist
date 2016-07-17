@@ -17,8 +17,6 @@
                   {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
                   {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
                   {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
-                  <!-- uncomment below when you add booking template -->
-                  <!-- {{> bookAccompanist}} -->
                 </div>
                 <div class="col s4">
                   <div class="overlap-into-top">
@@ -50,7 +48,8 @@
       {{> afQuickField name="status" value="Pending" type="hidden"}}
       {{> afQuickField name="startDate"}}
       {{> afQuickField name="endDate"}}
-      {{> afQuickField name="repertoire"}}
+      <!--{{> afQuickField name="repertoire"}} -->
+      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
     {{/autoForm}}
     <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
   {{else}}
@@ -67,42 +66,49 @@
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
     <div id="first-card-text" class="card-content">
-      <div id="profileImg" class="profImg-left">
-        {{#unless isOwnProfile}}
-          {{#with currentProfilePic}}
-            <a class="waves-effect waves-light">
-              <img class="materialboxed" src={{currentProfilePic}}>
-            </a>
-          {{/with}}
-        {{else}}
-          {{#with currentProfilePic}}
-            <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
-              <img src={{this}} height="250px">
-            </a>
-          {{else}}
-            <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
-              <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
-            </a>
-          {{/with}}
-        {{/unless}}
-      </div>
-      <!-- Modal to change profile pic -->
-      <div id="changeProfileModal" class="modal">
-        <div class="modal-content">
-          <h5>Change Profile Picture <i class="material-icons modal-action modal-close right">close</i></h5>
-          {{> upload}}
-        </div>
-      </div>
-      <span class="black-text activator">
-        <div class="details">
-          <h5 class="bold">{{name}}</h5>
-          <h6>{{affiliation}}</h6>
+      <span class="black-text activator"> 
+        <div class="all">
+          <div id="profileImg">
+            {{#unless isOwnProfile}}
+              {{#with currentProfilePic}}
+                <a class="waves-effect waves-light">
+                  <img class="materialboxed" src={{currentProfilePic}}>
+                </a>
+              {{/with}}
+            {{else}}
+              {{#with currentProfilePic}}
+                <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+                  <img src={{this}} height="250px">
+                </a>
+              {{else}}
+                <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
+                  <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
+                </a>
+              {{/with}}
+            {{/unless}}
+          </div>
+          <!-- Modal to change profile pic -->
+          <div id="changeProfileModal" class="modal">
+            <div class="modal-content">
+              <h5>Change Profile Picture <i class="material-icons modal-action modal-close right">close</i></h5>
+              {{> upload}}
+            </div>
+          </div>
+        <!-- <span class="black-text activator"> -->
+          <div class="details">
+            <h5 class="bold">{{name}}</h5>
+            <h6>{{affiliation}}</h6>
+            {{#if isOwnProfile}}
+            <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+            <h10>{{phone}}</h10> <br>
+           <!--  <i class="material-icons right">mode_edit</i>
+            <br> -->
+            {{/if}}
+          </div>
           {{#if isOwnProfile}}
-          <h10>{{formatBirthDate this.birthDate}}</h10> <br>
-          <h10>{{phone}}</h10> <br>
           <i class="material-icons right">mode_edit</i>
           <br>
-          {{/if}}
+        {{/if}}
         </div>
       </span>
     </div>
@@ -120,29 +126,54 @@
 <!-- Wrapper -->
 <template name="profileTemplate">
   <section class="myprofile">
-  {{#each arrayProfileCards instrument yearsPlayed awards musicPrograms orchestras}}
-    <div class="card grey lighten-5 z-depth-0">
-      <div class="card-content">
-        <span class="black-text activator">
-        <h5>
-          <i id="align_text" class="medium material-icons">{{icon}}</i>
-          {{mainTitle}}
-        </h5>
-        {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
+    {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
+      <div class="card grey lighten-5 z-depth-0">
+        <div class="card-content">
+          <span class="black-text activator">
+          <h5>
+            <i id="align_text" class="medium material-icons">{{icon}}</i>
+            {{mainTitle}}
+          </h5>
+          {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
+          {{#if isOwnProfile}}
+            <i class="material-icons right">mode_edit</i>
+          {{/if}}
+          <br>
+         </span>
+        </div>
         {{#if isOwnProfile}}
-          <i class="material-icons right">mode_edit</i>
+          <div class="card-reveal grey lighten-5 z-depth-0">
+            <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+            {{> UI.dynamic template="EditingForm" data=arrayField}}
+          </div>
         {{/if}}
-        <br>
-       </span>
       </div>
       {{#if isOwnProfile}}
-        <div class="card-reveal grey lighten-5 z-depth-0">
-          <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-          {{> UI.dynamic template="EditingForm" data=arrayField}}
-        </div>
+        {{#if isArray status}}    
+          <div class="AddArrayObjectButton">
+            <div class={{addButtonClass}}>
+              <center>
+                <button
+                  type="button"
+                  class="add-btn {{addButtonClass}} grey">
+                  Add {{add_title}}
+                </button>
+              </center>
+            </div>
+          </div>
+          <div class={{addArrayClass}}>
+            <div class="card grey lighten-5 z-depth-0">
+              <div class="card-content">
+                <span class="{{close}} right"><i class="material-icons right">close</i> </span>
+                {{#autoForm id=arrayField type="update-pushArray" collection="MusicProfiles" doc=currentProfile scope=arrayField}}
+                  {{> UI.dynamic template=arrayField data="myProfile"}}
+                {{/autoForm}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
       {{/if}}
-    </div>
-  {{/each}}
+    {{/each}}
   </section>
 </template>
 
@@ -150,23 +181,10 @@
 <template name="EditingForm">
   {{#if isInRole 'makeMusicProfile'}}
     {{#autoForm collection="MusicProfiles" doc=currentProfile id="ArrayEditingForm" type=formType}}
-
-      {{#if notArray this}}
-
-      <div class="instrument">
-        <h5>
-          <i id="align_text" class="medium material-icons">brush</i>
-          Instruments Mastered
-        </h5>
-        {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
-        {{>afQuickField name="yearsPlayed"}}
-      </div>
-
-        {{else}}
-        {{> afArrayField name=this template="editProfileCustomArrayField"}}
-      {{/if}}
+      {{> afArrayField name=this template="editProfileCustomArrayField"}}
       <br>
-    <button type="submit" class="btn right btn-primary">Save</button>
+    <button type="submit" class="card-title btn right btn-primary">Save</button>
+    <!-- <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span> -->
     {{/autoForm}}
   {{/if}}
 </template>
@@ -174,9 +192,11 @@
 <!-- SUB-SECTION: rendered data for each card -->
 
 <template name="InstList">
-  <br>
-  <h10>Instruments Mastered: {{this}}</h10> <br>
-  <h10>Years Played: {{this}}</h10>
+  {{#each this}}
+    <br>
+    <h10>Instruments Mastered: {{this.instrument}}</h10> <br>
+    <h10>Years Played: {{this.yearsPlayed}}</h10>
+  {{/each}}
 </template>
 
 <template name="awardsList">

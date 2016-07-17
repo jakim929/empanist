@@ -109,10 +109,32 @@ div.blur {
   font-weight: bold;
 }
 
+a { color: inherit; } 
+
+.oneLiner {
+  text-align: center;
+}
+
 .smallMargin {
   margin-right: 40%;
 }
 
+.result-card-right {
+  float:left;
+  overflow:hidden;
+  width:48%;
+  height: 300px;
+  margin-right: 2%;
+  margin-top: 2%;  
+}
+
+.result-card-left {
+  float: left;
+  overflow:hidden;
+  width:48%;
+  height: 300px;
+  margin-top: 2%;
+}
 
 .accopmCard-left {
   float:left;
@@ -146,6 +168,13 @@ div.blur {
   width:100%;
 }
 
+#resultsImg {
+  max-width: 150px;
+  max-height: 150px;
+  float:left;
+  overflow:hidden;
+}
+
 #profileImg {
   max-width: 250px;
   max-height: 250px;
@@ -157,8 +186,35 @@ div.blur {
   overflow:hidden;
 }
 
+.instrumentsAddForm {
+display:none;
+}
+
+.awardsAddForm {
+display:none;
+}
+
+.programsAddForm {
+display:none;
+}
+
+.orchestrasAddForm {
+display:none;
+}
+
+.AddArrayObjectButton {
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/*THIS SHOULD BE REACTIVE*/
+.all {
+  height:250px;
+}
 .details {
   margin-left: 265px;
+  height:100%;
+  margin-bottom:0;
 }
 
 .add-btn {
@@ -171,7 +227,7 @@ div.blur {
 /*newaccomp page*/
 .step_number {
   color: #D3D3D3;
-   margin:0 ;
+  margin:0 ;
 }
 
 .step_main {

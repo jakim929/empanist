@@ -120,7 +120,8 @@
   {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
 
     Suggest some times for the FIRST session? (At least 2)<br><br>
-    {{> afQuickField name="suggestedTimes" }}
+    <!-- {{> afQuickField name="suggestedTimes" }} -->
+    {{> afArrayField name="suggestedTimes" template="newAccompCustomArrayField" data="sessionTime"}}
     <br><br>
 
     Where would you like to rehearse?<br>

@@ -16,7 +16,6 @@ window.Sessions = Sessions
 
 // Booking Tests
 
-
 formatDuration = function(date1, date2) {
   var start =  moment(date1);
   var end = moment(date2);
@@ -29,8 +28,6 @@ formatDuration = function(date1, date2) {
   }
   return start.format('MMM DD, YYYY - ') + end.format('MMM DD, YYYY')
 }
-
-
 
 Template.SuccessLayout.helpers({
   priceDetails(accompanistId, sessionCount){
@@ -98,9 +95,6 @@ Template.SessionReview.helpers({
   }
 });
 
-
-
-
 Template.upsertMusicProfileForm.events({
   'click .next-instrument':function(){
     $(".award").css('display', 'block');
@@ -131,6 +125,69 @@ Template.upsertMusicProfileForm.events({
     },
     'submit form': function(){
       FlowRouter.go('/newaccomp');
+    }
+  });
+
+Template.profileTemplate.events({
+  'click .awardsAddButton':function(){
+    $(".awardsAddForm").css('display', 'block');
+    $(".awardsAddButton").css('display', 'none');
+    },
+    'click .programsAddButton':function(){
+    $(".programsAddButton").css('display', 'none');
+    $(".programsAddForm").css('display', 'block');
+    },
+    'click .orchestrasAddButton':function(){
+    $(".orchestrasAddForm").css('display', 'block');
+    $(".orchestrasAddButton").css('display', 'none');
+    },
+    'click .instrumentsAddButton':function(){
+    $(".instrumentsAddForm").css('display', 'block');
+    $(".instrumentsAddButton").css('display', 'none');
+    },
+    'click .cancelAward':function(){
+    $(".awardsAddForm").css('display', 'none');
+    $(".awardsAddButton").css('display', 'block');
+    },
+    'click .cancelProgram':function(){
+    $(".programsAddForm").css('display', 'none');
+    $(".programsAddButton").css('display', 'block');
+    },
+    'click .cancelOrchestra':function(){
+    $(".orchestrasAddForm").css('display', 'none');
+    $(".orchestrasAddButton").css('display', 'block');
+    },
+    'click .cancelInstrument':function(){
+    $(".instrumentsAddForm").css('display', 'none');
+    $(".instrumentsAddButton").css('display', 'block');
+    }
+  });
+
+Template.instruments.events({
+  'click .btn':function(){
+    $(".instrumentsAddForm").css('display', 'none');
+    $(".instrumentsAddButton").css('display', 'block');
+    }
+  });
+
+Template.awards.events({
+  'click .btn':function(){
+    $(".awardsAddForm").css('display', 'none');
+    $(".awardsAddButton").css('display', 'block');
+    }
+  });
+
+Template.musicPrograms.events({
+  'click .btn':function(){
+    $(".programsAddForm").css('display', 'none');
+    $(".programsAddButton").css('display', 'block');
+    }
+  });
+
+Template.orchestras.events({
+  'click .btn':function(){
+    $(".orchestrasAddForm").css('display', 'none');
+    $(".orchestrasAddButton").css('display', 'block');
     }
   });
 
@@ -220,7 +277,6 @@ Template.upsertAccompanistForm.events({
 
 // Modal Review Booking Tests
 
-
 Template.ReviewLeftFormPanel.helpers({
   getNextButtonClass(){
     if(Template.instance().currentStep.get() == "PaymentReview"){
@@ -279,7 +335,6 @@ Template.ReviewLeftFormPanel.events({
   }
 });
 
-
 Template.request.helpers({
   profilePicUrlById(userId){
     var picDoc = Images.findOne({userId: userId, picType: "profile"})
@@ -303,7 +358,6 @@ Template.bookAccompanistForm.events({
           }else{
             console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
           }
-
         }else{
           Bert.alert( 'Please check the fields again!', 'danger');
         }
@@ -312,11 +366,9 @@ Template.bookAccompanistForm.events({
         Bert.alert( 'You must first fill in music profile before booking!', 'danger');
       }
     }else{
-
     }
   }
 });
-
 
 Template.registerHelper('myProfilePic', function(){
   var urlDoc = Images.findOne({userId: Meteor.userId()}, {url: 1});
@@ -324,7 +376,6 @@ Template.registerHelper('myProfilePic', function(){
     return urlDoc.url
   }
 })
-
 
 Template.accountTemplate.helpers({
   currentProfilePic(){
@@ -339,7 +390,6 @@ Template.BookingReviewLeftPanel.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
   this.checkboxState = new ReactiveVar(false);
 });
-
 
 Template.BookingReviewLeftPanel.helpers({
   currentStep() {
@@ -433,8 +483,6 @@ Template.BookingReviewLeftPanel.events({
 
 // Modal Review Booking Tests
 
-
-
 Template.paymentSection.helpers({
   getHourlyCharge(musician) {
     var x = AccompanistProfiles.findOne({Id: musician}, {charge: 1})
@@ -456,8 +504,6 @@ Template.request.events({
   }
 });
 
-
-
 Template.upsertSessionResponse.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
   // FIXTHIS check if there are more than one sessions/transaction
@@ -473,8 +519,6 @@ Template.upsertSessionResponse.helpers ({
     }
   }
 });
-
-
 
 
 // Uploader Tests
@@ -695,8 +739,6 @@ Template.search.onRendered(function () {
 
 // ==Global Template Helpers==
 
-
-
 Template.registerHelper('navbarFields', () => {
   // Logged In
   if (Meteor.user()){
@@ -872,6 +914,30 @@ Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
 });
 
+Template.registerHelper( 'fromProfile', (location) =>{
+  if (location == "myProfile") {
+    return true
+  } else {
+  return false
+}
+});
+
+Template.registerHelper( 'fromBooking', (page) =>{
+  if (page == "booking") {
+    return true
+  } else {
+  return false
+}
+});
+
+Template.registerHelper( 'fromBookingTime', (page) =>{
+  if (page == "sessionTime") {
+    return true
+  } else {
+  return false
+}
+});
+
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return "/bookingRequest/"+bookingId
 });
@@ -906,6 +972,10 @@ Template.EditingForm.onCreated(function() {
   this.formType = new ReactiveVar('insert')
 });
 
+Template.results.onCreated(function() {
+  this.currentState = new ReactiveVar('result-card-left')
+});
+
 // Local Template Helpers
 
 Template.EditingForm.helpers ({
@@ -924,9 +994,6 @@ Template.EditingForm.helpers ({
   instrumentList: function () {
     return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
     "Zither"].map(function(obj){return {label: obj, value:obj}})
-  },
-  notArray: function(name) {
-  return (name == undefined)
   }
 });
 
@@ -942,7 +1009,10 @@ Template.upsertMusicProfileForm.helpers ({
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
-  },
+  }
+});
+
+Template.instruments.helpers ({
   instrumentList: function () {
     return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
     "Zither"].map(function(obj){return {label: obj, value:obj}})
@@ -950,15 +1020,23 @@ Template.upsertMusicProfileForm.helpers ({
 });
 
 Template.profileTemplate.helpers({
-    arrayProfileCards: function(inst, yrs, awards, programs, orchestras) {
-      var mydata =[
-        {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: [inst, yrs]}, //FIX THIS
-        {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards"},
-        {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms"},
-        {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras"}
-      ]
-      return mydata;
-    }
+  arrayProfileCards: function(instruments, awards, programs, orchestras) {
+    var mydata =[
+      // {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: [inst, yrs], status: 0}, //Status-> 0 = not array, 1 = array
+      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", status: 1, add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelinstrument"},
+      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", status: 1, add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward"},
+      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", status: 1, add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram"},
+      {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", status: 1, add_title: "Orchestra", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra"}
+    ]
+    return mydata;
+  },
+  isArray: function(status) {
+  return (status == 1)
+  },
+  currentProfile: function () {
+    var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
+      return currentProfile
+  },
 });
 
 Template.afArrayField_newAccompCustomArrayField.helpers({
@@ -968,6 +1046,7 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
           case 'musicPrograms': return "music_note";
           case 'orchestras':    return "group_work";
           case 'repertoire':    return "group_work";
+          case 'instruments':    return "brush";
       }
     },
     mainTitle: function(name) {
@@ -976,6 +1055,7 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
           case 'musicPrograms': return "Music Programs ";
           case 'orchestras':    return "Orchestras Participated in";
           case 'repertoire':    return "Repertoire";
+          case 'instruments':    return "Instruments Mastered";
       }
     }
     ,
@@ -985,6 +1065,8 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
             case 'musicPrograms': return "Music Program";
             case 'orchestras':    return "Orchestra";
             case 'repertoire':    return "Repertoire";
+            case 'suggestedTimes':    return "Time";
+            case 'instruments':    return "Instrument";
         }
     }
 });
@@ -995,6 +1077,7 @@ Template.afArrayField_editProfileCustomArrayField.helpers({
           case 'awards':   return "verified_user";
           case 'musicPrograms': return "music_note";
           case 'orchestras':    return "group_work";
+          case 'instruments':    return "brush";
       }
     },
     mainTitle: function(name) {
@@ -1002,6 +1085,7 @@ Template.afArrayField_editProfileCustomArrayField.helpers({
           case 'awards':   return "Awards & Honors";
           case 'musicPrograms': return "Music Programs";
           case 'orchestras':    return "Orchestras Participated in";
+          case 'instruments':    return "Instruments Mastered";
       }
     }
 });
@@ -1125,13 +1209,29 @@ Template.results.helpers({
       Session.set('results', results)
     });
 
-  return Session.get('results')
-},
+    return Session.get('results')
+  },
   accompname: function() {
     var names = BasicProfiles.findOne({userId: this.Id});
     return names
-  }
+  },
+  currentState: function() {
+    var state = Template.instance().currentState.get();
 
+    if (state == "result-card-right") {
+      Template.instance().currentState.set('result-card-right');
+      return "result-card-left"
+    } else {
+      Template.instance().currentState.set('result-card-left');
+      return "result-card-right"
+    }
+  },
+   currentProfilePic: function(Id){
+    var pic = Images.findOne({userId: Id});
+    if (pic){
+      return pic
+    }
+  }
 });
 
 // Events

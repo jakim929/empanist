@@ -4,6 +4,13 @@ export const Transactions = new Mongo.Collection('transactions');
 export const Sessions = new Mongo.Collection('sessions');
 
 
+RepertoireSchema = new SimpleSchema({
+  concerto: {
+    type:String,
+    label: "Planned Repertoire",
+  },
+});
+
 TransactionSchema = new SimpleSchema({
   musician: {
     type: String,
@@ -37,7 +44,7 @@ TransactionSchema = new SimpleSchema({
   },
 
   repertoire: {
-    type: [String],
+    type: [RepertoireSchema],
     label: "Planned Repertoire"
   },
 
