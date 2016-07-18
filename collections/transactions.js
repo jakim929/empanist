@@ -3,7 +3,6 @@ import { Mongo } from 'meteor/mongo';
 export const Transactions = new Mongo.Collection('transactions');
 export const Sessions = new Mongo.Collection('sessions');
 
-
 RepertoireSchema = new SimpleSchema({
   concerto: {
     type:String,
@@ -74,7 +73,8 @@ TransactionSchema = new SimpleSchema({
     // autoform: {
     //   type: "hidden"
     // }
-  }
+  },
+
 });
 
 
@@ -122,3 +122,4 @@ SessionSchema = new SimpleSchema({
 
 Sessions.attachSchema(SessionSchema)
 Transactions.attachSchema(TransactionSchema)
+export { TransactionSchema }

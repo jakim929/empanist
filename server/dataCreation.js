@@ -90,7 +90,7 @@ createNewAccompanistProfile = function (givenUserId){
   var randomCharge = randomElement(charges)
 
   var repertoires = ["Dvorak Cello Concerto in B Minor, Op. 104","Schumann Cello Concerto in A Minor, Op. 129","Boccherini Cello Sonata in A Major, G.4","Bloch Cello Sonata ","Bruch Kol Nidrei, Op.47 ","Chopin Introduction et Polonaise Brilliante, Op. 3 ","Fauré Papillon, Op.77","Franck Cello Sonata","Greig Cello Sonata in A Minor, ","Handel Sonata No.1 in G Minor ","Haydn Presto in G"];
-  var randomRepertoire = randomNoElementGiven(repertoires, 3);
+  var randomRepertoire = randomNoElementGiven(repertoires, 3).map(function(elm){return {concerto:elm}});
 
   var workingHours = ["morning", "afternoon", "night"];
   var randomWorkingHours = randomNoElement(workingHours);
@@ -119,10 +119,9 @@ createNewAccompanistProfile = function (givenUserId){
           working_hours: randomWorkingHours,
           working_days: randomWorkingDays,
           session_location: randomSessionLocation,
-          startDate: today,
-          endDate: future,
           mylocation: randomMyLocation,
-          one_liner: oneLiner};
+          one_liner: oneLiner,
+          active: true};
 }
 
 createNewBasicProfile = function (givenUserId){

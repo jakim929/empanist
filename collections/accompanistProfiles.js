@@ -94,7 +94,6 @@ AccompanistProfileSchema = new SimpleSchema({
       type: Boolean,
       label: "Active or Not"
     },
-
     // make this show up only if the accomp said he's willing to give sessoins in his place
     mylocation: {
       type: String,
@@ -141,6 +140,11 @@ AccompanistProfileSchema = new SimpleSchema({
       type: String,
       label: "Describe yourself in one sentence",
     },
+
+    active: {
+      type: Boolean,
+      label: "Accompanist Status"
+    }
 
 });
 

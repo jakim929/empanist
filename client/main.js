@@ -5,6 +5,8 @@ import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
 
+import { TransactionSchema } from '../collections/transactions.js'
+
 import { TestAccountData } from '../collections/testData.js'
 
 window.MusicProfiles = MusicProfiles
@@ -87,6 +89,7 @@ Template.SessionReview.helpers({
   },
 
   currentTransaction(){
+    console.log((FlowRouter.getQueryParam("booking")))
     return FlowRouter.getQueryParam("booking");
   },
 
@@ -297,7 +300,7 @@ Template.ReviewLeftFormPanel.onCreated(function() {
 
 Template.ReviewLeftFormPanel.events({
   'click .next-panel'(event, template){
-
+    console.log(AutoForm.getFormValues('UpdateSessionCount').insertDoc)
     if(AutoForm.validateForm('UpdateSessionCount') &&
         AutoForm.validateField('InsertFirstSession', 'suggestedTimes') &&
         AutoForm.validateField('InsertFirstSession', 'location'))
@@ -352,6 +355,7 @@ Template.bookAccompanistForm.events({
         //$('#bookAccompanistForm').submit()
         if(AutoForm.validateForm("bookAccompanistForm")){
           let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
+          console.log(currentTransaction);
           let currentProfileId = FlowRouter.getParam("profileId");
           if (currentProfileId){
             FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
