@@ -1145,8 +1145,6 @@ Template.results.helpers({
     var end_date = FlowRouter.getQueryParam("end_date")
 
     Meteor.call('getGeocode', address, function(err, result){
-      console.log("Meteor call worked")
-
       if (result !== null){
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
@@ -1168,7 +1166,7 @@ Template.results.helpers({
               },
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-            active: {true}
+            active: true
           }).fetch();
       }
 
@@ -1177,7 +1175,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-          active: {true}}).fetch();
+          active: true}).fetch();
       }
 
       else if (moment(ed).isValid()){
@@ -1185,7 +1183,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: ed},
             // endDate: {$gte: ed}
-          active: {true}}).fetch();
+          active: true}).fetch();
       }
 
       else if (moment(sd).isValid() ){
@@ -1193,7 +1191,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd},
             // endDate: {$gte: sd}
-          active: {true}}).fetch();
+          active: true}).fetch();
       }
 
       else if (coords !== undefined){
@@ -1210,7 +1208,6 @@ Template.results.helpers({
       else {
         var results = null
       }
-
       Session.set('results', results)
     });
 
@@ -1231,10 +1228,18 @@ Template.results.helpers({
       return "result-card-right"
     }
   },
-   currentProfilePic: function(Id){
+   currentProfilePic: function(Id) {
     var pic = Images.findOne({userId: Id});
     if (pic){
       return pic
+    }
+  },
+  noResults: function (results) {
+    var index = 0
+    if (results[index] == null) {
+      return true
+    } else {
+      return false
     }
   }
 });
