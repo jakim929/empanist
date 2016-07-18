@@ -217,7 +217,7 @@ Template.upsertAccompanistForm.events({
     $(".determinate").css('width', '37.5%');
     },
     'click .next-working_days':function(){
-    $(".active").css('display', 'block');
+    $(".accompanist_active").css('display', 'block');
     $(".working_days").css('display', 'none');
     $(".determinate").css('width', '50%');
     },
@@ -226,8 +226,8 @@ Template.upsertAccompanistForm.events({
     // $(".endDate").css('display', 'block');
     // $(".determinate").css('width', '62.5%');
     // },
-    'click .next-active':function(){
-    $(".active").css('display', 'none');
+    'click .next-accompanist_active':function(){
+    $(".accompanist_active").css('display', 'none');
     $(".session_location").css('display', 'block');
     $(".determinate").css('width', '85%');
     },
@@ -253,8 +253,8 @@ Template.upsertAccompanistForm.events({
     $(".working_hours").css('display', 'block');
     $(".working_days").css('display', 'none');
     },
-    'click .active-startDate':function(){
-    $(".active").css('display', 'none');
+    'click .accompanist_active-startDate':function(){
+    $(".accompanist_active").css('display', 'none');
     $(".working_days").css('display', 'block');
     },
     // 'click .back-endDate':function(){
@@ -1166,7 +1166,7 @@ Template.results.helpers({
               },
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-            active: true
+            accompanist_active: true
           }).fetch();
       }
 
@@ -1175,7 +1175,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-          active: true}).fetch();
+          accompanist_active: true}).fetch();
       }
 
       else if (moment(ed).isValid()){
@@ -1183,7 +1183,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: ed},
             // endDate: {$gte: ed}
-          active: true}).fetch();
+          accompanist_active: true}).fetch();
       }
 
       else if (moment(sd).isValid() ){
@@ -1191,7 +1191,7 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd},
             // endDate: {$gte: sd}
-          active: true}).fetch();
+          accompanist_active: true}).fetch();
       }
 
       else if (coords !== undefined){

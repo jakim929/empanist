@@ -48,12 +48,12 @@
       {{> afQuickField name="status" value="Pending" type="hidden"}}
       <!-- {{> afQuickField name="startDate"}}
       {{> afQuickField name="endDate"}} -->
-      <label for="sd" class="active">Start Date</label>   
+      <label for="sd" class="active">Start Date</label>  
       {{> afFieldInput name="startDate" id="sd" type="date"}}
-    
-      <label for="ed" class="active">End Date</label>
+     
+       <label for="ed" class="active">End Date</label>
       {{> afFieldInput name="endDate" id="ed" type="date"}}
-  
+   
       <!--{{> afQuickField name="repertoire"}} -->
       {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
     {{/autoForm}}
@@ -62,7 +62,6 @@
     Not on an accompanist page.
   {{/with}}
 </template>
-
 
 <template name="invalidId">
   <h2>Invalid ID</h2>
