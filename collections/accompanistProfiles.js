@@ -90,7 +90,7 @@ AccompanistProfileSchema = new SimpleSchema({
     //   type: Date,
     //   label: "End Date"
     // },
-    active: {
+    accompanist_active: {
       type: Boolean,
       label: "Active or Not"
     },
@@ -139,11 +139,6 @@ AccompanistProfileSchema = new SimpleSchema({
     one_liner: {
       type: String,
       label: "Describe yourself in one sentence",
-    },
-
-    active: {
-      type: Boolean,
-      label: "Accompanist Status"
     }
 
 });

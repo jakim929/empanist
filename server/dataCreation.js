@@ -121,7 +121,7 @@ createNewAccompanistProfile = function (givenUserId){
           session_location: randomSessionLocation,
           mylocation: randomMyLocation,
           one_liner: oneLiner,
-          active: true};
+          accompanist_active: true};
 }
 
 createNewBasicProfile = function (givenUserId){
