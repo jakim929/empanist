@@ -214,17 +214,17 @@ Template.upsertAccompanistForm.events({
     $(".determinate").css('width', '37.5%');
     },
     'click .next-working_days':function(){
-    $(".startDate").css('display', 'block');
+    $(".active").css('display', 'block');
     $(".working_days").css('display', 'none');
     $(".determinate").css('width', '50%');
     },
-    'click .next-startDate':function(){
-    $(".startDate").css('display', 'none');
-    $(".endDate").css('display', 'block');
-    $(".determinate").css('width', '62.5%');
-    },
-    'click .next-endDate':function(){
-    $(".endDate").css('display', 'none');
+    // 'click .next-startDate':function(){
+    // $(".startDate").css('display', 'none');
+    // $(".endDate").css('display', 'block');
+    // $(".determinate").css('width', '62.5%');
+    // },
+    'click .next-active':function(){
+    $(".active").css('display', 'none');
     $(".session_location").css('display', 'block');
     $(".determinate").css('width', '85%');
     },
@@ -250,14 +250,14 @@ Template.upsertAccompanistForm.events({
     $(".working_hours").css('display', 'block');
     $(".working_days").css('display', 'none');
     },
-    'click .back-startDate':function(){
-    $(".startDate").css('display', 'none');
+    'click .active-startDate':function(){
+    $(".active").css('display', 'none');
     $(".working_days").css('display', 'block');
     },
-    'click .back-endDate':function(){
-    $(".endDate").css('display', 'none');
-    $(".startDate").css('display', 'block');
-    },
+    // 'click .back-endDate':function(){
+    // $(".endDate").css('display', 'none');
+    // $(".startDate").css('display', 'block');
+    // },
     'click .back-session_location':function(){
     $(".endDate").css('display', 'block');
     $(".session_location").css('display', 'none');
@@ -1030,16 +1030,12 @@ Template.instruments.helpers ({
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
     var mydata =[
-      // {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: [inst, yrs], status: 0}, //Status-> 0 = not array, 1 = array
-      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", status: 1, add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelinstrument"},
-      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", status: 1, add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward"},
-      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", status: 1, add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram"},
-      {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", status: 1, add_title: "Orchestra", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra"}
+      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument"},
+      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward"},
+      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram"},
+      {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Orchestra", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra"}
     ]
     return mydata;
-  },
-  isArray: function(status) {
-  return (status == 1)
   },
   currentProfile: function () {
     var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
@@ -1153,8 +1149,6 @@ Template.results.helpers({
     var end_date = FlowRouter.getQueryParam("end_date")
 
     Meteor.call('getGeocode', address, function(err, result){
-      console.log("Meteor call worked")
-
       if (result !== null){
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
@@ -1174,29 +1168,34 @@ Template.results.helpers({
                   $maxDistance: 20000
                 }
               },
-            startDate:  {$lte: sd, $lte: ed},
-            endDate: {$gte: sd, $gte: ed}}).fetch();
+            // startDate:  {$lte: sd, $lte: ed},
+            // endDate: {$gte: sd, $gte: ed}
+            active: true
+          }).fetch();
       }
 
       else if (moment(sd).isValid() && moment(ed).isValid()){
         var results =
           AccompanistProfiles.find({
-            startDate:  {$lte: sd, $lte: ed},
-            endDate: {$gte: sd, $gte: ed}}).fetch();
+            // startDate:  {$lte: sd, $lte: ed},
+            // endDate: {$gte: sd, $gte: ed}
+          active: true}).fetch();
       }
 
       else if (moment(ed).isValid()){
         var results =
           AccompanistProfiles.find({
-            startDate:  {$lte: ed},
-            endDate: {$gte: ed}}).fetch();
+            // startDate:  {$lte: ed},
+            // endDate: {$gte: ed}
+          active: true}).fetch();
       }
 
       else if (moment(sd).isValid() ){
         var results =
           AccompanistProfiles.find({
-            startDate:  {$lte: sd},
-            endDate: {$gte: sd}}).fetch();
+            // startDate:  {$lte: sd},
+            // endDate: {$gte: sd}
+          active: true}).fetch();
       }
 
       else if (coords !== undefined){
@@ -1213,7 +1212,6 @@ Template.results.helpers({
       else {
         var results = null
       }
-
       Session.set('results', results)
     });
 
@@ -1234,10 +1232,18 @@ Template.results.helpers({
       return "result-card-right"
     }
   },
-   currentProfilePic: function(Id){
+   currentProfilePic: function(Id) {
     var pic = Images.findOne({userId: Id});
     if (pic){
       return pic
+    }
+  },
+  noResults: function (results) {
+    var index = 0
+    if (results[index] == null) {
+      return true
+    } else {
+      return false
     }
   }
 });

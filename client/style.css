@@ -109,8 +109,8 @@ div.blur {
   font-weight: bold;
 }
 
-a { color: inherit; } 
-
+/*a { color: inherit; } 
+*/
 .oneLiner {
   text-align: center;
 }
@@ -421,11 +421,11 @@ display: none;
 .working_days {
   display: none;
 }
-.startDate {
+/*.startDate {
   display: none;
-}
+}*/
 
-.endDate {
+.active {
 display: none;
 }
 

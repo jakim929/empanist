@@ -80,17 +80,20 @@ AccompanistProfileSchema = new SimpleSchema({
       		]
   		}
   	},
-    //
+
     // startDate: {
     //   type: Date,
     //   label: "Start Date"
     // },
-    //
+
     // endDate: {
     //   type: Date,
     //   label: "End Date"
     // },
-
+    active: {
+      type: Boolean,
+      label: "Active or Not"
+    },
     // make this show up only if the accomp said he's willing to give sessoins in his place
     mylocation: {
       type: String,

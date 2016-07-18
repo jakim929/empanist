@@ -22,12 +22,12 @@
             <div class="input-field col s6">
               <i class="material-icons prefix">account_circle</i>
               {{>afFieldInput name="name" id="icon_prefix" type="text"}}
-              <label for="icon_prefix">Full Name</label>
+              <label for="icon_prefix" class="active" >Full Name</label>
             </div>
              <div class="input-field col s6">
               <i class="material-icons prefix">phone</i>
               {{>afFieldInput name="phone" id="icon_prefix" type="text"}}
-              <label for="icon_telephone">Telephone</label>
+              <label for="icon_telephone" class="active">Telephone</label>
             </div>
           </div>
           <div class="input-field col s6">
@@ -37,7 +37,7 @@
           <div class="input-field col s6">
             <i class="material-icons prefix">business_center</i>
               {{>afFieldInput name="affiliation" id="icon_prefix" type="text"}}
-            <label >Affiliation</label>   
+            <label class="active">Affiliation</label>   
           </div>
       <br>
       <button type="submit" class=" {{this}} btn right btn-primary">Save</button>
@@ -126,7 +126,7 @@
          <a class="back-working_days left waves-effect waves-light btn">Back</a>
       </div>
       
-      <div class="startDate">
+      <!-- <div class="startDate">
         {{> afQuickField name="startDate"}}
         <a class="next-startDate right waves-effect waves-light btn">Next</a>
          <a class="back-startDate left waves-effect waves-light btn">Back</a>
@@ -136,6 +136,12 @@
         {{> afQuickField name="endDate"}}
         <a class="next-endDate right waves-effect waves-light btn">Next</a>
          <a class="back-endDate left waves-effect waves-light btn">Back</a>
+      </div> -->
+
+      <div class="active">
+        {{> afQuickField name="active"}}
+        <a class="next-active right waves-effect waves-light btn">Next</a>
+         <a class="back-active left waves-effect waves-light btn">Back</a>
       </div>
       
       <div class="session_location">
@@ -244,11 +250,11 @@
     <br>
       <div class="input-field col s6">
           {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
-        <label for="comp.name">Competition Name</label>
+        <label for="comp.name" class="active">Competition Name</label>
       </div>
        <div class="input-field col s6">
           {{> afFieldInput name=this.current.award id="icon_name" type="text"}}
-        <label for="icon_name">Award Title</label>
+        <label for="icon_name" class="active">Award Title</label>
       </div>
     </div>
     <div class="input-field col s6">
@@ -281,8 +287,8 @@
     <br>
       <div class="input-field col s6">
           {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
-        <label for="comp.name">Program Name</label>
-      </div>
+        <label for="comp.name" class="active">Program Name</label>
+      </div> 
     </div>
     <div class="row">
       <div class="input-field col s6">
@@ -323,11 +329,11 @@
     <br>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
-      <label for="comp.name">Orchestra Name</label>
+      <label for="comp.name" class="active">Orchestra Name</label>
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.position id="comp.name" type="text"}}
-      <label for="comp.name">Position</label>
+      <label for="comp.name" class="active">Position</label>
     </div>
   </div>
   <div class="row">
@@ -346,12 +352,12 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name="instrument" id="comp.name" type="selectize" options=instrumentList}}
-      <label for="comp.name">Instrument Name</label>
+        {{> afFieldInput name="instrument" id="name" type="selectize" options=instrumentList}}
+      <label for="name" class="active">Instrument Name</label>
     </div>
     <div class="input-field col s6">
-        {{> afFieldInput name="yearsPlayed" id="comp.name" type="text"}}
-      <label for="comp.name">Years Played</label>
+        {{> afFieldInput name="yearsPlayed" id="yrs" type="text"}}
+      <label for="yrs" class="active">Years Played</label>
     </div>
     <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
        <br>
@@ -361,11 +367,11 @@
     <br>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.instrument id="comp.name" type="selectize" options=instrumentList}}
-      <label for="comp.name">Instrument Name</label>
+      <label for="comp.name" class="active">Instrument Name</label>
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.yearsPlayed id="comp.name" type="text"}}
-      <label for="comp.name">Years Played</label>
+      <label for="comp.name" class="active">Years Played</label>
     </div>
   </div>
   {{/if}}
@@ -377,7 +383,7 @@
   <br>
   <div class="input-field col s12">
       {{> afFieldInput name=this.current.concerto id="rep" type="text"}}
-    <label for="rep">Repertoire</label>
+    <label for="rep" class="active">Repertoire</label>
   </div>
 </template>
 
@@ -387,7 +393,7 @@
   <br>
   <div class="input-field col s12">
       {{> afFieldInput name=this.current.suggestedTimes id="time" type="date"}}
-    <label for="time">Suggested Times</label>
+    <label for="time" class="active">Suggested Times</label>
   </div>
 </template>
 

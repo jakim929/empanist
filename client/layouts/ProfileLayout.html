@@ -46,8 +46,14 @@
       {{> afQuickField name="musician" }}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
-      {{> afQuickField name="startDate"}}
-      {{> afQuickField name="endDate"}}
+      <!-- {{> afQuickField name="startDate"}}
+      {{> afQuickField name="endDate"}} -->
+      <label for="sd" class="active">Start Date</label>   
+      {{> afFieldInput name="startDate" id="sd" type="date"}}
+    
+      <label for="ed" class="active">End Date</label>
+      {{> afFieldInput name="endDate" id="ed" type="date"}}
+  
       <!--{{> afQuickField name="repertoire"}} -->
       {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
     {{/autoForm}}
@@ -149,7 +155,6 @@
         {{/if}}
       </div>
       {{#if isOwnProfile}}
-        {{#if isArray status}}    
           <div class="AddArrayObjectButton">
             <div class={{addButtonClass}}>
               <center>
@@ -171,7 +176,6 @@
               </div>
             </div>
           </div>
-        {{/if}}
       {{/if}}
     {{/each}}
   </section>
