@@ -7,8 +7,6 @@ import { Sessions } from '../collections/transactions.js'
 
 import { TransactionSchema } from '../collections/transactions.js'
 
-import { TestAccountData } from '../collections/testData.js'
-
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfiles = AccompanistProfiles
 window.BasicProfiles = BasicProfiles
@@ -89,7 +87,6 @@ Template.SessionReview.helpers({
   },
 
   currentTransaction(){
-    console.log((FlowRouter.getQueryParam("booking")))
     return FlowRouter.getQueryParam("booking");
   },
 
@@ -300,17 +297,24 @@ Template.ReviewLeftFormPanel.onCreated(function() {
 
 Template.ReviewLeftFormPanel.events({
   'click .next-panel'(event, template){
-    console.log(AutoForm.getFormValues('UpdateSessionCount').insertDoc)
-    if(AutoForm.validateForm('UpdateSessionCount') &&
+
+    var currentTransaction = FlowRouter.getQueryParam("booking")
+    currentTransaction.sessionCount = AutoForm.getFieldValue('sessionCount', 'UpdateSessionCount')
+
+    TransactionSchema.clean(currentTransaction);
+    console.log(TransactionSchema.validate(currentTransaction))
+
+    if( TransactionSchema.validate(currentTransaction) &&
         AutoForm.validateField('InsertFirstSession', 'suggestedTimes') &&
         AutoForm.validateField('InsertFirstSession', 'location'))
     {
 
-      var queryParam = {booking: AutoForm.getFormValues('UpdateSessionCount').insertDoc, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
+      var queryParam = {booking: currentTransaction, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
       FlowRouter.setQueryParams(queryParam);
 
       let panels= ["SessionReview", "PaymentReview"]
       var currentStepIndex = panels.indexOf(template.currentStep.get());
+      console.log(currentStepIndex)
       if(currentStepIndex > -1){
         let nextStepIndex = currentStepIndex + 1
         if(nextStepIndex < panels.length){
