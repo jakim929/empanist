@@ -109,13 +109,24 @@ div.blur {
   font-weight: bold;
 }
 
-a { color: inherit; } 
-
+/*a { color: inherit; } 
+*/
 .oneLiner {
   text-align: center;
 }
 
 .smallMargin {
+  margin-right: 40%;
+}
+
+.scrollable {
+  margin-right: 40%;
+  height:500px;
+  overflow: scroll;
+}
+
+.backNext {
+  margin-top:5px;
   margin-right: 40%;
 }
 
@@ -370,7 +381,6 @@ display:none;
     background-color: #9e9e9e;
 }
 
-
 /*// Class for when element is above threshold*/
 .pin-top {
   position: relative;
@@ -388,59 +398,6 @@ display:none;
 
 /* AddInfoLayout.html Style*/
 
-.instrument {
-}
-
-.award {
-display: none;
-}
-
-.program {
-  display: none;
-}
-
-.orchestra {
-  display: none;
-}
-
-.repertoire {
-}
-
-.charge {
-  display: none;
-}
-
-.award {
-display: none;
-}
-
-.working_hours {
-  display: none;
-}
-
-.working_days {
-  display: none;
-}
-/*.startDate {
-  display: none;
-}*/
-
-.accompanist_active {
-display: none;
-}
-
-.session_location {
-  display: none;
-}
-
-.mylocation {
-  display: none;
-}
-
-.one_liner {
-  display: none;
-}
-
 .formsTopMargin {
   margin-top: 10%;
 }
@@ -450,11 +407,21 @@ display: none;
   overflow:hidden;
   margin-left:62%;
   /* need to make this alignend with card on left*/
-  padding-top:10%;
+  /*padding-top:10%;*/
 }
 
 .left-card {
 width: 60%;
 float:left;
 overflow:hidden;
+}
+
+/* Accompanist sexy activated/deactivated color change*/
+
+.green-card {
+  background-color: #C6D29B;
+}
+
+.red-card {
+  background-color: #E7A9A9;
 }

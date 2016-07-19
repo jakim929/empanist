@@ -100,31 +100,31 @@ Template.SessionReview.helpers({
 
 Template.upsertMusicProfileForm.events({
   'click .next-instrument':function(){
-    $(".award").css('display', 'block');
-    $(".instrument").css('display', 'none');
+    Session.set('showAward',true);
+    Session.set('showInstrument',false);
     $(".determinate").css('width', '50%');
     },
     'click .next-award':function(){
-    $(".award").css('display', 'none');
-    $(".program").css('display', 'block');
+    Session.set('showAward',false);
+    Session.set('showProgram',true);
     $(".determinate").css('width', '75%');
     },
     'click .next-program':function(){
-    $(".program").css('display', 'none');
-    $(".orchestra").css('display', 'block');
+    Session.set('showOrchestra',true);
+    Session.set('showProgram',false);
     $(".determinate").css('width', '100%');
     },
     'click .back-award':function(){
-    $(".award").css('display', 'none');
-    $(".instrument").css('display', 'block');
+    Session.set('showAward',false);
+    Session.set('showInstrument',true);
     },
     'click .back-program':function(){
-    $(".program").css('display', 'none');
-    $(".award").css('display', 'block');
+    Session.set('showAward',true);
+    Session.set('showProgram',false);
     },
     'click .back-orchestra':function(){
-    $(".orchestra").css('display', 'none');
-    $(".program").css('display', 'block');
+    Session.set('showOrchestra',false);
+    Session.set('showProgram',true);
     },
     'submit form': function(){
       FlowRouter.go('/newaccomp');
@@ -202,79 +202,70 @@ Template.basicNewAccomp.events({
 
 Template.upsertAccompanistForm.events({
   'click .next-repertoire':function(){
-    $(".charge").css('display', 'block');
-    $(".repertoire").css('display', 'none');
+    Session.set('showCharge',true);
+    Session.set('showRepertoire',false);
     $(".determinate").css('width', '12.5%');
     },
-    'click .next-charge':function(){
-    $(".charge").css('display', 'none');
-    $(".working_hours").css('display', 'block');
+  'click .next-charge':function(){
+    Session.set('showCharge',false);
+    Session.set('showHours',true);
     $(".determinate").css('width', '25%');
     },
-    'click .next-working_hours':function(){
-    $(".working_hours").css('display', 'none');
-    $(".working_days").css('display', 'block');
+  'click .next-working_hours':function(){
+    Session.set('showHours',false);
+    Session.set('showDays',true);
     $(".determinate").css('width', '37.5%');
     },
-    'click .next-working_days':function(){
-    $(".accompanist_active").css('display', 'block');
-    $(".working_days").css('display', 'none');
+ 'click .next-working_days':function(){
+    Session.set('showDays',false);
+    Session.set('showActive',true);
     $(".determinate").css('width', '50%');
     },
-    // 'click .next-startDate':function(){
-    // $(".startDate").css('display', 'none');
-    // $(".endDate").css('display', 'block');
-    // $(".determinate").css('width', '62.5%');
-    // },
-    'click .next-accompanist_active':function(){
-    $(".accompanist_active").css('display', 'none');
-    $(".session_location").css('display', 'block');
+  'click .next-accompanist_active':function(){
+    Session.set('showActive',false);
+    Session.set('showLocation',true);
     $(".determinate").css('width', '85%');
     },
-    'click .next-session_location':function(){
-    $(".mylocation").css('display', 'block');
-    $(".session_location").css('display', 'none');
+  'click .next-session_location':function(){
+    Session.set('showLocation',false);
+    Session.set('showMyLocation',true);
     $(".determinate").css('width', '95%');
     },
-    'click .next-mylocation':function(){
-    $(".mylocation").css('display', 'none');
-    $(".one_liner").css('display', 'block');
+  'click .next-mylocation':function(){
+    Session.set('showLiner',true);
+    Session.set('showMyLocation',false);
     $(".determinate").css('width', '100%');
     },
-    'click .back-charge':function(){
-    $(".charge").css('display', 'none');
-    $(".repertoire").css('display', 'block');
+  'click .back-charge':function(){
+    Session.set('showCharge',false);
+    Session.set('showRepertoire',true);
     },
-    'click .back-working_hours':function(){
-    $(".working_hours").css('display', 'none');
-    $(".charge").css('display', 'block');
+  'click .back-working_hours':function(){
+    Session.set('showHours',false);
+    Session.set('showCharge',true);
     },
-    'click .back-working_days':function(){
-    $(".working_hours").css('display', 'block');
-    $(".working_days").css('display', 'none');
+  'click .back-working_days':function(){
+    Session.set('showHours',true);
+    Session.set('showDays',false);
     },
-    'click .accompanist_active-startDate':function(){
-    $(".accompanist_active").css('display', 'none');
-    $(".working_days").css('display', 'block');
+  'click .back-accompanist_active':function(){
+    Session.set('showActive',false);
+    Session.set('showDays',true);
     },
-    // 'click .back-endDate':function(){
-    // $(".endDate").css('display', 'none');
-    // $(".startDate").css('display', 'block');
-    // },
-    'click .back-session_location':function(){
-    $(".endDate").css('display', 'block');
-    $(".session_location").css('display', 'none');
+  'click .back-session_location':function(){
+    Session.set('showLocation',false);
+    Session.set('showActive',true);
     },
-    'click .back-mylocation':function(){
-    $(".mylocation").css('display', 'none');
-    $(".session_location").css('display', 'block');
+  'click .back-mylocation':function(){
+    Session.set('showMyLocation',false);
+    Session.set('showLocation',true);
     },
-    'click .back-one_liner':function(){
-    $(".one_liner").css('display', 'none');
-    $(".mylocation").css('display', 'block');
+  'click .back-one_liner':function(){
+    Session.set('showLiner',false);
+    Session.set('showMyLocation',true);
     },
-    'submit form': function(){
-      FlowRouter.go('/newaccomp');
+  'submit form': function(){
+    FlowRouter.go('/newaccomp');
     }
   });
 
@@ -889,8 +880,13 @@ Template.registerHelper('isAccompanist', () => {
   return x !== null;
 });
 
+Template.registerHelper('userIsAccompanist', () => {
+  var x = AccompanistProfiles.findOne({Id: Meteor.userId()})
+  return x !== undefined;
+});
+
 Template.registerHelper('validId', () =>{
-  if (BasicProfiles.findOne({userId : FlowRouter.getParam("profileId")})){
+  if (Meteor.users.findOne({_id : FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
@@ -919,6 +915,7 @@ Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
 });
 
 Template.registerHelper( 'fromProfile', (location) =>{
+  // console.log(location)
   if (location == "myProfile") {
     return true
   } else {
@@ -980,6 +977,11 @@ Template.results.onCreated(function() {
   this.currentState = new ReactiveVar('result-card-left')
 });
 
+Template.profileTemplate
+.onCreated(function() {
+  this.formType = new ReactiveVar('insert')
+});
+
 // Local Template Helpers
 
 Template.EditingForm.helpers ({
@@ -1001,6 +1003,24 @@ Template.EditingForm.helpers ({
   }
 });
 
+Template.accompanistProfileTemplate.helpers ({
+  accompColor: function (active) {
+    if (active == true) {
+      return "green-card"
+    } else {
+      return "red-card"
+    }
+  }
+});
+
+Template.upsertMusicProfileForm.onRendered(function () {
+  Session.set('showInstrument',true);
+  Session.set('showAward',false);
+  Session.set('showProgram',false);
+  Session.set('showOrchestra',false);
+ 
+  });
+
 Template.upsertMusicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
   currentProfile: function () {
@@ -1013,6 +1033,44 @@ Template.upsertMusicProfileForm.helpers ({
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
+  },
+  shouldShow: function(field) {
+    switch (field) {
+      case "instruments":
+          var status = Session.get('showInstrument')
+          return status;
+          break;
+      case "awards":
+          var status = Session.get('showAward')
+          return status;
+          break;
+      case "programs":
+          var status = Session.get('showProgram')
+          return status;
+          break;
+      case "orchestras":
+          var status = Session.get('showOrchestra')
+          console.log("orchestrashow")
+          console.log(status)
+          return status;
+          break;
+    }
+  },
+  button: function() {
+    var inst = Session.get('showInstrument')
+    var award = Session.get('showAward')
+    var prog = Session.get('showProgram')
+    var orch = Session.get('showOrchestra')
+
+    if (inst) {
+      return "instrument"
+    } else if (award) {
+      return "award"
+    } else if (prog) {
+      return "program"
+    } else if (orch) {
+      return "orchestra"
+    }
   }
 });
 
@@ -1035,8 +1093,23 @@ Template.profileTemplate.helpers({
   },
   currentProfile: function () {
     var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
-      return currentProfile
+      if (currentProfile) {
+      Template.instance().formType.set('update');
+      return currentProfile;
+    }
   },
+  // potential bug = when create something then delete all objects it will be [] not null (i think so)
+  notEmpty: function (array) {
+    if (array == null) {
+      return false
+    } else {
+      return true
+    }
+  },
+  formType: function () {
+    var formType = Template.instance().formType.get();
+    return formType;
+  }
 });
 
 Template.afArrayField_newAccompCustomArrayField.helpers({
@@ -1132,6 +1205,92 @@ Template.upsertAccompanistForm.helpers ({
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
+  },
+  shouldShow: function(field) {
+    switch (field) {
+      case "repertoire":
+          var status = Session.get('showRepertoire')
+          return status;
+          break;
+      case "charge":
+          var status = Session.get('showCharge')
+          return status;
+          break;
+      case "working_hours":
+          var status = Session.get('showHours')
+          return status;
+          break;
+      case "working_days":
+          var status = Session.get('showDays')
+          return status;
+          break;
+      case "accompanist_active":
+          var status = Session.get('showActive')
+          return status;
+          break;
+      case "session_location":
+          var status = Session.get('showLocation')
+          return status;
+          break;
+      case "mylocation":
+          var status = Session.get('showMyLocation')
+          return status;
+          break;
+      case "one_liner":
+          var status = Session.get('showLiner')
+          return status;
+          break;
+    }
+  },
+  button: function() {
+    var rep = Session.get('showRepertoire')
+    var charge = Session.get('showCharge')
+    var hours = Session.get('showHours')
+    var days = Session.get('showDays')
+    var active = Session.get('showActive')
+    var loc = Session.get('showLocation')
+    var myloc = Session.get('showMyLocation')
+    var liner = Session.get('showLiner')
+
+    if (rep) {
+      return "repertoire"
+    } else if (charge) {
+      return "charge"
+    } else if (hours) {
+      return "working_hours"
+    } else if (days) {
+      return "working_days"
+    }else if (active) {
+      return "accompanist_active"
+    } else if (loc) {
+      return "session_location"
+    } else if (myloc) {
+      return "mylocation"
+    }else if (liner) {
+      return "one_liner"
+    }
+  }
+});
+
+Template.upsertAccompanistForm.onRendered(function () {
+  Session.set('showRepertoire',true);
+  Session.set('showCharge',false);
+  Session.set('showHours',false);
+  Session.set('showDays',false);
+  Session.set('showActive',false);
+  Session.set('showLocation',false);
+  Session.set('showMyLocation',false);
+  Session.set('showLiner',false);
+ 
+  });
+
+Template.myProfileAccompEditingForm.helpers ({
+  // Helps set up fields for deciding between "insert" and "update"
+  currentAccompanistProfiles: function () {
+    var currentAccompanistProfiles = AccompanistProfiles.findOne({ Id: Meteor.userId()});
+    if (currentAccompanistProfiles) {
+      return currentAccompanistProfiles;
+    }
   }
 });
 
@@ -1260,8 +1419,8 @@ Template.search.events({
    }
 });
 
-Template.NewAccompLayout.events({
-   'click #autocomplete': function(e,NewAccompLayout) {
+Template.NewAccompanist.events({
+   'click #autocomplete': function(e,NewAccompanist) {
      initAutoComplete();
    }
 });

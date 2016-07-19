@@ -50,48 +50,31 @@
       <div class="determinate" style="width: 25%"></div>
   </div>
   {{#if isInRole 'makeMusicProfile'}}
-    <div class="smallMargin formsTopMargin">
+    <div class="scrollable formsTopMargin">
       {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
-
-   <!--    <div class="instrument"> 
-        <div class="card grey lighten-5 z-depth-0">
-          <div class="card-content">
-            <h5>
-              <i id="align_text" class="medium material-icons">brush</i>
-              Instruments you master
-            </h5>
-            {{>afQuickField name="instrument" type="selectize" options=instrumentList }}
-            {{>afQuickField name="yearsPlayed"}}
-          </div>
-        </div>
-        <a class="next-instrument right waves-effect waves-light btn">Next</a>
-      </div> -->
-
-       <div class="instrument">  
-        {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
-        <a class="next-instrument right waves-effect waves-light btn">Next</a>
-        <a class="back-instrument left waves-effect waves-light btn">Back</a>
-      </div> 
-
-      <div class="award">  
-        {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
-        <a class="next-award right waves-effect waves-light btn">Next</a>
-        <a class="back-award left waves-effect waves-light btn">Back</a>
-      </div> 
-      
-      <div class="program"> 
-        {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
-        <a class="next-program right waves-effect waves-light btn">Next</a>
-        <a class="back-program left waves-effect waves-light btn">Back</a> 
-      </div> 
-      
-      <div class="orchestra"> 
-        {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
-        <button type="submit" class="right btn btn-primary">Save</button>
-        <a class="back-orchestra left waves-effect waves-light btn">Back</a>
-      </div> 
-       
+        {{#if shouldShow "instruments"}}
+          {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
+        {{/if}}
+        {{#if shouldShow "awards"}}
+          {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
+        {{/if}}
+        {{#if shouldShow "programs"}}
+          {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
+        {{/if}}
+        {{#if shouldShow "orchestras"}}
+          {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
+          <button type="submit" class="right btn btn-primary">Save</button>
+        {{/if}}
       {{/autoForm}}
+    </div>
+    <div class="backNext">
+      <hr>
+      {{#unless shouldShow "orchestras"}}
+        <a class="next-{{button}} right waves-effect waves-light btn">Next</a>
+      {{/unless}}
+      {{#unless shouldShow "instruments"}}
+        <a class="back-{{button}} left waves-effect waves-light btn">Back</a>
+      {{/unless}}
     </div>
   {{/if}}
 </template>
@@ -100,69 +83,44 @@
   <div class="progress">
       <div class="determinate" style="width: 0%"></div>
   </div>
-  <div class="smallMargin formsTopMargin">
+  <div class="scrollable formsTopMargin">
     {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-      
-      <div class="repertoire">
+      {{#if shouldShow "repertoire"}}
         {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
-        <a class="next-repertoire right waves-effect waves-light btn">Next</a>
-      </div>
-      
-      <div class="charge">
+      {{/if}}
+      {{#if shouldShow "charge"}}
         {{> afQuickField name="charge"}}
-        <a class="next-charge right waves-effect waves-light btn">Next</a>
-         <a class="back-charge left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="working_hours">
+      {{/if}}
+      {{#if shouldShow "working_hours"}}
         {{> afQuickField name="working_hours"}}
-        <a class="next-working_hours right waves-effect waves-light btn">Next</a>
-         <a class="back-working_hours left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="working_days">
+      {{/if}}
+      {{#if shouldShow "working_days"}}
         {{> afQuickField name="working_days"}}
-        <a class="next-working_days right waves-effect waves-light btn">Next</a>
-         <a class="back-working_days left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <!-- <div class="startDate">
-        {{> afQuickField name="startDate"}}
-        <a class="next-startDate right waves-effect waves-light btn">Next</a>
-         <a class="back-startDate left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="endDate">
-        {{> afQuickField name="endDate"}}
-        <a class="next-endDate right waves-effect waves-light btn">Next</a>
-         <a class="back-endDate left waves-effect waves-light btn">Back</a>
-      </div> -->
-
-      <div class="accompanist_active">
-        {{> afQuickField name="active"}}
-        <a class="next-accompanist_active right waves-effect waves-light btn">Next</a>
-         <a class="back-accompanist_active left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="session_location">
+      {{/if}}
+      {{#if shouldShow "accompanist_active"}}
+        {{> afQuickField name="accompanist_active"}}
+      {{/if}}
+      {{#if shouldShow "session_location"}}
         {{> afQuickField name="session_location"}}
-        <a class="next-session_location right waves-effect waves-light btn">Next</a>
-         <a class="back-session_location left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="mylocation">
+      {{/if}}
+      {{#if shouldShow "mylocation"}}
         {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-        <a class="next-mylocation right waves-effect waves-light btn">Next</a>
-         <a class="back-mylocation left waves-effect waves-light btn">Back</a>
-      </div>
-      
-      <div class="one_liner">
+      {{/if}}
+      {{#if shouldShow "one_liner"}}
         {{> afQuickField name="one_liner"}}
         <button type="submit" class=" btn right btn-primary">{{formType}} Accompanist Profile</button>
-         <a class="back-one_liner left waves-effect waves-light btn">Back</a>
-      </div>
-    {{/autoForm}}
-  </div>
+        {{/if}}
+      {{/autoForm}}
+    </div>
+    <div class="backNext">
+      <hr>
+      {{#unless shouldShow "one_liner"}}
+        <a class="next-{{button}} right waves-effect waves-light btn">Next</a>
+      {{/unless}}
+      {{#unless shouldShow "repertoire"}}
+        <a class="back-{{button}} left waves-effect waves-light btn">Back</a>
+      {{/unless}}
+    </div>
 </template>
 
 <!-- SECTION: New Accompanist CustomArrayField-->
@@ -204,6 +162,19 @@
     </center>
   {{/if}}
   </div>
+</template>
+
+<template name="afArrayField_firstCustomArrayField">
+  {{#if afFieldIsInvalid name=atts.name}}
+    <span>{{{afFieldMessage name=atts.name}}}</span>
+  {{/if}}
+      <!-- <h5>
+        {{mainTitle atts.name}} 
+      </h5> -->
+      {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+
+        {{> UI.dynamic template=../atts.name}}
+      {{/afEachArrayItem}}
 </template>
 
 <!-- SECTION: Edit My Profile CustomArrayField -->
