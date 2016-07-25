@@ -400,6 +400,7 @@ Template.upsertMusicProfileForm.events({
   'click .next-instrument':function(){
     Session.set('showAward',true);
     Session.set('showInstrument',false);
+
     $(".award").css('display', 'block');
     $(".instrument").css('display', 'none');
     $(".determinate").css('width', '50%');
@@ -407,6 +408,7 @@ Template.upsertMusicProfileForm.events({
     'click .next-award':function(){
     Session.set('showAward',false);
     Session.set('showProgram',true);
+
     $(".award").css('display', 'none');
     $(".program").css('display', 'block');
     $(".determinate").css('width', '75%');
@@ -739,7 +741,6 @@ Template.upsertAccompanistForm.events({
       blockAllAccomp()
       Session.set('showLiner',true);
       $(".one_liner").css('display', 'block');
-      
     }
   });
 
@@ -1219,11 +1220,6 @@ Template.ProfileLayout.onRendered(function(){
   });
 });
 
-
-
-
-
-
 Template.search.onRendered(function () {
   // Enter acts as tabs till time to submit form
   $(document).ready(function(){
@@ -1431,7 +1427,7 @@ Template.registerHelper('userIsAccompanist', () => {
 });
 
 Template.registerHelper('validId', () =>{
-  if (BasicProfiles.findOne({userId : FlowRouter.getParam("profileId")})){
+  if (Meteor.users.findOne({_id : FlowRouter.getParam("profileId")})){
     return true
   }else{
     return false
@@ -1576,10 +1572,8 @@ Template.upsertMusicProfileForm.onRendered(function () {
   Session.set('showAward',false);
   Session.set('showProgram',false);
   Session.set('showOrchestra',false);
-
  
   $('ul.tabs').tabs();
-
 
   });
 

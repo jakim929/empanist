@@ -9,6 +9,16 @@
       <!-- uncomment later on -->
           <!-- {{#if validId}} -->
             {{#if isOwnProfile}}
+<!-- <<<<<<< HEAD
+=======
+              {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+              {{#if userIsAccompanist}}
+                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+              {{/if}}
+              {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
+            {{else}}
+              {{#if isAccompanist}}
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
               <div class="row">
                 <div class="col s8">
                   {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
@@ -191,7 +201,11 @@
           {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
           {{#if notEmpty dynamicData}}
             {{#if isOwnProfile}}
-              <i class="myprofile_edit material-icons right">mode_edit</i>
+<!-- <<<<<<< HEAD
+ -->              <i class="myprofile_edit material-icons right">mode_edit</i>
+<!-- =======
+              <i class="material-icons right">mode_edit</i>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
             {{/if}}
           {{/if}}
           <br>
@@ -227,7 +241,11 @@
                 {{else}}
                   {{#autoForm collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
                     {{> afArrayField name=arrayField template="firstCustomArrayField"}}
+
                       <button type="submit" class=" {{close}} btn right btn-primary">first</button>
+<!-- =======
+                      <button type="submit" class=" {{close}} btn right btn-primary">Save</button>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
                       <br>
                       <br>
                   {{/autoForm}}
@@ -239,6 +257,7 @@
     {{/each}}
   </section>
 </template>
+
 
 <!-- <template name="afArrayField_firstArrayField">
   {{#if afFieldIsInvalid name=atts.name}}
@@ -267,6 +286,7 @@
 </template>
 
 <template name="myProfileAccompEditingForm">
+<!-- <<<<<<< HEAD -->
   {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
     <h10>Hourly Charge</h10>
     {{> afQuickField name="charge"}}
@@ -291,6 +311,32 @@
     {{> afArrayField name="repertoire" template="editProfileCustomArrayField"}}  
     <button type="submit" class=" btn card-title right btn-primary">Save</button>
   {{/autoForm}}
+<!-- =======
+    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
+
+       
+      
+        {{> afQuickField name="charge"}}
+    
+      
+        {{> afQuickField name="working_hours"}}
+    
+      
+        {{> afQuickField name="working_days"}}
+     
+      
+        {{> afQuickField name="accompanist_active"}}
+      
+      
+        {{> afQuickField name="session_location"}}
+     
+        {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+      
+        {{> afQuickField name="one_liner"}}
+        <button type="submit" class=" btn card-title right btn-primary">Save</button>
+
+    {{/autoForm}}
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
 </template>
 
 <!-- SUB-SECTION: rendered data for each card -->
@@ -336,6 +382,7 @@
   <div class="card {{accompColor accompanist_active}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
+<!-- <<<<<<< HEAD -->
         {{#if isOwnProfile}}
          <div class="row">
             <h5>
@@ -351,6 +398,18 @@
             <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
           {{/autoForm}}
           </div>
+<!-- ======= -->
+        <!--
+        <h5>Repertoire: </h5>
+        {{#each repertoire}}
+          {{this}}<br>
+        {{/each}}
+           <hr> -->
+<!--         {{#if isOwnProfile}}
+          <h5>
+            Accompanying Preferances
+          </h5>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
         {{/if}}
         <div class="accopmCard-left">
           <h10>

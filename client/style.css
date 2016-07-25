@@ -136,6 +136,7 @@ div.blur {
 }
 
 .scrollable {
+
   height:500px;
   overflow: scroll;
   width: 60%;
@@ -146,6 +147,11 @@ div.blur {
   width:38%;
   margin-left:62%;
   overflow:hidden;
+/*=======
+  margin-right: 40%;
+  height:500px;
+  overflow: scroll;
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127*/
 }
 
 .backNext {
@@ -533,3 +539,4 @@ display: none;
 .one_liner {
   display: none;
 }
+
