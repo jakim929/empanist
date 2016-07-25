@@ -1,8 +1,24 @@
 /* CSS declarations go here */
 
+.suggestions {
+  margin-left:20px;
+}
 
 .overlap-into-top-image {
   margin-top:-17%;
+}
+
+/*.card-content {
+  background-color: red;
+}*/
+
+/*.card {
+  height: auto;
+}*/
+
+.clean {
+  background-color: transparent;
+  border: none;
 }
 
 .limit-width-30 {
@@ -35,7 +51,7 @@ body {
 }
 
 .no-padding{
-	padding: 0;
+  padding: 0;
 }
 
 /*Home Screen*/
@@ -109,13 +125,31 @@ div.blur {
   font-weight: bold;
 }
 
-a { color: inherit; } 
-
+/*a { color: inherit; } 
+*/
 .oneLiner {
   text-align: center;
 }
 
 .smallMargin {
+  margin-right: 40%;
+}
+
+.scrollable {
+  height:500px;
+  overflow: scroll;
+  width: 60%;
+  float:left;
+}
+
+.music-advice {
+  width:38%;
+  margin-left:62%;
+  overflow:hidden;
+}
+
+.backNext {
+  margin-top:5px;
   margin-right: 40%;
 }
 
@@ -155,6 +189,7 @@ a { color: inherit; }
 /*not consistant*/
 #first-card-container {
   margin-top:-5%;
+  background-color: blue;
 }
 
 .overlap-into-top {
@@ -168,6 +203,14 @@ a { color: inherit; }
   width:100%;
 }
 
+/*data visualization*/
+
+/*#barChart{
+  rect:hover {
+    fill: orange;
+  }
+}*/
+
 #resultsImg {
   max-width: 150px;
   max-height: 150px;
@@ -176,8 +219,8 @@ a { color: inherit; }
 }
 
 #profileImg {
-  max-width: 250px;
-  max-height: 250px;
+  max-width: 200px;
+  max-height: 200px;
   float:left;
   overflow:hidden;
 }
@@ -202,6 +245,10 @@ display:none;
 display:none;
 }
 
+.addRepForm {
+display:none;
+}
+
 .AddArrayObjectButton {
   margin-top: -10px;
   margin-bottom: 20px;
@@ -209,10 +256,10 @@ display:none;
 
 /*THIS SHOULD BE REACTIVE*/
 .all {
-  height:250px;
+  height:200px;
 }
 .details {
-  margin-left: 265px;
+  margin-left: 220px;
   height:100%;
   margin-bottom:0;
 }
@@ -275,33 +322,33 @@ display:none;
 /*Steppers*/
 
 .stepper .step {
-	position: relative;
-	min-height: 32px;
-	padding: 24px;
+  position: relative;
+  min-height: 32px;
+  padding: 24px;
 }
 .stepper .step:hover {
-	background: #F6F6F6;
+  background: #F6F6F6;
 }
 .stepper .step > div:first-child {
-	position: static; height: 0;
+  position: static; height: 0;
 }
 .stepper .step > div:last-child {
-	margin-left: 32px;
-	padding-left: 16px;
-	min-height: 24px;
+  margin-left: 32px;
+  padding-left: 16px;
+  min-height: 24px;
 }
 .stepper .circle {
-	background: #4285f4;
-	width: 32px;
-	height: 32px;
-	line-height: 32px;
-	border-radius: 16px;
-	position: relative;
-	color: white;
-	text-align: center;
+  background: #4285f4;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 16px;
+  position: relative;
+  color: white;
+  text-align: center;
 }
 .stepper .line {
-	position: absolute;
+  position: absolute;
     border-left: 1px solid gainsboro;
     left: 40px;
     bottom: -12px;
@@ -309,50 +356,50 @@ display:none;
     z-index: 1;
 }
 .stepper .step:last-child .line {
-	display: none !important;
+  display: none !important;
 }
 .stepper .title {
-	line-height: 32px;
-	font-weight: 500;
+  line-height: 32px;
+  font-weight: 500;
 }
 .stepper .body {
-	padding-bottom: 28px;
+  padding-bottom: 28px;
     padding-top: 8px;
 }
 .stepper .description {
-	line-height: 0.1;
+  line-height: 0.1;
     font-size: 1em;
     padding-bottom: 24px;
     color: #989898;
 }
 /** Horizontal **/
 .stepper.horizontal {
-	line-height: 72px;
-	position: relative;
+  line-height: 72px;
+  position: relative;
 }
 .stepper.horizontal .step {
-	display: inline-block;
+  display: inline-block;
 }
 .stepper.horizontal .step .line, .stepper.horizontal .step .circle, .stepper.horizontal .step .title {
-	display: inline-block;
+  display: inline-block;
 }
 .stepper.horizontal .step .line {
-	border-left: 0px;
-	position: inherit;
-	border-top: 1px solid gainsboro;
+  border-left: 0px;
+  position: inherit;
+  border-top: 1px solid gainsboro;
     width: 100px;
     margin-bottom: 5px;
     margin-left: 8px;
     margin-right: 8px;
 }
 .stepper.horizontal .step .title {
-	margin-left: 8px;
+  margin-left: 8px;
 }
 .stepper.horizontal .step .body {
-	line-height: initial;
+  line-height: initial;
 }
 .stepper.horizontal .step > div:last-child {
-	position: absolute;
+  position: absolute;
     width: 90vw;
     top: 93px;
     margin-left: 0px;
@@ -360,8 +407,8 @@ display:none;
     margin: auto;
 }
 .stepper .step.inactive .title{
-	color: #C9C9C9;
-	font-weight: 400;
+  color: #C9C9C9;
+  font-weight: 400;
 }
 .stepper .step.inactive .body{
     display: none;
@@ -369,7 +416,6 @@ display:none;
 .stepper .step.inactive .circle{
     background-color: #9e9e9e;
 }
-
 
 /*// Class for when element is above threshold*/
 .pin-top {
@@ -387,6 +433,56 @@ display:none;
 }
 
 /* AddInfoLayout.html Style*/
+
+.formsTopMargin {
+  margin-top: 5%;
+}
+
+
+.advice {
+  width:38%;
+  overflow:hidden;
+  margin-left:62%;
+}
+
+.left-card {
+width: 60%;
+float:left;
+overflow:hidden;
+}
+
+.left-basic {
+width: 60%;
+float:left;
+overflow:hidden;
+}
+
+.centerIt {
+  margin-right:0;
+}
+
+.basic-advice {
+  width:38%;
+  margin-top:10%;
+  margin-left:62%;
+  overflow:hidden;
+}
+
+.newAccompPublish {
+  width: 60%;
+  margin-top:50px;
+  overflow:hidden;
+}
+
+/* Accompanist sexy activated/deactivated color change*/
+
+.green-card {
+  background-color: #C6D29B;
+}
+
+.red-card {
+  background-color: #E7A9A9;
+}
 
 .instrument {
 }
@@ -421,9 +517,6 @@ display: none;
 .working_days {
   display: none;
 }
-/*.startDate {
-  display: none;
-}*/
 
 .accompanist_active {
 display: none;
@@ -439,22 +532,4 @@ display: none;
 
 .one_liner {
   display: none;
-}
-
-.formsTopMargin {
-  margin-top: 10%;
-}
-
-.advice {
-  width:38%;
-  overflow:hidden;
-  margin-left:62%;
-  /* need to make this alignend with card on left*/
-  padding-top:10%;
-}
-
-.left-card {
-width: 60%;
-float:left;
-overflow:hidden;
 }

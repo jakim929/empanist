@@ -29,6 +29,7 @@ coffeescript@1.1.2
 comerc:autoform-selectize@2.3.2
 comerc:autoform-typeahead@1.0.6
 comerc:bs-typeahead@1.0.2
+d3js:d3@3.5.8
 dandv:caret-position@2.1.1
 ddp@1.2.5
 ddp-client@1.2.8
