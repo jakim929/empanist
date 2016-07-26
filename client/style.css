@@ -1,5 +1,87 @@
 /* CSS declarations go here */
 
+.selected{
+	background-color: yellow;
+
+}
+
+.unselected{
+	background-color: tomato;
+}
+
+.timeslot{
+	border: 1px solid #eee;
+	margin: 7px 0;
+	text-align: center;
+	color: white;
+	padding: 0;
+}
+
+/*CropUpload*/
+
+.change-image-container {
+	max-height: 300px;
+}
+
+.limit-height {
+	max-height: 200px;
+}
+
+.change-container {
+
+}
+
+h6.id {
+	margin:0;
+	padding:0;
+	text-align: center;
+}
+.thumbnail {
+	display: inline-block;
+}
+.hidden {
+	display: none;
+}
+
+
+#crop-image {
+  max-width: 100%;
+}
+
+/*Booking Templates*/
+
+.booking-card {
+  max-width: 300px;
+}
+
+/*Account Templates*/
+
+.at-signup {
+  color: #64b5f6;
+}
+
+.at-signin {
+  color: #64b5f6;
+}
+
+.modal {
+  /* Change the width according to your specification */
+    width: 45%;
+}
+
+@media screen and (max-width: 600px) {
+    .modal {
+        width: 90%;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 992px) {
+    .modal {
+        width: 60%;
+    }
+}
+
+/*Account Templates End*/
 
 .overlap-into-top-image {
   margin-top:-17%;
@@ -109,7 +191,7 @@ div.blur {
   font-weight: bold;
 }
 
-a { color: inherit; } 
+a { color: inherit; }
 
 .oneLiner {
   text-align: center;
@@ -125,7 +207,7 @@ a { color: inherit; }
   width:48%;
   height: 300px;
   margin-right: 2%;
-  margin-top: 2%;  
+  margin-top: 2%;
 }
 
 .result-card-left {

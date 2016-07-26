@@ -17,7 +17,11 @@ BasicProfileSchema = new SimpleSchema({
       type: "hidden"
     },
     autoValue: function() {
-      return this.userId
+      if(this.isSet){
+        return this.value
+      }else {
+        return this.userId
+      }
     }
   },
 
@@ -30,15 +34,29 @@ BasicProfileSchema = new SimpleSchema({
     type: Date,
     // label: "Date of Birth"
   },
-// 
+//
   phone: {
     type: String,
-    label: "Phone Number"
+    label: "Phone Number",
+    optional: true
   },
 
   affiliation: {
     type: String,
-    label: "Affiliation"
+    label: "Affiliation",
+    optional: true
+  },
+
+  profilePic: {
+    type: String,
+    label: "Profile Picture ID",
+    optional: true
+  },
+
+  coverPic: {
+    type: String,
+    label: "Cover Picture ID",
+    optional: true
   }
 });
 

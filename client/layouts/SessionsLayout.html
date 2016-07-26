@@ -1,0 +1,89 @@
+<template name="SessionsLayout">
+    <header>
+        <h1> Your Sessions </h1>
+    </header>
+    <main>
+      <div class="row">
+        <div class="col l8 m12 s12">
+          {{> NewSession}}
+        </div>
+        <div class="col l4 m12 s12">
+          {{> BookingCardExample }}
+
+        </div>
+      </div>
+
+
+    </main>
+</template>
+
+
+<template name="NewSession">
+  <div class="card z-depth-0">
+    <div class="card-content">
+      <h5>Book A Session</h5>
+      <div class="divider"></div><br>
+      <!-- <span class="card-title">Card Title</span> -->
+      {{#autoForm id="NewSession" collection="Sessions" type="insert" doc=initialDoc }}
+        {{> afQuickField name="transaction" type="hidden"}}
+        {{> afQuickField name="accompanist" type="hidden"}}
+        {{> afQuickField name="musician" type="hidden"}}
+
+
+        <label for="sessionTypeInput">Session Type</label>
+        {{> afFieldInput id="sessionTypeInput" name="sessionType" type="select-radio" label="Session Type" options="allowed"}}<br><br>
+
+        <label for="sessionDateInput">Date</label>
+        <div class="row"><div class="col s4">{{> afFieldInput id="sessionDateInput" name="date" type="date"}}</div></div><br>
+
+        <label for="sessionSuggestedHours">Suggested Starting Hour</label>
+        {{> afFieldInput id="sessionSuggestedHours" name="suggestedHours" type="time-checkboxes" options=optionsArray}}
+        <div class="row"><div class="col s12"><button class="btn col s12">Request New Session</button></div></div>
+      {{/autoForm}}
+
+    </div>
+  </div>
+</template>
+
+
+
+
+
+<template name="TestDrag">
+    <div class="checkbox-grouped-table" {{dsk}}>
+      <div class="row">
+        {{#each this.selectOptions}}
+          <div class="col s1">
+            <label>{{this.label}}</label>
+          </div>
+        {{/each}}
+      </div>
+      <div class="row">
+        {{#each this.selectOptions}}
+        <div class="col s1">
+          <input type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="filled-in timeslot-checkbox" />
+          <label class="center" for="{{this.value}}-slot"></label>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+</template>
+
+<!-- <template name="TestDrag">
+    <div id="newInput" {{dsk}}>
+      <div class="row">
+        {{#each testArray}}
+          <div class="col s1 center">
+            {{this}}
+          </div>
+        {{/each}}
+        {{#each testArray}}
+        <div class="col s1 center">
+          <input type="checkbox" id="{{this}}-slot" value="{{this}}" checked="checked" class="filled-in timeslot-checkbox" />
+          <label class="center" for="{{this}}-slot"></label>
+        </div>
+        {{/each}}
+        {{valueOut}}
+      </div>
+    </div>
+</template> -->

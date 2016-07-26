@@ -75,6 +75,18 @@ TransactionSchema = new SimpleSchema({
     // }
   },
 
+  rehearsalLocation: {
+    type: String,
+    label: "Rehearsal Location",
+    optional: true
+  },
+
+  performanceLocation: {
+    type: String,
+    label: "Performance Location",
+    optional: true
+  }
+
 });
 
 
@@ -88,14 +100,37 @@ SessionSchema = new SimpleSchema({
     // }
   },
 
-  location: {
+  accompanist: {
     type: String,
-    label:'Session Location'
+    label: "Accompanist ID",
   },
 
-  suggestedTimes: {
-    type: [Date],
-    label: 'Suggested Times for Session'
+  musician: {
+    type: String,
+    label: "Musician ID",
+  },
+
+  sessionType: {
+    type: String,
+    label: "Session Type",
+    allowedValues: ["Rehearsal", "Performance"]
+  },
+
+  location: {
+    // CHANGE Make this into required
+    type: String,
+    label:'Session Location',
+    optional: true
+  },
+
+  date: {
+    type: Date,
+    label: "Session Date"
+  },
+
+  suggestedHours: {
+    type: [Number],
+    label: 'Suggested Times (Military Hour) for Session'
   },
 
   startTime: {

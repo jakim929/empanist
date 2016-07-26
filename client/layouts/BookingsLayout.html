@@ -3,10 +3,97 @@
         <h1> Your Bookings </h1>
     </header>
     <main>
-      {{#each sentBookingRequests}}
-        {{> Template.dynamic template="SentBookingRequests" data=this}}
-      {{/each}}
+      {{> AllBookings}}
     </main>
+</template>
+
+
+<template name="AllBookings">
+  <div class="row">
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+    <div class="col s12 m6 l4">
+      {{> BookingCardExample}}
+    </div>
+  </div>
+</template>
+
+<template name="BookingCardExample">
+  <div class="card z-depth-0">
+    <div class="card-content center">
+      <span class="black-text">
+          <div class="divider"></div>
+          <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
+          <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+
+        <div class="container">
+            <h6>Javier Mascherano</h6>
+        </div>
+
+          <p>5 sessions<br>Sept. 16th&nbsp;&nbsp;-&nbsp;&nbsp;22nd</p>
+
+          <br>
+          <div class="container">
+            <div class="divider"></div><br>
+            A pianist from <br>Curtis Institute of Music
+          </div>
+     </span>
+    </div>
+
+    <div class="card-reveal">
+       <span class="card-title grey-text text-darken-4">Sessions<i class="material-icons right">close</i></span>
+       <p>Here is some more information about this product that is only revealed once clicked on.</p>
+     </div>
+
+    <div class="card-action">
+      <a href={{getLink "1241312"}} class="left">Details</a>
+      <a href="#" class="right">Receipt</a><br>
+    </div>
+  </div>
+</template>
+
+<template name="BookingCard">
+  <div class="card z-depth-0">
+    <div class="card-content center">
+      <span class="black-text">
+          <div class="divider"></div>
+          <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
+          <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+
+        <div class="container">
+          {{#with basicProfileById accompanist}}
+            <h6>{{name}}</h6>
+          {{/with}}
+        </div>
+
+          <p>{{sessionCount}} sessions<br>{{formatDuration startDate endDate}}</p>
+
+          <br>
+          <div class="container">
+            <div class="divider"></div><br>
+            A pianist from <br>{{#with basicProfileById accompanist}}{{affiliation}}{{/with}}
+          </div>
+     </span>
+    </div>
+
+    <div class="card-action">
+      <a href={{getLink _id}} class="left">Details</a>
+      <a href="#" class="right">Receipt</a><br>
+    </div>
+  </div>
 </template>
 
 <template name="SentBookings">

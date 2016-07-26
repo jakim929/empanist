@@ -14,34 +14,38 @@
 
 <!-- Modal Contents -->
 
-  <div id="signUp" class="modal">
-    <div class="modal-content">
-      {{>atForm}}
-    </div>
-  </div>
-
-  <div id="login" class="modal">
+  <div id="signUpModal" class="modal">
     <div class="modal-content">
       {{>atForm}}
     </div>
   </div>
 
 
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      {{>atForm}}
+    </div>
+  </div>
 
 </template>
 
 <template name="modalSignUp">
-	<a class="waves-effect waves-light modal-trigger " href="#signUp">Sign Up</a>
+	<a href="#signUpModal" class="waves-effect waves-light modal-signup-trigger modal-trigger">Sign Up</a>
 </template>
 
 <template name="modalLogin">
-  <a class="waves-effect waves-light modal-trigger" href="#login">Login</a>
+  <a href="#loginModal"  class="waves-effect waves-light modal-login-trigger modal-trigger">Login</a>
 </template>
 
 <template name="navbarAccount">
 
-		<a class="dropdown-button valign-wrapper" data-activates="accountDropdown">Account&nbsp;&nbsp;&nbsp;&nbsp;<img src={{myProfilePic}} alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
-		</a>
+	<a class="dropdown-button valign-wrapper" data-activates="accountDropdown">Account
+		{{#with myProfilePic}}
+			&nbsp;&nbsp;&nbsp;&nbsp;<img src={{this}} alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
+		{{else}}
+			<i class="material-icons right">account_circle</i>
+		{{/with}}
+	</a>
 
   <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>
     <li><a href={{getProfileRoute}}>My Profile</a></li>
@@ -63,9 +67,50 @@
 </template>
 
 <template name="becomeAnAccompanist">
-	<a class='waves-effect waves-light btn' href='/newaccomp'>Become an Accompanist</a>
+	<a class='waves-effect waves-light btn {{onNewAccomp}}' href='/newaccomp'>Become an Accompanist</a>
 </template>
 
 <template name="addProfile">
 	<a href='/addinfo'>Add Profile</a>
+</template>
+
+<template name="dateTemplate">
+  <div class="at-input field">
+    <div class="ui">
+			<div class="input-field">
+				{{#with options.icon}}
+					<i class="material-icons prefix">{{this}}</i>
+				{{/with}}
+
+	      <input type="date" class="datepicker" id="at-field-{{_id}}" name="at-field-{{_id}}" {{disabled}}>
+				<label for="at-field-{{_id}}">
+					Date of Birth
+				</label>
+			</div>
+		</div>
+  </div>
+</template>
+
+<template name="atInputWithIcon">
+	{{#if options.custom}}
+		{{> Template.dynamic template=templateName}}
+	{{else}}
+		<div class="at-input field">
+			<div class="ui">
+				<div class="input-field">
+
+					{{#with options.icon}}
+						<i class="material-icons prefix">{{this}}</i>
+					{{/with}}
+
+					{{#with template}}
+						{{dateInput}}
+					{{else}}
+						<input type={{type}} id="at-field-{{_id}}" name="at-field-{{_id}}" {{disabled}}>
+						<label for="at-field-{{_id}}">{{displayName}}</label>
+					{{/with}}
+				</div>
+			</div>
+		</div>
+	{{/if}}
 </template>

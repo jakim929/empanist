@@ -7,6 +7,9 @@ import { Sessions } from '../collections/transactions.js'
 
 import { TransactionSchema } from '../collections/transactions.js'
 
+import cropper from 'cropper';
+import 'cropper/dist/cropper.css';
+
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfiles = AccompanistProfiles
 window.BasicProfiles = BasicProfiles
@@ -14,7 +17,483 @@ window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 window.Sessions = Sessions
 
-// Booking Tests
+// Reservations Layout
+
+sessionInsertHook = {
+  before: {
+    insert: function(doc) {
+      var transactionDoc = Transactions.findOne({_id: doc.transaction}, {})
+      if(!transactionDoc){
+        return false;
+      }
+      if (doc.sessionType == "Rehearsal"){
+        doc.location = transactionDoc.rehearsalLocation
+      }else{
+        doc.location = transactionDoc.performanceLocation
+      }
+    }
+  }
+}
+
+Template.NewSession.onRendered(function() {
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+})
+
+Template.NewSession.helpers({
+  optionsArray(){
+    var array = ["7AM", "8AM","9AM","10AM"]
+    var newArray = [{label: '7AM', value: 7},
+                    {label: '8AM', value: 8},
+                    {label: '9AM', value: 9},
+                    {label: '10AM', value: 10},
+                    {label: '11AM', value: 11},
+                    {label: '12PM', value: 12},
+                    {label: '1PM', value: 13},
+                    {label: '2PM', value: 14},
+                    {label: '3PM', value: 15},
+                    {label: '4PM', value: 16},
+                    {label: '5PM', value: 17},
+                    {label: '6PM', value: 18}]
+    return newArray
+  },
+  initialDoc(){
+    return {
+            transaction: "HELLO",
+            accompanist: "MYNAMEIS",
+            musician: "MYNUMBERIS"
+           }
+  }
+  // initialDoc(transactionId) {
+  //   var transactionDoc = Transactions.findOne({_id : transactionId}, {musician: 1, accompanist: 1, rehearsalLocation: 1, performanceLocation: 1});
+  //   return {transaction: transactionId,
+  //     accompanist: transactionDoc.accompanist,
+  //     musician: transactionDoc.musician
+  //
+  //   }
+  // }
+})
+
+  valueOut = function(){
+    var val = [];
+    this.find('input.timeslot-checkbox').each(function(){
+      if($(this).is(":checked")) {
+        val.push($(this).val());
+      }
+    })
+    return val
+}
+
+var options = {template: "TestDrag", valueOut: valueOut}
+
+AutoForm.addInputType("time-checkboxes", options)
+
+
+Template.TestDrag.onRendered(function(){
+   $('ul.tabs').tabs();
+})
+
+Template.TestDrag.helpers({
+  testArray: function() {
+    var array = ["7AM", "8AM","9AM","10AM","11AM","12PM","1PM","2PM",'3PM',"4PM","5PM", "6PM"]
+    array.map(function(currentValue){
+      return {label: currentValue, value: currentValue}
+    })
+    console.log(array)
+    return array
+  },
+  atts: function selectedAttsAdjust() {
+    var atts = _.clone(this.atts);
+    if (this.selected) {
+      atts.checked = "";
+    }
+    // remove data-schema-key attribute because we put it
+    // on the entire group
+    delete atts["data-schema-key"];
+    return atts;
+  },
+  dsk: function dsk() {
+    return {
+      "data-schema-key": this.atts["data-schema-key"]
+    };
+  }
+
+})
+
+Template.TestDrag.events({
+
+})
+
+Template.ReservationLayout.helpers({
+
+})
+
+// Bookings Layout
+
+Template.becomeAnAccompanist.helpers({
+  onNewAccomp: function() {
+    if (FlowRouter.getRouteName() == "NewAccompLayout"){
+      return "hidden"
+    }
+  }
+});
+
+// DELETE LATER
+Template.BookingCardExample.helpers({
+  getLink: function (id){
+    let routeName = "reservation";
+    let queryParams = {transaction: id};
+    return FlowRouter.path(routeName, {}, queryParams);
+  },
+
+})
+
+Template.BookingCard.helpers({
+  getLink: function (id){
+    let routeName = "reservation";
+    let queryParams = {transaction: id};
+    return FlowRouter.path(routeName, {}, queryParams);
+  },
+
+})
+
+// CropUploader
+
+Template.ProfileLayout.events({
+  'click .change-profile-pic' (event, template){
+    Session.set("changeImageModalStatus", "profile");
+  },
+  'click .change-cover-pic' (event, template){
+    Session.set("changeImageModalStatus", "cover");
+  }
+
+})
+
+getDimensions = function(type) {
+  if(type == "profile"){
+    console.log("Profile Edit");
+    return {width: 200, height: 200, aspectRatio: 1}
+  }
+  if(type == "cover"){
+    console.log("Cover Edit");
+    return {width: 1200, height: 600, aspectRatio: 2};
+  }
+  return {width:200, height: 200, aspectRatio: 1};
+}
+
+Template.picOverlord.onRendered(function() {
+  Tracker.autorun(function () {
+    var currentCropperStatus = Session.get("cropperStatus");
+    if (currentCropperStatus == "go"){
+      console.log("go cropper");
+
+      var dimensions = getDimensions(Session.get("changeImageModalStatus"));
+      options =
+        {
+          aspectRatio: dimensions.aspectRatio,
+          data: {
+                  x:10,
+                  y:10,
+                  width: dimensions.width,
+                  height: dimensions.height
+                }
+        }
+      $("#crop-image").cropper(options);
+    }else if (currentCropperStatus == "stop"){
+      console.log("stop cropper")
+      $("#crop-image").cropper('destroy');
+    }
+  });
+})
+
+
+
+Template.accountTemplate.onRendered(function () {
+
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-trigger').leanModal(
+      {
+        ready: function() {
+          console.log("Ready Modal");
+          // var options = Session.get('cropperOptions');
+          // options.rotatable = false;
+          // Session.set('cropperOptions', options);
+          // var imageSegment = $("#crop-image");
+          // imageSegment.cropper(options);
+          // Session.set("picModalOpened", true);
+        },
+        complete: function() {
+
+          Session.set("cropperStatus", "stop");
+                    // $("#crop-image").cropper('destroy');
+        }
+      }
+    );
+  });
+
+});
+
+Template.picOverlord.events({
+  'click .change-thumbnail-tab': function () {
+    Session.set('cropperStatus', "go");
+  },
+  'click .upload-image-tab': function () {
+    Session.set('cropperStatus', "stop");
+  },
+
+});
+
+Template.changeImageModal.onRendered(function(){
+  $(document).ready(function(){
+    $('ul.tabs').tabs();
+  });
+  Session.get("cropperStatus", "unrendered")
+})
+
+var directory = ''; // same as Meteor.settings.S3Directory
+CropUploader.init("uploadToAmazonS3", directory);
+
+Template.images.onCreated(function(){
+    this.subscribe('cropUploaderImages');
+})
+Template.images.onRendered(function(){
+  this.$('.preview').addClass('hidden');
+});
+Template.images.helpers({
+  images: function() {
+    return CropUploader.images.find();
+  }
+});
+
+
+
+// Template.picUploader.onCreated(function(){
+//   this.picType = new ReactiveVar("profile");
+//   Tracker.autorun(function(){
+//     var status = Session.get("changeImageModalStatus")
+//     if (status){
+//       Template.instance().picType.set(status);
+//     }else{
+//       Template.instance().picType.set("profile");
+//     }
+//   })
+// });
+
+Template.picUploader.helpers({
+  dimensions: function(){
+    return getDimensions(Session.get("changeImageModalStatus"));
+  },
+
+
+  previewPresent: function() {
+    if (Session.get("previewPresent")){
+        return "";
+    }else{
+        return "hidden"
+    }
+
+  },
+  picType: function() {
+    // Change to reactive var at some point from sessions
+    console.log(Session.get("changeImageModalStatus"))
+    return Session.get("changeImageModalStatus");
+  },
+  currentImage: function() {
+    // Change back to reactive var
+    if(Session.get("changeImageModalStatus") == "profile"){
+              console.log("Hello");
+      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
+      if(basicProfileDoc){
+        var x = CropUploader.images.findOne({_id: basicProfileDoc.profilePic});
+        console.log(basicProfileDoc.profilePic);
+        return x
+      }
+    }else if(Session.get("changeImageModalStatus") == "cover"){
+      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), coverPic: {$exists: true}}, {coverPic: 1});
+      if(basicProfileDoc){
+        return CropUploader.images.findOne({_id: basicProfileDoc.coverPic})
+      }
+    }
+  },
+});
+
+Template.picCropper.onCreated(function(){
+  this.picType = new ReactiveVar("profile");
+});
+
+Template.picCropper.helpers({
+  picType: function() {
+    return Template.instance().picType.get();
+  },
+  currentImage: function() {
+    if(Template.instance().picType.get() == "profile"){
+      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
+      if(basicProfileDoc){
+        return CropUploader.images.findOne({_id: basicProfileDoc.profilePic});
+      }
+    }else if(Template.instance().picType.get() == "cover"){
+      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), coverPic: {$exists: true}}, {coverPic: 1});
+      if(basicProfileDoc){
+        return CropUploader.images.findOne({_id: basicProfileDoc.coverPic})
+      }
+    }
+  },
+  dimensions: function(){
+    return getDimensions(Session.get("changeImageModalStatus"));
+  },
+
+
+});
+
+Template.picCropper.events({
+  'click button.delete': function(e,t) {
+    if(confirm('Delete this image?'))
+    {
+      var imageid = t.$(e.target).attr('imageid');
+      console.log(imageid);
+      // change route away from the image since it no longer exists
+      Meteor.call('deleteImageFromS3', imageid);
+      Session.set("cropperStatus", "stop")
+    }
+  },
+  'click button.save': function(e,t) {
+    // provide the name of the derivative, thumbnail is the default
+    CropUploader.crop.save('thumbnail');
+  },
+  'click button.rotate': function(e,t) {
+    CropUploader.crop.rotate();
+  }
+})
+
+Template.picCropper.onCreated(function(){
+  this.subscribe('cropUploaderImages', {_id: Session.get('imageid')});
+});
+
+Template.cropper.onCreated(function(){
+  Session.set('imageid', 'R4writwnZ9XM5sEoQ')
+  this.subscribe('cropUploaderImages', {_id: Session.get('imageid')});
+});
+
+Template.cropper.helpers({
+  imageid: function() {
+    return Session.get('imageid');
+  },
+  url: function() {
+    return CropUploader.images.findOne(Session.get('imageid')).url;
+  }
+});
+
+Template.cropper.events({
+  'click button.delete': function(e,t) {
+    if(confirm('Delete this image?'))
+    {
+      var imageid = t.$(e.target).attr('imageid');
+      CropUploader.images.remove(imageid);
+      // change route away from the image since it no longer exists
+    }
+  },
+  'click button.save': function(e,t) {
+    // provide the name of the derivative, thumbnail is the default
+    CropUploader.crop.save('thumbnail');
+  },
+  'click button.rotate': function(e,t) {
+    CropUploader.crop.rotate();
+  }
+});
+
+// Account Templates
+
+Template.TestLayout.onRendered(function () {
+  // $('#image').cropper({
+  //   aspectRatio: 16 / 9,
+  //   crop: function(e) {
+  //     // Output the result data for cropping image.
+  //     console.log(e.x);
+  //     console.log(e.y);
+  //     console.log(e.width);
+  //     console.log(e.height);
+  //     console.log(e.rotate);
+  //     console.log(e.scaleX);
+  //     console.log(e.scaleY);
+  //   }
+  // });
+});
+
+Template.TestLayout.events({
+  'click .save-button': function(){
+    var cropData = $('#image').cropper('getData', true);
+    Meteor.call('setCropPreferences', cropData);
+
+  }
+});
+
+var atName =
+  {
+    _id: 'name',
+    type: 'text',
+    displayName: "Full Name",
+    required: true,
+    options: {
+      icon: "account_circle"
+    }
+  };
+
+var atBirthDate =
+  {
+    _id: 'birthDate',
+    type: 'text',
+    template: 'dateTemplate',
+    displayName: "Birthday",
+    required: true,
+    negativeValidation: false,
+    negativeFeedback: true,
+    options: {
+      custom: true,
+      icon: "cake"
+    }
+  };
+
+var atPhone =
+{
+  _id: 'phone',
+  type: 'tel',
+  displayName: "Mobile Number",
+  required: true,
+  options: {
+    icon: "phone"
+  }
+};
+
+var atAffiliation =
+{
+  _id: 'affiliation',
+  type: 'text',
+  displayName: "Affiliation",
+  required: true,
+  options: {
+    icon: "school"
+  }
+}
+
+var atEmail = AccountsTemplates.removeField('email');
+atEmail.options = {icon: "email"}
+
+var atPassword = AccountsTemplates.removeField('password');
+atPassword.options = {icon: "lock"}
+
+AccountsTemplates.addField(atName);
+AccountsTemplates.addField(atEmail);
+AccountsTemplates.addField(atPassword);
+// AccountsTemplates.addField(atAffiliation);
+// AccountsTemplates.addField(atPhone);
+AccountsTemplates.addField(atBirthDate);
+
+
+Template.atInputWithIcon.replaces("atInput");
+
 
 formatDuration = function(date1, date2) {
   var start =  moment(date1);
@@ -344,7 +823,7 @@ Template.ReviewLeftFormPanel.events({
 
 Template.request.helpers({
   profilePicUrlById(userId){
-    var picDoc = Images.findOne({userId: userId, picType: "profile"})
+    var picDoc = UserImages.findOne({userId: userId, picType: "profile"})
     if(picDoc){
       return picDoc
     }
@@ -379,7 +858,7 @@ Template.bookAccompanistForm.events({
 });
 
 Template.registerHelper('myProfilePic', function(){
-  var urlDoc = Images.findOne({userId: Meteor.userId()}, {url: 1});
+  var urlDoc = UserImages.findOne({userId: Meteor.userId()}, {url: 1});
   if (urlDoc){
     return urlDoc.url
   }
@@ -387,9 +866,10 @@ Template.registerHelper('myProfilePic', function(){
 
 Template.accountTemplate.helpers({
   currentProfilePic(){
-    var urlDoc = Images.findOne({userId: FlowRouter.getParam('profileId')}, {url: 1});
+    BasicProfiles.findOne({userId: FlowRouter.getParam('profileId')})
+    var urlDoc = CropUploader.images.findOne({userId: FlowRouter.getParam('profileId')}, {derivatives: 1});
     if (urlDoc){
-      return urlDoc.url
+      return urlDoc.derivatives.thumbnail
     }
   }
 })
@@ -541,27 +1021,22 @@ Template.files.onCreated( () => Template.instance().subscribe( 'files' ) );
 
 Template.files.helpers({
   files() {
-    var files = Images.find({userId: Meteor.userId()}, { sort: { "added": -1 } } );
+    var files = UserImages.find({userId: Meteor.userId()}, { sort: { "added": -1 } } );
     if ( files ) {
       return files;
     }
   },
 
   profileFile() {
-    var file = Images.findOne({userId: Meteor.userId(), picType: "profile"});
+    var file = UserImages.findOne({userId: Meteor.userId(), picType: "profile"});
     if(file){
       return file
     }
   }
 });
 
-Template.accountTemplate.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
-  });
 
-});
+
 
 Template.file.helpers({
   isImage( url ) {
@@ -611,16 +1086,24 @@ AccountsTemplates.configure({
       nav: 'Navbar'
   },
   defaultContentRegion: 'main',
+  confirmPassword: false,
+
+  texts: {
+    title: {
+      signIn: "Log In",
+      signUp: "Sign Up",
+    }
+  },
 
   onSubmitHook: function(error, state){
     if (!error){
       if (state === "signIn"){
-        $('#signUp').closeModal();
-        $('#login').closeModal();
+        console.log("Signed In")
+        $('#loginModal').closeModal();
       }
       if (state === "signUp"){
-        $('#signUp').closeModal();
-        $('#login').closeModal();
+        console.log("Signed Up")
+        $('#signUpModal').closeModal();
       }
     }
   }
@@ -654,23 +1137,26 @@ Template.navbarAccount.onRendered(function () {
 });
 
 Template.modalLogin.onRendered(function () {
-  $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
-  });
+    $('.modal-login-trigger').leanModal({
+      dismissible: true,
+      complete: function() {  AccountsTemplates.avoidRedirect = false; }
+    });
 });
 
 Template.modalSignUp.onRendered(function () {
-  $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal();
-  });
+    $('.modal-signup-trigger').leanModal({
+      dismissible: true,
+      complete: function() {   AccountsTemplates.avoidRedirect = false; }
+    });
 });
 
 Template.ProfileLayout.onRendered(function () {
   $(document).ready(function(){
     $('.materialboxed').materialbox();
   });
+
 });
 
 Template.CollapsibleStructure.onRendered(function () {
@@ -1233,7 +1719,7 @@ Template.results.helpers({
     }
   },
    currentProfilePic: function(Id) {
-    var pic = Images.findOne({userId: Id});
+    var pic = UserImages.findOne({userId: Id});
     if (pic){
       return pic
     }
@@ -1298,15 +1784,19 @@ Template.makeAdmin.events({
 
 // Decide Modal Login/SignUp Popup
 Template.modalLogin.events({
-  'click .modal-trigger': function(){
+  'click .modal-login-trigger': function(){
     AccountsTemplates.setState('signIn');
-  }
+    AccountsTemplates.avoidRedirect = true;
+  },
+
 });
 
 Template.modalSignUp.events({
-  'click .modal-trigger': function(){
+  'click .modal-signup-trigger': function(){
     AccountsTemplates.setState('signUp');
-  }
+    AccountsTemplates.avoidRedirect = true;
+  },
+
 });
 
 // Logout from the navbar

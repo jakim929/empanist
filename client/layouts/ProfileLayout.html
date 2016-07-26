@@ -3,7 +3,14 @@
     <main>
       <div class="parallax-container">
         <div class="parallax">
-          <img src="http://materializecss.com/images/parallax1.jpg" />
+          {{#unless isOwnProfile}}
+            <img id="#cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
+          {{else}}
+              <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" />
+            <!-- <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
+              <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
+            </a> -->
+          {{/unless}}
         </div>
       </div>
           {{#if validId}}
@@ -48,12 +55,12 @@
       {{> afQuickField name="status" value="Pending" type="hidden"}}
       <!-- {{> afQuickField name="startDate"}}
       {{> afQuickField name="endDate"}} -->
-      <label for="sd" class="active">Start Date</label>  
+      <label for="sd" class="active">Start Date</label>
       {{> afFieldInput name="startDate" id="sd" type="date"}}
-     
+
        <label for="ed" class="active">End Date</label>
       {{> afFieldInput name="endDate" id="ed" type="date"}}
-   
+
       <!--{{> afQuickField name="repertoire"}} -->
       {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
     {{/autoForm}}
@@ -71,7 +78,7 @@
 <template name="accountTemplate">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
     <div id="first-card-text" class="card-content">
-      <span class="black-text activator"> 
+      <span class="black-text activator">
         <div class="all">
           <div id="profileImg">
             {{#unless isOwnProfile}}
@@ -82,23 +89,18 @@
               {{/with}}
             {{else}}
               {{#with currentProfilePic}}
-                <a class="waves-effect waves-light modal-trigger" href="#changeProfileModal">
+                <a class="waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
                   <img src={{this}} height="250px">
                 </a>
               {{else}}
-                <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
+                <a class="btn waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
                   <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
                 </a>
               {{/with}}
             {{/unless}}
           </div>
           <!-- Modal to change profile pic -->
-          <div id="changeProfileModal" class="modal">
-            <div class="modal-content">
-              <h5>Change Profile Picture <i class="material-icons modal-action modal-close right">close</i></h5>
-              {{> upload}}
-            </div>
-          </div>
+          {{> changeImageModal}}
         <!-- <span class="black-text activator"> -->
           <div class="details">
             <h5 class="bold">{{name}}</h5>
@@ -123,6 +125,19 @@
         {{> basicMyProfile}}
       </div>
     {{/if}}
+  </div>
+</template>
+
+<template name="changeImageModal">
+  <div id="changeImageModal" class="modal modal-fixed-footer white">
+    <!-- <div class="modal-content"> -->
+      <!-- <h5><i class="material-icons modal-action modal-close right">close</i></h5> -->
+      <!-- {{> upload}} -->
+      {{>picOverlord}}
+    <!-- </div> -->
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+    </div>
   </div>
 </template>
 
@@ -273,10 +288,8 @@
 <!-- ADD PIC PROFILE -->
 
 <template name="upload">
-  <fieldset>
     {{> uploader}}
     {{> files}}
-  </fieldset>
 </template>
 
 <template name="files">

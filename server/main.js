@@ -5,6 +5,8 @@ import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
 import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
 
+
+
 Meteor.startup(() => {
 });
 
@@ -26,9 +28,30 @@ getGeocode = function (arg) {
   }
 };
 
+myPostSubmitFunc = function (userId, info) {
+  if(BasicProfiles.findOne({userId: userId})){
+    Roles.addUsersToRoles(userId, "makeMusicProfile")
+  }
+}
+
+AccountsTemplates.configure({
+  postSignUpHook: myPostSubmitFunc
+});
+
+Accounts.onCreateUser(function(options, user) {
+  // We still want the default hook's 'profile' behavior.
+  if (options.profile.name && options.profile.birthDate){
+    var newBasicProfile = {userId: user._id, name: options.profile.name, birthDate: options.profile.birthDate}
+    console.log(newBasicProfile)
+    BasicProfiles.insert(newBasicProfile);
+
+    return user;
+  }
+
+});
 
 Meteor.publish( 'files', function(){
-  var data = Images.find( { "userId": this.userId } );
+  var data = UserImages.find( { "userId": this.userId } );
 
   if ( data ) {
     return data;
@@ -37,6 +60,22 @@ Meteor.publish( 'files', function(){
   return this.ready();
 });
 
+var deleteImageFromS3 = function(url, callback){
+  if (url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
+  {
+    throw new Meteor.error("URL parse failed","Not a valid image url");
+  }
+
+  var newKey = url.replace("https://empanist-images.s3.amazonaws.com/", "")
+  var s3 = new AWS.S3();
+
+  var params = {
+    Bucket: "empanist-images",
+    Key:newKey
+  };
+
+  s3.deleteObject(params, Meteor.bindEnvironment(callback))
+}
 
 Meteor.methods({
   // Add security measures
@@ -44,34 +83,43 @@ Meteor.methods({
     if(!this.userId){
       throw new Meteor.error("Access Denied","User not logged in");
     }else{
-      var found = Images.findOne({_id: imageDatabaseId, userId: this.userId})
+      var found = CropUploader.images.findOne({_id: imageDatabaseId, userId: this.userId })
       if (!found){
         throw new Meteor.error("Image search failed","Image not found");
       }
+      var mainUrl = found.url
+      var derivativeUrl = found.derivatives.thumbnail
 
-      if (found.url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
-      {
-        throw new Meteor.error("URL parse failed","Not a valid image url");
-      }
-
-      var newKey = found.url.replace("https://empanist-images.s3.amazonaws.com/", "")
-      var s3 = new AWS.S3();
-
-      var params = {
-        Bucket: "empanist-images",
-        Key:newKey
-      };
-
-      s3.deleteObject(params, Meteor.bindEnvironment(function(err,data){
+      var cbDeleteFromCollection = function(err,data){
         if (err){
           console.log(err)
         }else{
-          Images.remove({_id: imageDatabaseId});
+          CropUploader.images.remove({_id: imageDatabaseId});
+          console.log("Successfully deleted from S3 and deleted from CropUploader.images collection", imageDatabaseId);
+
+        }
+      };
+
+      var cbKeepCollection = function(err,data){
+        if (err){
+          console.log(err)
+        }else{
           console.log("Successfully deleted from S3", imageDatabaseId);
         }
-      }))
-    }
+      };
 
+      if(derivativeUrl){
+        deleteImageFromS3(derivativeUrl, cbKeepCollection);
+      }
+      deleteImageFromS3(mainUrl, cbDeleteFromCollection);
+
+      if (found.picType == "profile"){
+        BasicProfiles.update({userId: this.userId}, {$unset:{profilePic : ""}});
+      }else{
+        BasicProfiles.update({userId: this.userId}, {$unset:{coverPic : ""}});
+      }
+
+    }
   },
 
   storeUrlInDatabase: function( url, type ) {
@@ -79,7 +127,7 @@ Meteor.methods({
     Modules.both.checkUrlValidity( url );
 
     try {
-      Images.insert({
+      UserImages.insert({
         url: url,
         userId: Meteor.userId(),
         picType: type,
@@ -145,12 +193,26 @@ Meteor.methods({
     }
   },
 
-
-
+  setCropPreferences: function(cropData){
+    console.log(cropData);
+    var pref = cropData.x.toString() + "x"  + cropData.y.toString() + "+" + cropData.width.toString() + "+" + cropData.height.toString()
+    Imagemagick.convert(['/images/violincover.jpg', '-crop', pref, ''])
+  }
 });
 
 // Server Side hooks
 // CHANGE ADMIN SETTINGS WHEN DONE TESTING
+
+// Images (CropUploader) Hooks
+CropUploader.images.after.insert(function (userId, doc) {
+  // Perhaps use javascript selectors instead of a dumb if statment
+  // Add Safety measures with a (before) hook
+  if(doc.picType == "profile"){
+    BasicProfiles.update({userId: userId}, {$set: {profilePic: doc._id}})
+  }else if (doc.picType == "cover"){
+    BasicProfiles.update({userId: userId}, {$set: {coverPic: doc._id}})
+  }
+})
 
 Meteor.users.after.insert(function (userId, doc){
   Roles.addUsersToRoles(this._id, 'makeBasicProfile');
@@ -159,13 +221,7 @@ Meteor.users.after.insert(function (userId, doc){
 // Basic Profiles Server Side Hooks
 
 BasicProfiles.before.insert(function (userId, doc){
-  var loggedInUser = Meteor.user();
-  if(!loggedInUser){
-    throw new Meteor.Error(403, "Not Logged In");
-  }else if((!Roles.userIsInRole(loggedInUser._id, 'makeBasicProfile'))
-            &&(!Roles.userIsInRole(loggedInUser._id, 'admin'))){
-    throw new Meteor.Error(403, "No Permission to Make Basic Profile");
-  }
+  // Alert -> Make Safer ASDFDSAFDASFASDFFA
 });
 
 BasicProfiles.after.insert(function(userId, doc){
