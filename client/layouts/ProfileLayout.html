@@ -13,44 +13,104 @@
           {{/unless}}
         </div>
       </div>
-          {{#if validId}}
+      <!-- uncomment later on -->
+          <!-- {{#if validId}} -->
             {{#if isOwnProfile}}
+<!-- <<<<<<< HEAD
+=======
               {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+              {{#if userIsAccompanist}}
+                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+              {{/if}}
               {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
             {{else}}
               {{#if isAccompanist}}
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
               <div class="row">
-                <div class="col s8">
-                  {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
-                  {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
-                  {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
+                <div class="col l8 m8 s12">
+                  {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
+                  {{#if userIsAccompanist}}
+                    {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+                  {{/if}}
+                  {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
                 </div>
-                <div class="col s4">
+                <div class="col l4 m4 s12">
                   <div class="overlap-into-top">
                     <div class="card grey lighten-5 z-depth-0">
                       <div class="card-content">
-                        <h6><b><div class="center">Book This Accompanist</div></b></h6>
-                          {{> bookAccompanistForm}}
+                        <ul>
+                          <li>
+                            <h6><b><div class="center">Profile Strength</div></b></h6>
+                            <br>
+                            {{>liquid_fill_gauge}}
+                            <br>
+                            <br>
+                          </li>
+                          <li class="divider"></li>
+                          <li>
+                            <h6><b><div class="center">How to strengthen my Profile?</div></b></h6>
+                            {{> suggestions}}
+                          </li>
+                          <li class="divider"></li>
+                          <li>
+                            <h6><b><div class="center">Accompanying data/advs to join</div></b></h6>
+                            <!-- {{>barChart }} -->
+                          </li>
+                      </ul>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            {{else}}
+              {{#if isAccompanist}}
+                <div class="row">
+                  <div class="col s8">
+                    {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
+                    {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
+                    {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
+                  </div>
+                  <div class="col s4">
+                    <div class="overlap-into-top">
+                      <div class="card grey lighten-5 z-depth-0">
+                        <div class="card-content">
+                          <h6><b><div class="center">Book This Accompanist</div></b></h6>
+                            {{> bookAccompanistForm}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               {{else}}
                 {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
                 {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
               {{/if}}
             {{/if}}
-          {{else}}
+         <!--  {{else}}
             {{> invalidId}}
-          {{/if}}
+          {{/if}} -->
     </main>
+</template>
+
+<template name="liquid_fill_gauge">
+  <svg id="fillgauge2" width="100%" height="100%" ></svg>
+</template>
+
+<template name="suggestions">
+  <div class="suggestions">
+    <ul>
+      {{#each suggestions}}
+        <li>{{this}}</li>
+      {{/each}}
+      <br>
+    </ul>
+  </div>
 </template>
 
 <template name="bookAccompanistForm">
   {{#with routeAccompanist}}
     {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert" doc=partialTransaction}}
-      {{> afQuickField name="musician" }}
+      {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
       <!-- {{> afQuickField name="startDate"}}
@@ -69,7 +129,6 @@
     Not on an accompanist page.
   {{/with}}
 </template>
-
 <template name="invalidId">
   <h2>Invalid ID</h2>
 </template>
@@ -155,8 +214,14 @@
             {{mainTitle}}
           </h5>
           {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
-          {{#if isOwnProfile}}
-            <i class="material-icons right">mode_edit</i>
+          {{#if notEmpty dynamicData}}
+            {{#if isOwnProfile}}
+<!-- <<<<<<< HEAD
+ -->              <i class="myprofile_edit material-icons right">mode_edit</i>
+<!-- =======
+              <i class="material-icons right">mode_edit</i>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
+            {{/if}}
           {{/if}}
           <br>
          </span>
@@ -184,9 +249,22 @@
             <div class="card grey lighten-5 z-depth-0">
               <div class="card-content">
                 <span class="{{close}} right"><i class="material-icons right">close</i> </span>
-                {{#autoForm id=arrayField type="update-pushArray" collection="MusicProfiles" doc=currentProfile scope=arrayField}}
-                  {{> UI.dynamic template=arrayField data="myProfile"}}
-                {{/autoForm}}
+                {{#if notEmpty dynamicData}}
+                  {{#autoForm id=arrayField type="update-pushArray" collection="MusicProfiles" doc=currentProfile scope=arrayField}}
+                      {{> UI.dynamic template=arrayField data="myProfile"}}
+                  {{/autoForm}}
+                {{else}}
+                  {{#autoForm collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
+                    {{> afArrayField name=arrayField template="firstCustomArrayField"}}
+
+                      <button type="submit" class=" {{close}} btn right btn-primary">first</button>
+<!-- =======
+                      <button type="submit" class=" {{close}} btn right btn-primary">Save</button>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
+                      <br>
+                      <br>
+                  {{/autoForm}}
+                {{/if}}
               </div>
             </div>
           </div>
@@ -194,6 +272,21 @@
     {{/each}}
   </section>
 </template>
+
+
+<!-- <template name="afArrayField_firstArrayField">
+  {{#if afFieldIsInvalid name=atts.name}}
+    <span>{{{afFieldMessage name=atts.name}}}</span>
+  {{/if}}
+
+      {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+
+        {{> UI.dynamic template=../atts.name}}
+
+      {{/afEachArrayItem}}
+
+</template>
+ -->
 
 <!-- Editing For (Except for Basic Profile info..aka first card in MyProfile) -->
 <template name="EditingForm">
@@ -205,6 +298,60 @@
     <!-- <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span> -->
     {{/autoForm}}
   {{/if}}
+</template>
+
+<template name="myProfileAccompEditingForm">
+<!-- <<<<<<< HEAD -->
+  {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
+    <h10>Hourly Charge</h10>
+    {{> afQuickField name="charge"}}
+    <h10>Prefered Working Hours</h10>
+    {{> afQuickField name="working_hours"}}
+    <h10>Prefered Working Days</h10>
+    {{> afQuickField name="working_days"}}
+    <h10>Activate Account?</h10>
+    {{> afQuickField name="accompanist_active"}}
+    <h10>Where would you prefer to accompany?</h10>
+    {{> afQuickField name="session_location"}}
+    <h10>Where are you?</h10>
+    {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+    <h10>Tell us something about yourself</h10>
+    {{> afQuickField name="one_liner"}}
+    <button type="submit" class=" btn card-title right btn-primary">Save</button>
+  {{/autoForm}}
+</template>
+
+<template name="repertoireEditingForm">
+  {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
+    {{> afArrayField name="repertoire" template="editProfileCustomArrayField"}}
+    <button type="submit" class=" btn card-title right btn-primary">Save</button>
+  {{/autoForm}}
+<!-- =======
+    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
+
+
+
+        {{> afQuickField name="charge"}}
+
+
+        {{> afQuickField name="working_hours"}}
+
+
+        {{> afQuickField name="working_days"}}
+
+
+        {{> afQuickField name="accompanist_active"}}
+
+
+        {{> afQuickField name="session_location"}}
+
+        {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+
+        {{> afQuickField name="one_liner"}}
+        <button type="submit" class=" btn card-title right btn-primary">Save</button>
+
+    {{/autoForm}}
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
 </template>
 
 <!-- SUB-SECTION: rendered data for each card -->
@@ -247,15 +394,38 @@
 
 <!-- SECTION: Accompanist Profile Information Card -->
 <template name="accompanistProfileTemplate">
-  <div class="card grey lighten-5 z-depth-0">
+  <div class="card {{accompColor accompanist_active}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
+<!-- <<<<<<< HEAD -->
+        {{#if isOwnProfile}}
+         <div class="row">
+            <h5>
+              Accompanying Preferances
+            </h5>
+          {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type="update"}}
+            {{> afQuickField name="charge" type="hidden"}}
+            {{> afQuickField name="working_hours" type="hidden"}}
+            {{> afQuickField name="working_days" type="hidden"}}
+            {{> afQuickField name="session_location" type="hidden"}}
+            {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
+            {{> afQuickField name="one_liner" type="hidden"}}
+            <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
+          {{/autoForm}}
+          </div>
+<!-- ======= -->
         <!--
         <h5>Repertoire: </h5>
         {{#each repertoire}}
           {{this}}<br>
         {{/each}}
            <hr> -->
+<!--         {{#if isOwnProfile}}
+          <h5>
+            Accompanying Preferances
+          </h5>
+>>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
+        {{/if}}
         <div class="accopmCard-left">
           <h10>
             <i id="align_text" class="small material-icons">attach_money</i>
@@ -280,9 +450,75 @@
           <br><br>
         </div>
         <p class="center_horizontal">{{one_liner}}</p>
+        {{#if isOwnProfile}}
+            <br>
+            <i class="material-icons right">mode_edit</i>
+            <br>
+        {{/if}}
       </span>
     </div>
+         {{#if isOwnProfile}}
+          <div class="card-reveal grey lighten-5 z-depth-0">
+            <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+            {{> myProfileAccompEditingForm}}
+          </div>
+        {{/if}}
   </div>
+
+{{#if isOwnProfile}}
+  <div class="card grey lighten-5 z-depth-0">
+    <div class="card-content">
+      <span class="black-text activator">
+        <h5>
+        <i id="align_text" class="medium material-icons">clear_all</i>
+        Repertoire
+        </h5>
+        {{#each repertoire}}
+          {{concerto}}<br>
+        {{/each}}
+        <br>
+        <i class="material-icons right">mode_edit</i>
+        <br>
+      </span>
+    </div>
+    <div class="card-reveal grey lighten-5 z-depth-0">
+      <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+      {{> repertoireEditingForm}}
+    </div>
+  </div>
+
+  <div class="AddArrayObjectButton">
+    <div class="addRepButton">
+      <center>
+        <button
+          type="button"
+          class="add-btn grey">
+          Add Repertoire
+        </button>
+      </center>
+    </div>
+  </div>
+  <div class="addRepForm">
+    <div class="card grey lighten-5 z-depth-0">
+      <div class="card-content">
+        <span class="cancel right"><i class="material-icons right">close</i> </span>
+          {{#autoForm id="upsertRepertoireProfileForm" type="update-pushArray" collection="AccompanistProfiles" doc=currentAccompanistProfiles scope="repertoire"}}
+            <div class="row">
+              <br>
+              <div class="input-field col s6">
+                {{> afFieldInput name="concerto" id="rep" type="text"}}
+                <label for="rep" class="active">Repertoire</label>
+              </div>
+              <button type="submit" class="cancel btn right btn-primary">test</button>
+              <br>
+            </div>
+          {{/autoForm}}
+      </div>
+    </div>
+  </div>
+
+{{/if}}
+
 </template>
 
 <!-- ADD PIC PROFILE -->

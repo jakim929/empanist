@@ -3,13 +3,14 @@
   
     {{> NewAccompanist}}
     {{> newAccompAdvice}}
+    {{> publishAccompanist}}
         
     </main>
 </template>
 
 <template name="NewAccompanist">
+  <h3>Become an accompanist</h3>
   <div class="left-card">
-    <h3>Become an accompanist</h3>
     <ul class="collection">
         <li class="collection-item">
           <div>
@@ -19,19 +20,14 @@
             {{/if}}
             <p class="step_main">Lets clarify some basics</p>
             <p class="step_info">Name, location, number, and more</p>
-            <br>
-            {{#unless musicProfileExists  }}
-              {{#unless accompanistProfileExists}}
-              {{#unless basicProfileExists}}
-                <a class="waves-effect waves-light btn" href="/newaccomp/step1">
-                  Continue
-                </a>
-                {{/unless}}
-                {{/unless}}
-                 {{else}}
-                <a href="/newaccomp/step1">
-                  Edit
-                </a>
+            {{#unless basicProfileExists}}
+              <a class="waves-effect waves-light btn" href="/newaccomp/step1">
+                Continue
+              </a> 
+               {{else}}
+              <a href="/newaccomp/step1">
+                Edit
+              </a>
             {{/unless}}
           </div>
         </li>
@@ -43,7 +39,6 @@
             {{/if}}
             <p class="step_main">Show off your skills</p>
             <p class="step_info">Awards, competitions, orchestras, instruments</p>
-            <br>
             {{#if basicProfileExists}}
               {{#unless musicProfileExists}}
                 {{#unless accompanistProfileExists}}
@@ -67,7 +62,6 @@
             {{/if}}
             <p class="step_main">Get ready to accompany!</p>
             <p class="step_info">Time and day preferance, hourly charge, and more</p>
-            <br>
             {{#if and basicProfileExists musicProfileExists}}
               {{#unless accompanistProfileExists}}
                 <a href="/newaccomp/step3" class="waves-effect waves-light btn">
@@ -89,11 +83,42 @@
   <div class=" advice">
     <div class="card grey lighten-5 z-depth-0">
       <div class="card-content">
-        <h5>
-          Advice box!! 
-        </h5>
+        <i class="small left material-icons prefix blue-text text-darken-2">ic_wb_incandescent</i>
+        <br>
+           <ul>
+            <li><h10>You could earn up to $60 a day for 1 hour of work!</h10></li>
+            <li class="divider"></li>
+            <li><h10>You can always deactivate your account and take a break for a while!</h10></li>
+          </ul>
       </div>
     </div>
+  </div>
+</template>
+
+<template name="publishAccompanist">
+  <div class=" newAccompPublish">
+    {{#if basicProfileExists}}
+      {{#if musicProfileExists}}
+        {{#if accompanistProfileExists}}
+          <div class="card grey lighten-5 z-depth-0">
+            <div class="card-content">
+              <h5>
+                Great, you are ready to accompany!
+              </h5>
+              <h10>
+                 Reply to your bookings, always keep your preferances updated, and most importantly enjoy!
+              </h10>
+              <br>
+              <br>
+              <center>
+                <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Publish and View Profile</a>
+              </center>
+
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+    {{/if}}
   </div>
 </template>
 

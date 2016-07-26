@@ -97,6 +97,9 @@
               {{> afQuickField name="sessionCount" label=false type="select"  options=sessionsOptions }}
             </div>
           </div>
+
+          Where is the location of the final performance?
+          {{> afQuickField name="performanceLocation" label="Performance Location"}}
       {{/autoForm}}
   {{else}}
       <!-- Some kind of error prevented transaction from being carried over-->
@@ -112,20 +115,25 @@
             <div class="col s4">
               {{> afQuickField name="sessionCount" label=false type="select" defaultValue=defaultSessionCount firstOption="1 session" options=sessionsOptions }}
             </div>
-          </div>
+          </div><br>
+
       {{/autoForm}}
   {{/with}}
 
-  <br>
-  {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
 
+  {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
+    {{> afQuickField name="sessionType" value="Rehearsal" type="hidden"}}
+    {{> afQuickField name="status" value="Pending" type="hidden"}}
+    {{> afQuickField name="firstSession" value="true" type="hidden"}}
+
+    When would you like to have your FIRST session?<br><br>
+    {{> afFieldInput id="firstSessionDate" name="date" type="date"}}
+    <br><br>
     Suggest some times for the FIRST session? (At least 2)<br><br>
     <!-- {{> afQuickField name="suggestedTimes" }} -->
-    {{> afArrayField name="suggestedTimes" template="newAccompCustomArrayField" data="sessionTime"}}
-    <br><br>
+    <!-- {{> afArrayField name="suggestedTimes" template="newAccompCustomArrayField" data="sessionTime"}} -->
+    {{> afFieldInput id="firstSuggestedHours" name="suggestedHours" type="time-checkboxes" options=optionsArray}} <br>
 
-    Where would you like to rehearse?<br>
-    {{> afQuickField name="location" label="Rehearsal Location"}}
   {{/autoForm}}
 </template>
 
@@ -136,49 +144,10 @@
 </template>
 
 <template name="SuccessLayout">
+  <h3 class="center">Booking Request Sent!</h3>
   <div class="row">
-  <div class="col s12 m6 l6 push-m3 push-l3">
-    <div class="card z-depth-0">
-      <div class="card-content center">
-        <span class="black-text">
-          <h5>Booking Successful!</h5>
-
-            <div class="divider"></div>
-            <img class="responsive-img" src="http://materializecss.com/images/parallax1.jpg"/>
-            <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
-
-          <div class="container">
-
-          {{#with routeTransaction}}
-
-            {{#with basicProfileById accompanist}}
-              <h6>{{name}}</h6>
-              A pianist from {{affiliation}}<br>
-            {{/with}}<br>
-            <div class="divider"></div><br>
-
-            <h6>{{formatDate startDate}}&nbsp;&nbsp;<i class="material-icons vertical-align-middle padding-bottom-3">keyboard_arrow_right</i>&nbsp;&nbsp;{{formatDate endDate}}</h6>
-            <br>
-
-
-            {{#with priceDetails accompanist sessionCount}}
-            <div class="divider"></div>
-            <table>
-               <tbody>
-                 <tr>
-                   <td>{{sessionCount}} Sessions</td>
-                   <td><div class="right"><h6>${{total}}.00</h6></div></td>
-                 </tr>
-               </tbody>
-             </table>
-            {{/with}}
-
-          {{/with}}
-
-        </div>
-       </span>
-      </div>
+    <div class="col s12 m4 l4 push-m4 push-l4">
+      {{> Template.dynamic template="BookingCard" data=routeTransaction}}
     </div>
-  </div>
   </div>
 </template>

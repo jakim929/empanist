@@ -17,15 +17,6 @@ TransactionSchema = new SimpleSchema({
     autoform: {
       type: "hidden"
     },
-    autoValue:
-      function() {
-        if(this.isSet){
-          return this.value
-        }else{
-          return Meteor.userId()
-        }
-
-      }
   },
 
   accompanist: {
@@ -134,9 +125,9 @@ SessionSchema = new SimpleSchema({
   },
 
   startTime: {
-    type: Date,
+    type: Number,
     optional: true,
-    label: 'Start Time'
+    label: 'Start Time in Military Hour'
   },
 
   duration: {
@@ -149,7 +140,12 @@ SessionSchema = new SimpleSchema({
     type: String,
     label: 'Session Status',
     allowedValues: [ 'Pending', 'Confirmed', 'Completed', 'Cancelled'],
-    optional: true
+  },
+
+  firstSession: {
+    type: String,
+    label: "First Session?",
+    optional:true
   }
 
 

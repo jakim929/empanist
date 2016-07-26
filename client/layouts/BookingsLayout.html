@@ -10,7 +10,14 @@
 
 <template name="AllBookings">
   <div class="row">
+    {{#each sentBookingRequests}}
     <div class="col s12 m6 l4">
+      {{> Template.dynamic template="BookingCard" data=this}}
+    </div>
+    {{else}}
+    No Booking Requests
+    {{/each}}
+    <!-- <div class="col s12 m6 l4">
       {{> BookingCardExample}}
     </div>
     <div class="col s12 m6 l4">
@@ -24,10 +31,7 @@
     </div>
     <div class="col s12 m6 l4">
       {{> BookingCardExample}}
-    </div>
-    <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -69,7 +73,6 @@
   <div class="card z-depth-0">
     <div class="card-content center">
       <span class="black-text">
-          <div class="divider"></div>
           <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
           <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
 
@@ -79,13 +82,15 @@
           {{/with}}
         </div>
 
-          <p>{{sessionCount}} sessions<br>{{formatDuration startDate endDate}}</p>
+          <p>{{sessionCount}} sessions<br>{{formatDuration startDate endDate}}</p><br>
+          <div class="row no-margin"><div class="col s12 m4 l4 push-m4 push-l4">{{>Template.dynamic template="statusBadge" data=status}}</div></div><br>
 
-          <br>
+
           <div class="container">
             <div class="divider"></div><br>
             A pianist from <br>{{#with basicProfileById accompanist}}{{affiliation}}{{/with}}
           </div>
+
      </span>
     </div>
 
@@ -94,6 +99,15 @@
       <a href="#" class="right">Receipt</a><br>
     </div>
   </div>
+</template>
+
+
+<template name="statusBadge">
+    <div class="card no-margin z-depth-0 {{getClass this}} statusBadge">
+      <div class="center">
+        {{this}}
+      </div>
+    </div>
 </template>
 
 <template name="SentBookings">

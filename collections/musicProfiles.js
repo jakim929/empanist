@@ -62,13 +62,11 @@ InstrumentSchema = new SimpleSchema({
   instrument: {
     type: String,
     label: "Instrument Played",
-    optional: true
   },
 
   yearsPlayed: {
     type: Number,
     label: "Years Played",
-    optional: true
   }
 });
 
@@ -88,18 +86,6 @@ MusicProfileSchema = new SimpleSchema({
     label: "Instrument Played",
     optional: true
   },
-
-  // instrument: {
-  //   type: String,
-  //   label: "Instrument Played",
-  //   optional: true
-  // },
-
-  // yearsPlayed: {
-  //   type: Number,
-  //   label: "Years Played",
-  //   optional: true
-  // },
 
   awards: {
     type: [AwardSchema],

@@ -3,46 +3,97 @@
         <h1> Your Sessions </h1>
     </header>
     <main>
+      {{#with routeTransaction}}
       <div class="row">
         <div class="col l8 m12 s12">
-          {{> NewSession}}
+          {{> Template.dynamic template="SessionsOverlord" data=this}}
         </div>
         <div class="col l4 m12 s12">
-          {{> BookingCardExample }}
+          {{> Template.dynamic template="BookingCard" data=this}}
 
         </div>
       </div>
+      {{/with}}
 
 
     </main>
 </template>
 
+<template name="SessionsOverlord">
+  <div class="card set-min-height z-depth-0">
+    <div class="card-content">
+      {{#with basicProfileById accompanist}}
+      <span class="card-title activator grey-text text-darken-4">Sessions With {{name}}<i class="material-icons right">playlist_add</i></span>
+      {{/with}}
+
+      <div class="divider"></div><br>
+
+      <div class="row">
+        <div class="col s12">
+          <table class="highlight striped">
+            <thead>
+              <tr>
+                 <th data-field="session">Session</th>
+                 <th data-field="date">Date</th>
+                 <th data-field="status">Status</th>
+               </tr>
+            </thead>
+            <tbody>
+              {{#each scheduledSessions}}
+              <tr>
+                <td>{{sessionType}}</td>
+                <td>{{formatDate date}}</td>
+                <td>{{>Template.dynamic template="statusBadge" data=status}}</td>
+              </tr>
+              {{/each}}
+
+            </tbody>
+          </table>
+          <br><br>
+          <div class="row">
+            <button class="btn waves-effect waves-light activator col s12">Schedule Another Session</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">Schedule Another Session<i class="material-icons right">close</i></span>
+      {{> NewSession}}
+    </div>
+  </div>
+</template>
+
 
 <template name="NewSession">
-  <div class="card z-depth-0">
-    <div class="card-content">
-      <h5>Book A Session</h5>
+
+      <!-- <h5>Request A Session</h5> -->
       <div class="divider"></div><br>
       <!-- <span class="card-title">Card Title</span> -->
       {{#autoForm id="NewSession" collection="Sessions" type="insert" doc=initialDoc }}
+        {{> afQuickField name="status" value="Pending" type="hidden"}}
         {{> afQuickField name="transaction" type="hidden"}}
         {{> afQuickField name="accompanist" type="hidden"}}
         {{> afQuickField name="musician" type="hidden"}}
 
-
-        <label for="sessionTypeInput">Session Type</label>
-        {{> afFieldInput id="sessionTypeInput" name="sessionType" type="select-radio" label="Session Type" options="allowed"}}<br><br>
-
-        <label for="sessionDateInput">Date</label>
-        <div class="row"><div class="col s4">{{> afFieldInput id="sessionDateInput" name="date" type="date"}}</div></div><br>
+        <div class="row">
+          <div class="col l6 m6 s12">
+            <label for="sessionTypeInput">Session Type</label>
+            {{> afFieldInput id="sessionTypeInput" name="sessionType" type="select-radio" label="Session Type" options="allowed"}}<br>
+          </div>
+          <div class="col l6 m6 s12">
+            <label for="sessionDateInput">Date</label>
+            {{> afFieldInput id="sessionDateInput" name="date" type="date"}}
+          </div>
+        </div>
 
         <label for="sessionSuggestedHours">Suggested Starting Hour</label>
         {{> afFieldInput id="sessionSuggestedHours" name="suggestedHours" type="time-checkboxes" options=optionsArray}}
-        <div class="row"><div class="col s12"><button class="btn col s12">Request New Session</button></div></div>
+        <div class="row"><div class="col s12"><button class="btn col s12">Schedule Session</button></div></div>
       {{/autoForm}}
 
-    </div>
-  </div>
+
 </template>
 
 

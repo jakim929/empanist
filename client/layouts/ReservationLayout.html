@@ -3,14 +3,16 @@
         <h1> Your Reservation </h1>
     </header>
     <main>
+      {{#with routeTransaction}}
       <div class="row">
         <div class="col l8 m12 s12">
-          {{> ReservationDetails}}
+          {{> Template.dynamic template="ReservationDetails" data=this}}
         </div>
         <div class="col l4 m12 s12">
-          {{> BookingCard }}
+          {{> Template.dynamic template="BookingCard" data=this }}
         </div>
       </div>
+      {{/with}}
 
     </main>
 </template>
@@ -26,7 +28,7 @@
           <h6>Sessions</h6>
         </div>
         <div class="col l9 m12 s12">
-          <p>You have scheduled 4 out of 6 sessions.<br> Schedule all sessions.</p>
+          <p>You have scheduled {{arrayLength scheduledSessions}} out of {{sessionCount}} sessions.<br> </p>
 
           <table class="responsive-table highlight">
             <!-- <thead>
@@ -37,28 +39,17 @@
                </tr>
             </thead> -->
             <tbody>
+              {{#each scheduledSessions}}
               <tr>
-                <td>Rehearsal</td>
-                <td>June 24, 2:30PM</td>
-                <td>Completed</td>
+                <td>{{sessionType}}</td>
+                <td>{{formatDate date}}</td>
+                <td>{{status}}</td>
               </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>June 25, 2:30PM</td>
-                <td>Confirmed</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>June 26, 2:30PM</td>
-                <td>Confirmed</td>
-              </tr>
-              <tr>
-                <td>Performance</td>
-                <td>June 28, 2:30PM</td>
-                <td>Confirmed</td>
-              </tr>
+              {{/each}}
+
             </tbody>
           </table>
+          <a class="btn" href={{getSessionsLink}}>Review/Schedule All Sessions</a>
         </div>
       </div>
       <div class="divider"></div><br>
@@ -73,15 +64,11 @@
           <p>
             <table class="striped">
               <tbody>
+                {{#each repertoire}}
                 <tr>
-                  <td>Max Bruch: Kol Nidrei, Op.47</td>
+                  <td>{{this.concerto}}</td>
                 </tr>
-                <tr>
-                  <td>Antonín Dvořák: Humoreske, Op.101 No.7</td>
-                </tr>
-                <tr>
-                  <td>Luigi Boccherini: Cello Concerto No. 8 in C Major, G.481</td>
-                </tr>
+                {{/each}}
               </tbody>
             </table>
           </p>
@@ -99,16 +86,19 @@
           <div class="row">
             <div class="col l6 m6 s6">
               <b>Rehearsal</b><br>
-              20 DeWolfe St.<br>
-              Cambridge<br>
-              MA 02138
+              {{#with rehearsalLocation}}
+              {{else}}
+              To be determined. <br> Accompanist yet to confirm.
+              {{/with}}
             </div>
 
             <div class="col l6 m6 s6">
               <b>Performance</b><br>
-              881 7th Ave.<br>
-              New York<br>
-              NY 10019
+              {{#with performanceLocation}}
+              {{this}}
+              {{else}}
+              To be determined. <br> Please update performance location.
+              {{/with}}
             </div>
 
           </div>
@@ -132,11 +122,15 @@
                   <th data-field="price">Total</th>
                 </thead>
                  <tbody>
+                   {{#with paymentInfo accompanist sessionCount}}
                    <tr>
-                     <td>6 sessions</td>
-                     <td>$50.00</td>
-                     <td>$300.00</td>
+                     <td>{{sessionCount}} sessions</td>
+                     <td>${{hourlyCharge}}.00</td>
+                     <td>${{total}}.00</td>
                    </tr>
+                   {{else}}
+                   Error with payment info.
+                   {{/with}}
                  </tbody>
                </table>
              </div>

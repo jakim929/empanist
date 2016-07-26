@@ -23,12 +23,13 @@ AccompanistProfileSchema = new SimpleSchema({
 
 		repertoire: {
     	type: [RepertoireSchema],
-    	label: "Repertoire"
+    	// label: "Repertoire",
+      optional: true
   	},
 
   	charge: {
   		type: Number,
-  		label: "Hourly Charge",
+  		// label: "Hourly Charge",
   		autoform: {
       		options: [
 	        	{label: "$20", value: 20},
@@ -40,7 +41,7 @@ AccompanistProfileSchema = new SimpleSchema({
 
   	working_hours: {
   		type: [String],
-  		label: "Times you prefer working",
+  		// label: "Times you prefer working",
   		autoform: {
   			type: "select-checkbox-inline",
   			options: [
@@ -54,7 +55,7 @@ AccompanistProfileSchema = new SimpleSchema({
    	working_days: {
   		type: [String],
   		//noselect:true,
-  		label: "Days you want to accompany",
+  		// label: "Days you want to accompany",
   		autoform: {
   			type: "select-checkbox-inline",
   			options: [
@@ -71,7 +72,7 @@ AccompanistProfileSchema = new SimpleSchema({
 
   	session_location: {
   		type: String,
-  		label: "Session's Location",
+  		// label: "Session's Location",
   		autoform: {
   			options: [
         	{label: "My Place", value: "My Place"},
@@ -81,23 +82,14 @@ AccompanistProfileSchema = new SimpleSchema({
   		}
   	},
 
-    // startDate: {
-    //   type: Date,
-    //   label: "Start Date"
-    // },
-
-    // endDate: {
-    //   type: Date,
-    //   label: "End Date"
-    // },
     accompanist_active: {
       type: Boolean,
-      label: "Active or Not"
+      label: "Active"
     },
     // make this show up only if the accomp said he's willing to give sessoins in his place
     mylocation: {
       type: String,
-      label: "mylocation"
+      // label: "mylocation"
     },
 
     geolocation:{
@@ -138,7 +130,7 @@ AccompanistProfileSchema = new SimpleSchema({
 
     one_liner: {
       type: String,
-      label: "Describe yourself in one sentence",
+      // label: "Describe yourself in one sentence",
     }
 
 });
