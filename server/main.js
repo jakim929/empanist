@@ -323,7 +323,7 @@ MusicProfiles.after.update(function (userId, doc, fieldNames, modifier, options)
                               percent(programs_length) +
                               percent(orchestras_length));
 
-    Data.update({ userId: doc.userId },{ $set: {value: percent }},{ $set: {suggestions: suggestions }})
+    Data.update({ userId: doc.userId },{ $set: {value: percent }, $set: {suggestions: suggestions }})
 
 });
 
