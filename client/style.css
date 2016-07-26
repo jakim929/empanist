@@ -69,6 +69,25 @@ div.home_text {
 
 }
 
+/*date range*/
+/*.fa-rotate-180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+ .up{
+  margin-top: -1px;
+ }
+ 
+.verticalLine {
+    border-left: 1px solid grey;
+    margin-top: -1px;
+}
+
+.pads {*/
+  
 div.search_bar {
   position: absolute;
   top:70%;
@@ -77,12 +96,13 @@ div.search_bar {
   right: 0;
   margin: auto;
 }
-
-div.blur {
+/*rgba(0, 0, 0, 0.5);*/
+.blur {
   /* Backgroung layout*/
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: white;
   display:inline-block;
   width: 100%;
+  border-radius: 3px
 }
 
 #bg {
@@ -159,21 +179,41 @@ div.blur {
   margin-right: 40%;
 }
 
-.result-card-right {
-  float:left;
-  overflow:hidden;
-  width:48%;
-  height: 300px;
-  margin-right: 2%;
-  margin-top: 2%;  
+.resultsContainer {
+  margin-left: 10%;
 }
 
-.result-card-left {
-  float: left;
-  overflow:hidden;
-  width:48%;
+.result-card {
   height: 300px;
-  margin-top: 2%;
+  margin-right: 2%;
+}
+
+a.changeColor {
+  color: black;
+}
+
+.divide {
+  float:left;
+  overflow:hidden;
+  width:50%;
+  max-height: 100%;
+}
+
+.top {
+  padding-bottom: 15px
+}
+
+.nameAffili {
+  padding-top: 105px;
+  margin-left: 110px;
+  height:150px;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .accopmCard-left {
@@ -209,19 +249,24 @@ div.blur {
   width:100%;
 }
 
-/*data visualization*/
-
-/*#barChart{
-  rect:hover {
-    fill: orange;
-  }
+/*.mainResults {
+  margin-left: 100px
+  
 }*/
 
-#resultsImg {
-  max-width: 150px;
-  max-height: 150px;
+#resultsProfileImg { 
+  margin-top:-40px;
+  max-width: 100px;
+  max-height: 100px;
   float:left;
   overflow:hidden;
+}
+
+#resultsBackgroundImg {
+  max-width: 100%;
+  max-height: 100px;
+  float:left;
+  overflow:hidden; 
 }
 
 #profileImg {

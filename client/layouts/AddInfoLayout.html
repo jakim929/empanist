@@ -2,7 +2,7 @@
 <!-- SECTION: Basic Profile -->
 
 <template name="basicMyProfile">
-  {{> Template.dynamic template="upsertBasicProfileForm" data="card-title"}}
+  {{> Template.dynamic template="upsertBasicProfileForm" data="myProfile"}}
 </template>
 
 <template name="basicNewAccomp">
@@ -59,11 +59,15 @@
           <label class="active">Affiliation</label>   
         </div>
         <br>
-      {{#if basicNotValid}}  
-        <button type="submit" class=" {{this}} btn right btn-primary "  id="basicProfile">Save</button>
+        {{#if fromProfile this}}
+          <button type="submit" class=" card-title {{this}} btn right btn-primary "  id="basicProfile">Save</button>
         {{else}}
-        <button type="submit" class=" {{this}} btn right btn-primary disabled"  disabled id="basicProfile">Save</button>
-      {{/if}}
+          {{#if basicNotValid}}  
+            <button type="submit" class=" {{this}} btn right btn-primary "  id="basicProfile">Save</button>
+            {{else}}
+            <button type="submit" class=" {{this}} btn right btn-primary disabled"  disabled id="basicProfile">Save</button>
+          {{/if}}
+        {{/if}}
     {{/autoForm}}     
   {{/if}}
 </template>

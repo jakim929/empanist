@@ -1813,6 +1813,7 @@ Template.upsertBasicProfileForm.helpers ({
     var phone = AutoForm.getFieldValue('phone', ['upsertBasicProfileForm']);
     var birth = AutoForm.getFieldValue('birthDate', ['upsertBasicProfileForm']);
     var affili = AutoForm.getFieldValue('affiliation', ['upsertBasicProfileForm']);
+
     if ( 
         name == undefined || 
         phone == undefined || 
@@ -1993,8 +1994,31 @@ Template.upsertAccompanistForm.onRendered(function () {
   Session.set('showLocation',false);
   Session.set('showMyLocation',false);
   Session.set('showLiner',false);
+
+  $('ul.tabs').tabs();
  
   });
+
+// Template.search.onRendered(function () {
+//   $(function() {
+
+//   $('input[name="datefilter"]').daterangepicker({
+//       autoUpdateInput: false,
+//       locale: {
+//           cancelLabel: 'Clear'
+//       }
+//   });
+
+//   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+//       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' -> ' + picker.endDate.format('MM/DD/YYYY'));
+//   });
+
+//   $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+//       $(this).val('');
+//   });
+
+// }); 
+//   });
 
 Template.myProfileAccompEditingForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
@@ -2055,7 +2079,8 @@ Template.results.helpers({
               },
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-            accompanist_active: true
+            accompanist_active: true,
+            Id: { $ne: Meteor.userId() }
           }).fetch();
       }
 
@@ -2064,7 +2089,8 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd, $lte: ed},
             // endDate: {$gte: sd, $gte: ed}
-          accompanist_active: true}).fetch();
+          accompanist_active: true,
+          Id: { $ne: Meteor.userId() }}).fetch();
       }
 
       else if (moment(ed).isValid()){
@@ -2072,7 +2098,8 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: ed},
             // endDate: {$gte: ed}
-          accompanist_active: true}).fetch();
+          accompanist_active: true,
+          Id: { $ne: Meteor.userId() }}).fetch();
       }
 
       else if (moment(sd).isValid() ){
@@ -2080,7 +2107,8 @@ Template.results.helpers({
           AccompanistProfiles.find({
             // startDate:  {$lte: sd},
             // endDate: {$gte: sd}
-          accompanist_active: true}).fetch();
+          accompanist_active: true,
+          Id: { $ne: Meteor.userId() }}).fetch();
       }
 
       else if (coords !== undefined){
@@ -2091,7 +2119,9 @@ Template.results.helpers({
                 $geometry: { type: "Point",  coordinates: coords },
                 $maxDistance: 20000
               }
-            }}).fetch();
+            },
+            Id: { $ne: Meteor.userId() },
+          accompanist_active: true}).fetch();
       }
 
       else {
@@ -2106,17 +2136,6 @@ Template.results.helpers({
     var names = BasicProfiles.findOne({userId: this.Id});
     return names
   },
-  currentState: function() {
-    var state = Template.instance().currentState.get();
-
-    if (state == "result-card-right") {
-      Template.instance().currentState.set('result-card-right');
-      return "result-card-left"
-    } else {
-      Template.instance().currentState.set('result-card-left');
-      return "result-card-right"
-    }
-  },
    currentProfilePic: function(Id) {
     var pic = Images.findOne({userId: Id});
     if (pic){
@@ -2130,6 +2149,20 @@ Template.results.helpers({
     } else {
       return false
     }
+  },
+  allTimes: function (times) {
+    if (times.length == 3) {
+      return true
+    } else {
+      return false
+    }
+  },
+  allDays: function (days) {
+    if (days.length == 7) {
+      return true
+    } else {
+      return false
+    }
   }
 });
 
@@ -2137,8 +2170,7 @@ Template.results.helpers({
 
 Template.search.events({
   'submit form': function(){
-      console.log("Form Submitted")
-      FlowRouter.go('results?');
+      FlowRouter.go('results/:getQueryParam');
   }
 });
 
