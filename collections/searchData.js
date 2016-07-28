@@ -17,19 +17,18 @@ SearchDataSchema = new SimpleSchema({
   //     return (new Date())
   //   }
   // },
-  startDate: {
+  start_date: {
     type: Date,
     label: "Start Date",
     optional:true
   },
-  endDate: {
+  end_date: {
     type: Date,
     label: "End Date",
     optional:true
   },
-  location: {
+  address: {
     type: String,
-    optional:true
   },
   charge: {
       type: Number,

@@ -74,8 +74,10 @@ Template.NewSession.onRendered(function() {
 AutoForm.hooks({
   advancedSearch: {
     onSubmit: function (doc) {
-      console.log("Advanced search with", doc);
-      // return false
+      event.preventDefault();
+      console.log(doc)
+      $('#advancedsearch').removeAttr('disabled');
+      FlowRouter.setQueryParams(doc);
     }
   }
 });
@@ -2776,6 +2778,7 @@ Template.results.helpers({
       var sd = new Date(start_date)
       var ed = new Date(end_date)
 
+
       function searchWith(){
 
         if (charge !== NaN) {
@@ -2805,36 +2808,98 @@ Template.results.helpers({
         }
 
         var array_algo = [charge_algo, session_algo, time_algo, work_algo]
+        
+        console.log("array_algo")
+        console.log(array_algo)
+        
+
         var new_algo = [{accompanist_active: true},{Id: { $ne: Meteor.userId()}}]
 
         $.each(array_algo, function( index, value ) {
+
+          // console.log("Values")
+          // console.log(value['charge'])
+          // console.log(value['working_hours'])
+          // console.log(value['working_days'])
+          // console.log(value['session_location'])
+          // console.log(value)
+
           switch (index) {
             case 0:
+              console.log("charge add")
+              console.log((value['charge']))
+              
               if (value['charge']) {
+                console.log("passed = charge not NaN")
                 new_algo.push(value)
               }
               break;
             case 1:
-              if (value['session_location'] !== "") {
+            console.log("session_location")
+        console.log(value['session_location'])
+        console.log(value['session_location'] !== undefined)
+              console.log("session_location add")
+
+              if ((value['session_location'] !== undefined) ) {
+                console.log("there is session preferance")
                 new_algo.push(value)
               }
+              // console.log(value['session_location'] !== "")
+              // console.log(value['session_location'])
               break;
             case 2:
+              console.log("hours add")
                if (value !== undefined) {
+                console.log("there is hours preferance")
                 new_algo.push(value)
               }
+              // console.log(value['working_hours'] !== undefined)
+              // console.log(value['working_hours'])
               break;
             case 3:
               console.log("days add")
               if (value !== undefined) {
+                console.log("there is day preferance")
                 new_algo.push(value)
               }
+              // console.log(value['working_days'] !== undefined)
+              // console.log(value['working_days'])
               break;
           }
-        });
+   });
+
+          // if ( !isNaN(value['charge']) && (value['session_location'] == undefined) && (value['working_hours'] == undefined) && (value['working_days'] == undefined)) {
+          //   console.log("got charge")
+          //   new_algo.push(value)
+          // } else
+
+          // if ( (value['charge'] == undefined) && (value['session_location'] !== "") && (value['working_hours'] == undefined) && (value['working_days'] == undefined)) {
+          //   console.log("got session location")
+          //   new_algo.push(value)
+          // } else
+
+          // if ((value['charge'] == undefined) && (value['session_location'] == undefined) && (value['working_hours'] !== undefined) && (value['working_days'] == undefined)) {
+          //   console.log("got hours")
+          //   new_algo.push(value)
+          // } else 
+
+          // if ((value['charge'] == undefined) && (value['session_location'] == undefined) && (value['working_hours'] == undefined) && (value['working_days'] !== undefined)) {
+          //   console.log("got days")
+          //   new_algo.push(value)
+          // }
+
+       
+
+        console.log("new")
+        console.log(new_algo)
+        // console.log("old")
+        // console.log(array_algo)
+
         return new_algo
+
       };
 
+      
       var x =  searchWith()
       var results = AccompanistProfiles.find(
         {loc:
@@ -2846,8 +2911,63 @@ Template.results.helpers({
         },
         $and: x 
       }).fetch();
+
+      console.log(results)
+
+      // if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
+      //     var results = AccompanistProfiles.find({
+      //       loc:
+      //         { $near :
+      //           {
+      //             $geometry: { type: "Point",  coordinates: coords },
+      //             $maxDistance: 20000
+      //           }
+      //         },
+      //       accompanist_active: true,
+      //       Id: { $ne: Meteor.userId() }
+      //     }).fetch();
+      // }
+
+      // else if (moment(sd).isValid() && moment(ed).isValid()){
+      //   var results =
+      //     AccompanistProfiles.find({
+      //     accompanist_active: true,
+      //     Id: { $ne: Meteor.userId() }}).fetch();
+      // }
+
+      // else if (moment(ed).isValid()){
+      //   var results =
+      //     AccompanistProfiles.find({
+      //     accompanist_active: true,
+      //     Id: { $ne: Meteor.userId() }}).fetch();
+      // }
+
+      // else if (moment(sd).isValid() ){
+      //   var results =
+      //     AccompanistProfiles.find({
+      //     accompanist_active: true,
+      //     Id: { $ne: Meteor.userId() }}).fetch();
+      // }
+
+      // else if (coords !== undefined){
+      //   var results = AccompanistProfiles.find({
+      //     loc:
+      //       { $near :
+      //         {
+      //           $geometry: { type: "Point",  coordinates: coords },
+      //           $maxDistance: 20000
+      //         }
+      //       },
+      //       Id: { $ne: Meteor.userId() },
+      //     accompanist_active: true}).fetch();
+      // }
+
+      // else {
+      //   var results = null
+      // }
       Session.set('results', results)
     });
+
     return Session.get('results')
   },
   accompname: function() {
@@ -2891,13 +3011,7 @@ Template.results.helpers({
 
 Template.search.events({
   'submit form': function(){
-      // no need for all this shitty code
-      // const target = event.target;
-      // var address = target.address.value;
-      // var start_date = target.start_date.value;
-      // var end_date = target.end_date.value;
-      // SearchData.insert({ startDate: start_date, endDate: end_date, location:address})
-      FlowRouter.go('results/:getQueryParam');
+    FlowRouter.go('results/:getQueryParam');
   }
 });
 
