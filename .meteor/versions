@@ -8,7 +8,7 @@ aldeed:geocoder@0.3.8
 aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
-aldeed:template-extension@4.0.0
+aldeed:template-extension@3.4.3
 allow-deny@1.0.5
 amplify@1.0.0
 autopublish@1.0.7

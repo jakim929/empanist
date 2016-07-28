@@ -3,6 +3,10 @@ html {
 	font-family: 'Open Sans', sans-serif;
 }
 
+.cover-picture {
+  width:100%;
+  height:auto;
+}
 
 .set-min-height {
 	min-height: 420px;
@@ -301,7 +305,7 @@ a {
 
 }
 
-a.changeColor {
+.changeColor {
   color: black;
 }
 
@@ -602,7 +606,11 @@ display:none;
   margin-top: 5%;
 }
 
-
+.edit {
+  color:#90caf9 ;
+  padding:0;
+  margin:0;
+}
 .advice {
   width:38%;
   overflow:hidden;

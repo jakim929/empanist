@@ -239,6 +239,9 @@ BasicProfiles.after.insert(function(userId, doc){
   console.log("Basic Profile Made for",doc.userId);
   Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
 
+   var suggestions = ["Master more Instruments", "Win more Awards", "Attend more Music Programs", "Play in more Orchestras"]
+   Data.insert({ userId: doc.userId, suggestions: suggestions, value: 0})
+
 });
 
 
@@ -323,7 +326,10 @@ MusicProfiles.after.update(function (userId, doc, fieldNames, modifier, options)
                               percent(programs_length) +
                               percent(orchestras_length));
 
-    Data.update({ userId: doc.userId },{ $set: {value: percent }, $set: {suggestions: suggestions }})
+    console.log("music profile after update")
+    console.log(percent)
+
+    Data.update({ userId: doc.userId },{ $set: {value: percent, suggestions: suggestions }})
 
 });
 
@@ -415,14 +421,12 @@ MusicProfiles.after.insert(function(userId, doc){
                         suggestion("programs", programs_length),
                         suggestion("orchestras", orchestras_length)]
 
-    console.log(suggestions)
-
     var percent = Math.round( percent(instruments_length) +
                               percent(awards_length) +
                               percent(programs_length) +
                               percent(orchestras_length));
 
-    Data.insert({ userId: doc.userId, suggestions: suggestions, value: percent})
+    Data.update({ userId: doc.userId },{ $set: {value: percent, suggestions: suggestions }})
 
 });
 

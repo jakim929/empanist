@@ -4,13 +4,12 @@ import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
-
 import { TransactionSchema } from '../collections/transactions.js'
-
 import cropper from 'cropper';
 import 'cropper/dist/cropper.css';
-
 import { Data } from '../collections/profileData.js'
+import { SearchData } from '../collections/searchData.js'
+
 
 
 window.MusicProfiles = MusicProfiles
@@ -19,6 +18,7 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 window.Sessions = Sessions
+window.SearchData = SearchData
 
 
 // Reservations Layout
@@ -61,8 +61,6 @@ Template.ReservationDetails.helpers({
     var routeName = "sessions"
     var queryParams = {transaction: FlowRouter.getQueryParam('transaction')}
     return FlowRouter.path(routeName, {}, queryParams);
-
-
   }
 })
 
@@ -72,6 +70,15 @@ Template.NewSession.onRendered(function() {
     selectYears: 15 // Creates a dropdown of 15 years to control year
   });
 })
+
+AutoForm.hooks({
+  advancedSearch: {
+    onSubmit: function (doc) {
+      console.log("Advanced search with", doc);
+      // return false
+    }
+  }
+});
 
 Template.NewSession.helpers({
   optionsArray(){
@@ -168,6 +175,20 @@ Template.becomeAnAccompanist.helpers({
   onNewAccomp: function() {
     if (FlowRouter.getRouteName() == "NewAccompLayout"){
       return "hidden"
+    }
+  },
+  ifNotSignedIn: function() {
+    if (Meteor.user()) {
+      return ""
+    } else {
+      return  "modal-login-trigger modal-trigger"
+    }
+  },
+  link: function() {
+    if (Meteor.user()) {
+      return "/newaccomp"
+    } else {
+      return "#loginModal"
     }
   }
 });
@@ -1738,13 +1759,13 @@ Template.navbarAccount.onRendered(function () {
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $(".dropdown-button").dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrain_width: true, // Does not change width of dropdown to that of the activator
-      hover: true, // Activate on click
-      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)
-      gutter: 0, // Spacing from edge
-      belowOrigin: true,
+    inDuration: 300,
+    outDuration: 225,
+    constrain_width: true, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on click
+    alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)
+    gutter: 0, // Spacing from edge
+    belowOrigin: true,
     });
   });
 });
@@ -1760,6 +1781,14 @@ Template.modalLogin.onRendered(function () {
 Template.modalSignUp.onRendered(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-signup-trigger').leanModal({
+      dismissible: true,
+      complete: function() {   AccountsTemplates.avoidRedirect = false; }
+    });
+});
+
+Template.becomeAnAccompanist.onRendered(function () {
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-login-trigger').leanModal({
       dismissible: true,
       complete: function() {   AccountsTemplates.avoidRedirect = false; }
     });
@@ -1792,10 +1821,11 @@ Template.NewAccompLayout.onRendered(function () {
 Template.ProfileLayout.onRendered(function(){
   // // parallax
 
-
   // resize card with card-reveal
   $(document).ready(function() {
-      $(".parallax").parallax();
+
+     $(".parallax").parallax();
+    
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
         if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
@@ -1948,7 +1978,7 @@ Template.registerHelper('formatDateWithoutYear', function(date) {
 
 
 Template.registerHelper('formatBirthDate', function(date) {
-  return moment(date).format('MMM, YYYY');
+  return moment(date).format('MMM, DD, YYYY');
 });
 
 // Slice day string and capitalize it's first letter
@@ -2306,6 +2336,38 @@ Template.instruments.helpers ({
     "Zither"].map(function(obj){return {label: obj, value:obj}})
   }
 });
+
+Template.advancedSearch.helpers ({
+  // currentSearch: function () {
+  //   var currentSearch = SearchData.findOne({userId: Meteor.userId()}, {sort: {timesStamp: -1, limit: 1}});
+  //   console.log(currentSearch)
+  //   return currentSearch;
+  // }
+  address: function () {
+    var address = FlowRouter.getQueryParam("address")
+    return address;
+  },
+  charge: function () {
+    var charge = FlowRouter.getQueryParam("charge")
+    return parseInt(charge)
+  },
+  session_location: function () {
+    var session_location = FlowRouter.getQueryParam("session_location")
+    return session_location
+  },
+  times: function () {
+    var times = FlowRouter.getQueryParam("working_hours")
+    return times
+  },
+  days: function() {
+    var days = FlowRouter.getQueryParam("working_days")
+    return days
+  },
+  rads: function() {
+    var radius = FlowRouter.getQueryParam("radius")
+    return radius
+  }
+})
 
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
@@ -2682,11 +2744,26 @@ Template.suggestions.helpers ({
 Template.results.helpers({
 
   accompanists: function() {
-  //var coords = Session.get('coords')
 
+    // If search
     var address = FlowRouter.getQueryParam("address")
     var start_date = FlowRouter.getQueryParam("start_date")
     var end_date = FlowRouter.getQueryParam("end_date")
+
+    // if Advanced search
+    var charge = parseInt(FlowRouter.getQueryParam("charge"))
+    var session_location = FlowRouter.getQueryParam("session_location")
+    var radius = FlowRouter.getQueryParam("radius")
+    var time = FlowRouter.getQueryParam("working_hours")
+    var day = FlowRouter.getQueryParam("working_days")
+
+    console.log("Search Info")
+    console.log(address)
+    console.log(charge)
+    console.log(session_location)
+    console.log(radius)
+    console.log(time)
+    console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
       if (result !== null){
@@ -2699,68 +2776,78 @@ Template.results.helpers({
       var sd = new Date(start_date)
       var ed = new Date(end_date)
 
-      if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
-          var results = AccompanistProfiles.find({
-            loc:
-              { $near :
-                {
-                  $geometry: { type: "Point",  coordinates: coords },
-                  $maxDistance: 20000
-                }
-              },
-            // startDate:  {$lte: sd, $lte: ed},
-            // endDate: {$gte: sd, $gte: ed}
-            accompanist_active: true,
-            Id: { $ne: Meteor.userId() }
-          }).fetch();
-      }
+      function searchWith(){
 
-      else if (moment(sd).isValid() && moment(ed).isValid()){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: sd, $lte: ed},
-            // endDate: {$gte: sd, $gte: ed}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+        if (charge !== NaN) {
+          var charge_algo = 
+          {charge: charge}
+        } 
 
-      else if (moment(ed).isValid()){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: ed},
-            // endDate: {$gte: ed}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+        if (session_location !== null) {
+          var session_algo = 
+          {session_location: session_location}
+        }
+        
+        if (time !== undefined && time.length < 4) {
+          var time_algo = 
+          {working_hours: {$in: time}}
+        } else if (time !== undefined) {
+          var time_algo = 
+          {working_hours: time}
+        }
 
-      else if (moment(sd).isValid() ){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: sd},
-            // endDate: {$gte: sd}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+        if (day !== undefined && $.isArray(day)) {
+          var work_algo = 
+          {working_days: {$in: day}}
+        } else if (day !== undefined) {
+          var work_algo = 
+          {working_days: day}
+        }
 
-      else if (coords !== undefined){
-        var results = AccompanistProfiles.find({
-          loc:
-            { $near :
-              {
-                $geometry: { type: "Point",  coordinates: coords },
-                $maxDistance: 20000
+        var array_algo = [charge_algo, session_algo, time_algo, work_algo]
+        var new_algo = [{accompanist_active: true},{Id: { $ne: Meteor.userId()}}]
+
+        $.each(array_algo, function( index, value ) {
+          switch (index) {
+            case 0:
+              if (value['charge']) {
+                new_algo.push(value)
               }
-            },
-            Id: { $ne: Meteor.userId() },
-          accompanist_active: true}).fetch();
-      }
+              break;
+            case 1:
+              if (value['session_location'] !== "") {
+                new_algo.push(value)
+              }
+              break;
+            case 2:
+               if (value !== undefined) {
+                new_algo.push(value)
+              }
+              break;
+            case 3:
+              console.log("days add")
+              if (value !== undefined) {
+                new_algo.push(value)
+              }
+              break;
+          }
+        });
+        return new_algo
+      };
 
-      else {
-        var results = null
-      }
+      var x =  searchWith()
+      var results = AccompanistProfiles.find(
+        {loc:
+        { $near :
+          {
+            $geometry: { type: 'Point',  coordinates: coords },
+            $maxDistance: 20000
+          }
+        },
+        $and: x 
+      }).fetch();
       Session.set('results', results)
     });
-
     return Session.get('results')
   },
   accompname: function() {
@@ -2804,22 +2891,34 @@ Template.results.helpers({
 
 Template.search.events({
   'submit form': function(){
+      // no need for all this shitty code
+      // const target = event.target;
+      // var address = target.address.value;
+      // var start_date = target.start_date.value;
+      // var end_date = target.end_date.value;
+      // SearchData.insert({ startDate: start_date, endDate: end_date, location:address})
       FlowRouter.go('results/:getQueryParam');
   }
 });
 
 // Google search autocomplete
 Template.search.events({
+   'click #autocomplete': function(e,advancedSearch) {
+     initAutoComplete();
+   }
+});
+
+Template.advancedSearch.events({
    'click #autocomplete': function(e,search) {
      initAutoComplete();
    }
 });
 
-Template.NewAccompanist.events({
-   'click #autocomplete': function(e,NewAccompanist) {
-     initAutoComplete();
-   }
-});
+// Template.NewAccompanist.events({
+//    'click #autocomplete': function(e,NewAccompanist) {
+//      initAutoComplete();
+//    }
+// });
 
 var initAutoComplete = function() {
   var autocomplete = new google.maps.places.Autocomplete(
@@ -2849,6 +2948,14 @@ Template.makeAdmin.events({
 
 // Decide Modal Login/SignUp Popup
 Template.modalLogin.events({
+  'click .modal-login-trigger': function(){
+    AccountsTemplates.setState('signIn');
+    AccountsTemplates.avoidRedirect = true;
+  },
+
+});
+
+Template.becomeAnAccompanist.events({
   'click .modal-login-trigger': function(){
     AccountsTemplates.setState('signIn');
     AccountsTemplates.avoidRedirect = true;

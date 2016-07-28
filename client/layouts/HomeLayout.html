@@ -7,7 +7,7 @@
     <main>
       <div class="home_text">
         <div class="container">
-          <h2> James the Savior </h2>
+          <h2> Jamjoom the Savior </h2>
         </div>
       </div>
       {{> search}}
@@ -20,6 +20,22 @@
   	   <div class="row">
           <div class="span12">
               <div class="blur">
+                <!-- {{#autoForm collection="SearchData" id="insertSearchData" type="insert"}}
+                  <div class="row">
+                    <div class="input-field col s3">
+                      {{>afFieldInput name="address" class="autocomplete" id="address" type="text"}}
+                      <label for="address" class="active" >Enter Location</label>
+                    </div>
+                     <div class="input-field col s3">
+                      {{>afFieldInput name="start_date" id="start_date" class="datepicker" type="date"}}
+                    </div>
+                    <div class="input-field col s3">
+                      {{>afFieldInput name="end_date" id="end_date" class="datepicker" type="date"}}
+
+                    </div>
+                      <button type="submit" class=" cols s1 card-title btn right btn-primary "  id="search">Search</button>
+                  </div>  
+              {{/autoForm}}  -->
                 <form class="col s12" id="searchform">
     					   <div class="input-field col s4">
                     <input name="address" class="autocomplete" id="autocomplete" type="text">
@@ -29,8 +45,8 @@
                   <div class="input-field col s3">
                     <input name="start_date" class="datepicker" type="date"  placeholder="Start Date" >
                   </div>
-<!--
-                  <div class="verticalLine input-field col s5">
+
+                 <!--  <div class="verticalLine input-field col s5">
                     <input type="text" name="datefilter" value="" />
                     <label>
                       Start Date
@@ -40,7 +56,7 @@
                       &nbsp;&nbsp;&nbsp;&nbsp;
                       End Date
                     </label>
-                  </div> -->
+                  </div>  -->
 
                   <div class="input-field col s3">
                     <input name="end_date" class="datepicker" type="date"  placeholder="Event Date" >
