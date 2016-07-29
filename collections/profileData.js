@@ -12,9 +12,6 @@ DataSchema = new SimpleSchema({
     label: "User ID",
     autoform: {
       type: "hidden"
-    },
-    autoValue: function() {
-      return this.userId;
     }
   },
   suggestions: {

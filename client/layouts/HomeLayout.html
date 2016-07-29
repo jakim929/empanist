@@ -7,7 +7,9 @@
     <main>
       <div class="home_text">
         <div class="container">
+
           <h2>Find an Accompanist</h2>
+
         </div>
       </div>
       {{> search}}
@@ -16,46 +18,29 @@
 
 <template name="search">
   <div class="search_bar">
-    <div class="container">
-  	   <div class="row">
-          <div class="span12">
-              <div class="blur">
-                <form class="col s12" id="searchform">
-    					   <div class="input-field col s4">
-                    <input name="address" class="autocomplete" id="autocomplete" type="text">
-                    <label>My Location</label>
-                  </div>
-
-                  <div class="input-field col s3">
-                    <input name="start_date" class="datepicker" type="date"  placeholder="Start Date" >
-                  </div>
-<!--
-                  <div class="verticalLine input-field col s5">
-                    <input type="text" name="datefilter" value="" />
-                    <label>
-                      Start Date
-                      <i class=" pads fa-rotate-180 medium material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      End Date
-                    </label>
-                  </div> -->
-
-                  <div class="input-field col s3">
-                    <input name="end_date" class="datepicker" type="date"  placeholder="Event Date" >
-                  </div>
-
-                  <div class="input-field col s1">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                  </div>
-                </form>
-              </div>
-          </div>
+    {{#autoForm schema="SearchDataSchema" class="search_form" id="insertSearchData" }}
+      <div class="row blur">
+        <div class="field input-field col m8 l3 s8">
+          {{>afFieldInput name="address" class="autocomplete" id="autocomplete" type="text"}}
+          <label for="autocomplete">Enter Location</label>
+        </div>
+         <div class="field verticalLine input-field col m3 hide-on-med-and-down">
+          {{>afFieldInput name="start_date" id="start_date" class="datepicker" type="date"}}
+          <label for="start_date">Start Date</label>
+        </div>
+        <div class=" input-field field col m1 hide-on-med-and-down">
+          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
+        </div>
+        <div class="field input-field col m3 hide-on-med-and-down">
+          {{>afFieldInput name="end_date" id="end_date" class="datepicker" type="date"}}
+          <label for="end_date">End Date</label>
+        </div>
+        <div class="input-field col m4 l2 s4 field" style="padding-left:0px; padding-right:0px">
+          <button type="submit" class=" btn btn-primary search_btn" id="search">Search</button>
+        </div>
       </div>
-    </div>
+    {{/autoForm}}
   </div>
-
 </template>
 
  <template name="makeAdmin">

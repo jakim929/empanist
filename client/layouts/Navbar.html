@@ -1,6 +1,6 @@
 <template name="Navbar">
 	<div class="navbar-fixed">
-		<nav class="blue-grey z-depth-0">
+		<nav class="#9fa8da indigo lighten-3">
 			<div class="nav-wrapper container">
 				<a href="/" class="brand-logo left">Empanist</a>
 				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
@@ -67,7 +67,7 @@
 </template>
 
 <template name="becomeAnAccompanist">
-	<a class='waves-effect waves-light btn {{onNewAccomp}}' href='/newaccomp'>Become an Accompanist</a>
+	<a class='waves-effect waves-light btn {{onNewAccomp}} {{ifNotSignedIn}}' href={{link}}>Become an Accompanist</a>
 </template>
 
 <template name="addProfile">
@@ -83,9 +83,9 @@
 				{{/with}}
 
 	      <input type="date" class="datepicker" id="at-field-{{_id}}" name="at-field-{{_id}}" {{disabled}}>
-				<label for="at-field-{{_id}}">
+				<!-- <label for="at-field-{{_id}}">
 					Date of Birth
-				</label>
+				</label> -->
 			</div>
 		</div>
   </div>

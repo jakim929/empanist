@@ -1,6 +1,6 @@
 <template name="ResultsLayout">
     <main>
-		<!-- {{> advancedSearch}} -->
+		{{> advancedSearch}}
 		{{> results}}
     </main>
 </template>
@@ -83,6 +83,95 @@
 <template name="advancedSearch">
   <div class="card grey lighten-5 z-depth-0">
     <div class="card-content">
+    	{{#autoForm schema="SearchDataSchema" id="advancedSearch" type="normal" }}
+	    	<div class="row ">
+		  		<div class="input-field col s2">
+		      	<h10>Location/Dates</h10>
+		      </div>
+		      <div class="row col s10">
+			      <div class="input-field col s4">
+			        {{>afFieldInput name="address" class="autocomplete" id="autocomplete" type="text" value=address}}
+			        <label for="address" class="active" >Enter Location</label>
+			      </div>
+			       <div class="input-field col s4">
+			        {{>afFieldInput name="start_date" id="start_date" class="datepicker" type="date"}}
+			        <label class="active">Start Date</label>
+			      </div>
+			      <div class="input-field col s4">
+			        {{>afFieldInput name="end_date" id="end_date" class="datepicker" type="date"}}
+			        <label class="active">End Date</label>
+			      </div>
+	        </div>
+	      </div>
+
+        <div class="horizontalLine input-field col s12">
+        	<div class="row inLine">
+          	<div class="col s2">Charge/hr</div>
+            {{>afFieldInput name="charge" type="sexyselect-checkboxes" options=chargeArray value=charge}}
+					</div>
+        </div>
+
+      	 <div class="time horizontalLine input-field col s12">
+        	<div class="row inLine">
+	        	<div class="col s2">Practice Times</div>
+	        	{{>afFieldInput name="working_hours" type="sexyselect-checkboxes" options=timeArray value=times }}
+      		</div>
+       	</div>
+
+      	<div class="days horizontalLine input-field col s12">
+        	<div class="row inLine">
+	        	<div class="col s2">Practice Days</div>
+	        	{{>afFieldInput name="working_days" type="sexyselect-checkboxes" options=dayArray value=days }}
+      		</div>
+       	</div>
+
+        <div class="session_location horizontalLine input-field col s12">
+        	<div class="row inLine">
+	        	<div class="col s2">Session Loc / Distance</div>
+	        	<div class="col s5">
+	        		{{>afQuickField name="session_location" value=session_location }}
+	        	</div>
+	        	<div class="col s5">
+	        	  <div class="input-field col s12">
+          			{{>afQuickField name="radius" value=rads disabled="true"}}
+        			</div>
+      			</div>
+       		</div>
+				</div>
+      	
+     		<div class="input-field col s12">
+     			<button type="submit" class=" advancedsearch-btn btn btn-primary" id="advancedsearch">Search</button>
+     		</div>
+
+     		<div class="input-field col s12">
+     			<br>
+     			<a class="more">More Filters</a>
+     			<a class="less">Less Filters</a>
+     		</div>
+
+      {{/autoForm}} 
     </div>
   </div>
- </template>
+</template>
+
+<template name="SexySelect">
+    <div class="checkbox-grouped-table col s10" {{dsk}}>
+      <div class="row">
+        {{#each this.selectOptions}}
+          <div class="col s4">
+          	<div class="box">
+
+		          <h10 class="box-label">{{this.label}}
+		          
+		          <input type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
+
+		          <label class="right checker" style="top:5px;" for="{{this.value}}-slot"></label>
+	          </h10>
+	        	</div>
+	        </div>
+        {{/each}}
+      </div>
+    </div>
+</template>
+
+

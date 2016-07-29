@@ -4,10 +4,11 @@ import { BasicProfiles } from '../collections/basicProfiles.js'
 import { MusicCompetitions } from '../collections/competitions.js'
 import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
-
 import { TransactionSchema } from '../collections/transactions.js'
 
 import { Data } from '../collections/profileData.js'
+import { SearchData } from '../collections/searchData.js'
+
 
 import parser from 'http-string-parser'
 
@@ -21,6 +22,7 @@ window.BasicProfiles = BasicProfiles
 window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 window.Sessions = Sessions
+window.SearchData = SearchData
 
 
 
@@ -80,8 +82,6 @@ Template.ReservationDetails.helpers({
     var routeName = "sessions"
     var queryParams = {transaction: FlowRouter.getQueryParam('transaction')}
     return FlowRouter.path(routeName, {}, queryParams);
-
-
   }
 })
 
@@ -91,6 +91,53 @@ Template.NewSession.onRendered(function() {
     selectYears: 15 // Creates a dropdown of 15 years to control year
   });
 })
+
+AutoForm.hooks({
+  advancedSearch: {
+    onSubmit: function (doc) {
+      event.preventDefault();
+
+      var address = doc.address
+      var charge = doc.charge
+      var working_days = doc.working_days
+      var start_date = doc.start_date
+      var end_date = doc.end_date
+      var radius = doc.radius
+      var session_location = doc.session_location
+      var working_hours = doc.working_hours
+
+      if (address == undefined) {
+        FlowRouter.setQueryParams({address: null});
+      }
+      if (charge == undefined) {
+        FlowRouter.setQueryParams({charge: null});
+      }
+      if (working_days == undefined) {
+        FlowRouter.setQueryParams({working_days: null});
+      }
+      if (start_date == undefined) {
+        FlowRouter.setQueryParams({start_date: null});
+      }
+      if (end_date == undefined) {
+        FlowRouter.setQueryParams({end_date: null});
+      }
+      if (radius == undefined) {
+        FlowRouter.setQueryParams({radius: null});
+      }
+      if (session_location == undefined) {
+        FlowRouter.setQueryParams({session_location: null});
+      }
+      if (working_hours == undefined) {
+        FlowRouter.setQueryParams({working_hours: null});
+      }
+
+      console.log("New Query Param")
+        console.log(doc)
+        $('#advancedsearch').removeAttr('disabled');
+        FlowRouter.setQueryParams(doc);
+    }
+  }
+});
 
 Template.NewSession.helpers({
   optionsArray(){
@@ -117,24 +164,16 @@ Template.NewSession.helpers({
     }
 
   }
-  // initialDoc(transactionId) {
-  //   var transactionDoc = Transactions.findOne({_id : transactionId}, {musician: 1, accompanist: 1, rehearsalLocation: 1, performanceLocation: 1});
-  //   return {transaction: transactionId,
-  //     accompanist: transactionDoc.accompanist,
-  //     musician: transactionDoc.musician
-  //
-  //   }
-  // }
 })
 
-  valueOut = function(){
-    var val = [];
-    this.find('input.timeslot-checkbox').each(function(){
-      if($(this).is(":checked")) {
-        val.push($(this).val());
-      }
-    })
-    return val
+valueOut = function(){
+  var val = [];
+  this.find('input.timeslot-checkbox').each(function(){
+    if($(this).is(":checked")) {
+      val.push($(this).val());
+    }
+  })
+  return val
 }
 
 var options = {template: "TestDrag", valueOut: valueOut}
@@ -173,6 +212,57 @@ Template.TestDrag.helpers({
 
 })
 
+SexyValueOut = function(){
+  var val = [];
+  this.find('input.sexyselect-checkbox').each(function(){
+    if($(this).is(":checked")) {
+      val.push($(this).val());
+    }
+  })
+  console.log(val)
+  return val
+}
+
+var sexyOptions = {template: "SexySelect", valueOut: SexyValueOut}
+
+AutoForm.addInputType("sexyselect-checkboxes", sexyOptions)
+
+
+Template.advancedSearch.helpers({
+  chargeArray(){
+    var newArray = [{label: '$20', value: 20},
+                    {label: '$40', value: 40},
+                    {label: '$60', value: 60}]
+    return newArray
+  },
+  timeArray(){
+    var newArray = [{label: "Morning", value: "Morning"},
+                    {label: "Afternoon", value: "Afternoon"},
+                    {label: "Night", value: "Night"}]
+    return newArray
+  },
+  dayArray(){
+    var newArray = [{label: "Mon", value: "Monday"},
+                    {label: "Tue", value: "Tuesday"},
+                    {label: "Wed", value: "Wednesday"},
+                    {label: "Thur", value: "Thursday"},
+                    {label: "Fri", value: "Friday"},
+                    {label: "Sat", value: "Saturday"},
+                    {label: "Sun", value: "Sunday"}]
+    return newArray
+  }
+});
+
+Template.SexySelect.helpers({
+  dsk: function dsk() {
+    console.log("dsk princted")
+    console.log(this.atts)
+    return {
+      "data-schema-key": this.atts["data-schema-key"]
+    };
+  }
+})
+
 Template.TestDrag.events({
 
 })
@@ -187,6 +277,20 @@ Template.becomeAnAccompanist.helpers({
   onNewAccomp: function() {
     if (FlowRouter.getRouteName() == "NewAccompLayout"){
       return "hidden"
+    }
+  },
+  ifNotSignedIn: function() {
+    if (Meteor.user()) {
+      return ""
+    } else {
+      return  "modal-login-trigger modal-trigger"
+    }
+  },
+  link: function() {
+    if (Meteor.user()) {
+      return "/newaccomp"
+    } else {
+      return "#loginModal"
     }
   }
 });
@@ -914,6 +1018,23 @@ Template.orchestras.events({
     }
   });
 
+Template.advancedSearch.events({
+  'click .more':function(){
+    $(".time").css('display', 'block');
+    $(".days").css('display', 'block');
+    $(".session_location").css('display', 'block');
+    $(".more").css('display', 'none');
+    $(".less").css('display', 'block');
+    },
+    'click .less':function(){
+    $(".time").css('display', 'none');
+    $(".days").css('display', 'none');
+    $(".session_location").css('display', 'none');
+    $(".more").css('display', 'block');
+    $(".less").css('display', 'none');
+    }
+  });
+
 Template.basicNewAccomp.events({
   'submit form': function(){
       FlowRouter.go('/newaccomp');
@@ -1579,8 +1700,6 @@ Template.navbarAccount.onRendered(function () {
         belowOrigin: false, // Displays dropdown below the button
         alignment: 'left' // Displays dropdown with edge aligned to the left of button
       });
-
-
 });
 
 Template.modalLogin.onRendered(function () {
@@ -1594,6 +1713,14 @@ Template.modalLogin.onRendered(function () {
 Template.modalSignUp.onRendered(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-signup-trigger').leanModal({
+      dismissible: true,
+      complete: function() {   AccountsTemplates.avoidRedirect = false; }
+    });
+});
+
+Template.becomeAnAccompanist.onRendered(function () {
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal-login-trigger').leanModal({
       dismissible: true,
       complete: function() {   AccountsTemplates.avoidRedirect = false; }
     });
@@ -1630,10 +1757,11 @@ Template.NewAccompLayout.onRendered(function () {
 Template.ProfileLayout.onRendered(function(){
   // // parallax
 
-
   // resize card with card-reveal
   $(document).ready(function() {
-      $(".parallax").parallax();
+
+     $(".parallax").parallax();
+
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
         if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
@@ -1786,7 +1914,7 @@ Template.registerHelper('formatDateWithoutYear', function(date) {
 
 
 Template.registerHelper('formatBirthDate', function(date) {
-  return moment(date).format('MMM, YYYY');
+  return moment(date).format('MMM, DD, YYYY');
 });
 
 // Slice day string and capitalize it's first letter
@@ -2156,6 +2284,38 @@ Template.instruments.helpers ({
     "Zither"].map(function(obj){return {label: obj, value:obj}})
   }
 });
+
+Template.advancedSearch.helpers ({
+  // currentSearch: function () {
+  //   var currentSearch = SearchData.findOne({userId: Meteor.userId()}, {sort: {timesStamp: -1, limit: 1}});
+  //   console.log(currentSearch)
+  //   return currentSearch;
+  // }
+  address: function () {
+    var address = FlowRouter.getQueryParam("address")
+    return address;
+  },
+  charge: function () {
+    var charge = FlowRouter.getQueryParam("charge")
+    return parseInt(charge)
+  },
+  session_location: function () {
+    var session_location = FlowRouter.getQueryParam("session_location")
+    return session_location
+  },
+  times: function () {
+    var times = FlowRouter.getQueryParam("working_hours")
+    return times
+  },
+  days: function() {
+    var days = FlowRouter.getQueryParam("working_days")
+    return days
+  },
+  rads: function() {
+    var radius = FlowRouter.getQueryParam("radius")
+    return radius
+  }
+})
 
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
@@ -2532,11 +2692,26 @@ Template.suggestions.helpers ({
 Template.results.helpers({
 
   accompanists: function() {
-  //var coords = Session.get('coords')
 
+    // If search
     var address = FlowRouter.getQueryParam("address")
     var start_date = FlowRouter.getQueryParam("start_date")
     var end_date = FlowRouter.getQueryParam("end_date")
+
+    // if Advanced search
+    var charge = FlowRouter.getQueryParam("charge")
+    var session_location = FlowRouter.getQueryParam("session_location")
+    var radius = FlowRouter.getQueryParam("radius")
+    var time = FlowRouter.getQueryParam("working_hours")
+    var day = FlowRouter.getQueryParam("working_days")
+
+    console.log("Search Info")
+    console.log(address)
+    console.log(charge)
+    console.log(session_location)
+    console.log(radius)
+    console.log(time)
+    console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
       if (result !== null){
@@ -2549,68 +2724,82 @@ Template.results.helpers({
       var sd = new Date(start_date)
       var ed = new Date(end_date)
 
-      if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
-          var results = AccompanistProfiles.find({
-            loc:
-              { $near :
-                {
-                  $geometry: { type: "Point",  coordinates: coords },
-                  $maxDistance: 20000
-                }
-              },
-            // startDate:  {$lte: sd, $lte: ed},
-            // endDate: {$gte: sd, $gte: ed}
-            accompanist_active: true,
-            Id: { $ne: Meteor.userId() }
-          }).fetch();
-      }
 
-      else if (moment(sd).isValid() && moment(ed).isValid()){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: sd, $lte: ed},
-            // endDate: {$gte: sd, $gte: ed}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+      function searchWith(){
 
-      else if (moment(ed).isValid()){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: ed},
-            // endDate: {$gte: ed}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+        if (charge !== undefined && charge.length > 1) {
 
-      else if (moment(sd).isValid() ){
-        var results =
-          AccompanistProfiles.find({
-            // startDate:  {$lte: sd},
-            // endDate: {$gte: sd}
-          accompanist_active: true,
-          Id: { $ne: Meteor.userId() }}).fetch();
-      }
+          var result = charge.map(function (x) {
+            return parseInt(x, 10);
+          });
+          var charge_algo =
+          {charge: {$in: result}}
+        } else if (charge !== undefined) {
+          var charge_algo =
+          {charge: parseInt(charge[0])}
+        }
 
-      else if (coords !== undefined){
-        var results = AccompanistProfiles.find({
-          loc:
-            { $near :
-              {
-                $geometry: { type: "Point",  coordinates: coords },
-                $maxDistance: 20000
+        if (session_location !== null) {
+          var session_algo =
+          {session_location: session_location}
+        }
+
+        if (time !== undefined && time.length < 4) {
+          var time_algo =
+          {working_hours: {$in: time}}
+        } else if (time !== undefined) {
+          var time_algo =
+          {working_hours: time}
+        }
+
+        if (day !== undefined && $.isArray(day)) {
+          var work_algo =
+          {working_days: {$in: day}}
+        }
+
+        var array_algo = [charge_algo, session_algo, time_algo, work_algo]
+        var new_algo = [{accompanist_active: true},{Id: { $ne: Meteor.userId()}}]
+
+        $.each(array_algo, function( index, value ) {
+          switch (index) {
+            case 0:
+              if (value !== undefined) {
+                new_algo.push(value)
               }
-            },
-            Id: { $ne: Meteor.userId() },
-          accompanist_active: true}).fetch();
-      }
+              break;
+            case 1:
+              if ((value['session_location'] !== undefined) ) {
+                new_algo.push(value)
+              }
+              break;
+            case 2:
+               if (value !== undefined) {
+                new_algo.push(value)
+              }
+              break;
+            case 3:
+              if (value !== undefined) {
+                new_algo.push(value)
+              }
+              break;
+          }
+        });
+          return new_algo
+      };
 
-      else {
-        var results = null
-      }
+      var x =  searchWith()
+      var results = AccompanistProfiles.find(
+        {loc:
+        { $near :
+          {
+            $geometry: { type: 'Point',  coordinates: coords },
+            $maxDistance: 20000
+          }
+        },
+        $and: x
+      }).fetch();
       Session.set('results', results)
     });
-
     return Session.get('results')
   },
   accompname: function() {
@@ -2654,22 +2843,28 @@ Template.results.helpers({
 
 Template.search.events({
   'submit form': function(){
-      FlowRouter.go('results/:getQueryParam');
+    FlowRouter.go('results/:getQueryParam');
   }
 });
 
 // Google search autocomplete
 Template.search.events({
+   'click #autocomplete': function(e,advancedSearch) {
+     initAutoComplete();
+   }
+});
+
+Template.advancedSearch.events({
    'click #autocomplete': function(e,search) {
      initAutoComplete();
    }
 });
 
-Template.NewAccompanist.events({
-   'click #autocomplete': function(e,NewAccompanist) {
-     initAutoComplete();
-   }
-});
+// Template.upsertAccompanistForm.events({
+//    'click #autocomplete': function(e,upsertAccompanistForm) {
+//      initAutoComplete();
+//    }
+// });
 
 var initAutoComplete = function() {
   var autocomplete = new google.maps.places.Autocomplete(
@@ -2699,6 +2894,14 @@ Template.makeAdmin.events({
 
 // Decide Modal Login/SignUp Popup
 Template.modalLogin.events({
+  'click .modal-login-trigger': function(){
+    AccountsTemplates.setState('signIn');
+    AccountsTemplates.avoidRedirect = true;
+  },
+
+});
+
+Template.becomeAnAccompanist.events({
   'click .modal-login-trigger': function(){
     AccountsTemplates.setState('signIn');
     AccountsTemplates.avoidRedirect = true;

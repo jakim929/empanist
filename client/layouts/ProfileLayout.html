@@ -2,30 +2,20 @@
 <template name="ProfileLayout">
     <main>
       <div class="parallax-container">
-        <div class="parallax">
-          {{#unless isOwnProfile}}
-            <img id="#cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
-          {{else}}
-              <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" />
+        <!-- <div class="parallax"> -->
+          <!-- {{#unless isOwnProfile}} -->
+            <img class=" cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
+        <!--   {{else}}
+              <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" /> -->
             <!-- <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
               <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
             </a> -->
-          {{/unless}}
-        </div>
+          <!-- {{/unless}} -->
+        <!-- </div> -->
       </div>
       <!-- uncomment later on -->
           <!-- {{#if validId}} -->
             {{#if isOwnProfile}}
-<!-- <<<<<<< HEAD
-=======
-              {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
-              {{#if userIsAccompanist}}
-                {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
-              {{/if}}
-              {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
-            {{else}}
-              {{#if isAccompanist}}
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
               <div class="row">
                 <div class="col l8 m8 s12">
                   {{> Template.dynamic template="accountTemplate" data=myBasicProfile}}
@@ -54,7 +44,6 @@
                           <li class="divider"></li>
                           <li>
                             <h6><b><div class="center">Accompanying data/advs to join</div></b></h6>
-                            <!-- {{>barChart }} -->
                           </li>
                       </ul>
                       </div>
@@ -217,11 +206,7 @@
           {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
           {{#if notEmpty dynamicData}}
             {{#if isOwnProfile}}
-<!-- <<<<<<< HEAD
- -->              <i class="myprofile_edit material-icons right">mode_edit</i>
-<!-- =======
-              <i class="material-icons right">mode_edit</i>
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
+              <i class="myprofile_edit material-icons right">mode_edit</i>
             {{/if}}
           {{/if}}
           <br>
@@ -259,9 +244,6 @@
                     {{> afArrayField name=arrayField template="firstCustomArrayField"}}
 
                       <button type="submit" class=" {{close}} btn right btn-primary">first</button>
-<!-- =======
-                      <button type="submit" class=" {{close}} btn right btn-primary">Save</button>
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
                       <br>
                       <br>
                   {{/autoForm}}
@@ -274,21 +256,6 @@
   </section>
 </template>
 
-
-<!-- <template name="afArrayField_firstArrayField">
-  {{#if afFieldIsInvalid name=atts.name}}
-    <span>{{{afFieldMessage name=atts.name}}}</span>
-  {{/if}}
-
-      {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-
-        {{> UI.dynamic template=../atts.name}}
-
-      {{/afEachArrayItem}}
-
-</template>
- -->
-
 <!-- Editing For (Except for Basic Profile info..aka first card in MyProfile) -->
 <template name="EditingForm">
   {{#if isInRole 'makeMusicProfile'}}
@@ -296,13 +263,11 @@
       {{> afArrayField name=this template="editProfileCustomArrayField"}}
       <br>
     <button type="submit" class="card-title btn right btn-primary">Save</button>
-    <!-- <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span> -->
     {{/autoForm}}
   {{/if}}
 </template>
 
 <template name="myProfileAccompEditingForm">
-<!-- <<<<<<< HEAD -->
   {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
     <h10>Hourly Charge</h10>
     {{> afQuickField name="charge"}}
@@ -327,32 +292,6 @@
     {{> afArrayField name="repertoire" template="editProfileCustomArrayField"}}
     <button type="submit" class=" btn card-title right btn-primary">Save</button>
   {{/autoForm}}
-<!-- =======
-    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
-
-
-
-        {{> afQuickField name="charge"}}
-
-
-        {{> afQuickField name="working_hours"}}
-
-
-        {{> afQuickField name="working_days"}}
-
-
-        {{> afQuickField name="accompanist_active"}}
-
-
-        {{> afQuickField name="session_location"}}
-
-        {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-
-        {{> afQuickField name="one_liner"}}
-        <button type="submit" class=" btn card-title right btn-primary">Save</button>
-
-    {{/autoForm}}
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
 </template>
 
 <!-- SUB-SECTION: rendered data for each card -->
@@ -398,7 +337,6 @@
   <div class="card {{accompColor accompanist_active}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
-<!-- <<<<<<< HEAD -->
         {{#if isOwnProfile}}
          <div class="row">
             <h5>
@@ -411,21 +349,21 @@
             {{> afQuickField name="session_location" type="hidden"}}
             {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
             {{> afQuickField name="one_liner" type="hidden"}}
+            
             <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
+            <!-- Switch -->
+            <!-- <div class="switch">
+              <label>
+                Enactive
+                <input type="checkbox">
+                <span class="lever">{{> afQuickField name="accompanist_active"}}</span>
+                Active
+              </label>
+            </div> -->
+
+
           {{/autoForm}}
           </div>
-<!-- ======= -->
-        <!--
-        <h5>Repertoire: </h5>
-        {{#each repertoire}}
-          {{this}}<br>
-        {{/each}}
-           <hr> -->
-<!--         {{#if isOwnProfile}}
-          <h5>
-            Accompanying Preferances
-          </h5>
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
         {{/if}}
         <div class="accopmCard-left">
           <h10>
