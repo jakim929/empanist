@@ -75,9 +75,45 @@ AutoForm.hooks({
   advancedSearch: {
     onSubmit: function (doc) {
       event.preventDefault();
-      console.log(doc)
-      $('#advancedsearch').removeAttr('disabled');
-      FlowRouter.setQueryParams(doc);
+  
+      var address = doc.address
+      var charge = doc.charge
+      var working_days = doc.working_days
+      var start_date = doc.start_date
+      var end_date = doc.end_date
+      var radius = doc.radius
+      var session_location = doc.session_location
+      var working_hours = doc.working_hours
+
+      if (address == undefined) {
+        FlowRouter.setQueryParams({address: null});
+      }
+      if (charge == undefined) {
+        FlowRouter.setQueryParams({charge: null});
+      }
+      if (working_days == undefined) {
+        FlowRouter.setQueryParams({working_days: null});
+      }
+      if (start_date == undefined) {
+        FlowRouter.setQueryParams({start_date: null});
+      }
+      if (end_date == undefined) {
+        FlowRouter.setQueryParams({end_date: null});
+      }
+      if (radius == undefined) {
+        FlowRouter.setQueryParams({radius: null});
+      }
+      if (session_location == undefined) {
+        FlowRouter.setQueryParams({session_location: null});
+      }
+      if (working_hours == undefined) {
+        FlowRouter.setQueryParams({working_hours: null});
+      }
+
+      console.log("New Query Param")
+        console.log(doc)
+        $('#advancedsearch').removeAttr('disabled');
+        FlowRouter.setQueryParams(doc);
     }
   }
 });
@@ -107,24 +143,16 @@ Template.NewSession.helpers({
     }
 
   }
-  // initialDoc(transactionId) {
-  //   var transactionDoc = Transactions.findOne({_id : transactionId}, {musician: 1, accompanist: 1, rehearsalLocation: 1, performanceLocation: 1});
-  //   return {transaction: transactionId,
-  //     accompanist: transactionDoc.accompanist,
-  //     musician: transactionDoc.musician
-  //
-  //   }
-  // }
 })
 
-  valueOut = function(){
-    var val = [];
-    this.find('input.timeslot-checkbox').each(function(){
-      if($(this).is(":checked")) {
-        val.push($(this).val());
-      }
-    })
-    return val
+valueOut = function(){
+  var val = [];
+  this.find('input.timeslot-checkbox').each(function(){
+    if($(this).is(":checked")) {
+      val.push($(this).val());
+    }
+  })
+  return val
 }
 
 var options = {template: "TestDrag", valueOut: valueOut}
@@ -161,6 +189,57 @@ Template.TestDrag.helpers({
     };
   }
 
+})
+
+SexyValueOut = function(){
+  var val = [];
+  this.find('input.sexyselect-checkbox').each(function(){
+    if($(this).is(":checked")) {
+      val.push($(this).val());
+    }
+  })
+  console.log(val)
+  return val
+}
+
+var sexyOptions = {template: "SexySelect", valueOut: SexyValueOut}
+
+AutoForm.addInputType("sexyselect-checkboxes", sexyOptions)
+
+  
+Template.advancedSearch.helpers({
+  chargeArray(){
+    var newArray = [{label: '$20', value: 20},
+                    {label: '$40', value: 40},
+                    {label: '$60', value: 60}]
+    return newArray
+  },
+  timeArray(){
+    var newArray = [{label: "Morning", value: "Morning"},
+                    {label: "Afternoon", value: "Afternoon"},
+                    {label: "Night", value: "Night"}]
+    return newArray
+  },
+  dayArray(){
+    var newArray = [{label: "Mon", value: "Monday"},
+                    {label: "Tue", value: "Tuesday"},
+                    {label: "Wed", value: "Wednesday"},
+                    {label: "Thur", value: "Thursday"},
+                    {label: "Fri", value: "Friday"},
+                    {label: "Sat", value: "Saturday"},
+                    {label: "Sun", value: "Sunday"}]
+    return newArray
+  }
+});
+
+Template.SexySelect.helpers({
+  dsk: function dsk() {
+    console.log("dsk princted")
+    console.log(this.atts)
+    return {
+      "data-schema-key": this.atts["data-schema-key"]
+    };
+  }
 })
 
 Template.TestDrag.events({
@@ -1137,6 +1216,23 @@ Template.orchestras.events({
   'click .btn':function(){
     $(".orchestrasAddForm").css('display', 'none');
     $(".orchestrasAddButton").css('display', 'block');
+    }
+  });
+
+Template.advancedSearch.events({
+  'click .more':function(){
+    $(".time").css('display', 'block');
+    $(".days").css('display', 'block');
+    $(".session_location").css('display', 'block');
+    $(".more").css('display', 'none');
+    $(".less").css('display', 'block');
+    },
+    'click .less':function(){
+    $(".time").css('display', 'none');
+    $(".days").css('display', 'none');
+    $(".session_location").css('display', 'none');
+    $(".more").css('display', 'block');
+    $(".less").css('display', 'none');
     }
   });
 
@@ -2753,7 +2849,7 @@ Template.results.helpers({
     var end_date = FlowRouter.getQueryParam("end_date")
 
     // if Advanced search
-    var charge = parseInt(FlowRouter.getQueryParam("charge"))
+    var charge = FlowRouter.getQueryParam("charge")
     var session_location = FlowRouter.getQueryParam("session_location")
     var radius = FlowRouter.getQueryParam("radius")
     var time = FlowRouter.getQueryParam("working_hours")
@@ -2781,10 +2877,17 @@ Template.results.helpers({
 
       function searchWith(){
 
-        if (charge !== NaN) {
+        if (charge !== undefined && charge.length > 1) {
+          
+          var result = charge.map(function (x) { 
+            return parseInt(x, 10); 
+          });
           var charge_algo = 
-          {charge: charge}
-        } 
+          {charge: {$in: result}}
+        } else if (charge !== undefined) {
+          var charge_algo = 
+          {charge: parseInt(charge[0])}
+        }
 
         if (session_location !== null) {
           var session_algo = 
@@ -2802,104 +2905,38 @@ Template.results.helpers({
         if (day !== undefined && $.isArray(day)) {
           var work_algo = 
           {working_days: {$in: day}}
-        } else if (day !== undefined) {
-          var work_algo = 
-          {working_days: day}
         }
 
         var array_algo = [charge_algo, session_algo, time_algo, work_algo]
-        
-        console.log("array_algo")
-        console.log(array_algo)
-        
-
         var new_algo = [{accompanist_active: true},{Id: { $ne: Meteor.userId()}}]
 
         $.each(array_algo, function( index, value ) {
-
-          // console.log("Values")
-          // console.log(value['charge'])
-          // console.log(value['working_hours'])
-          // console.log(value['working_days'])
-          // console.log(value['session_location'])
-          // console.log(value)
-
           switch (index) {
             case 0:
-              console.log("charge add")
-              console.log((value['charge']))
-              
-              if (value['charge']) {
-                console.log("passed = charge not NaN")
+              if (value !== undefined) {
                 new_algo.push(value)
               }
               break;
             case 1:
-            console.log("session_location")
-        console.log(value['session_location'])
-        console.log(value['session_location'] !== undefined)
-              console.log("session_location add")
-
               if ((value['session_location'] !== undefined) ) {
-                console.log("there is session preferance")
                 new_algo.push(value)
               }
-              // console.log(value['session_location'] !== "")
-              // console.log(value['session_location'])
               break;
             case 2:
-              console.log("hours add")
                if (value !== undefined) {
-                console.log("there is hours preferance")
                 new_algo.push(value)
               }
-              // console.log(value['working_hours'] !== undefined)
-              // console.log(value['working_hours'])
               break;
             case 3:
-              console.log("days add")
               if (value !== undefined) {
-                console.log("there is day preferance")
                 new_algo.push(value)
               }
-              // console.log(value['working_days'] !== undefined)
-              // console.log(value['working_days'])
               break;
           }
-   });
-
-          // if ( !isNaN(value['charge']) && (value['session_location'] == undefined) && (value['working_hours'] == undefined) && (value['working_days'] == undefined)) {
-          //   console.log("got charge")
-          //   new_algo.push(value)
-          // } else
-
-          // if ( (value['charge'] == undefined) && (value['session_location'] !== "") && (value['working_hours'] == undefined) && (value['working_days'] == undefined)) {
-          //   console.log("got session location")
-          //   new_algo.push(value)
-          // } else
-
-          // if ((value['charge'] == undefined) && (value['session_location'] == undefined) && (value['working_hours'] !== undefined) && (value['working_days'] == undefined)) {
-          //   console.log("got hours")
-          //   new_algo.push(value)
-          // } else 
-
-          // if ((value['charge'] == undefined) && (value['session_location'] == undefined) && (value['working_hours'] == undefined) && (value['working_days'] !== undefined)) {
-          //   console.log("got days")
-          //   new_algo.push(value)
-          // }
-
-       
-
-        console.log("new")
-        console.log(new_algo)
-        // console.log("old")
-        // console.log(array_algo)
-
-        return new_algo
-
+        });
+          return new_algo
       };
 
-      
       var x =  searchWith()
       var results = AccompanistProfiles.find(
         {loc:
@@ -2911,63 +2948,8 @@ Template.results.helpers({
         },
         $and: x 
       }).fetch();
-
-      console.log(results)
-
-      // if (coords !== undefined && moment(sd).isValid() && moment(ed).isValid()) {
-      //     var results = AccompanistProfiles.find({
-      //       loc:
-      //         { $near :
-      //           {
-      //             $geometry: { type: "Point",  coordinates: coords },
-      //             $maxDistance: 20000
-      //           }
-      //         },
-      //       accompanist_active: true,
-      //       Id: { $ne: Meteor.userId() }
-      //     }).fetch();
-      // }
-
-      // else if (moment(sd).isValid() && moment(ed).isValid()){
-      //   var results =
-      //     AccompanistProfiles.find({
-      //     accompanist_active: true,
-      //     Id: { $ne: Meteor.userId() }}).fetch();
-      // }
-
-      // else if (moment(ed).isValid()){
-      //   var results =
-      //     AccompanistProfiles.find({
-      //     accompanist_active: true,
-      //     Id: { $ne: Meteor.userId() }}).fetch();
-      // }
-
-      // else if (moment(sd).isValid() ){
-      //   var results =
-      //     AccompanistProfiles.find({
-      //     accompanist_active: true,
-      //     Id: { $ne: Meteor.userId() }}).fetch();
-      // }
-
-      // else if (coords !== undefined){
-      //   var results = AccompanistProfiles.find({
-      //     loc:
-      //       { $near :
-      //         {
-      //           $geometry: { type: "Point",  coordinates: coords },
-      //           $maxDistance: 20000
-      //         }
-      //       },
-      //       Id: { $ne: Meteor.userId() },
-      //     accompanist_active: true}).fetch();
-      // }
-
-      // else {
-      //   var results = null
-      // }
       Session.set('results', results)
     });
-
     return Session.get('results')
   },
   accompname: function() {
@@ -3028,8 +3010,8 @@ Template.advancedSearch.events({
    }
 });
 
-// Template.NewAccompanist.events({
-//    'click #autocomplete': function(e,NewAccompanist) {
+// Template.upsertAccompanistForm.events({
+//    'click #autocomplete': function(e,upsertAccompanistForm) {
 //      initAutoComplete();
 //    }
 // });

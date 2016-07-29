@@ -69,8 +69,30 @@ h6.id {
 .thumbnail {
 	display: inline-block;
 }
+
 .hidden {
 	display: none;
+}
+
+.time {
+  display: none;
+}
+
+.less {
+  display: none;
+  color: #ADD8E6;
+}
+
+.more {
+  color: #ADD8E6;
+}
+
+.days {
+  display: none;
+}
+
+.session_location {
+  display: none;
 }
 
 
@@ -181,25 +203,6 @@ div.home_text {
 
 }
 
-/*date range*/
-/*.fa-rotate-180 {
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
-}
- .up{
-  margin-top: -1px;
- }
-
-.verticalLine {
-    border-left: 1px solid grey;
-    margin-top: -1px;
-}
-
-.pads {*/
-
 div.search_bar {
   position: absolute;
   top:70%;
@@ -207,14 +210,51 @@ div.search_bar {
   left: 0;
   right: 0;
   margin: auto;
+  height: 45px;
+  /*width: 800px;*/
+  max-width: 100%;
+  margin-left: 25%;
+  margin-right:25%;
+
 }
 /*rgba(0, 0, 0, 0.5);*/
+
+.search_form {
+  padding:0;
+  margin-right: 0%;
+  margin-left:0%;
+  height:45px;
+  max-width: 100%;
+/*  vertical-align: middle;
+*/}
+
+.field {
+  height:45px;
+}
+
+.search_btn {
+  height: 45px;
+  padding:0;
+  width:100%;
+}
+
 .blur {
-  /* Backgroung layout*/
   background-color: white;
   display:inline-block;
-  width: 100%;
-  border-radius: 3px
+  /*width: 800px;*/
+  max-width:100%;
+  height: 45px;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: middle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.arrow {
+  margin-top:10px;
+  margin-left:-15px;
 }
 
 #bg {
@@ -316,6 +356,19 @@ a {
   max-height: 100%;
 }
 
+.verticalLine {
+  border-left: 1px solid grey;
+}
+
+.horizontalLine {
+  border-top: 1px solid #E5E5E5;
+}
+
+.input-field {
+  padding:0;
+  margin:0;
+}
+
 .top {
   padding-bottom: 15px
 }
@@ -366,11 +419,6 @@ a {
   width:100%;
 }
 
-/*.mainResults {
-  margin-left: 100px
-
-}*/
-
 #resultsProfileImg {
   margin-top:-40px;
   max-width: 100px;
@@ -384,6 +432,41 @@ a {
   max-height: 100px;
   float:left;
   overflow:hidden;
+}
+
+.row {
+  margin:0;
+}
+
+.inLine {
+  margin-top:15px;
+  margin-bottom: 15px;
+}
+
+.test {
+  background-color: green;
+}
+
+.advancedsearch-btn {
+  width:100%;
+}
+.box {
+  height: 35px;
+  background-color: #eeeeee;
+}
+
+.box-label {
+  font-weight: bold;
+  top: 30px;
+  padding-left:10px;
+}
+
+.checker {
+  padding-right: 10px;
+}
+
+.right_new {
+  right:0;
 }
 
 #profileImg {

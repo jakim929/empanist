@@ -336,7 +336,6 @@
   <div class="card {{accompColor accompanist_active}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
-<!-- <<<<<<< HEAD -->
         {{#if isOwnProfile}}
          <div class="row">
             <h5>
@@ -349,21 +348,21 @@
             {{> afQuickField name="session_location" type="hidden"}}
             {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
             {{> afQuickField name="one_liner" type="hidden"}}
+            
             <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
+            <!-- Switch -->
+            <!-- <div class="switch">
+              <label>
+                Enactive
+                <input type="checkbox">
+                <span class="lever">{{> afQuickField name="accompanist_active"}}</span>
+                Active
+              </label>
+            </div> -->
+
+
           {{/autoForm}}
           </div>
-<!-- ======= -->
-        <!--
-        <h5>Repertoire: </h5>
-        {{#each repertoire}}
-          {{this}}<br>
-        {{/each}}
-           <hr> -->
-<!--         {{#if isOwnProfile}}
-          <h5>
-            Accompanying Preferances
-          </h5>
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127 -->
         {{/if}}
         <div class="accopmCard-left">
           <h10>
