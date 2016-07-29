@@ -34,13 +34,9 @@ accounts-password
 zimme:active-route
 gwendall:auth-client-callbacks
 meteortoys:allthings
-lukemadera:autoform-autocomplete
 ejson
 meteorhacks:search-source
 check
-mpowaga:autoform-autocomplete
-comerc:bs-typeahead
-comerc:autoform-typeahead
 sergeyt:typeahead
 jeremy:selectize
 comerc:autoform-selectize
@@ -67,7 +63,6 @@ gfk:notifications
 
 useraccounts:materialize
 
-materialize:materialize
 
 # reywood:publish-composite
 
@@ -80,13 +75,14 @@ planettraining:material-design-icons
 edgee:slingshot
 themeteorchef:bert
 peerlibrary:aws-sdk
-rzymek:fullcalendar
 
 dfischer:faker
-classcraft:imagemagick
 raix:md5
 
 
 d3js:d3
 less
 # dangrossman:bootstrap-daterangepicker
+dbarrett:dropzonejs
+aldeed:autoform-select2
+materialize:materialize

@@ -61,82 +61,206 @@ Meteor.publish( 'files', function(){
   return this.ready();
 });
 
-var deleteImageFromS3 = function(url, callback){
-  if (url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
-  {
-    throw new Meteor.error("URL parse failed","Not a valid image url");
+var deleteImageDependencies = function(imageId){
+  var imageToDelete = UserImages.findOne({_id: imageId, userId: Meteor.userId()});
+  if (imageToDelete){
+    deleteImageFromS3(imageToDelete.url, function(error, result){
+      UserImages.remove({_id: imageId, userId: Meteor.userId()}, function (error) {
+        if (error){
+          throw new Meteor.error("Image Database Error", "Removing Image Failed");
+        }else{
+          if (BasicProfiles.findOne({userId: Meteor.userId(), profilePic: imageId})){
+            BasicProfiles.update({userId: Meteor.userId()}, {$unset: {profilePic:1}}, function(error, result){
+              throw new Meteor.error("Image Database Error", "Removing Image Failed");
+            })
+          }
+          if (BasicProfiles.findOne({userId: Meteor.userId(), coverPic: imageId})){
+            BasicProfiles.update({userId: Meteor.userId()}, {$unset: {coverPic:1}}, function(error,result){
+              throw new Meteor.error("Image Database Error", "Removing Image Failed");
+            })
+          }
+        }
+      });
+    })
   }
+}
 
-  var newKey = url.replace("https://empanist-images.s3.amazonaws.com/", "")
+var deleteImageFromUserImages = function(imageId, callback){
+  var imageToDelete = UserImages.findOne({_id: imageId, userId: Meteor.userId()})
+  if (imageToDelete) {
+    // Make sure that thumbnail doesn't have another thumbnail
+    if (imageToDelete.hasOwnProperty('thumbnailId')){
+      deleteImageDependencies(imageToDelete.thumbnailId);
+    }
+    deleteImageDependencies(imageId);
+  }
+}
+
+// var deleteImageFromS3 = function(url, callback){
+//   if (url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
+//   {
+//     throw new Meteor.error("URL parse failed","Not a valid image url");
+//   }
+//
+//   var newKey = url.replace("https://empanist-images.s3.amazonaws.com/", "")
+//   var s3 = new AWS.S3();
+//
+//   var params = {
+//     Bucket: "empanist-images",
+//     Key:newKey
+//   };
+//
+//   s3.deleteObject(params, Meteor.bindEnvironment(callback))
+// }
+
+var deleteImageFromS3 = function(key){
+  AWS.config.update({
+     accessKeyId: Meteor.settings.AWSAccessKeyId,
+     secretAccessKey: Meteor.settings.AWSSecretAccessKey
+  });
+
   var s3 = new AWS.S3();
-
   var params = {
     Bucket: "empanist-images",
-    Key:newKey
+    Key: key
   };
 
-  s3.deleteObject(params, Meteor.bindEnvironment(callback))
+  var syncS3DeleteObject = Meteor.wrapAsync(s3.deleteObject, s3);
+  return syncS3DeleteObject(params);
+
 }
+
+var setAsProfilePicture = function(imageId){
+  if(!UserImages.findOne({_id : imageId, userId: Meteor.userId()}, {_id:1})){
+    throw new Meteor.Error('no-such-image', "Insufficient permissions/No such image in database.");
+  }else{
+    BasicProfiles.update({userId: Meteor.userId()}, {$set: {profilePic : imageId}}, function(err, result){
+      if(err){
+        throw new Meteor.Error(err);
+      }else{
+        return true
+      }
+    })
+  }
+};
 
 Meteor.methods({
   // Add security measures
-  deleteImageFromS3: function(imageDatabaseId){
-    if(!this.userId){
-      throw new Meteor.error("Access Denied","User not logged in");
-    }else{
-      var found = CropUploader.images.findOne({_id: imageDatabaseId, userId: this.userId })
-      if (!found){
-        throw new Meteor.error("Image search failed","Image not found");
-      }
-      var mainUrl = found.url
-      var derivativeUrl = found.derivatives.thumbnail
+  // deleteImageFromS3: function(imageDatabaseId){
+  //   if(!this.userId){
+  //     throw new Meteor.error("Access Denied","User not logged in");
+  //   }else{
+  //     var found = CropUploader.images.findOne({_id: imageDatabaseId, userId: this.userId })
+  //     if (!found){
+  //       throw new Meteor.error("Image search failed","Image not found");
+  //     }
+  //     var mainUrl = found.url
+  //     var derivativeUrl = found.derivatives.thumbnail
+  //
+  //     var cbDeleteFromCollection = function(err,data){
+  //       if (err){
+  //         console.log(err)
+  //       }else{
+  //         CropUploader.images.remove({_id: imageDatabaseId});
+  //         console.log("Successfully deleted from S3 and deleted from CropUploader.images collection", imageDatabaseId);
+  //
+  //       }
+  //     };
+  //
+  //     var cbKeepCollection = function(err,data){
+  //       if (err){
+  //         console.log(err)
+  //       }else{
+  //         console.log("Successfully deleted from S3", imageDatabaseId);
+  //       }
+  //     };
+  //
+  //     if(derivativeUrl){
+  //       deleteImageFromS3(derivativeUrl, cbKeepCollection);
+  //     }
+  //     deleteImageFromS3(mainUrl, cbDeleteFromCollection);
+  //
+  //     if (found.picType == "profile"){
+  //       BasicProfiles.update({userId: this.userId}, {$unset:{profilePic : ""}});
+  //     }else{
+  //       BasicProfiles.update({userId: this.userId}, {$unset:{coverPic : ""}});
+  //     }
+  //
+  //   }
+  // },
 
-      var cbDeleteFromCollection = function(err,data){
-        if (err){
-          console.log(err)
-        }else{
-          CropUploader.images.remove({_id: imageDatabaseId});
-          console.log("Successfully deleted from S3 and deleted from CropUploader.images collection", imageDatabaseId);
-
-        }
-      };
-
-      var cbKeepCollection = function(err,data){
-        if (err){
-          console.log(err)
-        }else{
-          console.log("Successfully deleted from S3", imageDatabaseId);
-        }
-      };
-
-      if(derivativeUrl){
-        deleteImageFromS3(derivativeUrl, cbKeepCollection);
-      }
-      deleteImageFromS3(mainUrl, cbDeleteFromCollection);
-
-      if (found.picType == "profile"){
-        BasicProfiles.update({userId: this.userId}, {$unset:{profilePic : ""}});
-      }else{
-        BasicProfiles.update({userId: this.userId}, {$unset:{coverPic : ""}});
-      }
-
-    }
+  setProfilePicture: function(imageId) {
+    setAsProfilePicture(imageId);
   },
 
-  storeUrlInDatabase: function( url, type ) {
-    check( url, String );
+  // storeUrlInDatabase: function( url, type ) {
+  //   check( url, String );
+  //   Modules.both.checkUrlValidity( url );
+  //
+  //   try {
+  //     UserImages.insert({
+  //       url: url,
+  //       userId: Meteor.userId(),
+  //       picType: type,
+  //       added: new Date()
+  //     });
+  //   } catch( exception ) {
+  //     return exception;
+  //   }
+  // },
+
+  storeImageUrlInDatabase: function( info ) {
+    var url = 'https://s3.amazonaws.com/empanist-images/' + Meteor.userId() + "/" + info.name;
+
     Modules.both.checkUrlValidity( url );
 
     try {
       UserImages.insert({
         url: url,
         userId: Meteor.userId(),
-        picType: type,
-        added: new Date()
+        type: info.type,
+        name: info.name,
+        size: info.size,
+        added: new Date(),
+        isThumbnail: false,
+        lastModifiedDate: info.lastModifiedDate
       });
     } catch( exception ) {
       return exception;
     }
+  },
+
+  storeThumbnailUrlInDatabase: function(info,  originalImageId ) {
+    Modules.both.checkUrlValidity( info.url );
+    var originalImageDoc = UserImages.findOne({_id: originalImageId})
+    if(originalImageDoc){
+      UserImages.insert({
+        url: info.url,
+        userId: Meteor.userId(),
+        type: info.type,
+        name: info.name,
+        size: info.size,
+        added: new Date(),
+        isThumbnail:true
+      }, function (err, result){
+        if(err){
+          throw new Meteor.error("Thumbnail Database Update Error", err.message);
+        }else{
+          if (originalImageDoc.hasOwnProperty('thumbnailId')){
+            return
+          }else{
+            UserImages.update({_id: originalImageId}, {$set: {thumbnailId:result}});
+          }
+
+        }
+      });
+    }
+
+    // ADD ERROR HANDLING FOR WHEN USERIMAGES DOESNT HAVE A FILE
+
+
+
+
   },
 
   getGeocode: function (arg) {
@@ -169,10 +293,6 @@ Meteor.methods({
     }
   },
 
-  divinify: function(userId) {
-    Roles.addUsersToRoles(userId, 'admin');
-  },
-
   confirmBookingRequest: function(transactionId, sessionSelector, sessionDoc) {
     var transaction = Transactions.findOne({_id: transactionId});
     var session = Sessions.findOne(sessionSelector);
@@ -194,11 +314,6 @@ Meteor.methods({
     }
   },
 
-  setCropPreferences: function(cropData){
-    console.log(cropData);
-    var pref = cropData.x.toString() + "x"  + cropData.y.toString() + "+" + cropData.width.toString() + "+" + cropData.height.toString()
-    Imagemagick.convert(['/images/violincover.jpg', '-crop', pref, ''])
-  }
 });
 
 // Server Side hooks
@@ -206,18 +321,7 @@ Meteor.methods({
 
 
 // Images (CropUploader) Hooks
-CropUploader.images.after.insert(function (userId, doc) {
-  console.log("running hook after images insert")
-  // Perhaps use javascript selectors instead of a dumb if statment
-  // Add Safety measures with a (before) hook
-  if(doc.picType == "profile"){
-    console.log("just uploaded a profile pic")
-    BasicProfiles.update({userId: userId}, {$set: {profilePic: doc._id}})
-  }else if (doc.picType == "cover"){
-    console.log("just uploaded a cover pic")
-    BasicProfiles.update({userId: userId}, {$set: {coverPic: doc._id}})
-  }
-})
+
 
 //  MusicProfiles.after.upsert(function (userId, selector, modifier, options) {
 //   console.log("music profiles updated")

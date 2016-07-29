@@ -7,10 +7,12 @@ import { Sessions } from '../collections/transactions.js'
 
 import { TransactionSchema } from '../collections/transactions.js'
 
-import cropper from 'cropper';
-import 'cropper/dist/cropper.css';
-
 import { Data } from '../collections/profileData.js'
+
+import parser from 'http-string-parser'
+
+import cropper from 'cropper';
+import 'cropper/dist/cropper.min.css'
 
 
 window.MusicProfiles = MusicProfiles
@@ -21,7 +23,24 @@ window.Transactions = Transactions
 window.Sessions = Sessions
 
 
+
+
+Template.TestLayout.onRendered(function () {
+  console.log(parser)
+})
+
+
+Template.TestLayout.helpers({
+  instrumentList: function () {
+    return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
+    "Zither"].map(function(obj){return {label: obj, value:obj}})
+  }
+})
+
+
 // Reservations Layout
+
+
 
 Template.statusBadge.helpers({
   getClass (status) {
@@ -193,15 +212,6 @@ Template.BookingCard.helpers({
 
 // CropUploader
 
-Template.ProfileLayout.events({
-  'click .change-profile-pic' (event, template){
-    Session.set("changeImageModalStatus", "profile");
-  },
-  'click .change-cover-pic' (event, template){
-    Session.set("changeImageModalStatus", "cover");
-  }
-
-})
 
 getDimensions = function(type) {
   if(type == "profile"){
@@ -215,30 +225,6 @@ getDimensions = function(type) {
   return {width:200, height: 200, aspectRatio: 1};
 }
 
-Template.picOverlord.onRendered(function() {
-  Tracker.autorun(function () {
-    var currentCropperStatus = Session.get("cropperStatus");
-    if (currentCropperStatus == "go"){
-      console.log("go cropper");
-
-      var dimensions = getDimensions(Session.get("changeImageModalStatus"));
-      options =
-        {
-          aspectRatio: dimensions.aspectRatio,
-          data: {
-                  x:10,
-                  y:10,
-                  width: dimensions.width,
-                  height: dimensions.height
-                }
-        }
-      $("#crop-image").cropper(options);
-    }else if (currentCropperStatus == "stop"){
-      console.log("stop cropper")
-      $("#crop-image").cropper('destroy');
-    }
-  });
-})
 
 
 
@@ -246,57 +232,11 @@ Template.accountTemplate.onRendered(function () {
 
   $(document).ready(function(){
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal-trigger').leanModal(
-      {
-        ready: function() {
-          console.log("Ready Modal");
-          // var options = Session.get('cropperOptions');
-          // options.rotatable = false;
-          // Session.set('cropperOptions', options);
-          // var imageSegment = $("#crop-image");
-          // imageSegment.cropper(options);
-          // Session.set("picModalOpened", true);
-        },
-        complete: function() {
 
-          Session.set("cropperStatus", "stop");
-                    // $("#crop-image").cropper('destroy');
-        }
-      }
-    );
   });
 
 });
 
-Template.picOverlord.events({
-  'click .change-thumbnail-tab': function () {
-    Session.set('cropperStatus', "go");
-  },
-  'click .upload-image-tab': function () {
-    Session.set('cropperStatus', "stop");
-  },
-
-});
-
-Template.changeImageModal.onRendered(function(){
-    $('ul.tabs').tabs();
-  Session.get("cropperStatus", "unrendered")
-})
-
-var directory = ''; // same as Meteor.settings.S3Directory
-CropUploader.init("uploadToAmazonS3", directory);
-
-Template.images.onCreated(function(){
-    this.subscribe('cropUploaderImages');
-})
-Template.images.onRendered(function(){
-  this.$('.preview').addClass('hidden');
-});
-Template.images.helpers({
-  images: function() {
-    return CropUploader.images.find();
-  }
-});
 
 
 
@@ -312,153 +252,10 @@ Template.images.helpers({
 //   })
 // });
 
-Template.picUploader.helpers({
-  dimensions: function(){
-    return getDimensions(Session.get("changeImageModalStatus"));
-  },
 
-
-  previewPresent: function() {
-    if (Session.get("previewPresent")){
-        return "";
-    }else{
-        return "hidden"
-    }
-
-  },
-  picType: function() {
-    // Change to reactive var at some point from sessions
-    console.log(Session.get("changeImageModalStatus"))
-    return Session.get("changeImageModalStatus");
-  },
-  currentImage: function() {
-    // Change back to reactive var
-    if(Session.get("changeImageModalStatus") == "profile"){
-              console.log("Hello");
-      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
-      if(basicProfileDoc){
-        var x = CropUploader.images.findOne({_id: basicProfileDoc.profilePic});
-        console.log(basicProfileDoc.profilePic);
-        return x
-      }
-    }else if(Session.get("changeImageModalStatus") == "cover"){
-      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), coverPic: {$exists: true}}, {coverPic: 1});
-      if(basicProfileDoc){
-        return CropUploader.images.findOne({_id: basicProfileDoc.coverPic})
-      }
-    }
-  },
-});
-
-Template.picCropper.onCreated(function(){
-  this.picType = new ReactiveVar("profile");
-});
-
-Template.picCropper.helpers({
-  picType: function() {
-    return Template.instance().picType.get();
-  },
-  currentImage: function() {
-    if(Template.instance().picType.get() == "profile"){
-      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
-      if(basicProfileDoc){
-        return CropUploader.images.findOne({_id: basicProfileDoc.profilePic});
-      }
-    }else if(Template.instance().picType.get() == "cover"){
-      var basicProfileDoc = BasicProfiles.findOne({userId : Meteor.userId(), coverPic: {$exists: true}}, {coverPic: 1});
-      if(basicProfileDoc){
-        return CropUploader.images.findOne({_id: basicProfileDoc.coverPic})
-      }
-    }
-  },
-  dimensions: function(){
-    return getDimensions(Session.get("changeImageModalStatus"));
-  },
-
-
-});
-
-Template.picCropper.events({
-  'click button.delete': function(e,t) {
-    if(confirm('Delete this image?'))
-    {
-      var imageid = t.$(e.target).attr('imageid');
-      console.log(imageid);
-      // change route away from the image since it no longer exists
-      Meteor.call('deleteImageFromS3', imageid);
-      Session.set("cropperStatus", "stop")
-    }
-  },
-  'click button.save': function(e,t) {
-    // provide the name of the derivative, thumbnail is the default
-    CropUploader.crop.save('thumbnail');
-  },
-  'click button.rotate': function(e,t) {
-    CropUploader.crop.rotate();
-  }
-})
-
-Template.picCropper.onCreated(function(){
-  this.subscribe('cropUploaderImages', {_id: Session.get('imageid')});
-});
-
-Template.cropper.onCreated(function(){
-  Session.set('imageid', 'R4writwnZ9XM5sEoQ')
-  this.subscribe('cropUploaderImages', {_id: Session.get('imageid')});
-});
-
-Template.cropper.helpers({
-  imageid: function() {
-    return Session.get('imageid');
-  },
-  url: function() {
-    return CropUploader.images.findOne(Session.get('imageid')).url;
-  }
-});
-
-Template.cropper.events({
-  'click button.delete': function(e,t) {
-    if(confirm('Delete this image?'))
-    {
-      var imageid = t.$(e.target).attr('imageid');
-      CropUploader.images.remove(imageid);
-      // change route away from the image since it no longer exists
-    }
-  },
-  'click button.save': function(e,t) {
-    // provide the name of the derivative, thumbnail is the default
-    CropUploader.crop.save('thumbnail');
-  },
-  'click button.rotate': function(e,t) {
-    CropUploader.crop.rotate();
-  }
-});
 
 // Account Templates
 
-Template.TestLayout.onRendered(function () {
-  // $('#image').cropper({
-  //   aspectRatio: 16 / 9,
-  //   crop: function(e) {
-  //     // Output the result data for cropping image.
-  //     console.log(e.x);
-  //     console.log(e.y);
-  //     console.log(e.width);
-  //     console.log(e.height);
-  //     console.log(e.rotate);
-  //     console.log(e.scaleX);
-  //     console.log(e.scaleY);
-  //   }
-  // });
-});
-
-Template.TestLayout.events({
-  'click .save-button': function(){
-    var cropData = $('#image').cropper('getData', true);
-    Meteor.call('setCropPreferences', cropData);
-
-  }
-});
 
 var atName =
   {
@@ -1395,11 +1192,52 @@ Template.bookAccompanistForm.events({
     }
   }
 });
+// Just Testing
+
+var dateToDateString = function(date) {
+  var m = (date.getMonth() + 1);
+  if (m < 10) {
+    m = "0" + m;
+  }
+  var d = date.getDate();
+  if (d < 10) {
+    d = "0" + d;
+  }
+  return date.getFullYear() + '-' + m + '-' + d;
+};
+Template.TestLayout.helpers({
+  urlStartDate() {
+
+  return  dateToDateString (new Date())
+
+  },
+  urlEndDate() {
+    return FlowRouter.getQueryParam('end_date')
+  }
+});
+
+Template.bookAccompanistForm.onRendered(function(){
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
+})
+
+Template.bookAccompanistForm.helpers({
+  urlStartDate() {
+    var startDate = new Date(FlowRouter.getQueryParam('start_date'))
+    return dateToDateString(startDate)
+  },
+  urlEndDate() {
+    var endDate = new Date(FlowRouter.getQueryParam('end_date'))
+    return dateToDateString(endDate)
+  }
+});
 
 Template.registerHelper('myProfilePic', function(){
-  var urlDoc = UserImages.findOne({userId: Meteor.userId()}, {url: 1});
-  if (urlDoc){
-    return urlDoc.url
+  var basicProfileDoc = BasicProfiles.findOne({userId: Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
+  if (basicProfileDoc && basicProfileDoc.profilePic){
+    return basicProfileDoc.profilePic
   }
 })
 
@@ -1727,26 +1565,22 @@ AccountsTemplates.configureRoute('signUp');
 
 // Javascript Component Initialization
 
-Template.Navbar.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $(".dropdown-button").dropdown();
-  });
-});
+
 
 Template.navbarAccount.onRendered(function () {
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $(".dropdown-button").dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrain_width: true, // Does not change width of dropdown to that of the activator
-      hover: true, // Activate on click
-      alignment: "right", // Aligns dropdown to left or right edge (works with constrain_width)
-      gutter: 0, // Spacing from edge
-      belowOrigin: true,
-    });
-  });
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  // console.log($(".dropdown-button.account-dropdown"))
+  $(".dropdown-button").dropdown({
+        inDuration: 300,
+        outDuration: 225,
+        constrain_width: false, // Does not change width of dropdown to that of the activator
+        hover: true, // Activate on hover
+        gutter: 0, // Spacing from edge
+        belowOrigin: false, // Displays dropdown below the button
+        alignment: 'left' // Displays dropdown with edge aligned to the left of button
+      });
+
+
 });
 
 Template.modalLogin.onRendered(function () {
@@ -1779,7 +1613,11 @@ Template.CollapsibleStructure.onRendered(function () {
 });
 
 Template.TabStructure.onRendered(function () {
-  $('ul.tabs').tabs();
+  $('ul.tabs').tabs({
+    onShow: function(tab) {
+      $('.carousel').carousel();
+    }
+  });
 });
 
 Template.NewAccompLayout.onRendered(function () {
@@ -2146,6 +1984,18 @@ Template.EditingForm.onCreated(function() {
 Template.results.onCreated(function() {
   this.currentState = new ReactiveVar('result-card-left')
 });
+
+Template.results.events({
+  'click a'(event, template){
+    event.preventDefault()
+    var accompanist = event.currentTarget.dataset.accompanist
+    var queryParam = {
+      start_date: FlowRouter.getQueryParam('start_date'),
+      end_date: FlowRouter.getQueryParam('end_date')
+    };
+    FlowRouter.go('/profile/:profileId', {profileId:accompanist}, queryParam);
+  }
+})
 
 Template.profileTemplate
 .onCreated(function() {

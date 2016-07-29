@@ -5,15 +5,15 @@
     </main>
 </template>
 
-<template name="results">	
+<template name="results">
 	<div class="resultsContainer">
 	{{#if noResults accompanists}}
 		<p>Sorry, no results found (aka go and tell your friends to use our amazing platform!)</p>
 		{{else}}
 		<div class="row">
 		{{#each accompanists}}
-			<a class="keep-date changeColor" href={{getProfileRoute Id}}>
-				<div  href={{getProfileRoute Id}} class="card result-card col s12 m5 l5 grey lighten-5 z-depth-0">
+			<a class="changeColor" href="" data-accompanist={{Id}}>
+				<div class="card result-card col s12 m5 l5 grey lighten-5 z-depth-0">
 					<div class="card-content">
 						<div class="mainResults">
 			        <div id="resultsBackgroundImg">
@@ -26,13 +26,13 @@
 				          <img class="responsive-img circle" src="http://www.famousbirthdays.com/faces/cerny-amanda-image.jpg">
 				        </a>
 			        </div>
-							
+
 							<div class="nameAffili ">
-								<p class="bold ellipsis">{{accompname.name}}</p> 
+								<p class="bold ellipsis">{{accompname.name}}</p>
 								<p class="ellipsis">{{accompname.affiliation}}</p>
 							</div>
 							<br>
-							
+
 							<div class="divide">
 							<p class="top">
 								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">attach_money</i>
@@ -41,18 +41,18 @@
 							<p class="ellipsis">
 								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">location_on</i>
 								{{mylocation}}
-							</p> 
+							</p>
 						</div>
-							
+
 						<div class="divide">
 							<p class="top">
 								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">access_time</i>
-								
+
 								{{#if allTimes working_hours}}
 									Anytime
 								{{else}}
 									{{#each working_hours}}
-										{{this}}, 
+										{{this}},
 									{{/each}}
 								{{/if}}
 
@@ -63,16 +63,16 @@
 									Any Day
 								{{else}}
 									{{#each working_days}}
-										{{formatDay this}}, 
+										{{formatDay this}},
 									{{/each}}
 								{{/if}}
-							</p> 
+							</p>
 						</div>
 							<!-- <p class="oneLiner"> {{one_liner}}</p> -->
 						</div>
 					</div>
 				</div>
-			</a>	
+			</a>
 		{{/each}}
 	</div>
 	{{/if}}

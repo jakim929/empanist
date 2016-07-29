@@ -3,6 +3,19 @@ html {
 	font-family: 'Open Sans', sans-serif;
 }
 
+.selected-border {
+	padding:1px;
+	border:3px solid #26a69a;
+}
+
+.unselected-border {
+	padding:1px;
+	border:3px solid white;
+}
+
+.gallery-img {
+	max-height:200px;
+}
 
 .set-min-height {
 	min-height: 420px;
