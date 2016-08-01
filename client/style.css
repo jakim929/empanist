@@ -307,6 +307,7 @@ div.search_bar {
 .parallax-container {
   margin-left:-21.5%;
   margin-right:-21.5%;
+  height:500px;
 }
 
 #align_text {

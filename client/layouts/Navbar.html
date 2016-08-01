@@ -2,14 +2,11 @@
 	<div class="navbar-fixed">
 		<nav class="#9fa8da indigo lighten-3">
 			<div class="nav-wrapper container">
-				<!-- <a href="/" class="brand-logo left">Empanist</a> -->
-		<!-- <img class="logo brand-logo left" src="http://www.chambermusicsociety.org/images/uploads/101514_Mozart_Piano_Concertos_Dress_148.JPG" alt=""> -->
-		 <a href="/"><img class="logo brand-logo left" src="/images/logo_less.png" alt=""></a>
- 
+		 		<a href="/"><img class="logo brand-logo left" src="/images/logo_less.png" alt=""></a>
 				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
-						{{#each navbarFields}}
-							<li >{{> Template.dynamic template=this}}</li>
-						{{/each}}
+					{{#each navbarFields}}
+						<li >{{> Template.dynamic template=this}}</li>
+					{{/each}}
 				</ul>
 			</div>
 		</nav>

@@ -9,7 +9,6 @@ import { TransactionSchema } from '../collections/transactions.js'
 import { Data } from '../collections/profileData.js'
 import { SearchData } from '../collections/searchData.js'
 
-
 import cropper from 'cropper';
 import 'cropper/dist/cropper.min.css'
 
@@ -1672,6 +1671,15 @@ Template.navbarAccount.onRendered(function () {
       });
 });
 
+Template.Navbar.onRendered(function () {
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  // console.log($(".dropdown-button.account-dropdown"))
+  $( document ).ready(function(){
+    $(".button-collapse").sideNav();
+  })
+  
+});
+
 Template.modalLogin.onRendered(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-login-trigger').leanModal({
@@ -1726,11 +1734,12 @@ Template.NewAccompLayout.onRendered(function () {
 
 Template.ProfileLayout.onRendered(function(){
   // // parallax
+  // $('.parallax').parallax();
 
   // resize card with card-reveal
   $(document).ready(function() {
 
-    $(".parallax").parallax();
+    $('.parallax').parallax();
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
     $('.aside').pushpin({ top:490});
