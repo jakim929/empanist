@@ -9,6 +9,20 @@ html {
   margin-top:5px;
 }
 
+.selected-border {
+	padding:1px;
+	border:3px solid #26a69a;
+}
+
+.unselected-border {
+	padding:1px;
+	border:3px solid white;
+}
+
+.gallery-img {
+	max-height:200px;
+}
+
 .cover-picture {
   width:100%;
   height:auto;

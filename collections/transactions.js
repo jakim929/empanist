@@ -27,6 +27,12 @@ TransactionSchema = new SimpleSchema({
     // }
   },
 
+  performanceType: {
+    type: String,
+    allowedValues: ['Solo Recital/Concert', 'College Audition', 'Orchestral Audition', 'Competition', 'Recording Session', 'Other'],
+    label: 'Final Performance Type'
+  },
+
   sessionCount: {
     type: Number,
     label: "Session Count",

@@ -102,20 +102,22 @@
 
 <template name="bookAccompanistForm">
   {{#with routeAccompanist}}
-    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert" doc=partialTransaction}}
+    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
       {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
-      <!-- {{> afQuickField name="startDate"}}
-      {{> afQuickField name="endDate"}} -->
+
+
       <label for="sd" class="active">Start Date</label>
-      {{> afFieldInput name="startDate" id="sd" type="date"}}
+      {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" class="datepicker"}}
 
        <label for="ed" class="active">End Date</label>
-      {{> afFieldInput name="endDate" id="ed" type="date"}}
+      {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" class="datepicker"}}
 
       <!--{{> afQuickField name="repertoire"}} -->
       {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
+      <label for="pt" class="active">Performance Type</label>
+      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
     {{/autoForm}}
     <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
   {{else}}
@@ -188,7 +190,6 @@
     <!-- <div class="modal-content"> -->
       <!-- <h5><i class="material-icons modal-action modal-close right">close</i></h5> -->
       <!-- {{> upload}} -->
-      {{>picOverlord}}
     <!-- </div> -->
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
@@ -472,7 +473,6 @@
             </div>
           </div>
         {{/if}}
-
         <div class="row">
           <div class="col s6">
             <h10>
@@ -566,7 +566,7 @@
           {{#autoForm id="upsertRepertoireProfileForm" type="update-pushArray" collection="AccompanistProfiles" doc=currentAccompanistProfiles scope="repertoire"}}
             <div class="row">
               <br>
-              <div class="input-field col s6">
+              <div class="input-field col s12">
                 {{> afFieldInput name="concerto" id="rep" type="text"}}
                 <label for="rep" class="active">Repertoire</label>
               </div>
@@ -583,6 +583,7 @@
 </template>
 
 <!-- ADD PIC PROFILE -->
+<!-- Not used anymore -->
 
 <template name="upload">
     {{> uploader}}

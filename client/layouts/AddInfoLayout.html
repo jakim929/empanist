@@ -17,14 +17,14 @@
       {{> upsertBasicProfileForm }}
     </div>
   </div>
-  
+
   <div class="basic-advice">
     <div class="card grey lighten-5 z-depth-0">
       <div class="card-content">
         <i class="small material-icons prefix blue-text text-darken-2">school</i>
         <br>
         <h10>
-          Entering in your school affiliation allows you to connect to fellow students and alumni, enabling you to create relationships that go beyond the practice room 
+          Entering in your school affiliation allows you to connect to fellow students and alumni, enabling you to create relationships that go beyond the practice room
         </h10>
       </div>
     </div>
@@ -56,19 +56,19 @@
         <div class="input-field col s6">
           <i class="material-icons prefix">business_center</i>
             {{>afFieldInput name="affiliation" id="affiliation" type="text"}}
-          <label class="active">Affiliation</label>   
+          <label class="active">Affiliation</label>
         </div>
         <br>
         {{#if fromProfile this}}
           <button type="submit" class=" card-title {{this}} btn right btn-primary "  id="basicProfile">Save</button>
         {{else}}
-          {{#if basicNotValid}}  
+          {{#if basicNotValid}}
             <button type="submit" class=" {{this}} btn right btn-primary "  id="basicProfile">Save</button>
             {{else}}
             <button type="submit" class=" {{this}} btn right btn-primary disabled"  disabled id="basicProfile">Save</button>
           {{/if}}
         {{/if}}
-    {{/autoForm}}     
+    {{/autoForm}}
   {{/if}}
 </template>
 
@@ -95,21 +95,21 @@
   <div class="formsTopMargin">
     {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
       <div class="scrollable ">
-        <div class="instrument">  
+        <div class="instrument">
           {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
-        </div> 
+        </div>
 
-        <div class="award">  
+        <div class="award">
           {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
-        </div> 
-        
-        <div class="program"> 
+        </div>
+
+        <div class="program">
           {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
-        </div> 
-        
-        <div class="orchestra"> 
+        </div>
+
+        <div class="orchestra">
           {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
-        </div> 
+        </div>
       </div>
 
       <div class="music-advice">
@@ -168,21 +168,21 @@
         <div class="repertoire">
           {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
         </div>
-        
+
         <div class="charge">
           <br>
           <h5>
             {{> afFieldInput name="charge" type="select-radio"}}
           </h5>
         </div>
-        
+
         <div class="working_hours">
           <br>
           <h5>
             {{> afQuickField name="working_hours"}}
           </h5>
         </div>
-        
+
         <div class="working_days">
           <br>
           <h5>
@@ -194,21 +194,29 @@
           <br>
           {{> afQuickField name="accompanist_active"}}
         </div>
-        
+
         <div class="session_location">
           <br>
           <h5>
             {{> afFieldInput name="session_location" type="select-radio"}}
           </h5>
         </div>
-        
+
         <div class="mylocation">
+<<<<<<< HEAD
           <br>
           <!-- {{> afQuickField name="mylocation"}} -->
           {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
           <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}} -->
        </div>
         
+=======
+
+          {{> afQuickField name="mylocation"}}
+          <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
+ -->     </div>
+
+>>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
         <div class="one_liner">
           <br>
           {{> afQuickField name="one_liner"}}
@@ -232,7 +240,7 @@
       <div class="backNext">
         <hr>
         {{#unless shouldShow "one_liner"}}
-          {{#if AccompNotValid name}}  
+          {{#if AccompNotValid name}}
             <button  class="next-{{name}} right waves-effect waves-light btn disabled " disabled>Next</button>
             {{else}}
             <a class="next-{{name}} right waves-effect waves-light btn " >Next</a>
@@ -267,10 +275,15 @@
         {{/unless}}
       </h5> -->
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-        
+
         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
+<<<<<<< HEAD
         {{/if}}      
+=======
+        {{/if}}
+
+>>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
         {{> UI.dynamic template=../atts.name}}
 
       {{/afEachArrayItem}}
@@ -295,7 +308,7 @@
     <span>{{{afFieldMessage name=atts.name}}}</span>
   {{/if}}
       <!-- <h5>
-        {{mainTitle atts.name}} 
+        {{mainTitle atts.name}}
       </h5> -->
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
 
@@ -311,12 +324,12 @@
   {{/if}}
       <h5>
         <i id="align_text" class="medium material-icons">{{icon atts.name}}</i>
-        {{mainTitle atts.name}} 
+        {{mainTitle atts.name}}
       </h5>
       {{#afEachArrayItem name=atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">delete</i></span>
-        {{/if}} 
+        {{/if}}
         {{> UI.dynamic template=../atts.name}}
       {{/afEachArrayItem}}
 </template>
@@ -339,8 +352,13 @@
     </div>
     <div class="row">
     <div class="input-field col s6">
+<<<<<<< HEAD
       {{> afFieldInput name="date" id="test" type="date"}}
       <label class="active"> Won</label>       
+=======
+      {{> afFieldInput name="date" id="test"  type="date"}}
+      <label class="active">Date Won</label>
+>>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
     </div>
      <button type="submit" class="btn right btn-primary">Save</button>
     </div>
@@ -363,7 +381,7 @@
   {{/if}}
   </template>
 
-<template name="musicPrograms"> 
+<template name="musicPrograms">
   {{#if fromProfile this}}
     <div class="row">
     <br>
@@ -390,7 +408,7 @@
       <div class="input-field col s6">
           {{> afFieldInput name=this.current.programName id="comp.name" type="text"}}
         <label for="comp.name" class="active">Program Name</label>
-      </div> 
+      </div>
     </div>
     <div class="row">
       <div class="input-field col s6">
@@ -427,8 +445,13 @@
       {{> afFieldInput name="endDate" type="date"}}
       <label class="active">End Date</label>
     </div>
+<<<<<<< HEAD
     <button type="submit" class="{{this}} btn right btn-primary">Save</button>
        
+=======
+    <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+
+>>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
   </div>
   {{else}}
   <div class="row">
@@ -491,7 +514,7 @@
   {{#if fromProfile this}}
   <div class="row">
     <br>
-    <div class="input-field col s6">
+    <div class="input-field col s12">
         {{> afFieldInput name="concerto" id="rep" type="text"}}
     <label for="rep" class="active">Repertoire</label>
     </div>
@@ -501,7 +524,7 @@
   {{else}}
    <div class="row">
     <br>
-    <div class="input-field col s6">
+    <div class="input-field col s12">
         {{> afFieldInput name=this.current.concerto id="rep" type="text"}}
     <label for="rep" class="active">Repertoire</label>
     </div>
@@ -523,4 +546,3 @@
     <label for="time" class="active">Suggested Times</label>
   </div>
 </template>
-
