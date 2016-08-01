@@ -25,7 +25,14 @@ window.SearchData = SearchData
 
 
 Template.TestLayout.onRendered(function () {
-  console.log(parser)
+    $(document).ready(function(){
+      // (function($){
+  
+    $('.parallax').parallax();
+  
+// })(jQuery);
+    });
+
 })
 
 
@@ -129,7 +136,6 @@ AutoForm.hooks({
       }
 
       console.log("New Query Param")
-        console.log(doc)
         $('#advancedsearch').removeAttr('disabled');
         FlowRouter.setQueryParams(doc);
     }
@@ -188,7 +194,6 @@ Template.TestDrag.helpers({
     array.map(function(currentValue){
       return {label: currentValue, value: currentValue}
     })
-    console.log(array)
     return array
   },
   atts: function selectedAttsAdjust() {
@@ -216,7 +221,6 @@ SexyValueOut = function(){
       val.push($(this).val());
     }
   })
-  console.log(val)
   return val
 }
 
@@ -262,8 +266,6 @@ Template.advancedSearch.helpers({
 
 Template.SexySelect.helpers({
   dsk: function dsk() {
-    console.log("dsk princted")
-    console.log(this.atts)
     return {
       "data-schema-key": this.atts["data-schema-key"]
     };
@@ -450,12 +452,8 @@ Template.atInputWithIcon.replaces("atInput");
     var x = Data.findOne({userId: Meteor.userId() })
 
     if (x){
-      console.log("printing x")
-      console.log(x.value)
       var nodes = d3.select("#fillgauge2")[0][0]["childNodes"]
-      console.log(nodes.length)
       if (nodes.length > 0){
-        console.log("removed")
         nodes[0].remove()
       }
 
@@ -1694,15 +1692,6 @@ Template.becomeAnAccompanist.onRendered(function () {
     });
 });
 
-Template.ProfileLayout.onRendered(function () {
-  $(document).ready(function(){
-    $('.materialboxed').materialbox();
-    $('.parallax').parallax();
-  });
-
-});
-
-
 Template.TabStructure.onRendered(function () {
   $('ul.tabs').tabs({
     onShow: function(tab) {
@@ -1718,14 +1707,14 @@ Template.NewAccompLayout.onRendered(function () {
   //$('.collapsible').collapsible();
 });
 
-Template.ProfileLayout.onRendered(function(){
-  // // parallax
-  // $('.parallax').parallax();
 
+Template.ProfileLayout.onRendered(function(){
   // resize card with card-reveal
   $(document).ready(function() {
-
+    
     $('.parallax').parallax();
+    
+    $('.materialboxed').materialbox();
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
     $('.aside').pushpin({ top:490});
@@ -2019,8 +2008,6 @@ Template.registerHelper('defaultTransaction', () => {
           status: 'Pending'}
 });
 
-
-
 Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
   return "/profile/"+id
 });
@@ -2308,8 +2295,6 @@ Template.advancedSearch.helpers ({
 
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
-    console.log("instruments")
-    console.log(instruments)
     var mydata =[
       {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument",text: 'Filling in instruments you have experience with gives musicians an understanding of your instrument-specific repertoire. '},
       {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward", text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist. '},
@@ -2330,8 +2315,6 @@ Template.profileTemplate.helpers({
   },
   // potential bug = when create something then delete all objects it will be [] not null (i think so)
   notEmpty: function (array) {
-    console.log("notEmpty function array result")
-    console.log(array)
     if (array == [] || array == undefined) {
       return false
     } else {
@@ -2339,9 +2322,6 @@ Template.profileTemplate.helpers({
     }
   },
   isEmpty: function(array, name){
-    console.log("isEmpty")
-    console.log(name)
-    console.log(array)
     var x = (array == [] || array == undefined || array == null)
     console.log(x)
     return x
@@ -2615,7 +2595,6 @@ Template.upsertAccompanistForm.helpers ({
   AccompNotValid: function (field) {
     var x = AutoForm.getFieldValue(field, ['upsertAccompanistForm']);
     // var y = AutoForm.getFieldValue("repertoire", ['upsertAccompanistForm']);
-  console.log(x)
     if ( x == undefined ){
       return true
     } else {
@@ -2744,19 +2723,18 @@ Template.results.helpers({
     var time = FlowRouter.getQueryParam("working_hours")
     var day = FlowRouter.getQueryParam("working_days")
 
-    console.log("Search Info")
-    console.log(address)
-    console.log(charge)
-    console.log(session_location)
-    console.log(radius)
-    console.log(time)
-    console.log(day)
+    // console.log("Search Info")
+    // console.log(address)
+    // console.log(charge)
+    // console.log(session_location)
+    // console.log(radius)
+    // console.log(time)
+    // console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
 
       if (result !== null){
-        console.log("getGeocode")
-        console.log(result)
+
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
         var coords = [lng, lat];
