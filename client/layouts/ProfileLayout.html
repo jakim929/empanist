@@ -47,16 +47,17 @@
                       <div class="card-content">
                         <ul>
                           <li>
-                            <h6><b><div class="center">Profile Strength</div></b></h6>
+                            <h5><div class="center">Profile Strength</div></h5>
+                            <div class="divider"></div>
                             <br>
                             {{>liquid_fill_gauge}}
                             <br>
                             <br>
                           </li>
-                          <li class="divider"></li>
+                          <!-- <li class="divider"></li> -->
                           <li>
-                            <h6><b><div class="center">Steps to Strengthen your profile</div></b>
-                            </h6>
+                            <h5><div class="center">Strengthen Your Profile</div></h5>
+                            <div class="divider"></div><br>
                             {{> suggestions}}
                           </li>
                           <!-- <li class="divider"></li>
@@ -177,8 +178,8 @@
                   {{#unless isOwnProfile}}
                     {{#with currentProfilePic}}
                       <a class="waves-effect waves-light">
-                        <div class="profile-picture">
-                          <img class="materialboxed"  src={{currentProfilePic}}>
+                        <div>
+                          <img class="profile-picture"  src={{currentProfilePic}}>
                         </div>
                       </a>
                     {{/with}}
@@ -190,10 +191,10 @@
             <div class="col s7">
              <!-- <span class="black-text activator"> -->
               <div class="details">
-                <h5 class="bold">{{name}}</h5>
-                <h6>{{affiliation}}</h6>
+                <h4>{{name}}</h4>
+                <h5>{{affiliation}}</h5>
                 {{#if isOwnProfile}}
-                <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+                <h7>{{formatBirthDate this.birthDate}}</h7> <br>
                 <h10>{{phone}}</h10> <br>
                <!--  <i class="material-icons right">mode_edit</i>
                 <br> -->
@@ -238,8 +239,10 @@
     {{#if isOwnProfile}}
       <!-- Make this section title only showup if there are any arrays that aren't filled!! -->
       {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
-      <div class="col s12">
-        <h10> <span class="bold"> Add a section to your profile – </span> strengthen your profile!</h10>
+      <div class="col s12 center">
+        <h7> <span class="bold"> Add a section to your profile – </span> strengthen your profile!</h7>
+  
+
       </div>
       {{/if}}
 
@@ -248,9 +251,11 @@
           <div class="{{arrayField}}-smallCard col s12 m12 l6">
             <div class="card profileMiniCard grey lighten-5 z-depth-0" >
               <div class="card-content profileMiniCard">
-                <h10 >
-                  <i id="align_text" class="small material-icons">{{icon}}</i>
-                  <span class="bold"> {{mainTitle}} </span> <br>
+                <h5>
+                  <i id="align_text" class="small material-icons left">{{icon}}</i>
+                  <span class=""> {{mainTitle}} </span> <br>
+                </h5>
+                <h10>
                   <p class="block-with-text">{{text}}</p>
                 </h10>
               </div>

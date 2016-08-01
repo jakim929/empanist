@@ -3,9 +3,14 @@ html {
 	font-family: Avenir Next;
 }
 
+.card{
+}
+
 .profile-picture{
-	width: 200px;
-	height: 200px;
+	max-width: 200px;
+	max-height: 200px;
+	border-radius: 1%;
+	border:1px solid #eeeeee;
 }
 
 .text-shadow-setting{
