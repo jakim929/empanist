@@ -1711,7 +1711,7 @@ Template.NewAccompLayout.onRendered(function () {
 Template.ProfileLayout.onRendered(function(){
   // resize card with card-reveal
   $(document).ready(function() {
-    
+
     $('.parallax').parallax();
     
     $('.materialboxed').materialbox();

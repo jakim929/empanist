@@ -378,7 +378,7 @@ BasicProfiles.after.insert(function(userId, doc){
   console.log("Basic Profile Made for",doc.userId);
   Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
 
-   var suggestions = ["Master more Instruments", "Win more Awards", "Attend more Music Programs", "Play in more Orchestras"]
+   var suggestions = ["-> Master more Instruments", "-> Win more Awards", "-> Attend more Music Programs", "-> Play in more Orchestras"]
    Data.insert({ userId: doc.userId, suggestions: suggestions, value: 0})
 
 });
@@ -434,22 +434,22 @@ MusicProfiles.after.update(function (userId, doc, fieldNames, modifier, options)
       switch(name){
         case 'instruments':
           if (length < 4) {
-            return "Master more Instruments"
+            return "-> Master more Instruments"
           }
           break;
         case 'awards':
           if (length < 4) {
-            return "Win more Awards"
+            return "-> Win more Awards"
           }
           break;
         case 'programs':
           if (length < 4) {
-            return "Attend more Music Programs"
+            return "-> Attend more Music Programs"
           }
           break;
         case 'orchestras':
           if (length < 4) {
-            return "Play in more Orchestras"
+            return "-> Play in more Orchestras"
           }
           break;
       }
@@ -533,22 +533,22 @@ MusicProfiles.after.insert(function(userId, doc){
       switch(name){
         case 'instruments':
           if (length < 4) {
-            return "Master more Instruments"
+            return "-> Master more Instruments"
           }
           break;
         case 'awards':
           if (length < 4) {
-            return "Win more Awards"
+            return "-> Win more Awards"
           }
           break;
         case 'programs':
           if (length < 4) {
-            return "Attend more Music Programs"
+            return "-> Attend more Music Programs"
           }
           break;
         case 'orchestras':
           if (length < 4) {
-            return "Play in more Orchestras"
+            return "-> Play in more Orchestras"
           }
           break;
       }

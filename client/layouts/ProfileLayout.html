@@ -50,7 +50,8 @@
                           </li>
                           <li class="divider"></li>
                           <li>
-                            <h6><b><div class="center">Steps to Strengthen your profile</div></b></h6>
+                            <h6><b><div class="center">Steps to Strengthen your profile</div></b>
+                            </h6>
                             {{> suggestions}}
                           </li>
                           <!-- <li class="divider"></li>
@@ -72,9 +73,11 @@
                     {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
                     {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
                   </div>
+
                   <div class="col l4 m4 s12">
+
                     <div class="aside">
-                      <div class="overlap-into-top ">
+                      <div class="overlap-into-top hide-on-med-and-down">
                         <div class="card grey lighten-5 z-depth-0">
                           <div class="card-content ">
                             <h6><b><div class="center ">Book This Accompanist</div></b></h6>
@@ -83,6 +86,14 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="card hide-on-large-only grey lighten-5 z-depth-0">
+                      <div class="card-content ">
+                        <h6><b><div class="center ">Book This Accompanist</div></b></h6>
+                          {{> bookAccompanistForm}}
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               {{else}}
@@ -104,7 +115,7 @@
   <div class="suggestions">
     <ul>
       {{#each suggestions}}
-        <li>{{this}}</li>
+        <li><h7>{{this}}</h7></li>
       {{/each}}
       <br>
     </ul>
@@ -117,18 +128,26 @@
       {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
+      <br>
+      <div class="row">
+        <div class="col s5">
+          <label for="sd" class="active">Start Date</label>
+          {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" class="datepicker"}}
+        </div>
+        <div class="col s2">
+          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
+        </div>
+        <div class="col s5">
+          <label for="ed" class="active">End Date</label>
+          {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" class="datepicker"}}
+        </div>
+      </div>
 
-
-      <label for="sd" class="active">Start Date</label>
-      {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" class="datepicker"}}
-
-       <label for="ed" class="active">End Date</label>
-      {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" class="datepicker"}}
-
-      <!--{{> afQuickField name="repertoire"}} -->
-      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
-      <label for="pt" class="active">Performance Type</label>
+       <label for="pt" class="active">Performance Type</label>
       {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
+
+      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
+
     {{/autoForm}}
     <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
   {{else}}
@@ -161,7 +180,7 @@
                 </a>
               {{else}}
                 <a class="btn waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
-                  <i class="material-icons right">account_box</i>Add Picture tester<br><br><br><br>&nbsp;
+                  <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
                 </a>
               {{/with}}
             {{/unless}}

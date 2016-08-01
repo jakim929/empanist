@@ -328,7 +328,7 @@ div.search_bar {
 .parallax-container {
   margin-left:-21.5%;
   margin-right:-21.5%;
-  max-height:500px;
+  height:500px;
 }
 
 #align_text {
@@ -525,11 +525,11 @@ a {
 }
 
 /*#profileImg {
-	width:150px;
+	width:150px
   float:left;
   overflow:hidden;
-}
-*/
+}*/
+
 #first-card-text {
   overflow:hidden;
 }
