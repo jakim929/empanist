@@ -15,12 +15,12 @@
         <li class="collection-item">
           <div>
             <p class="step_number"> STEP 1 </p>
-            {{#if basicProfileExists}}
+            {{#if basicProfileComplete}}
             <i class="small material-icons secondary-content">check_circle</i>
             {{/if}}
-            <p class="step_main">Lets clarify some basics</p>
-            <p class="step_info">Name, location, number, and more</p>
-            {{#unless basicProfileExists}}
+            <p class="step_main">Let’s go over the basics</p>
+            <p class="step_info">Name, number, and more</p>
+            {{#unless basicProfileComplete}}
               <a class="waves-effect waves-light btn" href="/newaccomp/step1">
                 Continue
               </a> 
@@ -37,9 +37,9 @@
             {{#if musicProfileExists}}
             <i class="small material-icons secondary-content">check_circle</i> 
             {{/if}}
-            <p class="step_main">Show off your skills</p>
-            <p class="step_info">Awards, competitions, orchestras, instruments</p>
-            {{#if basicProfileExists}}
+            <p class="step_main">Showcase yourself</p>
+            <p class="step_info">Awards, festivals, and more</p>
+            {{#if basicProfileComplete}}
               {{#unless musicProfileExists}}
                 {{#unless accompanistProfileExists}}
                   <a href="/newaccomp/step2" class="waves-effect waves-light btn">
@@ -61,8 +61,8 @@
               <i class="small material-icons secondary-content">check_circle</i>
             {{/if}}
             <p class="step_main">Get ready to accompany!</p>
-            <p class="step_info">Time and day preferance, hourly charge, and more</p>
-            {{#if and basicProfileExists musicProfileExists}}
+            <p class="step_info">Availability, hourly rate, and more</p>
+            {{#if and basicProfileComplete musicProfileExists}}
               {{#unless accompanistProfileExists}}
                 <a href="/newaccomp/step3" class="waves-effect waves-light btn">
                   Continue
@@ -85,11 +85,10 @@
       <div class="card-content">
         <i class="small left material-icons prefix blue-text text-darken-2">ic_wb_incandescent</i>
         <br>
-           <ul>
-            <li><h10>You could earn up to $60 a day for 1 hour of work!</h10></li>
-            <li class="divider"></li>
-            <li><h10>You can always deactivate your account and take a break for a while!</h10></li>
-          </ul>
+        <br>
+           <h10>
+            You can work on your own schedule to make over $90 a day! Fill in all sections of your accompanist profile to attract as many musicians as possible. If you’re having a particularly busy week, you can always deactivate your account for awhile!
+          </h10>
       </div>
     </div>
   </div>

@@ -5,12 +5,12 @@ export const MusicProfiles = new Mongo.Collection('musicProfiles');
 OrchestraSchema = new SimpleSchema({
   name: {
     type: String,
-    label: "Orchestra Name"
+    label: "Ensemble Name"
   },
 
   position: {
     type: String,
-    label: "Position in Orchestra"
+    label: "Position in Ensemble"
   },
 
   startDate: {
@@ -102,7 +102,7 @@ MusicProfileSchema = new SimpleSchema({
 
   orchestras: {
     type: [OrchestraSchema],
-    label: "Orchestras Played At",
+    label: "Ensembles Played At",
     optional: true
   }
 

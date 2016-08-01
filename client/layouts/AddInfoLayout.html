@@ -170,31 +170,47 @@
         </div>
         
         <div class="charge">
-          {{> afQuickField name="charge"}}
+          <br>
+          <h5>
+            {{> afFieldInput name="charge" type="select-radio"}}
+          </h5>
         </div>
         
         <div class="working_hours">
-          {{> afQuickField name="working_hours"}}
+          <br>
+          <h5>
+            {{> afQuickField name="working_hours"}}
+          </h5>
         </div>
         
         <div class="working_days">
+          <br>
+          <h5>
           {{> afQuickField name="working_days"}}
+          </h5>
         </div>
 
         <div class="accompanist_active">
+          <br>
           {{> afQuickField name="accompanist_active"}}
         </div>
         
         <div class="session_location">
-          {{> afQuickField name="session_location"}}
+          <br>
+          <h5>
+            {{> afFieldInput name="session_location" type="select-radio"}}
+          </h5>
         </div>
         
         <div class="mylocation">
-          {{> afQuickField name="mylocation"}}
-          <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
- -->        </div>
+          <br>
+          <!-- {{> afQuickField name="mylocation"}} -->
+          {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
+          <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}} -->
+       </div>
         
         <div class="one_liner">
+          <br>
           {{> afQuickField name="one_liner"}}
         </div>
       </div>
@@ -255,7 +271,6 @@
         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
         {{/if}}      
-        
         {{> UI.dynamic template=../atts.name}}
 
       {{/afEachArrayItem}}
@@ -264,7 +279,7 @@
     <center>
       <button
         type="button"
-        class="add-btn autoform-add-item grey"
+        class="add-btn autoform-add-item grey lighten-1"
         data-autoform-field="{{atts.name}}"
         data-autoform-minCount="{{atts.minCount}}"
         data-autoform-maxCount="{{atts.maxCount}}">
@@ -324,10 +339,10 @@
     </div>
     <div class="row">
     <div class="input-field col s6">
-      {{> afFieldInput name="date" id="test"  type="date"}}
-      <label class="active">Date Won</label>       
+      {{> afFieldInput name="date" id="test" type="date"}}
+      <label class="active"> Won</label>       
     </div>
-     <button type="submit" class="btn right btn-primary">Submit</button>
+     <button type="submit" class="btn right btn-primary">Save</button>
     </div>
     {{else}}
      <div class="row">
@@ -366,7 +381,7 @@
         {{> afFieldInput name="endDate" type="date"}}
         <label class="active">End Date</label>
       </div>
-       <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+       <button type="submit" class="{{this}} btn right btn-primary">Save</button>
        <br>
     </div>
     {{else}}
@@ -396,7 +411,7 @@
     <br>
     <div class="input-field col s6">
         {{> afFieldInput name="name" id="comp.name" type="text"}}
-      <label for="comp.name">Orchestra Name</label>
+      <label for="comp.name">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name="position" id="comp.name" type="text"}}
@@ -412,7 +427,7 @@
       {{> afFieldInput name="endDate" type="date"}}
       <label class="active">End Date</label>
     </div>
-    <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
+    <button type="submit" class="{{this}} btn right btn-primary">Save</button>
        
   </div>
   {{else}}
@@ -420,7 +435,7 @@
     <br>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
-      <label for="comp.name" class="active">Orchestra Name</label>
+      <label for="comp.name" class="active">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.position id="comp.name" type="text"}}
@@ -452,13 +467,14 @@
         {{> afFieldInput name="yearsPlayed" id="yrs" type="text"}}
       <label for="yrs" class="active">Years Played</label>
     </div>
-    <button type="submit" class="{{this}} btn right btn-primary">fromprofile</button>
+    <button type="submit" class="{{this}} btn right btn-primary">Save</button>
        <br>
   </div>
   {{else}}
    <div class="row">
     <br>
     <div class="input-field col s6">
+      {{../atts.name}}
         {{> afFieldInput name=this.current.instrument id="comp.name" type="selectize" options=instrumentList}}
       <label for="comp.name" class="active">Instrument Name</label>
     </div>
@@ -479,7 +495,7 @@
         {{> afFieldInput name="concerto" id="rep" type="text"}}
     <label for="rep" class="active">Repertoire</label>
     </div>
-    <button type="submit" class="{{this}} btn right btn-primary">test</button>
+    <button type="submit" class="{{this}} btn right btn-primary">Save</button>
        <br>
   </div>
   {{else}}
