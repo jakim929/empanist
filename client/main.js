@@ -1247,15 +1247,6 @@ Template.ReviewLeftFormPanel.events({
   }
 });
 
-Template.request.helpers({
-  profilePicUrlById(userId){
-    var picDoc = UserImages.findOne({userId: userId, picType: "profile"})
-    if(picDoc){
-      return picDoc
-    }
-  }
-});
-
 Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
     var userId = Meteor.userId();
@@ -1327,8 +1318,15 @@ Template.bookAccompanistForm.helpers({
 Template.registerHelper('myProfilePic', function(){
   var basicProfileDoc = BasicProfiles.findOne({userId: Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
   if (basicProfileDoc && basicProfileDoc.profilePic){
-    return basicProfileDoc.profilePic
+    var imageDoc = UserImages.findOne(basicProfileDoc.profilePic);
+    if (imageDoc){
+      return imageDoc.url
+    }
   }
+})
+
+Template.registerHelper('_', function(){
+    return _
 })
 
 Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
@@ -1340,22 +1338,19 @@ Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
 
 })
 
-Template.accountTemplate.helpers({
-  currentProfilePic(){
-    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")}, {profilePic : 1});
-    if (profileDoc){
-      var picId = profileDoc.profilePic;
-      if(picId){
-        var imageDoc = CropUploader.images.findOne(picId);
-        if (imageDoc.derivatives){
-          console.log(imageDoc.derivatives.thumbnail)
-          return imageDoc.derivatives.thumbnail
-        }
-      }
-
-    }
-  }
-})
+// Template.accountTemplate.helpers({
+//   currentProfilePic(){
+//     var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam("profileId"), profilePic: {$exists: true}}, {profilePic : 1});
+//     if (profileDoc){
+//       var picId = profileDoc.profilePic;
+//       if(picId){
+//         var imageDoc = UserImages.findOne(picId);
+//         return imageDoc.url
+//       }
+//     }
+//   },
+//
+// })
 
 Template.BookingReviewLeftPanel.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
@@ -1496,11 +1491,6 @@ Template.paymentSection.helpers({
   }
 });
 
-Template.request.events({
-  'click .review-booking' (event) {
-    Session.set('sessionTransaction', this._id);
-  }
-});
 
 Template.registerHelper('convertMilitaryTime', function (time){
   return militaryTimeConvert(time)
@@ -1707,15 +1697,11 @@ Template.becomeAnAccompanist.onRendered(function () {
 Template.ProfileLayout.onRendered(function () {
   $(document).ready(function(){
     $('.materialboxed').materialbox();
+    $('.parallax').parallax();
   });
 
 });
 
-Template.CollapsibleStructure.onRendered(function () {
-  $('.collapsible').collapsible({
-    accordion : false
-  });
-});
 
 Template.TabStructure.onRendered(function () {
   $('ul.tabs').tabs({
@@ -1743,7 +1729,7 @@ Template.ProfileLayout.onRendered(function(){
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
     $('.aside').pushpin({ top:490});
-    
+
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
         if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
@@ -2065,7 +2051,7 @@ Template.registerHelper( 'fromBookingTime', (page) =>{
 });
 
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
-  return "/bookingRequest/"+bookingId
+  return FlowRouter.path('/bookingRequest/:transactionId', {transactionId: bookingId})
 });
 
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
@@ -2175,7 +2161,7 @@ Template.upsertMusicProfileForm.onRendered(function () {
 
   $('ul.tabs').tabs();
 
-  });  
+  });
 
 Template.upsertMusicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
@@ -2284,6 +2270,16 @@ Template.advancedSearch.helpers ({
   //   console.log(currentSearch)
   //   return currentSearch;
   // }
+  startDate: function() {
+    var startDate = new Date(FlowRouter.getQueryParam('start_date'))
+    return dateToDateString(startDate)
+  },
+
+  endDate: function() {
+    var endDate = new Date(FlowRouter.getQueryParam('end_date'))
+    return dateToDateString(endDate)
+  },
+
   address: function () {
     var address = FlowRouter.getQueryParam("address")
     return address;
@@ -2317,7 +2313,7 @@ Template.profileTemplate.helpers({
     var mydata =[
       {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument",text: 'Filling in instruments you have experience with gives musicians an understanding of your instrument-specific repertoire. '},
       {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward", text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist. '},
-      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram", text: 'Your participation in music festivals/programs connects you to musicians even before meeting! '},
+      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram", text: 'Your participation in music festivals and programs connects you to musicians even before meeting! '},
       {icon: 'group_work', mainTitle: 'Ensemble', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Ensemble", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra", text: 'Your involvement in ensembles such as orchestras at schools or chamber groups adds to the trust you are creating with users.  '}
     ]
     return mydata;
@@ -2757,7 +2753,7 @@ Template.results.helpers({
     console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
-  
+
       if (result !== null){
         console.log("getGeocode")
         console.log(result)
@@ -2788,7 +2784,7 @@ Template.results.helpers({
           if (session_location == "Doesn't matter") {
             var session_algo = {session_location: {$in: ["Doesn't matter", "My Place", "Student's Place" ]}}
           } else
-          var session_algo = 
+          var session_algo =
           {session_location: session_location}
         }
 
@@ -2874,13 +2870,21 @@ Template.results.helpers({
     var names = BasicProfiles.findOne({userId: this.Id});
     return names
   },
-   currentProfilePic: function(Id) {
-    var profileDoc = BasicProfiles.findOne({userId: Id}, {profilePic : 1});
+   currentProfilePic: function() {
+    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId'), $exists: {profilePic: 1}}, {profilePic : 1});
     if (profileDoc){
       var picId = profileDoc.profilePic;
       var imageDoc = UserImages.findOne(picId);
-      console.log(imageDoc.derivatives.thumbnail)
-      return imageDoc.derivatives.thumbnail
+      console.log(imageDoc.url)
+      return imageDoc.url
+    }
+  },
+  currentCoverPic: function(Id) {
+    var profileDoc = BasicProfiles.findOne({userId: Id, $exists: {coverPic: 1}}, {coverPic : 1});
+    if (profileDoc){
+      var picId = profileDoc.coverPic;
+      var imageDoc = UserImages.findOne(picId);
+      return imageDoc.url
     }
   },
   noResults: function (results) {

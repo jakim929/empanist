@@ -3,24 +3,46 @@ html {
 	font-family: Avenir Next;
 }
 
+.text-shadow-setting{
+	    text-shadow: 4px 4px 4px #000000;
+}
+
 .logo {
   width: 150px;
   height: auto;
   margin-top:5px;
 }
 
+.no-padding {
+	padding: 0 0 0 0 !important;
+}
+
+.no-left-padding {
+	padding-left: 0 !important;
+}
+
+.no-right-padding {
+	padding-right: 0 !important;
+}
+
+
+.image-modal-margins {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 .selected-border {
-	padding:1px;
-	border:3px solid #26a69a;
+	border:4px solid #26a69a;
 }
 
 .unselected-border {
-	padding:1px;
-	border:3px solid white;
+	border:4px solid white;
 }
 
 .gallery-img {
-	max-height:200px;
+	max-height:130px;
 }
 
 .cover-picture {
@@ -476,7 +498,7 @@ a {
 .tester {
   margin: 0;
   padding: 50px;
-  font: 400 14px/1.2em sans-serif; 
+  font: 400 14px/1.2em sans-serif;
   background: white;
 }
 
@@ -503,12 +525,11 @@ a {
   right:0;
 }
 
-#profileImg {
-  max-width: 200px;
-  max-height: 200px;
+/*#profileImg {
+	width:150px
   float:left;
   overflow:hidden;
-}
+}*/
 
 #first-card-text {
   overflow:hidden;
@@ -552,11 +573,7 @@ display:none;
 .all {
   height:200px;
 }
-.details {
-  margin-left: 220px;
-  height:100%;
-  margin-bottom:0;
-}
+
 
 .add-btn {
   width:100%;

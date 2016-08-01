@@ -1,7 +1,7 @@
 // To Handle Upload (To S3) functionality client side
 
 
-let uploadThumbnail = (blob, imageId) => {
+let uploadThumbnail = (blob, imageId, type) => {
   // Check if blob type is image
   if(blob.type.indexOf( 'image/' ) >= 0){
     let array = blob.type.split('/');
@@ -17,20 +17,20 @@ let uploadThumbnail = (blob, imageId) => {
       if ( error ) {
         Bert.alert( error.message, "warning" );
       } else {
-        addThumbnailToDatabase(blob, url, imageId);
+        addThumbnailToDatabase(blob, url, imageId, type);
       }
     })
   }
 }
 
-let addThumbnailToDatabase = (file, url, originalImageId) => {
+let addThumbnailToDatabase = (file, url, originalImageId, type) => {
   var info = {
     url: url,
     name: file.name,
     size: file.size,
     type: file.type,
   }
-    Meteor.call( "storeThumbnailUrlInDatabase", info, originalImageId, ( error ) => {
+    Meteor.call( "saveThumbnailAs", info, originalImageId, type, ( error ) => {
       if ( error ) {
         Bert.alert( error.reason, "warning" );
       } else {
@@ -65,8 +65,14 @@ let addImageToDatabase = (file, type) => {
 
 Template.ImagesLayout.helpers({
   initialData (){
-    return {type: 'Profile',
-            imageSource: 'https://s3.amazonaws.com/empanist-images/jakim929@gmail.com/jamespic.jpg'}
+    var basicProfileDoc = BasicProfiles.findOne({userId: Meteor.userId()});
+    if(basicProfileDoc){
+      var imageDoc = UserImages.findOne(basicProfileDoc.profilePic);
+      if(imageDoc)
+      return {type: 'Profile',
+              imageId: basicProfileDoc.profilePic,
+              imageUrl: imageDoc.url}
+    }
   }
 })
 
@@ -106,7 +112,7 @@ Template.PictureCropper.onCreated(function() {
 
 
 Template.ChangeThumbnailModal.events({
-  'click .upload-crop': function (event, template) {
+  'click .save-profile-thumbnail': function (event, template) {
     console.log($('#crop-image'))
     var imgSrc = $('#crop-image').attr('src');
     var imgDoc = UserImages.findOne({url : imgSrc}, {_id: 1})
@@ -115,7 +121,11 @@ Template.ChangeThumbnailModal.events({
       var canvas = $("#crop-image").cropper('getCroppedCanvas')
       if(canvas && canvas.toBlob){
         canvas.toBlob(function (blob){
-          uploadThumbnail(blob, originalImageId)
+          uploadThumbnail(blob, originalImageId, "Profile")
+
+          // Worry about async later
+
+
         })
       }
     }
@@ -125,7 +135,7 @@ Template.ChangeThumbnailModal.events({
 
 
 Template.ChangeThumbnailModal.onRendered(function(){
-  var currentCropperType = Template.instance().cropperType.get()
+  var currentCropperType = 'Profile'
   $('.modal-trigger').leanModal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
       opacity: .5, // Opacity of modal background
@@ -150,9 +160,12 @@ Template.ChangeThumbnailModal.onRendered(function(){
 })
 
 Template.ChangeThumbnailModal.helpers({
-  getCropperType (){
-    return Template.instance().cropperType.get()
-  }
+  getImageUrl (imageId) {
+    var imageDoc = UserImages.findOne(imageId);
+    if (imageDoc){
+      return imageDoc.url
+    }
+  },
 })
 
 Template.ChangeThumbnailModal.onCreated(function(){

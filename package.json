@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "braintree": "^1.41.0",
     "coffee-script": "^1.10.0",
     "cropper": "^2.3.2",
     "google-distance-matrix": "0.0.3",

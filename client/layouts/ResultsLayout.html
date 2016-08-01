@@ -90,15 +90,15 @@
 		      </div>
 		      <div class="row col s10">
 			      <div class="input-field col s4">
-			        {{>afFieldInput name="address" class="autocomplete" id="autocomplete" type="text" value=address}}
+			        {{>afFieldInput name="address" class="autocomplete" id="autocomplete" value=address type="text"}}
 			        <label for="address" class="active" >Enter Location</label>
 			      </div>
 			       <div class="input-field col s4">
-			        {{>afFieldInput name="start_date" id="start_date" class="datepicker" type="date"}}
+			        {{>afFieldInput name="start_date" id="start_date" value=startDate class="datepicker" type="date"}}
 			        <label class="active">Start Date</label>
 			      </div>
 			      <div class="input-field col s4">
-			        {{>afFieldInput name="end_date" id="end_date" class="datepicker" type="date"}}
+			        {{>afFieldInput name="end_date" id="end_date" value=endDate class="datepicker" type="date"}}
 			        <label class="active">End Date</label>
 			      </div>
 	        </div>
@@ -106,7 +106,7 @@
 
         <div class="horizontalLine input-field col s12">
         	<div class="row inLine">
-          	<div class="col s2">Charge/hr</div>
+          	<div class="col s2">Hourly Rate</div>
             {{>afFieldInput name="charge" type="sexyselect-checkboxes" options=chargeArray value=charge}}
 					</div>
         </div>
@@ -127,7 +127,7 @@
 
         <div class="session_location horizontalLine input-field col s12">
         	<div class="row inLine">
-	        	<div class="col s2">Session Loc / Distance</div>
+	        	<div class="col s2">Session Location / Distance</div>
 	        	<div class="col s5">
 	        		{{>afQuickField name="session_location" value=session_location }}
 	        	</div>
@@ -138,7 +138,7 @@
       			</div>
        		</div>
 				</div>
-      	
+
      		<div class="input-field col s12">
      			<button type="submit" class=" advancedsearch-btn btn btn-primary" id="advancedsearch">Search</button>
      		</div>
@@ -149,7 +149,7 @@
      			<a class="less">Less Filters</a>
      		</div>
 
-      {{/autoForm}} 
+      {{/autoForm}}
     </div>
   </div>
 </template>
@@ -162,7 +162,8 @@
           	<div class="box">
 
 		          <h10 class="box-label">{{this.label}}
-		          
+
+
 		          <input checked type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
 
 		          <label class="right checker" style="top:5px;" for="{{this.value}}-slot"></label>
@@ -173,5 +174,3 @@
       </div>
     </div>
 </template>
-
-
