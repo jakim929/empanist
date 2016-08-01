@@ -203,20 +203,10 @@
         </div>
 
         <div class="mylocation">
-<<<<<<< HEAD
           <br>
-          <!-- {{> afQuickField name="mylocation"}} -->
           {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
-          <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}} -->
        </div>
         
-=======
-
-          {{> afQuickField name="mylocation"}}
-          <!-- {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
- -->     </div>
-
->>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
         <div class="one_liner">
           <br>
           {{> afQuickField name="one_liner"}}
@@ -278,12 +268,7 @@
 
         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-<<<<<<< HEAD
         {{/if}}      
-=======
-        {{/if}}
-
->>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
         {{> UI.dynamic template=../atts.name}}
 
       {{/afEachArrayItem}}
@@ -352,13 +337,8 @@
     </div>
     <div class="row">
     <div class="input-field col s6">
-<<<<<<< HEAD
-      {{> afFieldInput name="date" id="test" type="date"}}
-      <label class="active"> Won</label>       
-=======
       {{> afFieldInput name="date" id="test"  type="date"}}
       <label class="active">Date Won</label>
->>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
     </div>
      <button type="submit" class="btn right btn-primary">Save</button>
     </div>
@@ -445,13 +425,7 @@
       {{> afFieldInput name="endDate" type="date"}}
       <label class="active">End Date</label>
     </div>
-<<<<<<< HEAD
     <button type="submit" class="{{this}} btn right btn-primary">Save</button>
-       
-=======
-    <button type="submit" class="{{this}} btn right btn-primary">Submit</button>
-
->>>>>>> 1ffc507491f7c105e85dfeb207ab8003f5898b53
   </div>
   {{else}}
   <div class="row">

@@ -10,8 +10,6 @@ import { Data } from '../collections/profileData.js'
 import { SearchData } from '../collections/searchData.js'
 
 
-import parser from 'http-string-parser'
-
 import cropper from 'cropper';
 import 'cropper/dist/cropper.min.css'
 

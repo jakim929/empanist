@@ -1,5 +1,4 @@
-import photoswipe from 'photoswipe';
-import 'photoswipe/dist/photoswipe.css';
+
 
 Template.ImagesLayout.helpers({
   allImages(){
