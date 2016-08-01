@@ -1278,15 +1278,6 @@ Template.ReviewLeftFormPanel.events({
   }
 });
 
-Template.request.helpers({
-  profilePicUrlById(userId){
-    var picDoc = UserImages.findOne({userId: userId, picType: "profile"})
-    if(picDoc){
-      return picDoc
-    }
-  }
-});
-
 Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
     var userId = Meteor.userId();
@@ -1358,8 +1349,15 @@ Template.bookAccompanistForm.helpers({
 Template.registerHelper('myProfilePic', function(){
   var basicProfileDoc = BasicProfiles.findOne({userId: Meteor.userId(), profilePic: {$exists: true}}, {profilePic: 1});
   if (basicProfileDoc && basicProfileDoc.profilePic){
-    return basicProfileDoc.profilePic
+    var imageDoc = UserImages.findOne(basicProfileDoc.profilePic);
+    if (imageDoc){
+      return imageDoc.url
+    }
   }
+})
+
+Template.registerHelper('_', function(){
+    return _
 })
 
 Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
@@ -1371,22 +1369,19 @@ Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
 
 })
 
-Template.accountTemplate.helpers({
-  currentProfilePic(){
-    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam("profileId")}, {profilePic : 1});
-    if (profileDoc){
-      var picId = profileDoc.profilePic;
-      if(picId){
-        var imageDoc = CropUploader.images.findOne(picId);
-        if (imageDoc.derivatives){
-          console.log(imageDoc.derivatives.thumbnail)
-          return imageDoc.derivatives.thumbnail
-        }
-      }
-
-    }
-  }
-})
+// Template.accountTemplate.helpers({
+//   currentProfilePic(){
+//     var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam("profileId"), profilePic: {$exists: true}}, {profilePic : 1});
+//     if (profileDoc){
+//       var picId = profileDoc.profilePic;
+//       if(picId){
+//         var imageDoc = UserImages.findOne(picId);
+//         return imageDoc.url
+//       }
+//     }
+//   },
+//
+// })
 
 Template.BookingReviewLeftPanel.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
@@ -1527,11 +1522,6 @@ Template.paymentSection.helpers({
   }
 });
 
-Template.request.events({
-  'click .review-booking' (event) {
-    Session.set('sessionTransaction', this._id);
-  }
-});
 
 Template.registerHelper('convertMilitaryTime', function (time){
   return militaryTimeConvert(time)
@@ -1729,15 +1719,11 @@ Template.becomeAnAccompanist.onRendered(function () {
 Template.ProfileLayout.onRendered(function () {
   $(document).ready(function(){
     $('.materialboxed').materialbox();
+    $('.parallax').parallax();
   });
 
 });
 
-Template.CollapsibleStructure.onRendered(function () {
-  $('.collapsible').collapsible({
-    accordion : false
-  });
-});
 
 Template.TabStructure.onRendered(function () {
   $('ul.tabs').tabs({
@@ -2076,7 +2062,7 @@ Template.registerHelper( 'fromBookingTime', (page) =>{
 });
 
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
-  return "/bookingRequest/"+bookingId
+  return FlowRouter.path('/bookingRequest/:transactionId', {transactionId: bookingId})
 });
 
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
@@ -2291,6 +2277,16 @@ Template.advancedSearch.helpers ({
   //   console.log(currentSearch)
   //   return currentSearch;
   // }
+  startDate: function() {
+    var startDate = new Date(FlowRouter.getQueryParam('start_date'))
+    return dateToDateString(startDate)
+  },
+
+  endDate: function() {
+    var endDate = new Date(FlowRouter.getQueryParam('end_date'))
+    return dateToDateString(endDate)
+  },
+
   address: function () {
     var address = FlowRouter.getQueryParam("address")
     return address;
@@ -2807,12 +2803,19 @@ Template.results.helpers({
     return names
   },
    currentProfilePic: function(Id) {
-    var profileDoc = BasicProfiles.findOne({userId: Id}, {profilePic : 1});
+    var profileDoc = BasicProfiles.findOne({userId: Id, $exists: {profilePic: 1}}, {profilePic : 1});
     if (profileDoc){
       var picId = profileDoc.profilePic;
       var imageDoc = UserImages.findOne(picId);
-      console.log(imageDoc.derivatives.thumbnail)
-      return imageDoc.derivatives.thumbnail
+      return imageDoc.url
+    }
+  },
+  currentCoverPic: function(Id) {
+    var profileDoc = BasicProfiles.findOne({userId: Id, $exists: {coverPic: 1}}, {coverPic : 1});
+    if (profileDoc){
+      var picId = profileDoc.coverPic;
+      var imageDoc = UserImages.findOne(picId);
+      return imageDoc.url
     }
   },
   noResults: function (results) {

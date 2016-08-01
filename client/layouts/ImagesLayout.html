@@ -3,37 +3,139 @@
         <h1> Images </h1>
     </header>
     <main>
-      {{> Template.dynamic template="ImagePicker" data=allImages}}
-      {{> Template.dynamic template="ChangeThumbnailModal" data=initialData}}
-      {{> UploadImageModal}}
+      <div class="parallax-container">
+        <div class="parallax"><img src="https://s3.amazonaws.com/empanist-images/F7R7ZqWfwQqFPNXp5/jamespic.jpg"></div>
+      </div>
+
+      <div class="section white">
+  <div class="row container">
+    <h2 class="header">Parallax</h2>
+    <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+  </div>
+</div>
+      <!-- <br><br><br><br>
+      {{> Template.dynamic template='PictureModal' data=getProfileData}}
+
+      <br><br><br><br>
+      {{> ChangeThumbnailModal}}
+      {{> UploadImageModal}} -->
     </main>
 </template>
 
-<template name="ImagePicker">
-  <div class="row">
-    {{#each imageArray}}
-      <img class="z-depth-1 responsive-img gallery-img image-selection unselected-border" src="{{url}}"/>
-    {{/each}}
+
+<template name="PictureModal">
+  <!-- Modal Trigger -->
+    <a class="waves-effect waves-light modal-trigger" href="#image-overlord">
+      {{#if _.isEqual this.picType "Profile"}}
+        {{#with getPersonalPic this.picType}}
+        <img src="{{this}}"  width="250px" height="250px">
+        {{else}}
+        <div class="btn">
+          Add {{this.picType}} Picture
+        </div>
+        {{/with}}
+      {{else}}
+        {{#if _.isEqual this.picType 'Cover'}}
+          {{#with getPersonalPic this.picType}}
+          <div class="parallax-container">
+            <div class="parallax"><img src='{{this}}'></div>
+          </div>
+          {{else}}
+          <div class="btn">
+            Add {{this.picType}} Picture
+          </div>
+          {{/with}}
+        {{/if}}
+      {{/if}}
+    </a>
+
+  <!-- Modal Structure -->
+  <div id="image-overlord" class="modal white">
+    <div class="center"><h5>Change {{this.picType}} Picture</h5></div>
+      <!-- <a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i>&nbsp;&nbsp;&nbsp;</a> -->
+      <!-- <h5>Image Overlord<a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i></a></h5> -->
+      <div class="divider"></div>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#choose-picture">Choose Picture</a></li>
+            <li class="tab col s3"><a href="#upload-picture">Upload Picture</a></li>
+            <li class="tab col s3"><a class="edit-thumbnail-tab" href="#edit-thumbnail">Edit Thumbnail</a></li>
+          </ul>
+                <div class="divider"></div>
+        </div>
+        <div class="modal-content center">
+          <div id="choose-picture" class="col s12">
+            <div class="image-modal-margins">
+              {{> Template.dynamic template="PicturePicker" data=this}}
+            </div>
+          </div>
+          <div id="upload-picture" class="col s12 image-modal-margins container">
+            {{> ImageDropzone }}
+          </div>
+          <div id="edit-thumbnail" class="col s12 image-modal-margins container">
+            {{> Template.dynamic template="EditThumbnailPanel" data=this }}
+          </div>
+        </div>
+
+      </div>
+      <div class="divider"></div>
   </div>
+</template>
+
+
+<template name="PicturePicker">
+  {{#with imageArray}}
+    <div class="row">
+      {{#each this}}
+        <img data-imageid={{_id}} class="z-depth-1 responsive-img gallery-img image-selection {{selectionStatus _id}}" src="{{url}}"/>
+      {{/each}}
+    </div><br>
+    <div class="row center">
+      <button class="btn set-{{../picType}}">Set As {{../picType}} Picture</button>
+    </div>
+  {{else}}
+    No Images Uploaded Yet.<br><br>
+    <button class="btn change-to-upload-panel">Upload Image</button>
+  {{/with}}
+</template>
+
+<template name="EditThumbnailPanel">
+  {{#with getPersonalPic this.picType}}
+  <div class="row">
+    <div class="col s8 push-s2">
+      <img id="crop-image" src={{this}}>
+    </div>
+  </div><br>
+  <div class="row">
+    <button class="save-profile-thumbnail btn center col s6 push-s3">Save {{../picType}} Thumbnail</button><br><br>
+  </div>
+  {{else}}
+    No Images Uploaded Yet.<br><br>
+    <button class="btn change-to-upload-panel">Upload Image</button>
+
+  {{/with}}
 </template>
 
 
 <template name="ChangeThumbnailModal">
-  <a class="waves-effect waves-light btn modal-trigger" href="#change-thumbnail-modal">Change Thumbnail</a>
+  <a class="waves-effect waves-light btn modal-trigger" href="#change-thumbnail-modal">Change Profile Thumbnail</a>
+  {{#with myProfilePic}}
   <div id="change-thumbnail-modal" class="modal">
     <div class="modal-content">
-      <h5>Change {{getCropperType}} Thumbnail <a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i></a></h5>
+      <h5>Change Profile Thumbnail <a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i></a></h5>
       <div class="divider"></div><br>
       <div class="row">
         <div class="col s8 push-s2">
-          <img id="crop-image" src="https://s3.amazonaws.com/empanist-images/F7R7ZqWfwQqFPNXp5/abdulpic.jpg">
+          <img id="crop-image" src="{{this}}">
         </div>
-      </div>
+      </div><br>
       <div class="row">
-        <button class="upload-crop btn center col s6 push-s3">Save</button><br><br>
+        <button class="save-profile-thumbnail btn center col s6 push-s3">Save</button><br><br>
       </div>
     </div>
   </div>
+  {{/with}}
 </template>
 
 <template name="UploadImageModal">
@@ -52,18 +154,12 @@
 </template>
 
 <template name="ImageDropzone">
-  <h5>Upload Image<a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i></a></h5>
-  <div class="divider"></div><br>
   <div class="row">
     <div class="col s12">
       {{> dropzone id="upload-image" dictDefaultMessage='Drop files (or click) here to upload'}}
     </div>
   </div>
 </template>
-
-
-
-
 
 
 <template name="PictureCropper">

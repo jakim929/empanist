@@ -6,7 +6,7 @@ import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
 import { Data } from '../collections/profileData.js'
 
-
+import braintree from 'braintree'
 
 Meteor.startup(() => {
 });
@@ -61,57 +61,8 @@ Meteor.publish( 'files', function(){
   return this.ready();
 });
 
-var deleteImageDependencies = function(imageId){
-  var imageToDelete = UserImages.findOne({_id: imageId, userId: Meteor.userId()});
-  if (imageToDelete){
-    deleteImageFromS3(imageToDelete.url, function(error, result){
-      UserImages.remove({_id: imageId, userId: Meteor.userId()}, function (error) {
-        if (error){
-          throw new Meteor.error("Image Database Error", "Removing Image Failed");
-        }else{
-          if (BasicProfiles.findOne({userId: Meteor.userId(), profilePic: imageId})){
-            BasicProfiles.update({userId: Meteor.userId()}, {$unset: {profilePic:1}}, function(error, result){
-              throw new Meteor.error("Image Database Error", "Removing Image Failed");
-            })
-          }
-          if (BasicProfiles.findOne({userId: Meteor.userId(), coverPic: imageId})){
-            BasicProfiles.update({userId: Meteor.userId()}, {$unset: {coverPic:1}}, function(error,result){
-              throw new Meteor.error("Image Database Error", "Removing Image Failed");
-            })
-          }
-        }
-      });
-    })
-  }
-}
 
-var deleteImageFromUserImages = function(imageId, callback){
-  var imageToDelete = UserImages.findOne({_id: imageId, userId: Meteor.userId()})
-  if (imageToDelete) {
-    // Make sure that thumbnail doesn't have another thumbnail
-    if (imageToDelete.hasOwnProperty('thumbnailId')){
-      deleteImageDependencies(imageToDelete.thumbnailId);
-    }
-    deleteImageDependencies(imageId);
-  }
-}
 
-// var deleteImageFromS3 = function(url, callback){
-//   if (url.indexOf("https://empanist-images.s3.amazonaws.com/") < 0)
-//   {
-//     throw new Meteor.error("URL parse failed","Not a valid image url");
-//   }
-//
-//   var newKey = url.replace("https://empanist-images.s3.amazonaws.com/", "")
-//   var s3 = new AWS.S3();
-//
-//   var params = {
-//     Bucket: "empanist-images",
-//     Key:newKey
-//   };
-//
-//   s3.deleteObject(params, Meteor.bindEnvironment(callback))
-// }
 
 var deleteImageFromS3 = function(key){
   AWS.config.update({
@@ -144,70 +95,119 @@ var setAsProfilePicture = function(imageId){
   }
 };
 
+var setAsCoverPicture = function(imageId){
+  if(!UserImages.findOne({_id : imageId, userId: Meteor.userId()}, {_id:1})){
+    throw new Meteor.Error('no-such-image', "Insufficient permissions/No such image in database.");
+  }else{
+    BasicProfiles.update({userId: Meteor.userId()}, {$set: {coverPic : imageId}}, function(err, result){
+      if(err){
+        throw new Meteor.Error(err);
+      }else{
+        return true
+      }
+    })
+  }
+};
+
+var storeThumbnailUrlInDatabase = function (info, originalImageId, callback){
+  Modules.both.checkUrlValidity( info.url );
+  var originalImageDoc = UserImages.findOne({_id: originalImageId})
+  if(originalImageDoc){
+    UserImages.insert({
+      url: info.url,
+      userId: Meteor.userId(),
+      type: info.type,
+      name: info.name,
+      size: info.size,
+      added: new Date(),
+      isThumbnail:true
+    }, function (err, finalResult){
+      if(err){
+        callback(err);
+      }else{
+        if (originalImageDoc.hasOwnProperty('thumbnailId')){
+          // Remove existing thumbnailId
+          oldThumbnailDoc = UserImages.findOne({_id:originalImageDoc.thumbnailId});
+          if(oldThumbnailDoc){
+            var s3key = oldThumbnailDoc.url.replace("https://s3.amazonaws.com/empanist-images/", "");
+            // Later check if the delete worked or not
+            if(deleteImageFromS3(s3key) == null){
+              callback(new Meteor.Error('Unable to delete'));
+            }else{
+              // Use more async in general-> Too tired right now to think about it
+              UserImages.remove({_id: oldThumbnailDoc._id}, function(error, result){
+                if(error){
+                  callback(error)
+                }else{
+                  UserImages.update({_id: originalImageId}, {$set: {thumbnailId:finalResult}}, function(error, result){
+                    if (error){
+                      callback(error);
+                    }else{
+                      callback(null, finalResult);
+                    }
+                  });
+                }
+              })
+            }
+          }
+        }else{
+          UserImages.update({_id: originalImageId}, {$set: {thumbnailId:finalResult}}, function(error, result){
+            if (error){
+              callback(error);
+            }else{
+              // Return the new thumbnail
+              callback(null, finalResult);
+            }
+          });
+        }
+      }
+    });
+  }
+}
+
+var rejectAllSessions = function(transactionId, callback){
+  if(Transactions.findOne({_id: transactionId, accompanist: Meteor.userId()})){
+
+      Sessions.update({transaction: transactionId}, {$set: {status: "Cancelled"}}, {multi: true}, function(err, result){
+        if (err){
+          callback(err)
+        }else {
+          callback(result, err)
+        }
+      })
+
+
+  }
+}
+
 Meteor.methods({
-  // Add security measures
-  // deleteImageFromS3: function(imageDatabaseId){
-  //   if(!this.userId){
-  //     throw new Meteor.error("Access Denied","User not logged in");
-  //   }else{
-  //     var found = CropUploader.images.findOne({_id: imageDatabaseId, userId: this.userId })
-  //     if (!found){
-  //       throw new Meteor.error("Image search failed","Image not found");
-  //     }
-  //     var mainUrl = found.url
-  //     var derivativeUrl = found.derivatives.thumbnail
-  //
-  //     var cbDeleteFromCollection = function(err,data){
-  //       if (err){
-  //         console.log(err)
-  //       }else{
-  //         CropUploader.images.remove({_id: imageDatabaseId});
-  //         console.log("Successfully deleted from S3 and deleted from CropUploader.images collection", imageDatabaseId);
-  //
-  //       }
-  //     };
-  //
-  //     var cbKeepCollection = function(err,data){
-  //       if (err){
-  //         console.log(err)
-  //       }else{
-  //         console.log("Successfully deleted from S3", imageDatabaseId);
-  //       }
-  //     };
-  //
-  //     if(derivativeUrl){
-  //       deleteImageFromS3(derivativeUrl, cbKeepCollection);
-  //     }
-  //     deleteImageFromS3(mainUrl, cbDeleteFromCollection);
-  //
-  //     if (found.picType == "profile"){
-  //       BasicProfiles.update({userId: this.userId}, {$unset:{profilePic : ""}});
-  //     }else{
-  //       BasicProfiles.update({userId: this.userId}, {$unset:{coverPic : ""}});
-  //     }
-  //
-  //   }
-  // },
+  rejectTransactionRequest: function(transactionId){
+    if(Transactions.findOne({_id: transactionId, accompanist: Meteor.userId()}, {_id:1})){
+      Transactions.update({_id: transactionId, accompanist: Meteor.userId()},{$set: {status: 'Cancelled'}}, function(err, result){
+        if (err){
+          throw new Meteor.Error(err)
+        }else{
+          rejectAllSessions(transactionId, function(err, result){
+            if (err){
+              throw new Meteor.Error(err);
+            }else{
+              return result
+            }
+          })
+        }
+      } );
+
+    }
+  },
+
 
   setProfilePicture: function(imageId) {
     setAsProfilePicture(imageId);
   },
 
-  // storeUrlInDatabase: function( url, type ) {
-  //   check( url, String );
-  //   Modules.both.checkUrlValidity( url );
-  //
-  //   try {
-  //     UserImages.insert({
-  //       url: url,
-  //       userId: Meteor.userId(),
-  //       picType: type,
-  //       added: new Date()
-  //     });
-  //   } catch( exception ) {
-  //     return exception;
-  //   }
-  // },
+  setCoverPicture: function(imageId) {
+    setAsCoverPicture(imageId);
+  },
 
   storeImageUrlInDatabase: function( info ) {
     var url = 'https://s3.amazonaws.com/empanist-images/' + Meteor.userId() + "/" + info.name;
@@ -231,36 +231,37 @@ Meteor.methods({
   },
 
   storeThumbnailUrlInDatabase: function(info,  originalImageId ) {
-    Modules.both.checkUrlValidity( info.url );
-    var originalImageDoc = UserImages.findOne({_id: originalImageId})
-    if(originalImageDoc){
-      UserImages.insert({
-        url: info.url,
-        userId: Meteor.userId(),
-        type: info.type,
-        name: info.name,
-        size: info.size,
-        added: new Date(),
-        isThumbnail:true
-      }, function (err, result){
-        if(err){
-          throw new Meteor.error("Thumbnail Database Update Error", err.message);
+      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+        if (err){
+          throw new Meteor.Error(err);
         }else{
-          if (originalImageDoc.hasOwnProperty('thumbnailId')){
-            return
-          }else{
-            UserImages.update({_id: originalImageId}, {$set: {thumbnailId:result}});
-          }
-
+          console.log('Saved Thumbnail',result)
         }
       });
-    }
+  },
 
     // ADD ERROR HANDLING FOR WHEN USERIMAGES DOESNT HAVE A FILE
 
-
-
-
+  saveThumbnailAs: function(info, originalImageId, type){
+    if (type == "Profile"){
+      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+        if (err){
+          throw new Meteor.Error(err);
+        }else{
+          console.log('Saved Thumbnail',result);
+          BasicProfiles.update({userId: Meteor.userId()}, {$set: {profilePic : result}});
+        }
+      });
+    }else if (type == "Cover"){
+      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+        if (err){
+          throw new Meteor.Error(err);
+        }else{
+          console.log('Saved Thumbnail',result);
+          BasicProfiles.update({userId: Meteor.userId()}, {$set: {coverPic : result}});
+        }
+      });
+    }
   },
 
   getGeocode: function (arg) {

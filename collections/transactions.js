@@ -27,9 +27,10 @@ TransactionSchema = new SimpleSchema({
     // }
   },
 
+
   performanceType: {
     type: String,
-    allowedValues: ['Solo Recital/Concert', 'College Audition', 'Orchestral Audition', 'Competition', 'Recording Session', 'Other'],
+    allowedValues: ['Solo Recital/Concert', 'College Audition', 'Orchestral Audition', 'Competition', 'Recording Session', 'Private Lesson', 'Other'],
     label: 'Final Performance Type'
   },
 
@@ -47,7 +48,7 @@ TransactionSchema = new SimpleSchema({
   status: {
     type: String,
     label: "Booking Status",
-    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Rejected', 'Cancelled']
+    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Cancelled']
     // autoform: {
     //   type: "hidden"
     // }

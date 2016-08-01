@@ -3,11 +3,208 @@
     </header>
     <main>
         <br>
-        {{> BookingCardExample}}
         {{> notifications }}
-        {{> ReceivedBookingRequests}}
+
+        {{> TabStructure}}
+
+
 
     </main>
+</template>
+
+
+<template name="BookingRequestSelector">
+    <div class="col s6 no-left-padding">
+      {{#with receivedBookingRequests}}
+      <ul class="collapsible z-depth-0" data-collapsible="expandable">
+        <li>
+          <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Pending Booking Requests</div>
+
+          <div class="collapsible-body grey lighten-5">
+          {{#with pending}}
+            {{> Template.dynamic template="RequestTypeCollections" data=this}}
+          {{else}}
+            <p>No pending bookings! To receive more booking requests, add to your profile!</p>
+          {{/with}}
+          </div>
+
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">place</i>Ongoing Bookings</div>
+          <div class="collapsible-body grey lighten-5">
+            {{#with ongoing}}
+              {{> Template.dynamic template="RequestTypeCollections" data=this}}
+            {{else}}
+              <p>No ongoing bookings! To receive more booking requests, add to your profile!</p>
+            {{/with}}
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">whatshot</i>Completed Bookings</div>
+          <div class="collapsible-body grey lighten-5">
+            {{#with completed}}
+              {{> Template.dynamic template="RequestTypeCollections" data=this}}
+            {{else}}
+              <p>No completed bookings yet!</p>
+            {{/with}}
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">whatshot</i>Cancelled Bookings</div>
+          <div class="collapsible-body grey lighten-5">
+            {{#with cancelled}}
+              {{> Template.dynamic template="RequestTypeCollections" data=this}}
+            {{else}}
+              <p>No cancelled booking requests!</p>
+            {{/with}}
+          </div>
+        </li>
+      </ul>
+      {{/with}}
+    </div>
+
+
+    <div class="col s6 no-right-padding">
+    {{#with transactionById getSelectedTransaction}}
+      {{> Template.dynamic template="BookingRequestReviewCard"}}
+    {{else}}
+      <div class="card z-depth-0">
+        <div class="card-content">
+          <div class="container">
+            Select a booking request on the left to review!
+          </div>
+        </div>
+      </div>
+    {{/with}}
+    </div>
+</template>
+
+<template name="RequestTypeCollections">
+
+  <ul class="collection">
+    {{#each this}}
+      {{#with musicProfileById musician}}
+      <a class="collection-item grey lighten-5 avatar black-text select-transaction-for-review {{getSelectionClass ../id}}" data-transactionid='{{../_id}}'>
+        <img src="{{getProfilePictureById ../musician}}" alt="" class="circle">
+        <span class="title">{{getMusicianType (getPrimaryInstrument instruments)}}</span>
+        <p class="no-padding">{{#with basicProfileById ../musician}}{{affiliation}}{{/with}}<br>
+           {{ formatDuration ../startDate ../endDate}}
+        </p>
+      </a>
+      {{/with}}
+    {{/each}}
+  </ul>
+</template>
+
+
+
+
+<template name="BookingRequestReviewCard">
+  <div class="card z-depth-0">
+    <div class="card-content">
+
+      <span class="black-text">
+        {{#with basicProfileById musician}}
+          <div class="divider"></div>
+          <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
+          <div class="limit-width-30 overlap-into-top-image"><img src="{{getProfilePictureById ../musician}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+        <div class="container center">
+            <h6>{{name}}</h6>
+        </div>
+        <br>
+        {{#with musicProfileById ../musician}}
+        <div class="row">
+          <div class="col s6 center">
+            <h7>Musician</h7>
+            <div class="divider"><br></div>
+            <p>A {{getMusicianType (getPrimaryInstrument instruments)}} from <br>{{../affiliation}}</p>
+          </div>
+          <div class="col s6 center">
+            <h7>Sessions</h7>
+            <div class="divider"><br><br></div>
+            <p>{{../../sessionCount}} sessions<br>{{formatDuration ../../startDate ../../endDate}}</p>
+          </div>
+
+        </div>
+        {{/with}}
+        <br>
+        {{/with}}
+        <div class="row">
+          <div class="col s12 center">
+            <h7>Repertoire</h7>
+            <div class="divider"></div>
+            <table class="striped centered">
+              <tbody>
+                {{#each repertoire}}
+                <tr>
+                  <td>{{concerto}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+     </span>
+    </div>
+
+
+      {{#if _.isEqual status "Pending"}}
+        <div class="card-action">
+          <a href="#reject-request-modal" class="reject-request modal-trigger left">Reject</a>
+          <div id="reject-request-modal" class="modal">
+            <div class="modal-content">
+              <h4>Reject Booking Request</h4>
+              <p>Are you sure that you want to reject the booking request from {{#with basicProfileById musician}}{{name}}{{/with}}?</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">No, Reconsider</a>
+              <a href="#!" data-transactionid={{_id}} class=" modal-action modal-close waves-effect waves-green btn-flat final-reject">Yes, Reject Request</a>
+
+            </div>
+          </div>
+          <a href="{{getBookingRoute _id}}" class="right">Review / Confirm</a>
+          <br>
+        </div>
+      {{else}}
+        {{#if _.isEqual status "Ongoing"}}
+        <div class="card-action">
+
+        </div>
+        {{else}}
+          {{#if _.isEqual status "Completed"}}
+            <div class="card-action green center">
+              <h6>Completed</h6>
+            </div>
+          {{else}}
+            {{#if _.isEqual status "Cancelled"}}
+              <div class="card-action red center">
+                <h6>Cancelled</h6>
+              </div>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      {{/if}}
+
+  </div>
+
+
+
+</template>
+
+
+
+
+
+
+<template name="teststructure">
+  <a class="collection-item avatar black-text">
+    <img src="images/profile.png" alt="" class="circle">
+    <span class="title">Violinist</span>
+    <p class="no-padding">The Juilliard School<br>
+       Jul 6th - 24th, 2016
+    </p>
+  </a>
 </template>
 
 <template name="EditAccompanistProfiles">
@@ -18,116 +215,12 @@
 
 <template name="TabStructure">
   <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s3"><a href="#booking-requests">Booking Requests</a></li>
-        <li class="tab col s3"><a href="#profile">Profile</a></li>
-      </ul>
-    </div>
-    <div id="booking-requests" class="col s12">{{> ReceivedBookingRequests }}</div>
-    <div id="profile" class="col s12">{{> NewAccompLayout}}</div>
+        <ul class="tabs">
+          <li class="tab col s6"><a href="#booking-requests">Booking Requests</a></li>
+          <li class="tab col s6"><a href="#profile">Profile</a></li>
+        </ul>
+    <div id="booking-requests" class="col s12 no-padding"> {{> BookingRequestSelector}}</div>
+    <div id="profile" class="col s12 no-padding">{{> NewAccompLayout}}</div>
 
   </div>
-</template>
-
-<template name="ReceivedBookingRequests">
-  <div class="carousel carousel-slider center" data-indicators="true">
-    <div class="carousel-fixed-item center">
-      <a class="btn waves-effect white grey-text darken-text-2">button</a>
-    </div>
-    <div class="carousel-item red white-text" href="#one!">
-      <h2>First Panel</h2>
-      <p class="white-text">This is your first panel</p>
-    </div>
-    <div class="carousel-item amber white-text" href="#two!">
-      <h2>Second Panel</h2>
-      <p class="white-text">This is your second panel</p>
-    </div>
-    <div class="carousel-item green white-text" href="#three!">
-      <h2>Third Panel</h2>
-      <p class="white-text">This is your third panel</p>
-    </div>
-    <div class="carousel-item blue white-text" href="#four!">
-      <h2>Fourth Panel</h2>
-      <p class="white-text">This is your fourth panel</p>
-    </div>
-  </div>
-  <!-- <div class="row">
-    <div class="col s12 m5 l5">
-      <div class="card horizontal">
-        <div class="card-image">
-          <img src="/images/profile.png">
-        </div>
-        <div class="card-stacked">
-          <div class="card-content">
-            <p>I am a very simple card. I am good at containing small bits of information.</p>
-          </div>
-          <div class="card-action">
-            <a href="#">This is a link</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-</template>
-
-
-<template name="CollapsibleStructure">
-  {{#with receivedBookingRequests}}
-    <ul class="collapsible z-depth-0" data-collapsible="expandable">
-      <li>
-        <div class="collapsible-header active"><i class="material-icons">people</i>Pending Bookings ({{this.pending.length}})</div>
-        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.pending }}</div>
-      </li>
-
-      <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Ongoing Bookings ({{this.ongoing.length}})</div>
-        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.ongoing }}</div>
-      </li>
-
-      <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Previous Bookings ({{this.completed.length}})</div>
-        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.completed }}</div>
-      </li>
-
-      <li>
-        <div class="collapsible-header active"><i class="material-icons">filter_drama</i>Cancelled Bookings ({{this.cancelled.length}})</div>
-        <div class="collapsible-body">{{> Template.dynamic template="bookingList" data=this.cancelled }}</div>
-      </li>
-    </ul>
-  {{else}}
-  You currently have no bookings... Here's how you can increase your profile.
-  {{/with}}
-
-</template>
-
-
-<template name="request">
-
-    <li class="collection-item avatar">
-      {{#with profilePicUrlById}}
-        <img src={{this}} alt="" class="circle">
-      {{else}}
-        <img src="/images/musician.png" alt="" class="circle">
-      {{/with}}
-      {{#with basicProfileById musician}}
-        <span class="title"><a href={{getProfileRoute _id}}>{{name}}</a></span>
-      {{/with}}
-      {{#with musicProfileById musician}}
-        <p class="no-padding">{{instrument}} </p>
-      {{/with}}
-        <p class="no-padding">{{formatDuration this.startDate this.endDate}}</p>
-      <a href={{getBookingRoute _id}} class="secondary-content btn waves-effect waves-light review-booking">Confirm/Reject</a>
-    </li>
-
-</template>
-
-
-
-<template name="bookingList">
-  <ul class="collection">
-    {{#each this}}
-     {{> Template.dynamic template="request" data=this}}
-    {{/each}}
-  </ul>
 </template>

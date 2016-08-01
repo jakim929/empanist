@@ -1,13 +1,10 @@
 <!-- Profile Page Access Logic -->
 <template name="ProfileLayout">
     <main>
-      <div class="parallax-container">
+      <div class="container">
         <!-- <div class="parallax"> -->
           <!-- {{#unless isOwnProfile}} -->
-            <img class=" cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
         <!--   {{else}}
-              <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" /> -->
-            <!-- <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
               <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
             </a> -->
           <!-- {{/unless}} -->
@@ -38,7 +35,7 @@
                           </li>
                           <li class="divider"></li>
                           <li>
-                            <h6><b><div class="center">How to strengthen my Profile?</div></b></h6>
+                            <h6><b><div class="center">How can I strengthen my profile?</div></b></h6>
                             {{> suggestions}}
                           </li>
                           <li class="divider"></li>
@@ -63,7 +60,8 @@
                     <div class="overlap-into-top">
                       <div class="card grey lighten-5 z-depth-0">
                         <div class="card-content">
-                          <h6><b><div class="center">Book This Accompanist</div></b></h6>
+                          <h6><div class="center">Book This Accompanist</div></h6>
+                          <div class="divider"></div><br>
                             {{> bookAccompanistForm}}
                         </div>
                       </div>
@@ -105,10 +103,10 @@
 
 
       <label for="sd" class="active">Start Date</label>
-      {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" class="datepicker"}}
+      {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date"}}
 
        <label for="ed" class="active">End Date</label>
-      {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" class="datepicker"}}
+      {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date"}}
 
       <!--{{> afQuickField name="repertoire"}} -->
       {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
@@ -129,44 +127,36 @@
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
     <div id="first-card-text" class="card-content">
       <span class="black-text activator">
-        <div class="all">
-          <div id="profileImg">
-            {{#unless isOwnProfile}}
-              {{#with currentProfilePic}}
-                <a class="waves-effect waves-light">
-                  <img class="materialboxed" src={{currentProfilePic}}>
-                </a>
-              {{/with}}
-            {{else}}
-              {{#with currentProfilePic}}
-                <a class="waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
-                  <img src={{this}} height="250px">
-                </a>
-              {{else}}
-                <a class="btn waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
-                  <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
-                </a>
-              {{/with}}
-            {{/unless}}
-          </div>
-          <!-- Modal to change profile pic -->
-          {{> changeImageModal}}
-        <!-- <span class="black-text activator"> -->
-          <div class="details">
-            <h5 class="bold">{{name}}</h5>
-            <h6>{{affiliation}}</h6>
-            {{#if isOwnProfile}}
-            <h10>{{formatBirthDate this.birthDate}}</h10> <br>
-            <h10>{{phone}}</h10> <br>
-           <!--  <i class="material-icons right">mode_edit</i>
-            <br> -->
-            {{/if}}
+          <div class="row">
+            <div class="col s6">
+                {{#unless isOwnProfile}}
+                  {{#with currentProfilePic}}
+                      <img class="materialboxed" src={{currentProfilePic}}>
+                  {{/with}}
+                {{else}}
+                  {{>Template.dynamic template="PictureModal" data=(getPicTypeObject "Profile") }}
+                {{/unless}}
+            </div>
+            <!-- Modal to change profile pic -->
+
+          <!-- <span class="black-text activator"> -->
+            <div class="col s6">
+              <div class="details">
+                <h4>{{name}}</h4>
+                <h6>{{affiliation}}</h6>
+                {{#if isOwnProfile}}
+                <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+                <h10>{{phone}}</h10> <br>
+               <!--  <i class="material-icons right">mode_edit</i>
+                <br> -->
+                {{/if}}
+              </div>
+            </div>
           </div>
           {{#if isOwnProfile}}
           <i class="material-icons right">mode_edit</i>
           <br>
         {{/if}}
-        </div>
       </span>
     </div>
     {{#if isOwnProfile}}
@@ -340,7 +330,7 @@
         {{#if isOwnProfile}}
          <div class="row">
             <h5>
-              Accompanying Preferences
+              Accompanist Preferences
             </h5>
           {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type="update"}}
             {{> afQuickField name="charge" type="hidden"}}
@@ -349,7 +339,7 @@
             {{> afQuickField name="session_location" type="hidden"}}
             {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
             {{> afQuickField name="one_liner" type="hidden"}}
-            
+
             <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
             <!-- Switch -->
             <!-- <div class="switch">
