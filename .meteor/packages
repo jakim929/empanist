@@ -83,6 +83,7 @@ raix:md5
 d3js:d3
 less
 # dangrossman:bootstrap-daterangepicker
+fourseven:scss
 dbarrett:dropzonejs
 aldeed:autoform-select2
 materialize:materialize

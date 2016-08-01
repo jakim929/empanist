@@ -133,7 +133,7 @@
 	        	</div>
 	        	<div class="col s5">
 	        	  <div class="input-field col s12">
-          			{{>afQuickField name="radius" value=rads disabled="true"}}
+          			{{>afQuickField name="radius" value=rads}}
         			</div>
       			</div>
        		</div>
@@ -163,7 +163,8 @@
 
 		          <h10 class="box-label">{{this.label}}
 
-		          <input type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
+
+		          <input checked type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
 
 		          <label class="right checker" style="top:5px;" for="{{this.value}}-slot"></label>
 	          </h10>

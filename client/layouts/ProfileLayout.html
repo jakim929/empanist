@@ -1,9 +1,11 @@
 <!-- Profile Page Access Logic -->
 <template name="ProfileLayout">
     <main>
-      <div class="container">
+
+      <div class="hide-on-med-and-down parallax-container">
         <!-- <div class="parallax"> -->
           <!-- {{#unless isOwnProfile}} -->
+            <img class="cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
         <!--   {{else}}
               <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
             </a> -->
@@ -21,7 +23,8 @@
                   {{/if}}
                   {{> Template.dynamic template="profileTemplate" data=myMusicProfile}}
                 </div>
-                <div class="col l4 m4 s12">
+                <div class="col l4 m4 hide-on-small-only">
+                  <div class="aside">
                   <div class="overlap-into-top">
                     <div class="card grey lighten-5 z-depth-0">
                       <div class="card-content">
@@ -35,15 +38,18 @@
                           </li>
                           <li class="divider"></li>
                           <li>
-                            <h6><b><div class="center">How can I strengthen my profile?</div></b></h6>
+
+                            <h6><b><div class="center">Steps to strengthen your profile</div></b></h6>
+
                             {{> suggestions}}
                           </li>
-                          <li class="divider"></li>
+                          <!-- <li class="divider"></li>
                           <li>
                             <h6><b><div class="center">Accompanying data/advs to join</div></b></h6>
-                          </li>
+                          </li> -->
                       </ul>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -51,18 +57,21 @@
             {{else}}
               {{#if isAccompanist}}
                 <div class="row">
-                  <div class="col s8">
+                  <div class="col m8 l8 s12">
                     {{> Template.dynamic template="accountTemplate" data=routeBasicProfile}}
                     {{> Template.dynamic template="accompanistProfileTemplate" data=routeAccompanistProfile}}
                     {{> Template.dynamic template="profileTemplate" data=routeMusicProfile}}
                   </div>
-                  <div class="col s4">
-                    <div class="overlap-into-top">
-                      <div class="card grey lighten-5 z-depth-0">
-                        <div class="card-content">
-                          <h6><div class="center">Book This Accompanist</div></h6>
-                          <div class="divider"></div><br>
-                            {{> bookAccompanistForm}}
+
+                  <div class="col l4 m4 s12">
+                    <div class="aside">
+                      <div class="overlap-into-top ">
+                        <div class="card grey lighten-5 z-depth-0">
+                          <div class="card-content ">
+                            <h6><b><div class="center ">Book This Accompanist</div></b></h6>
+                              {{> bookAccompanistForm}}
+                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -123,7 +132,9 @@
 </template>
 
 <!-- SECTION: Basic Information Card -->
+
 <template name="accountTemplate">
+  <div class="col s12">
   <div id="first-card-container" class="card grey lighten-5 z-depth-0">
     <div id="first-card-text" class="card-content">
       <span class="black-text activator">
@@ -131,7 +142,7 @@
             <div class="col s6">
                 {{#unless isOwnProfile}}
                   {{#with currentProfilePic}}
-                      <img class="materialboxed" src={{currentProfilePic}}>
+                      <img class="materialboxed" src={{this}}>
                   {{/with}}
                 {{else}}
                   {{>Template.dynamic template="PictureModal" data=(getPicTypeObject "Profile") }}
@@ -166,6 +177,7 @@
       </div>
     {{/if}}
   </div>
+  </div>
 </template>
 
 <template name="changeImageModal">
@@ -185,64 +197,117 @@
 <!-- Wrapper -->
 <template name="profileTemplate">
   <section class="myprofile">
-    {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
-      <div class="card grey lighten-5 z-depth-0">
-        <div class="card-content">
-          <span class="black-text activator">
-          <h5>
-            <i id="align_text" class="medium material-icons">{{icon}}</i>
-            {{mainTitle}}
-          </h5>
-          {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
-          {{#if notEmpty dynamicData}}
-            {{#if isOwnProfile}}
-              <i class="myprofile_edit material-icons right">mode_edit</i>
-            {{/if}}
-          {{/if}}
-          <br>
-         </span>
-        </div>
-        {{#if isOwnProfile}}
-          <div class="card-reveal grey lighten-5 z-depth-0">
-            <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-            {{> UI.dynamic template="EditingForm" data=arrayField}}
-          </div>
-        {{/if}}
+    {{#if isOwnProfile}}
+      <!-- Make this section title only showup if there are any arrays that aren't filled!! -->
+      {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
+      <div class="col s12">
+        <h10> <span class="bold"> Add a section to your profile – </span> strengthen your profile!</h10>
       </div>
-      {{#if isOwnProfile}}
-          <div class="AddArrayObjectButton">
-            <div class={{addButtonClass}}>
-              <center>
-                <button
-                  type="button"
-                  class="add-btn {{addButtonClass}} grey">
-                  Add {{add_title}}
-                </button>
-              </center>
-            </div>
-          </div>
-          <div class={{addArrayClass}}>
-            <div class="card grey lighten-5 z-depth-0">
-              <div class="card-content">
-                <span class="{{close}} right"><i class="material-icons right">close</i> </span>
-                {{#if notEmpty dynamicData}}
-                  {{#autoForm id=arrayField type="update-pushArray" collection="MusicProfiles" doc=currentProfile scope=arrayField}}
-                      {{> UI.dynamic template=arrayField data="myProfile"}}
-                  {{/autoForm}}
-                {{else}}
-                  {{#autoForm collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
-                    {{> afArrayField name=arrayField template="firstCustomArrayField"}}
+      {{/if}}
 
-                      <button type="submit" class=" {{close}} btn right btn-primary">first</button>
-                      <br>
-                      <br>
-                  {{/autoForm}}
-                {{/if}}
+      {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
+        {{#if isEmpty dynamicData mainTitle}}
+          <div class="{{arrayField}}-smallCard col s12 m12 l6">
+            <div class="card profileMiniCard grey lighten-5 z-depth-0" >
+              <div class="card-content profileMiniCard">
+                <h10 >
+                  <i id="align_text" class="small material-icons">{{icon}}</i>
+                  <span class="bold"> {{mainTitle}} </span> <br><br>
+                  <p class="block-with-text">{{text}}</p>
+                </h10>
+              </div>
+            </div>
+            <div class="AddArrayObjectButton">
+              <div class="{{addButtonClass}}">
+                <center>
+                  <button
+                    type="button"
+                    class="add-btn {{addButtonClass}}-smallCard grey lighten-1">
+                    Add {{add_title}}
+                  </button>
+                </center>
               </div>
             </div>
           </div>
-      {{/if}}
-    {{/each}}
+        {{/if}}
+      {{/each}}
+      {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
+        <div class="col s12"> <br> <div class="horizontalLine" > &nbsp; </div></div>
+    {{/if}}
+    {{/if}}
+
+    <div class="col s12">
+      {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
+        {{#if isEmpty dynamicData}}
+        <div class="col s12">
+           <div class={{addArrayClass}}>
+              <div class=" col s12 card grey lighten-5 z-depth-0">
+                <div class="card-content">
+                  <span class="{{close}} right"><i class="material-icons right">close</i> </span>
+                  <h5>
+                    <i id="align_text" class="medium material-icons">{{icon}}</i>
+                     Add {{add_title}}
+                  </h5>
+                  {{#autoForm collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
+                    {{> afArrayField name=arrayField template="firstCustomArrayField"}}
+                    <button type="submit" class=" {{close}} btn right btn-primary">Save</button>
+                    <br>
+                    <br>
+                  {{/autoForm}}
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+
+    <div class="col s12">
+      {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
+        {{#if notEmpty dynamicData}}
+          <div class="card grey lighten-5 z-depth-0">
+            <div class="card-content">
+              <span class="black-text activator">
+                <h5>
+                  <i id="align_text" class="medium material-icons">{{icon}}</i>
+                  {{mainTitle}}
+                </h5>
+                {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
+                  {{#if isOwnProfile}}
+                    <i class="myprofile_edit material-icons right">mode_edit</i>
+                {{/if}}
+                <br>
+             </span>
+            </div>
+            {{#if isOwnProfile}}
+              <div class="card-reveal grey lighten-5 z-depth-0">
+                <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                {{> UI.dynamic template="EditingForm" data=arrayField}}
+              </div>
+            {{/if}}
+          </div>
+          {{#if isOwnProfile}}
+             <div class="{{addButtonClass}} AddArrayObjectButton">
+                <center>
+                  <button
+                    type="button"
+                    class="add-btn {{addButtonClass}} grey lighten-1">
+                    Add {{add_title}}
+                  </button>
+                </center>
+              </div>
+              <div class="{{addArrayClass}} card grey lighten-5 z-depth-0">
+                <div class="card-content">
+                  <span class="{{close}} right"><i class="material-icons right">close</i> </span>
+                  {{#autoForm id=arrayField type="update-pushArray" collection="MusicProfiles" doc=currentProfile scope=arrayField}}
+                      {{> UI.dynamic template=arrayField data="myProfile"}}
+                  {{/autoForm}}
+                </div>
+              </div>
+          {{/if}}
+        {{/if}}
+      {{/each}}
+    </div>
   </section>
 </template>
 
@@ -259,21 +324,75 @@
 
 <template name="myProfileAccompEditingForm">
   {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="myProfileAccompEditingForm" type="update"}}
-    <h10>Hourly Charge</h10>
-    {{> afQuickField name="charge"}}
-    <h10>Prefered Working Hours</h10>
-    {{> afQuickField name="working_hours"}}
-    <h10>Prefered Working Days</h10>
-    {{> afQuickField name="working_days"}}
-    <h10>Activate Account?</h10>
-    {{> afQuickField name="accompanist_active"}}
-    <h10>Where would you prefer to accompany?</h10>
-    {{> afQuickField name="session_location"}}
-    <h10>Where are you?</h10>
-    {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
-    <h10>Tell us something about yourself</h10>
-    {{> afQuickField name="one_liner"}}
-    <button type="submit" class=" btn card-title right btn-primary">Save</button>
+    <div class="col s12">
+      <div class="row inLine">
+        <div class="col s2">
+          <h10>Charge/ Session</h10>
+        </div>
+        <div class="col s5">
+          {{> afQuickField name="charge"}}
+        </div>
+        <div class="col s5">
+          {{> afQuickField name="session_location"}}
+        </div>
+      </div>
+
+      <div class="horizontalLine input-field col s12">
+        <div class="row inLine ">
+          <div class="col s2">
+            <h10>Time</h10>
+          </div>
+          {{>afFieldInput name="working_hours" type="sexyselect-checkboxes" options=timeArray value=hours}}
+        </div>
+      </div>
+
+      <div class="horizontalLine input-field col s12">
+        <div class="row inLine ">
+          <div class="col s2">
+            <h10>Days</h10>
+          </div>
+          {{>afFieldInput name="working_days" type="sexyselect-checkboxes" options=dayArray}}
+        </div>
+      </div>
+
+      <div class="horizontalLine input-field col s12">
+        <div class="row inLine ">
+          <div class="col s2">
+            <h10>Location</h10>
+          </div>
+          <div class="col s10">
+            {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete"}}
+          </div>
+        </div>
+      </div>
+
+      <div class="horizontalLine input-field col s12">
+        <div class="row inLine ">
+          <div class="col s2">
+            <h10>Bio</h10>
+          </div>
+          <div class="col s10">
+            {{> afQuickField name="one_liner"}}
+          </div>
+        </div>
+      </div>
+
+      <div class="horizontalLine input-field col s12">
+        <div class="row inLine ">
+          <div class="col s2">
+            <h10>Activate Account?</h10>
+          </div>
+          <div class="col s10">
+            {{> afQuickField name="accompanist_active"}}
+          </div>
+        </div>
+      </div>
+
+      <div class=" input-field col s12">
+        <button type="submit" class=" btn card-title right btn-primary">Save</button>
+      </div>
+
+    </div>
   {{/autoForm}}
 </template>
 
@@ -289,7 +408,7 @@
 <template name="InstList">
   {{#each this}}
     <br>
-    <h10>Instruments Mastered: {{this.instrument}}</h10> <br>
+    <h10>Instrument: {{this.instrument}}</h10> <br>
     <h10>Years Played: {{this.yearsPlayed}}</h10>
   {{/each}}
 </template>
@@ -324,66 +443,77 @@
 
 <!-- SECTION: Accompanist Profile Information Card -->
 <template name="accompanistProfileTemplate">
-  <div class="card {{accompColor accompanist_active}} z-depth-0">
+  <div class="col s12">
+    <div class="card {{accompColor accompanist_active (this.Id)}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
+
         {{#if isOwnProfile}}
-         <div class="row">
-            <h5>
-              Accompanist Preferences
-            </h5>
-          {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type="update"}}
-            {{> afQuickField name="charge" type="hidden"}}
-            {{> afQuickField name="working_hours" type="hidden"}}
-            {{> afQuickField name="working_days" type="hidden"}}
-            {{> afQuickField name="session_location" type="hidden"}}
-            {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
-            {{> afQuickField name="one_liner" type="hidden"}}
-
-            <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
-            <!-- Switch -->
-            <!-- <div class="switch">
-              <label>
-                Enactive
-                <input type="checkbox">
-                <span class="lever">{{> afQuickField name="accompanist_active"}}</span>
-                Active
-              </label>
-            </div> -->
 
 
-          {{/autoForm}}
+          <div class="row">
+            <div class="col s11">
+              <h5>
+                Accompanist Preferences
+              </h5>
+            </div>
+            <div class="col s1">
+              {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type="update"}}
+                {{> afQuickField name="charge" type="hidden"}}
+                {{> afQuickField name="working_hours" type="hidden"}}
+                {{> afQuickField name="working_days" type="hidden"}}
+                {{> afQuickField name="session_location" type="hidden"}}
+                {{> afQuickField name="mylocation" class="autocomplete" id="autocomplete" type="hidden"}}
+                {{> afQuickField name="one_liner" type="hidden"}}
+                <button type="submit" class="clean right">{{> afQuickField name="accompanist_active"}}</button>
+                {{/autoForm}}
+            </div>
+
           </div>
         {{/if}}
-        <div class="accopmCard-left">
-          <h10>
-            <i id="align_text" class="small material-icons">attach_money</i>
-            {{charge}}/hr
-          </h10>
-          <br>
-          <h10>
-              <i id="align_text" class="small material-icons">access_time</i>
-              {{#each working_hours}}{{this}}/{{/each}}
-          </h10>
-        </div>
-        <div class="accopmCard-right">
-          <h10>
-            <i id="align_text" class="small material-icons">event</i>
-            {{#each working_days}}{{formatDay this}}/{{/each}}
-          </h10>
-          <br>
-          <h10>
-            <i id="align_text" class="small material-icons">location_on</i>
-            {{mylocation}}
-          </h10>
-          <br><br>
-        </div>
-        <p class="center_horizontal">{{one_liner}}</p>
-        {{#if isOwnProfile}}
+        <div class="row">
+          <div class="col s6">
+            <h10>
+              <i id="align_text" class="small material-icons">attach_money</i>
+              {{charge}}/hr
+            </h10>
             <br>
-            <i class="material-icons right">mode_edit</i>
+            <h10>
+                <i id="align_text" class="small material-icons">access_time</i>
+                {{#each working_hours}}{{this}}/ {{/each}}
+            </h10>
             <br>
-        {{/if}}
+            <h10>
+                <i id="align_text" class="small material-icons">supervisor_account</i>
+                {{session_location}}
+            </h10>
+          </div>
+
+          <div class="col s6">
+            <h10>
+              <i id="align_text" class="small material-icons">event</i>
+              {{#each working_days}}{{formatDay this}}/ {{/each}}
+            </h10>
+            <br>
+            <h10>
+              <i id="align_text" class="small material-icons">location_on</i>
+              {{mylocation}}
+            </h10>
+            <br><br>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <br>
+            <p class="center_horizontal">{{one_liner}}</p>
+            <br>
+            {{#if isOwnProfile}}
+              <i class="material-icons right">mode_edit</i>
+            {{/if}}
+          </div>
+        </div>
+
       </span>
     </div>
          {{#if isOwnProfile}}
@@ -421,7 +551,7 @@
       <center>
         <button
           type="button"
-          class="add-btn grey">
+          class="add-btn grey lighten-1">
           Add Repertoire
         </button>
       </center>
@@ -447,7 +577,7 @@
   </div>
 
 {{/if}}
-
+</div>
 </template>
 
 <!-- ADD PIC PROFILE -->

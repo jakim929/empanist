@@ -74,8 +74,8 @@ SearchDataSchema = new SimpleSchema({
       type: String,
       autoform: {
         options: [
-          {label: "My Place", value: "My Place"},
-          {label: "Student's Place", value: "Student's Place"},
+          {label: "Accompanist's Place", value: "My Place"},
+          {label: "My Place", value: "Student's Place"},
           {label: "Doesn't matter", value: "Doesn't matter"}
           ]
       },
@@ -83,6 +83,15 @@ SearchDataSchema = new SimpleSchema({
     },
     radius: {
       type: Number,
+      label: "Maximum Driving time to location",
+      autoform: {
+        options: [
+          {label: "5 mins", value: "1"},
+          {label: "15 mins", value: "2"},
+          {label: "30 mins", value: "3"},
+          {label: "1 hr", value: "4"},
+          ]
+      },
       optional:true
     }
 });

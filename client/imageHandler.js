@@ -1,5 +1,4 @@
-import photoswipe from 'photoswipe';
-import 'photoswipe/dist/photoswipe.css';
+
 
 let uploadThumbnail = (blob, imageId, type) => {
   // Check if blob type is image

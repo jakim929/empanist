@@ -10,8 +10,6 @@ import { Data } from '../collections/profileData.js'
 import { SearchData } from '../collections/searchData.js'
 
 
-import parser from 'http-string-parser'
-
 import cropper from 'cropper';
 import 'cropper/dist/cropper.min.css'
 
@@ -222,6 +220,16 @@ SexyValueOut = function(){
   console.log(val)
   return val
 }
+
+// SexyValueIn = function(){
+//   var val = [];
+//   this.find('input.sexyselect-checkbox').each(function(){
+//     if(false) {
+//       val.push($(this).val());
+//     }
+//   })
+//   return val
+// }
 
 var sexyOptions = {template: "SexySelect", valueOut: SexyValueOut}
 
@@ -898,83 +906,46 @@ Template.upsertMusicProfileForm.events({
     $(".instrument").css('display', 'none');
     }
 
-// Template.upsertMusicProfileForm.events({
-//   'click .next-instrument':function(){
-//     Session.set('showAward',true);
-//     Session.set('showInstrument',false);
-//     $(".award").css('display', 'block');
-//     $(".instrument").css('display', 'none');
-//     $(".determinate").css('width', '50%');
-//     },
-//     'click .next-award':function(){
-//     Session.set('showAward',false);
-//     Session.set('showProgram',true);
-//     $(".award").css('display', 'none');
-//     $(".program").css('display', 'block');
-//     $(".determinate").css('width', '75%');
-//     },
-//     'click .next-program':function(){
-//     Session.set('showOrchestra',true);
-//     Session.set('showProgram',false);
-//     $(".program").css('display', 'none');
-//     $(".orchestra").css('display', 'block');
-//     $(".determinate").css('width', '100%');
-//     },
-//     'click .back-award':function(){
-//     Session.set('showAward',false);
-//     Session.set('showInstrument',true);
-//     $(".award").css('display', 'none');
-//     $(".instrument").css('display', 'block');
-//     },
-//     'click .back-program':function(){
-//     Session.set('showAward',true);
-//     Session.set('showProgram',false);
-//     $(".program").css('display', 'none');
-//     $(".award").css('display', 'block');
-//     },
-//     'click .back-orchestra':function(){
-//     Session.set('showOrchestra',false);
-//     Session.set('showProgram',true);
-//     $(".orchestra").css('display', 'none');
-//     $(".program").css('display', 'block');
-//     },
-//     'submit form': function(){
-//       FlowRouter.go('/newaccomp');
-//     }
-//   });
-
 Template.profileTemplate.events({
   'click .awardsAddButton':function(){
     $(".awardsAddForm").css('display', 'block');
     $(".awardsAddButton").css('display', 'none');
+    $(".awards-smallCard").css('display', 'none');
     },
     'click .programsAddButton':function(){
     $(".programsAddButton").css('display', 'none');
     $(".programsAddForm").css('display', 'block');
+    $(".musicPrograms-smallCard").css('display', 'none');
     },
     'click .orchestrasAddButton':function(){
     $(".orchestrasAddForm").css('display', 'block');
     $(".orchestrasAddButton").css('display', 'none');
+    $(".orchestras-smallCard").css('display', 'none');
     },
     'click .instrumentsAddButton':function(){
     $(".instrumentsAddForm").css('display', 'block');
     $(".instrumentsAddButton").css('display', 'none');
+    $(".instruments-smallCard").css('display', 'none');
     },
     'click .cancelAward':function(){
     $(".awardsAddForm").css('display', 'none');
     $(".awardsAddButton").css('display', 'block');
+    $(".awards-smallCard").css('display', 'block');
     },
     'click .cancelProgram':function(){
     $(".programsAddForm").css('display', 'none');
     $(".programsAddButton").css('display', 'block');
+    $(".musicPrograms-smallCard").css('display', 'block');
     },
     'click .cancelOrchestra':function(){
     $(".orchestrasAddForm").css('display', 'none');
     $(".orchestrasAddButton").css('display', 'block');
+    $(".orchestras-smallCard").css('display', 'block');
     },
     'click .cancelInstrument':function(){
     $(".instrumentsAddForm").css('display', 'none');
     $(".instrumentsAddButton").css('display', 'block');
+    $(".instruments-smallCard").css('display', 'block');
     }
   });
 
@@ -991,7 +962,6 @@ Template.accompanistProfileTemplate.events({
 
 Template.instruments.events({
   'click .btn':function(){
-    // event.preventDefault();
     $(".instrumentsAddForm").css('display', 'none');
     $(".instrumentsAddButton").css('display', 'block');
     }
@@ -1746,7 +1716,10 @@ Template.ProfileLayout.onRendered(function(){
   // resize card with card-reveal
   $(document).ready(function() {
 
-     $(".parallax").parallax();
+    $(".parallax").parallax();
+
+    // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
+    $('.aside').pushpin({ top:490});
 
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
@@ -1989,6 +1962,13 @@ Template.registerHelper('basicProfileExists', () => {
   return undefined !== BasicProfiles.findOne({userId: Meteor.userId()});
 });
 
+Template.registerHelper('basicProfileComplete', () => {
+  var profile = BasicProfiles.findOne({userId: Meteor.userId()})
+  console.log("basicProfileComplete")
+  console.log(profile)
+  return (undefined !== profile && undefined !== profile.affiliation && profile.phone);
+});
+
 Template.registerHelper('musicProfileExists', () => {
   return undefined !== MusicProfiles.findOne({userId: Meteor.userId()});
 });
@@ -2138,11 +2118,15 @@ Template.EditingForm.helpers ({
 });
 
 Template.accompanistProfileTemplate.helpers ({
-  accompColor: function (active) {
-    if (active == true) {
-      return "green-card"
+  accompColor: function (active, Id) {
+    if (Id !== Meteor.userId()) {
+      return ""
     } else {
-      return "red-card"
+      if (active == true) {
+        return "green-card"
+      } else {
+        return "red-card"
+      }
     }
   },
   notEmpty: function (array) {
@@ -2226,13 +2210,13 @@ Template.upsertMusicProfileForm.helpers ({
     var orch = Session.get('showOrchestra')
 
     if (inst) {
-      return {icon: 'brush', text: 'Filling in the the instruments you are most comfortable with and have the most experience with better matches you to accompanists who have played repertoire according to your instrument'}
+      return {icon: 'brush', text: 'Filling in other instruments you have experience with gives musicians an idea of your understanding of instrument-specific repertoire. '}
     } else if (award) {
-      return {icon: 'verified_user', text: 'Fill in the Honors & Awards section of your profile with your most memorable and prestigious awards. This will give musicians a good idea of your abilities as a musician and accompanist.'}
+      return {icon: 'verified_user', text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist.'}
     } else if (prog) {
-      return {icon: 'music_note', text: 'Listing your participation in music festivals and programs (Aspen, Perlman Music Program, etc) allows you to connect with musicians even before you start working together! Musicians might be more inclined to work with pianists who have a similar educational background.'}
+      return {icon: 'music_note', text: 'Listing your participation in music festivals and programs helps you connect with musicians even before you start working together! Musicians might be more inclined to work with pianists who have a similar educational background. In addition to summer/winter music festivals or programs, you can also enter in degree programs (Juilliard Pre-College) that you have graduated from'}
     } else if (orch) {
-      return {icon: 'group_work', text: 'orchestras Advice box!!'}
+      return {icon: 'group_work', text: 'Write down ensembles that you have been a part of. This can include orchestras at schools and festivals or smaller chamber groups. This adds to the trust you are creating with users. '}
     }
 
   },
@@ -2247,9 +2231,9 @@ Template.upsertMusicProfileForm.helpers ({
       } else if (award) {
         return "What Music Awards have you won?"
       } else if (prog) {
-        return "Which music programs have you participated in?"
+        return "What music programs or festivals have you participated in?"
       } else if (orch) {
-        return "Have you played in any orchestra's?"
+        return "Have you played in any Ensembles?"
       }
 
   },
@@ -2315,13 +2299,18 @@ Template.advancedSearch.helpers ({
 
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
+    console.log("instruments")
+    console.log(instruments)
     var mydata =[
-      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument"},
-      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward"},
-      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram"},
-      {icon: 'group_work', mainTitle: 'Orchestras Participated in', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Orchestra", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra"}
+      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument",text: 'Filling in instruments you have experience with gives musicians an understanding of your instrument-specific repertoire. '},
+      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward", text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist. '},
+      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram", text: 'Your participation in music festivals and programs connects you to musicians even before meeting! '},
+      {icon: 'group_work', mainTitle: 'Ensemble', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Ensemble", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra", text: 'Your involvement in ensembles such as orchestras at schools or chamber groups adds to the trust you are creating with users.  '}
     ]
     return mydata;
+  },
+  emptyArrays: function(instList, awardsList, programList, OrchestraList) {
+    return []
   },
   currentProfile: function () {
     var currentProfile = MusicProfiles.findOne({ userId: Meteor.userId()});
@@ -2332,17 +2321,35 @@ Template.profileTemplate.helpers({
   },
   // potential bug = when create something then delete all objects it will be [] not null (i think so)
   notEmpty: function (array) {
-    if (array == null) {
+    console.log("notEmpty function array result")
+    console.log(array)
+    if (array == [] || array == undefined) {
       return false
     } else {
       return true
     }
   },
+  isEmpty: function(array, name){
+    console.log("isEmpty")
+    console.log(name)
+    console.log(array)
+    var x = (array == [] || array == undefined || array == null)
+    console.log(x)
+    return x
+  },
   formType: function () {
     var formType = Template.instance().formType.get();
     return formType;
+  },
+  anyArrayisEmpty: function (insts, awards, programs, orchestras) {
+    return (isEmpty(insts) || isEmpty(awards) || isEmpty(programs) || isEmpty(orchestras))
   }
 });
+
+isEmpty = function(array){
+  var x = (array == [] || array == undefined || array == null)
+  return x
+}
 
 Template.afArrayField_newAccompCustomArrayField.helpers({
     icon: function(name) {
@@ -2358,7 +2365,7 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
       switch(name){
           case 'awards':   return "Awards & Honors";
           case 'musicPrograms': return "Music Programs ";
-          case 'orchestras':    return "Orchestras Participated in";
+          case 'orchestras':    return "Ensembles Participated in";
           case 'repertoire':    return "Repertoire";
           case 'instruments':    return "Instruments Mastered";
       }
@@ -2368,7 +2375,7 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
         switch(name){
             case 'awards':   return "Award";
             case 'musicPrograms': return "Music Program";
-            case 'orchestras':    return "Orchestra";
+            case 'orchestras':    return "Ensembles";
             case 'repertoire':    return "Repertoire";
             case 'suggestedTimes':    return "Time";
             case 'instruments':    return "Instrument";
@@ -2390,7 +2397,7 @@ Template.afArrayField_editProfileCustomArrayField.helpers({
       switch(name){
           case 'awards':   return "Awards & Honors";
           case 'musicPrograms': return "Music Programs";
-          case 'orchestras':    return "Orchestras Participated in";
+          case 'orchestras':    return "Ensembles Participated in";
           case 'instruments':    return "Instruments Mastered";
           case 'repertoire': return "Repertoire"
       }
@@ -2555,17 +2562,17 @@ Template.upsertAccompanistForm.helpers ({
     } else if (charge) {
       return {icon: 'attach_money', text: 'Setting lower prices ($20 or $40/hr) attracts a greater number of musicians looking for an affordable, high-quality accompanist.'}
     } else if (hours) {
-      return {icon: 'access_time', text: 'Setting blocks of time in which you are available during the week allows musicians to pick and choose hours in which they are free to rehearse. You’ll attract more booking requests and make more money!'}
+      return {icon: 'access_time', text: 'Setting blocks of time in which you are available allows musicians to pick and choose hours they are free to rehearse'}
     } else if (days) {
-      return {icon: 'today', text: 'Fill in what days you available during the week so that you’ll only get booking requests for days that work for you! '}
+      return {icon: 'today', text: 'Fill in what days you available during the week so that you’ll only get booking requests for days that work for you!'}
     }else if (active) {
-      return {icon: 'accessibility', text: 'When you are “active”, you’ll always receive booking requests and will show up in the search results page. Not being active will prevent musicians from finding and requesting you. '}
+      return {icon: 'accessibility', text: 'When you are “active”, you’ll always receive booking requests and will show up in the search results page. Not being active will prevent musicians from finding and requesting you.'}
     } else if (loc) {
       return {icon: 'location_city', text: 'Setting a neutral location makes it easier for musicians to concentrate on practicing their pieces instead of worrying about where to find a room and piano. '}
     } else if (myloc) {
-      return {icon: 'location_on', text: 'If you own a piano, your location is another option for you to rehearse with a musician! It may be more convenient for musicians to commute to your personal location.  '}
+      return {icon: 'location_on', text: 'If you own a piano, your location is another option for you to rehearse with a musician! It may be more convenient for musicians to commute to your personal location.'}
     }else if (liner) {
-      return {icon: 'person', text: 'Put down a quote or idea that you truly feel passionate about! Doing so, will give musicians an idea of your expectations as a fellow artist. It is an easy way to introduce yourself to potential clients! '}
+      return {icon: 'person', text: 'Put down a quote or idea that you truly feel passionate about! It is an easy way to introduce yourself to musicians!'}
     }
   },
   question: function() {
@@ -2581,19 +2588,19 @@ Template.upsertAccompanistForm.helpers ({
     if (rep) {
       return "What is some repertoire you feel comfortable playing?"
     } else if (charge) {
-      return "How much do you want to charge for an hour?"
+      return "What will be your hourly rate?"
     } else if (hours) {
-      return "What time do you prefer working at?"
+      return "During what time of the day are you available?"
     } else if (days) {
       return "What days do you prefer working on?"
     }else if (active) {
-      return "Do you want to start accompanying asap?"
+      return "Do you want to start accompanying?"
     } else if (loc) {
       return "Where do you want to accompany?"
     } else if (myloc) {
       return "Where do you live?"
     }else if (liner) {
-      return "Caption yourself in line!"
+      return "Describe yourself!"
     }
   },
   AccompNotValid: function (field) {
@@ -2664,6 +2671,33 @@ Template.myProfileAccompEditingForm.helpers ({
     if (currentAccompanistProfiles) {
       return currentAccompanistProfiles;
     }
+  },
+  chargeArray(){
+    var newArray = [{label: '$20', value: 20},
+                    {label: '$40', value: 40},
+                    {label: '$60', value: 60}]
+    return newArray
+  },
+  timeArray(){
+    var newArray = [{label: "Morning", value: "Morning"},
+                    {label: "Noon", value: "Afternoon"},
+                    {label: "Night", value: "Night"}]
+    return newArray
+  },
+  dayArray(){
+    var newArray = [{label: "Mon", value: "Monday"},
+                    {label: "Tue", value: "Tuesday"},
+                    {label: "Wed", value: "Wednesday"},
+                    {label: "Thur", value: "Thursday"},
+                    {label: "Fri", value: "Friday"},
+                    {label: "Sat", value: "Saturday"},
+                    {label: "Sun", value: "Sunday"}]
+    return newArray
+  },
+  hours: function () {
+    return [{label: "Morning", value: "Morning"},
+            {label: "Noon", value: "Afternoon"},
+            {label: "Night", value: "Night"}]
   }
 });
 
@@ -2710,7 +2744,10 @@ Template.results.helpers({
     console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
+
       if (result !== null){
+        console.log("getGeocode")
+        console.log(result)
         var lat = Number(result[0].latitude);
         var lng = Number(result[0].longitude);
         var coords = [lng, lat];
@@ -2719,7 +2756,6 @@ Template.results.helpers({
       //convert dates to dates that can be compared with Mongo schema
       var sd = new Date(start_date)
       var ed = new Date(end_date)
-
 
       function searchWith(){
 
@@ -2736,6 +2772,9 @@ Template.results.helpers({
         }
 
         if (session_location !== null) {
+          if (session_location == "Doesn't matter") {
+            var session_algo = {session_location: {$in: ["Doesn't matter", "My Place", "Student's Place" ]}}
+          } else
           var session_algo =
           {session_location: session_location}
         }
@@ -2783,30 +2822,51 @@ Template.results.helpers({
           return new_algo
       };
 
+      if (radius !== undefined ) {
+        switch (parseInt(radius)) {
+          case 1:
+            var distance = 3350
+            break;
+          case 2:
+            var distance = 10050
+            break;
+          case 3:
+            var distance = 20100
+            break;
+          case 4:
+            var distance = 40200
+            break;
+        }
+      } else {
+        var distance = 20000
+      }
+
       var x =  searchWith()
       var results = AccompanistProfiles.find(
         {loc:
         { $near :
           {
             $geometry: { type: 'Point',  coordinates: coords },
-            $maxDistance: 20000
+            $maxDistance: distance
           }
         },
         $and: x
       }).fetch();
       Session.set('results', results)
-    });
+    // });
+});
     return Session.get('results')
   },
   accompname: function() {
     var names = BasicProfiles.findOne({userId: this.Id});
     return names
   },
-   currentProfilePic: function(Id) {
-    var profileDoc = BasicProfiles.findOne({userId: Id, $exists: {profilePic: 1}}, {profilePic : 1});
+   currentProfilePic: function() {
+    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId'), $exists: {profilePic: 1}}, {profilePic : 1});
     if (profileDoc){
       var picId = profileDoc.profilePic;
       var imageDoc = UserImages.findOne(picId);
+      console.log(imageDoc.url)
       return imageDoc.url
     }
   },
@@ -2851,6 +2911,19 @@ Template.search.events({
 });
 
 // Google search autocomplete
+
+// Template.upsertAccompanistForm.events({
+//    'click #autocomplete': function(e,mylocation) {
+//      initAutoComplete();
+//    }
+// });
+
+Template.upsertAccompanistForm.events({
+   'click #autocomplete': function(e,mylocation) {
+     initAutoComplete();
+   }
+});
+
 Template.search.events({
    'click #autocomplete': function(e,advancedSearch) {
      initAutoComplete();
@@ -2863,11 +2936,7 @@ Template.advancedSearch.events({
    }
 });
 
-// Template.upsertAccompanistForm.events({
-//    'click #autocomplete': function(e,upsertAccompanistForm) {
-//      initAutoComplete();
-//    }
-// });
+
 
 var initAutoComplete = function() {
   var autocomplete = new google.maps.places.Autocomplete(

@@ -85,7 +85,11 @@
     {{#each this}}
       {{#with musicProfileById musician}}
       <a class="collection-item grey lighten-5 avatar black-text select-transaction-for-review {{getSelectionClass ../id}}" data-transactionid='{{../_id}}'>
-        <img src="{{getProfilePictureById ../musician}}" alt="" class="circle">
+        {{#with (getProfilePictureById ../musician)}}
+        <img src="{{this}}" alt="" class="circle responsive-img" style="border:3px solid white">
+        {{else}}
+        <img src="/images/musician.png" alt="" class="circle responsive-img" style="border:3px solid white">
+        {{/with}}
         <span class="title">{{getMusicianType (getPrimaryInstrument instruments)}}</span>
         <p class="no-padding">{{#with basicProfileById ../musician}}{{affiliation}}{{/with}}<br>
            {{ formatDuration ../startDate ../endDate}}
@@ -107,7 +111,13 @@
         {{#with basicProfileById musician}}
           <div class="divider"></div>
           <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
-          <div class="limit-width-30 overlap-into-top-image"><img src="{{getProfilePictureById ../musician}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+          <div class="limit-width-30 overlap-into-top-image">
+            {{#with (getProfilePictureById ../musician)}}
+            <img src="{{this}}" alt="" class="circle responsive-img" style="border:3px solid white">
+            {{else}}
+            <img src="/images/musician.png" alt="" class="circle responsive-img" style="border:3px solid white">
+            {{/with}}
+          </div>
         <div class="container center">
             <h6>{{name}}</h6>
         </div>
