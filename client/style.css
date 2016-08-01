@@ -3,6 +3,11 @@ html {
 	font-family: Avenir Next;
 }
 
+.profile-picture{
+	width: 200px;
+	height: 200px;
+}
+
 .text-shadow-setting{
 	    text-shadow: 4px 4px 4px #000000;
 }

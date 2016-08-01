@@ -42,7 +42,7 @@ Template.ImagesLayout.onRendered(function(){
   $('.parallax').parallax();
 })
 
-Template.ImagesLayout.helpers({
+Template.accountTemplate.helpers({
   getProfileData() {
     return {picType: "Profile"};
   },

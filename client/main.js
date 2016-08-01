@@ -27,9 +27,9 @@ window.SearchData = SearchData
 Template.TestLayout.onRendered(function () {
     $(document).ready(function(){
       // (function($){
-  
+
     $('.parallax').parallax();
-  
+
 // })(jQuery);
     });
 
@@ -1665,7 +1665,7 @@ Template.Navbar.onRendered(function () {
   $( document ).ready(function(){
     $(".button-collapse").sideNav();
   })
-  
+
 });
 
 Template.modalLogin.onRendered(function () {
@@ -1713,7 +1713,7 @@ Template.ProfileLayout.onRendered(function(){
   $(document).ready(function() {
 
     $('.parallax').parallax();
-    
+
     $('.materialboxed').materialbox();
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
@@ -2707,6 +2707,60 @@ Template.suggestions.helpers ({
   }
 });
 
+Template.registerHelper('currentProfilePic', function() {
+   var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId')});
+   if (profileDoc){
+     var picId = profileDoc.profilePic;
+     if(picId){
+       var imageDoc = UserImages.findOne(picId);
+       return imageDoc.url
+     }
+
+   }
+})
+
+Template.registerHelper('currentCoverPic', function() {
+   var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId')});
+   if (profileDoc){
+     var picId = profileDoc.coverPic;
+     if(picId){
+       var imageDoc = UserImages.findOne(picId);
+       return imageDoc.url
+     }
+
+   }
+})
+
+Template.registerHelper('profilePicById', function(userId) {
+  if(userId){
+    var profileDoc = BasicProfiles.findOne({userId: userId});
+    if (profileDoc){
+      var picId = profileDoc.profilePic;
+      if(picId){
+        var imageDoc = UserImages.findOne(picId);
+        return imageDoc.url
+      }
+
+    }
+  }
+})
+
+Template.registerHelper('coverPicById', function(userId) {
+  if(userId){
+    var profileDoc = BasicProfiles.findOne({userId: userId});
+    if (profileDoc){
+      var picId = profileDoc.coverPic;
+      if(picId){
+        var imageDoc = UserImages.findOne(picId);
+        return imageDoc.url
+      }
+
+    }
+  }
+
+})
+
+
 Template.results.helpers({
 
   accompanists: function() {
@@ -2849,7 +2903,8 @@ Template.results.helpers({
     return names
   },
    currentProfilePic: function() {
-    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId'), $exists: {profilePic: 1}}, {profilePic : 1});
+     console.log('CurrentProfilePic')
+    var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam('profileId'), $exists: {profilePic: 1}});
     if (profileDoc){
       var picId = profileDoc.profilePic;
       var imageDoc = UserImages.findOne(picId);

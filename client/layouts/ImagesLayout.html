@@ -25,7 +25,7 @@
 
 <template name="PictureModal">
   <!-- Modal Trigger -->
-    <a class="waves-effect waves-light modal-trigger" href="#image-overlord">
+    <a class="waves-effect waves-light modal-trigger" href="#{{this.picType}}-image-overlord">
       {{#if _.isEqual this.picType "Profile"}}
         {{#with getPersonalPic this.picType}}
         <img src="{{this}}"  width="250px" height="250px">
@@ -50,7 +50,7 @@
     </a>
 
   <!-- Modal Structure -->
-  <div id="image-overlord" class="modal white">
+  <div id="{{this.picType}}-image-overlord" class="modal white">
     <div class="center"><h5>Change {{this.picType}} Picture</h5></div>
       <!-- <a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i>&nbsp;&nbsp;&nbsp;</a> -->
       <!-- <h5>Image Overlord<a href="#!" class="modal-action modal-close"><i class="material-icons right">close</i></a></h5> -->
@@ -58,8 +58,9 @@
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#choose-picture">Choose Picture</a></li>
+
             <li class="tab col s3"><a href="#upload-picture">Upload Picture</a></li>
+            <li class="tab col s3"><a class="active" href="#choose-picture">Choose Picture</a></li>
             <li class="tab col s3"><a class="edit-thumbnail-tab" href="#edit-thumbnail">Edit Thumbnail</a></li>
           </ul>
                 <div class="divider"></div>

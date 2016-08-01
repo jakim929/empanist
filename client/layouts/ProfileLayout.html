@@ -4,7 +4,12 @@
       <div class="hide-on-med-and-down parallax-container">
         <!-- <div class="parallax"> -->
           <!-- {{#unless isOwnProfile}} -->
-            <img class="cover-picture" src="http://materializecss.com/images/parallax1.jpg" />
+          {{#with currentCoverPic}}
+            <img class="cover-picture" src="{{this}}" />
+          {{else}}
+            <img class="cover-picture" src="/images/newparallax.png" />
+          {{/with}}
+
         <!--   {{else}}
               <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" /> -->
             <!-- <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
@@ -23,7 +28,7 @@
       <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
     </div>
   </div> -->
- 
+
       <!-- uncomment later on -->
           <!-- {{#if validId}} -->
             {{#if isOwnProfile}}
@@ -166,37 +171,35 @@
     <div id="first-card-text" class="card-content">
       <span class="black-text activator">
         <div class="all">
-          <div id="profileImg">
-            {{#unless isOwnProfile}}
-              {{#with currentProfilePic}}
-                <a class="waves-effect waves-light">
-                  <img class="materialboxed" src={{currentProfilePic}}>
-                </a>
-              {{/with}}
-            {{else}}
-              {{#with currentProfilePic}}
-                <a class="waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
-                  <img src={{this}} height="250px">
-                </a>
-              {{else}}
-                <a class="btn waves-effect waves-light modal-trigger change-profile-pic" href="#changeImageModal">
-                  <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
-                </a>
-              {{/with}}
-            {{/unless}}
-          </div>
-          <!-- Modal to change profile pic -->
-          {{> changeImageModal}}
-        <!-- <span class="black-text activator"> -->
-          <div class="details">
-            <h5 class="bold">{{name}}</h5>
-            <h6>{{affiliation}}</h6>
-            {{#if isOwnProfile}}
-            <h10>{{formatBirthDate this.birthDate}}</h10> <br>
-            <h10>{{phone}}</h10> <br>
-           <!--  <i class="material-icons right">mode_edit</i>
-            <br> -->
-            {{/if}}
+          <div class="row">
+            <div class="col s5">
+              <div id="profileImg">
+                  {{#unless isOwnProfile}}
+                    {{#with currentProfilePic}}
+                      <a class="waves-effect waves-light">
+                        <div class="profile-picture">
+                          <img class="materialboxed"  src={{currentProfilePic}}>
+                        </div>
+                      </a>
+                    {{/with}}
+                  {{else}}
+                    {{> Template.dynamic template='PictureModal' data=getProfileData}}
+                  {{/unless}}
+              </div>
+            </div>
+            <div class="col s7">
+             <!-- <span class="black-text activator"> -->
+              <div class="details">
+                <h5 class="bold">{{name}}</h5>
+                <h6>{{affiliation}}</h6>
+                {{#if isOwnProfile}}
+                <h10>{{formatBirthDate this.birthDate}}</h10> <br>
+                <h10>{{phone}}</h10> <br>
+               <!--  <i class="material-icons right">mode_edit</i>
+                <br> -->
+                {{/if}}
+              </div>
+            </div>
           </div>
           {{#if isOwnProfile}}
           <i class="material-icons right">mode_edit</i>
@@ -236,7 +239,7 @@
       <!-- Make this section title only showup if there are any arrays that aren't filled!! -->
       {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
       <div class="col s12">
-        <h10> <span class="bold"> Add a section to your profile – </span> strengthen your profile!.</h10>
+        <h10> <span class="bold"> Add a section to your profile – </span> strengthen your profile!</h10>
       </div>
       {{/if}}
 
@@ -264,13 +267,13 @@
               </div>
             </div>
           </div>
-        {{/if}}        
+        {{/if}}
       {{/each}}
       {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
         <div class="col s12"> <br> <div class="horizontalLine" > &nbsp; </div></div>
     {{/if}}
     {{/if}}
-      
+
     <div class="col s12">
       {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
         {{#if isEmpty dynamicData}}
@@ -297,7 +300,7 @@
       {{/each}}
     </div>
 
-    <div class="col s12">  
+    <div class="col s12">
       {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
         {{#if notEmpty dynamicData}}
           <div class="card grey lighten-5 z-depth-0">
@@ -482,7 +485,7 @@
     <div class="card {{accompColor accompanist_active (this.Id)}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
-        
+
         {{#if isOwnProfile}}
           <div class="row">
             <div class="col s11">

@@ -41,7 +41,7 @@ Slingshot.createDirective( "uploadImageToAmazonS3", Slingshot.S3Storage, {
       throw new Meteor.Error("Login Required", message);
     }
     let userFileCount = UserImages.find( { "userId": this.userId } ).count();
-    return userFileCount < 7 ? true : false;
+    return userFileCount < 100 ? true : false;
   },
   key: function ( file ) {
     return this.userId + "/" + file.name;
