@@ -375,11 +375,6 @@ a {
   width:38%;
   margin-left:62%;
   overflow:hidden;
-/*=======
-  margin-right: 40%;
-  height:500px;
-  overflow: scroll;
->>>>>>> 5cd13e4c055655693924dae0701f90c9d22e8127*/
 }
 
 .backNext {
@@ -387,14 +382,8 @@ a {
   margin-right: 40%;
 }
 
-.resultsContainer {
-  margin-left: 10%;
-}
-
 .result-card {
   height: 300px;
-  margin-right: 2%;
-
 }
 
 .changeColor {
@@ -414,6 +403,34 @@ a {
 
 .horizontalLine {
   border-top: 1px solid #E5E5E5;
+}
+
+.larger {
+  font-size:20px;
+}
+
+.horizontalLine_bottom {
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.color {
+  color: #2F4F4F;
+}
+
+.weight {
+  font-weight: 500;
+}
+
+.icon_margins{
+  margin-bottom: 10px
+}
+/*i {
+  color: #2F4F4F
+}*/
+
+.accomp_margins {
+  margin-top:20px;
+  margin-bottom:20px;
 }
 
 .field {
@@ -436,6 +453,11 @@ a {
   /* Required for text-overflow to do anything */
   white-space: nowrap;
   overflow: hidden;
+}
+
+.noPads {
+  padding:0;
+  margin:0;
 }
 
 .accopmCard-left {
@@ -479,10 +501,15 @@ a {
   overflow:hidden;
 }
 
-#resultsBackgroundImg {
-  max-width: 100%;
-  max-height: 100px;
+.resultsBackgroundImg {
+  width: 100%;
+  height:100px;
   float:left;
+  overflow:hidden;
+}
+
+.backimg {
+  width: 100%;
   overflow:hidden;
 }
 
@@ -495,22 +522,12 @@ a {
   margin-bottom: 15px;
 }
 
-/* Martin Wolf CodePen Standard */
-
-/*body {
-  padding: 3em 2em;
-  font-family: 'Open Sans', Arial, sans-serif;
-  color: #cf6824;
-  background: #f7f5eb;
-}*/
-
 .tester {
   margin: 0;
   padding: 50px;
   font: 400 14px/1.2em sans-serif;
   background: white;
 }
-
 
 .advancedsearch-btn {
   width:100%;
@@ -569,7 +586,7 @@ display:none;
 }
 
 .AddArrayObjectButton {
-  margin-top: -10px;
+  margin-top: -15px;
   margin-bottom: 20px;
 }
 
@@ -851,5 +868,10 @@ display: none;
 }
 
 .profileMiniCard {
-  height:170px;
+  height:150px;
+}
+
+.text-bigcard {
+  margin-right: 25px;
+  margin-left: 25px; 
 }

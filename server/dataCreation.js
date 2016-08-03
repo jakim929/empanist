@@ -108,10 +108,10 @@ createNewAccompanistProfile = function (givenUserId){
   var repertoires = ["Dvorak Cello Concerto in B Minor, Op. 104","Schumann Cello Concerto in A Minor, Op. 129","Boccherini Cello Sonata in A Major, G.4","Bloch Cello Sonata ","Bruch Kol Nidrei, Op.47 ","Chopin Introduction et Polonaise Brilliante, Op. 3 ","Fauré Papillon, Op.77","Franck Cello Sonata","Greig Cello Sonata in A Minor, ","Handel Sonata No.1 in G Minor ","Haydn Presto in G"];
   var randomRepertoire = randomNoElementGiven(repertoires, 3).map(function(elm){return {concerto:elm}});
 
-  var workingHours = ["morning", "afternoon", "night"];
+  var workingHours = ["Morning", "Afternoon", "Night"];
   var randomWorkingHours = randomNoElement(workingHours);
 
-  var workingDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  var workingDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   var randomWorkingDays = randomNoElement(workingDays);
 
   var sessionLocations = ["My Place", "Student's Place", "Doesn't matter"];
@@ -125,10 +125,10 @@ createNewAccompanistProfile = function (givenUserId){
   // var sd = today;
   // var ed = randomDatePar(today, future, 6, 20);
 
-  var locations = ["Boston"];
+  var locations = ["Boston", "Cambridge", "Amman", "Jeddah", "Stanford"];
   var randomMyLocation = randomElement(locations);
 
-  var oneLiner = "I accept James as my Lord and Savior";
+  var oneLiner = "I accept Abdulrahman Jamjoom as my Lord and Savior";
     console.log(givenUserId);
 
   return {Id: givenUserId,

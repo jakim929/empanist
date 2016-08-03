@@ -88,8 +88,10 @@
         {{> afQuickField name="startDate" type="hidden"}}
         {{> afQuickField name="endDate" type="hidden"}}
         {{> afQuickField name="status" type="hidden"}}
-        {{> afQuickField name="repertoire" type="hidden"}}
         {{> afQuickField name="accompanist" type="hidden"}}
+
+        <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
+        {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
 
           How many sessions? (Rehearsal and Performance)
           <div class="row">
