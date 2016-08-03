@@ -13,14 +13,27 @@ OrchestraSchema = new SimpleSchema({
     label: "Position in Ensemble"
   },
 
+
+  startYear: {
+    type: Date,
+    label: "Beginning Year",
+  },
+
+  endYear: {
+    type: Date,
+    label: "Ending Year"
+  },
+
   startDate: {
     type: Date,
-    label: "Beginning Date"
+    label: "Beginning Date",
+    optional: true
   },
 
   endDate: {
     type: Date,
-    label: "Ending Date"
+    label: "Ending Date",
+    optional:true
   }
 });
 
@@ -34,9 +47,15 @@ AwardSchema = new SimpleSchema({
     type: String,
     label: "Award Title"
   },
+  year: {
+    type: Number,
+    label: "Year Received"
+  },
+
   date: {
     type: Date,
-    label: "Date Received"
+    label: "Date Received",
+    optional: true
   }
 });
 
@@ -47,14 +66,26 @@ MusicProgramSchema = new SimpleSchema({
     label: "Program Name"
   },
 
+  startYear: {
+    type: Date,
+    label: "Beginning Year",
+  },
+
+  endYear: {
+    type: Date,
+    label: "Ending Year"
+  },
+
   startDate: {
     type: Date,
-    label: "Start Date"
+    label: "Start Date",
+    optional: true
   },
 
   endDate: {
     type: Date,
-    label: "End Date"
+    label: "End Date",
+    optional: true
   }
 });
 
@@ -67,6 +98,7 @@ InstrumentSchema = new SimpleSchema({
   yearsPlayed: {
     type: Number,
     label: "Years Played",
+    optional: true
   }
 });
 

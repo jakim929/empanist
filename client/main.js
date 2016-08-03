@@ -22,14 +22,47 @@ window.Sessions = Sessions
 window.SearchData = SearchData
 
 
+Template.bookAccompanistForm.onRendered(function(){
+  $('.tooltipped').tooltip({
+    position: 'top',
+    delay: 50
+  });
+})
 
+Template.SessionsLayout.onCreated(function(){
+  this.showNewSessionPanel = new ReactiveVar(false);
+})
+
+Template.SessionsLayout.events({
+  'click .open-new-session-panel'(event,template){
+    template.showNewSessionPanel.set(true)
+  },
+  'click .close-new-session-panel'(event,template){
+    template.showNewSessionPanel.set(false)
+  }
+
+})
+
+Template.SessionsLayout.helpers({
+  showNewSessionPanel () {
+    return Template.instance().showNewSessionPanel.get();
+  }
+})
 
 Template.TestLayout.onRendered(function () {
     $(document).ready(function(){
       // (function($){
 
     $('.parallax').parallax();
-
+    $('.autocomplete-test').autocomplete(
+      {
+        data: {
+          "Apple": null,
+          "Microsoft": null,
+          "Google": 'http://placehold.it/250x250'
+        }
+      }
+    )
 // })(jQuery);
     });
 
@@ -43,7 +76,15 @@ Template.TestLayout.helpers({
   }
 })
 
+Template.registerHelper('yearOptionsArray', function(){
+  var yearOptions = [];
 
+  for (var i = 1990; i <= 2016;  i++){
+    yearOptions.push({label: i, value: i});
+  }
+  console.log(yearOptions)
+  return yearOptions;
+})
 // Reservations Layout
 
 
@@ -141,6 +182,21 @@ AutoForm.hooks({
     }
   }
 });
+
+Template.NewSession.events({
+  'click .schedule-new-session' (event,template){
+    if(AutoForm.validateForm('NewSession')){
+      var formValue = AutoForm.getFormValues('NewSession');
+      Sessions.insert(formValue.insertDoc, function(error, result){
+        if(error){
+          Meteor.Error(error);
+        }else{
+          Materialize.toast('New Session Scheduled!', 4000);
+        }
+      })
+    }
+  }
+})
 
 Template.NewSession.helpers({
   optionsArray(){
@@ -730,8 +786,8 @@ Template.atInputWithIcon.replaces("atInput");
 
 
 formatDuration = function(date1, date2) {
-  var start =  moment(date1);
-  var end = moment(date2);
+  var start =  moment.utc(date1);
+  var end = moment.utc(date2);
   if (start.year() == end.year()){
     // Year is the same
     if(start.month() == end.month()){
@@ -1284,16 +1340,7 @@ var dateToDateString = function(date) {
   }
   return date.getFullYear() + '-' + m + '-' + d;
 };
-Template.TestLayout.helpers({
-  urlStartDate() {
 
-  return  dateToDateString (new Date())
-
-  },
-  urlEndDate() {
-    return FlowRouter.getQueryParam('end_date')
-  }
-});
 
 Template.bookAccompanistForm.onRendered(function(){
   $('.datepicker').pickadate({
@@ -1862,16 +1909,16 @@ Template.registerHelper('receivedBookingRequests', (arg) =>{
 });
 
 Template.registerHelper('formatDate', function(date) {
-  return moment(date).format('MMM DD, YYYY');
+  return moment.utc(date).format('MMM DD, YYYY');
 });
 
 Template.registerHelper('formatDateWithoutYear', function(date) {
-  return moment(date).format('MMM DD');
+  return moment.utc(date).format('MMM DD');
 });
 
 
 Template.registerHelper('formatBirthDate', function(date) {
-  return moment(date).format('MMM, DD, YYYY');
+  return moment.utc(date).format('MMM, DD, YYYY');
 });
 
 // Slice day string and capitalize it's first letter
@@ -2248,8 +2295,30 @@ Template.instruments.helpers ({
   instrumentList: function () {
     return ["Voice","Bagpipes", "Banjo", "Bass drum", "Bassoon", "Bell", "Bongo", "Castanets", "Cello", "Clarinet", "Clavichord", "Conga drum", "Contrabassoon", "Cornet", "Cymbals", "Double bass", "Dulcian", "Dynamophone", "Flute", "Flutophone", "Glockenspiel", "Gongs", "Guitar", "Harmonica", "Harp", "Harpsichord", "Lute", "Mandolin", "Maracas", "Metallophone", "Musical box", "Oboe", "Ondes-Martenot", "Piano", "Recorder", "Saxophone", "Shawm", "Snare drum", "Steel drum", "Tambourine", "Theremin", "Triangle", "Trombone", "Trumpet", "Tuba", "Ukulele", "Viola", "Violin", "Xylophone",
     "Zither"].map(function(obj){return {label: obj, value:obj}})
-  }
+  },
+
 });
+
+Template.orchestras.onRendered(function(){
+  console.log('doing the deed')
+  $('.autocomplete.autocomplete-instrument').autocomplete({
+    data: {
+      "Apple": null,
+      "Microsoft": null,
+      "Google": 'http://placehold.it/250x250'
+    }
+  });
+})
+
+Template.instruments.onRendered(function(){
+  $('.autocomplete.autocomplete-instrument').autocomplete({
+    data: {
+      "Apple": null,
+      "Microsoft": null,
+      "Google": 'http://placehold.it/250x250'
+    }
+  });
+})
 
 Template.advancedSearch.helpers ({
   // currentSearch: function () {

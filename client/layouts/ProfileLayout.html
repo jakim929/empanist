@@ -128,41 +128,7 @@
   </div>
 </template>
 
-<template name="bookAccompanistForm">
-  {{#with routeAccompanist}}
-    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
-      {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
-      {{> afQuickField name="accompanist" value=this type="hidden"}}
-      {{> afQuickField name="status" value="Pending" type="hidden"}}
-      <br>
-      <div class="row">
-        <div class="col s5">
-          <label for="sd" class="active">Start Date</label>
-          {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" class="datepicker"}}
-        </div>
-        <div class="col s2">
-          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
-        </div>
-        <div class="col s5">
-          <label for="ed" class="active">End Date</label>
-          {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" class="datepicker"}}
-        </div>
-      </div>
 
-       <label for="pt" class="active">Performance Type</label>
-      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
-
-      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
-
-    {{/autoForm}}
-    <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
-  {{else}}
-    Not on an accompanist page.
-  {{/with}}
-</template>
-<template name="invalidId">
-  <h2>Invalid ID</h2>
-</template>
 
 <!-- SECTION: Basic Information Card -->
 
@@ -241,7 +207,7 @@
       {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
       <div class="col s12 center">
         <h7> <span class="bold"> Add a section to your profile – </span> strengthen your profile!</h7>
-  
+
 
       </div>
       {{/if}}

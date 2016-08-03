@@ -3,7 +3,17 @@ html {
 	font-family: Avenir Next;
 }
 
-.card{
+.normal-button-font{
+	font-size: 15px !important;
+	font-weight: normal !important;
+}
+
+.card-content{
+	background-color: white;
+}
+
+.zero-border-radius {
+	border-radius: 0 !important;
 }
 
 .profile-picture{

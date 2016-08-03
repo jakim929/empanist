@@ -36,6 +36,17 @@
               </div>
             </div>
           </div>
+          <div class="col s6">
+            <div class="card">
+              <div class="card-content">
+
+                {{#autoForm id="testest" collection="Sessions" type="insert"}}
+                  {{>afQuickField name='accompansit' type='text' class='autocomplete-test'}}
+                {{/autoForm}}
+                <input class='autocomplete-test' type="text">
+              </div>
+            </div>
+          </div>
         </div>
 
 

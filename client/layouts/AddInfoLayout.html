@@ -206,7 +206,7 @@
           <br>
           {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
        </div>
-        
+
         <div class="one_liner">
           <br>
           {{> afQuickField name="one_liner"}}
@@ -268,7 +268,7 @@
 
         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-        {{/if}}      
+        {{/if}}
         {{> UI.dynamic template=../atts.name}}
 
       {{/afEachArrayItem}}
@@ -337,7 +337,7 @@
     </div>
     <div class="row">
     <div class="input-field col s6">
-      {{> afFieldInput name="date" id="test"  type="date"}}
+      {{> afFieldInput name="date" id="test"  type="select" options=yearOptionsArray}}
       <label class="active">Date Won</label>
     </div>
      <button type="submit" class="btn right btn-primary">Save</button>
@@ -408,7 +408,7 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name="name" id="comp.name" type="text"}}
+        {{> afFieldInput name="name" id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
       <label for="comp.name">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
@@ -419,11 +419,11 @@
   <div class="row">
     <div class="input-field col s6">
       {{> afFieldInput name="startDate" type="date"}}
-      <label class="active">Start Date</label>
+      <label class="active">Start Year</label>
     </div>
      <div class="input-field col s6">
       {{> afFieldInput name="endDate" type="date"}}
-      <label class="active">End Date</label>
+      <label class="active">End Year</label>
     </div>
     <button type="submit" class="{{this}} btn right btn-primary">Save</button>
   </div>
@@ -431,7 +431,7 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
+        {{> afFieldInput name=this.current.name id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
       <label for="comp.name" class="active">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
@@ -457,7 +457,8 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name="instrument" id="name" type="selectize" options=instrumentList}}
+        <!-- {{> afFieldInput name="instrument" id="name" type="text" class='autocomplete autocomplete-instrument'}} -->
+        <input type="text" class="autocomplete autocomplete-instrument">
       <label for="name" class="active">Instrument Name</label>
     </div>
     <div class="input-field col s6">
@@ -472,7 +473,7 @@
     <br>
     <div class="input-field col s6">
       {{../atts.name}}
-        {{> afFieldInput name=this.current.instrument id="comp.name" type="selectize" options=instrumentList}}
+        {{> afFieldInput name=this.current.instrument id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
       <label for="comp.name" class="active">Instrument Name</label>
     </div>
     <div class="input-field col s6">
