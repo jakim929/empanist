@@ -18,7 +18,7 @@ html {
 }
 
 .logo {
-  width: 150px;
+  width: 130px;
   height: auto;
   margin-top:5px;
 }
@@ -33,6 +33,11 @@ html {
 
 .no-right-padding {
 	padding-right: 0 !important;
+}
+
+.side-nav{
+  z-index: 1050;
+  overflow: hidden;
 }
 
 

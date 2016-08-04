@@ -1,16 +1,22 @@
 <template name="Navbar">
 	<div class="navbar-fixed">
 		<nav class="#9fa8da indigo lighten-3">
-			<div class="nav-wrapper container">
-		 		<a href="/"><img class="logo brand-logo left" src="/images/new_logo.png" alt=""></a>
-				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
+		  <div class="nav-wrapper container">
+		    <a href="/"><img class="logo brand-logo" src="/images/new_logo.png" alt=""></a>
+		    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+		    <ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
 					{{#each navbarFields}}
 						<li >{{> Template.dynamic template=this}}</li>
 					{{/each}}
 				</ul>
-			</div>
+		  </div>
 		</nav>
 	</div>
+	<ul class="side-nav" id="mobile-demo">
+	  {{#each navbarFields}}
+			<li onclick="$('.button-collapse').sideNav('hide');$('#sidenav-overlay').remove();">{{> Template.dynamic template=this data="sideNav"}}</li>
+		{{/each}}
+	</ul>
 
 <!-- Modal Contents -->
 
@@ -29,40 +35,67 @@
 </template>
 
 <template name="modalSignUp">
-	<a href="#signUpModal" class="waves-effect waves-light modal-signup-trigger modal-trigger">Sign Up</a>
+	{{#if fromSideNav this}}
+		<li class="divider"></li>
+	{{/if}}
+  <a href="#signUpModal" class="waves-effect waves-light modal-signup-trigger modal-trigger">Sign Up</a> 	
 </template>
 
 <template name="modalLogin">
+	{{#if fromSideNav this}}
+		<li class="divider"></li>
+	{{/if}}
   <a href="#loginModal"  class="waves-effect waves-light modal-login-trigger modal-trigger">Login</a>
 </template>
 
 <template name="navbarAccount">
 
-	<a class="dropdown-button valign-wrapper" data-hover="true" data-beloworigin="true" data-activates="accountDropdown">Account
-		{{#with myProfilePic}}
-			&nbsp;&nbsp;&nbsp;&nbsp;<img src={{this}} alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
+	{{#if fromSideNav this}}
+		<ul style='width: auto !important;'>
+			<li class="divider"></li>
+	    <li><a href={{getProfileRoute}}>Profile</a></li>
+	    <li class="divider"></li>
+	    <li><a class='logout'>Logout</a></li>
+	  </ul>
 		{{else}}
-			<i class="material-icons right">account_circle</i>
-		{{/with}}
-	</a>
 
-  <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>
-    <li><a href={{getProfileRoute}}>My Profile</a></li>
-    <li class="divider"></li>
-    <li><a class='logout'>Logout</a></li>
-  </ul>
+		<a class="dropdown-button valign-wrapper" data-hover="true" data-beloworigin="true" data-activates="accountDropdown">
+			{{#with myProfilePic}}
+				&nbsp;&nbsp;&nbsp;&nbsp;<img src={{this}} alt="" width="37px" height="37px" style="border:2px solid white" class="circle right valign white-border">
+			{{else}}
+				<i class="material-icons right">account_circle</i>
+			{{/with}}
+		</a>
+
+	  <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>
+	    <li><a href={{getProfileRoute}}>Profile</a></li>
+	    <li class="divider"></li>
+	    <li><a class='logout'>Logout</a></li>
+	  </ul>
+
+  {{/if}}
+
 </template>
 
 <template name="myProfile">
-	<a href={{getProfileRoute}}>My Profile</a>
+	<a href={{getProfileRoute}}>Profile</a>
 </template>
 
 <template name="accompanistDashboard">
-	<a href='/accompanistDashboard'>Dashboard<i class="material-icons right">dashboard</i> </a>
+	{{#if fromSideNav this}}
+    <a href='/accompanistDashboard'>Dashboard<i class="material-icons left">dashboard</i> </a>  
+		{{else}}
+		<a href='/accompanistDashboard'><i class="material-icons right">dashboard</i> </a>
+	{{/if}}
 </template>
 
 <template name="bookings">
-	<a href='/bookings'>My Bookings<i class="material-icons right">book</i></a>
+	{{#if fromSideNav this}}
+    <li class="divider"></li>
+    <a href='/bookings'>Booking<i class="material-icons left">book</i></a>   
+		{{else}}
+		<a href='/bookings'><i class="material-icons right">book</i></a>
+	{{/if}}
 </template>
 
 <template name="becomeAnAccompanist">

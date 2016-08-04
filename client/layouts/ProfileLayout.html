@@ -144,13 +144,17 @@
       <!-- {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}} -->
 
     {{/autoForm}}
-    
-    {{#if FieldsValid fields "bookAccompanistForm"}}
-      <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
+
+    {{#if loggedIn}}
+      {{#if FieldsValid fields "bookAccompanistForm"}}
+        <div class="center"><button class="btn wave-light book-accompanist" >Request To Book</button></div>
+        {{else}}
+        <div class="center"><button class="btn wave-light" disabled>Request To Book</button></div>
+        {{/if}}
       {{else}}
-      <div class="center"><button class="btn wave-light disabled" disabled>Request To Book</button></div>
+       <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request To Book</button></div> 
     {{/if}}
-    
+
   {{else}}
     Not on an accompanist page.
   {{/with}}

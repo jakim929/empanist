@@ -17,23 +17,23 @@
 					<div class="card result-card  grey lighten-5 z-depth-0">
 						<div class="card-content result-card ">
 
-				        <div class="resultsBackgroundImg">
-					        <img class="backimg" src="{{coverPicById Id}}">
-				        </div>
+			        <div class="resultsBackgroundImg">
+				        <img class="backimg" src="{{coverPicById Id}}">
+			        </div>
 
-				        <div id="resultsProfileImg">
-					        <a class="waves-effect waves-light">
-					          <img class="responsive-img circle" src="{{profilePicById Id}}">
-					        </a>
-				        </div>
+			        <div id="resultsProfileImg">
+				        <a class="waves-effect waves-light">
+				          <img class="responsive-img circle" src="{{profilePicById Id}}">
+				        </a>
+			        </div>
 
-								<div class="nameAffili ">
-									<p class="weight ellipsis larger">{{accompname.name}}</p>
-									<p class="ellipsis">{{accompname.affiliation}}</p>
-								</div>
-								<br>
+							<div class="nameAffili ">
+								<p class="weight ellipsis larger">{{accompname.name}}</p>
+								<p class="ellipsis">{{accompname.affiliation}}</p>
+							</div>
+							<br>
 
-								<div class="divide">
+							<div class="divide">
 								<p class="top">
 									<i id="align_text" class="small material-icons prefix color">attach_money</i>
 									{{charge}}/hr
@@ -51,7 +51,7 @@
 										Anytime
 									{{else}}
 										{{#each working_hours}}
-											{{this}},
+											{{this}}{{#unless last ../working_hours this}},{{/unless}}
 										{{/each}}
 									{{/if}}
 								</p>
@@ -61,7 +61,7 @@
 										Any Day
 									{{else}}
 										{{#each working_days}}
-											{{formatDay this}},
+											{{formatDay this}}{{#unless last ../working_days this}},{{/unless}}
 										{{/each}}
 									{{/if}}
 								</p>
@@ -129,16 +129,14 @@
 	        		{{>afQuickField name="session_location" value=session_location }}
 	        	</div>
 	        	<div class="col s5">
-	        	  <div class="input-field col s12">
-          			{{>afQuickField name="radius" value=rads}}
-        			</div>
+          		{{>afQuickField name="radius" value=rads}}
       			</div>
        		</div>
 				</div>
 
-     		<!-- <div class="input-field col s12">
+     		<div class="input-field col s12">
      			<button type="submit" class=" advancedsearch-btn btn btn-primary" id="advancedsearch">Search</button>
-     		</div> -->
+     		</div>
 
      		<div class="input-field col s12">
      			<br>

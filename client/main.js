@@ -27,6 +27,7 @@ window.SearchData = SearchData
 Template.TestLayout.onRendered(function () {
     $(document).ready(function(){
       // (function($){
+        // $(".button-collapse").sideNav();
 
     $('.parallax').parallax();
 
@@ -1248,9 +1249,10 @@ Template.ReviewLeftFormPanel.events({
 Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
     event.preventDefault();
+    console.log("book-accompanist is clicked")
     var userId = Meteor.userId();
-    if (userId){
-      if(Roles.userIsInRole(userId, 'bookAccompanist')){
+    // if (userId){
+      // if(Roles.userIsInRole(userId, 'bookAccompanist')){
         let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
         console.log(currentTransaction);
         let currentProfileId = FlowRouter.getParam("profileId");
@@ -1260,8 +1262,13 @@ Template.bookAccompanistForm.events({
         }else{
           console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
         }
-      }
-    }
+      // }
+    // }
+  },
+  'click .modal-login-trigger': function(){
+    console.log("login modal clicked")
+    AccountsTemplates.setState('signIn');
+    AccountsTemplates.avoidRedirect = true;
   }
 });
 // Just Testing
@@ -1289,10 +1296,15 @@ Template.TestLayout.helpers({
 });
 
 Template.bookAccompanistForm.onRendered(function(){
-  $('.datepicker').pickadate({
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 15 // Creates a dropdown of 15 years to control year
-  });
+  // $('.datepicker').pickadate({
+  //   selectMonths: true, // Creates a dropdown to control month
+  //   selectYears: 15 // Creates a dropdown of 15 years to control year
+  // });
+
+  $('.modal-login-trigger').leanModal({
+      dismissible: true,
+      complete: function() {   AccountsTemplates.avoidRedirect = false; }
+    });
 })
 
 Template.bookAccompanistForm.helpers({
@@ -1311,7 +1323,14 @@ Template.bookAccompanistForm.helpers({
   },
   fields: function(){
       return (["startDate", "endDate", "performanceType"])
+    },
+     ifNotSignedIn: function() {
+    if (Meteor.user()) {
+      return ""
+    } else {
+      return  "modal-login-trigger modal-trigger"
     }
+  },
 });
 
 Template.registerHelper('myProfilePic', function(){
@@ -1669,20 +1688,21 @@ AccountsTemplates.configureRoute('signUp');
 
 // Javascript Component Initialization
 
-
-
 Template.navbarAccount.onRendered(function () {
   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
   // console.log($(".dropdown-button.account-dropdown"))
-  $(".dropdown-button").dropdown({
-        inDuration: 300,
-        outDuration: 225,
-        constrain_width: false, // Does not change width of dropdown to that of the activator
-        hover: true, // Activate on hover
-        gutter: 0, // Spacing from edge
-        belowOrigin: false, // Displays dropdown below the button
-        alignment: 'left' // Displays dropdown with edge aligned to the left of button
-      });
+  $( document ).ready(function(){
+
+    $(".dropdown-button").dropdown({
+          inDuration: 300,
+          outDuration: 225,
+          constrain_width: false, // Does not change width of dropdown to that of the activator
+          hover: true, // Activate on hover
+          gutter: 0, // Spacing from edge
+          belowOrigin: false, // Displays dropdown below the button
+          alignment: 'left' // Displays dropdown with edge aligned to the left of button
+        });
+  })
 });
 
 Template.Navbar.onRendered(function () {
@@ -1728,7 +1748,7 @@ Template.TabStructure.onRendered(function () {
 
 Template.NewAccompLayout.onRendered(function () {
   // Initialize collapse button
-  $(".button-collapse").sideNav();
+  // $(".button-collapse").sideNav();
   // Initialize collapsible (uncomment the line below if you use the dropdown variation)
   //$('.collapsible').collapsible();
 });
@@ -1806,6 +1826,16 @@ Template.search.onRendered(function () {
 
 // ==Global Template Helpers==
 
+Template.registerHelper('loggedIn', () => {
+  // Logged In
+  console.log("checking if logged in")
+  if (Meteor.user()){
+    return true
+  } else {
+    return false
+  }
+});
+
 Template.registerHelper('navbarFields', () => {
   // Logged In
   if (Meteor.user()){
@@ -1813,28 +1843,12 @@ Template.registerHelper('navbarFields', () => {
     if (Roles.userIsInRole(Meteor.userId(), 'accompanist')){
       return ['accompanistDashboard', 'bookings', 'navbarAccount']
     }
-    // // Not Accompanist
-    // if (MakingNewAccomp (FlowRouter.current().path)) {
-    //   // if not accomp and making accomp page
-    //   return ['bookings', 'navbarAccount']
-    // } else {
-      // if not an accomp and not in newaccomp page
       return ['becomeAnAccompanist','bookings', 'navbarAccount' ]
-    // }
   // Not Logged In
   }else{
     return ['becomeAnAccompanist','modalSignUp', 'modalLogin']
   }
 });
-
-// function MakingNewAccomp(path){
-//       if (path == "/newaccomp" || path == "/newaccomp/step1" || path == "/newaccomp/step2" || path == "/newaccomp/step3") {
-//     return true
-//   } else {
-//     return false
-//   }
-//     }
-
 
 // Get Current User's Account
 Template.registerHelper('myBasicProfile', () => {
@@ -2043,6 +2057,16 @@ Template.registerHelper( 'getProfileRoute', (id = Meteor.userId()) =>{
 Template.registerHelper( 'fromProfile', (location) =>{
   // console.log(location)
   if (location == "myProfile") {
+    return true
+  } else {
+  return false
+}
+});
+
+Template.registerHelper( 'fromSideNav', (page) =>{
+  console.log("from side nav")
+  console.log(page)
+  if (page == "sideNav") {
     return true
   } else {
   return false
@@ -2345,6 +2369,12 @@ Template.instruments.helpers ({
   }
 });
 
+Template.registerHelper('last',
+    function(list, elem) {
+        return _.last(list) === elem;
+    }
+);
+
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
     var mydata =[
@@ -2354,7 +2384,6 @@ Template.profileTemplate.helpers({
       {icon: 'group_work', mainTitle: 'Ensemble', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Ensemble", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra", fields:["name", "position", "startDate", "endDate"], text: 'Your involvement in ensembles such as orchestras at schools or chamber groups adds to the trust you are creating with users.  '}
     ]
     return mydata;
-
   },
   emptyArrays: function(instList, awardsList, programList, OrchestraList) {
     return []

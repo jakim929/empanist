@@ -1,42 +1,76 @@
 <template name="TestLayout">
 
+   <ul id="slide-out" class="side-nav">
+      <li><a href="#!">First Sidebar Link</a></li>
+      <li><a href="#!">Second Sidebar Link</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Dropdown<i class="material-icons">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="#!">First</a></li>
+                <li><a href="#!">Second</a></li>
+                <li><a href="#!">Third</a></li>
+                <li><a href="#!">Fourth</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="#!">First Sidebar Link</a></li>
+      <li><a href="#!">Second Sidebar Link</a></li>
+      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+      <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="#!">First</a></li>
+        <li><a href="#!">Second</a></li>
+        <li><a href="#!">Third</a></li>
+        <li><a href="#!">Fourth</a></li>
+      </ul>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+          
+        
 
-       <header>
-        <link rel="stylesheet" href="../style.css">
-        <link rel="stylesheet" href="../style.scss">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      </header>
+
+  <header>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.scss">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </header>
 
 
 
-      <main>
+  <main>
 
 
-        <div class="row">
-          <div class="col s6">
-            <div class="card">
-              <div class="card-content">
-                <fieldset id="AdminPanel">
-                  <legend for="AdminPanel">
-                    Admin Panel
-                  </legend>
+  <div class="row">
+    <div class="col s6">
+      <div class="card">
+        <div class="card-content">
+          <fieldset id="AdminPanel">
+            <legend for="AdminPanel">
+              Admin Panel
+            </legend>
 
-                  <div class="row">
-                    <div class="col s6">
-                      <label for="numberOfUsers">Number of Users to Add</label>
-                      <input type="number" id="numberOfUsers">
-                    </div>
-                    <br>
-                    <div class="col s6">
-                        <button class="btn add-fake-users z-depth-0">Add Users</button>
-                    </div>
-                  </div>
-
-                </fieldset>
+            <div class="row">
+              <div class="col s6">
+                <label for="numberOfUsers">Number of Users to Add</label>
+                <input type="number" id="numberOfUsers">
+              </div>
+              <br>
+              <div class="col s6">
+                  <button class="btn add-fake-users z-depth-0">Add Users</button>
               </div>
             </div>
-          </div>
+
+          </fieldset>
         </div>
+      </div>
+    </div>
+  </div>
 
 
       </main>
