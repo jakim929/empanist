@@ -136,7 +136,6 @@ AutoForm.hooks({
         FlowRouter.setQueryParams({working_hours: null});
       }
 
-      console.log("New Query Param")
         $('#advancedsearch').removeAttr('disabled');
         FlowRouter.setQueryParams(doc);
     }
@@ -762,7 +761,6 @@ Template.NewAccompLayout.onRendered(function () {
   $(document).ready(function(){
     $('.pushpin').pushpin({ top: 100 });
   });
-  console.log("pushpin should be working")
 
 });
 
@@ -1220,7 +1218,6 @@ Template.ReviewLeftFormPanel.events({
       if(currentStepIndex > -1){
         let nextStepIndex = currentStepIndex + 1
         if(nextStepIndex < panels.length){
-          console.log("Go to next page")
           template.currentStep.set(panels[nextStepIndex]);
         }
       }
@@ -1249,7 +1246,6 @@ Template.ReviewLeftFormPanel.events({
 Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
     event.preventDefault();
-    console.log("book-accompanist is clicked")
     var userId = Meteor.userId();
     // if (userId){
       // if(Roles.userIsInRole(userId, 'bookAccompanist')){
@@ -1257,7 +1253,6 @@ Template.bookAccompanistForm.events({
         console.log(currentTransaction);
         let currentProfileId = FlowRouter.getParam("profileId");
         if (currentProfileId){
-          console.log("validated like a little bitch")
           FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
         }else{
           console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
@@ -1266,7 +1261,6 @@ Template.bookAccompanistForm.events({
     // }
   },
   'click .modal-login-trigger': function(){
-    console.log("login modal clicked")
     AccountsTemplates.setState('signIn');
     AccountsTemplates.avoidRedirect = true;
   }
@@ -1357,12 +1351,11 @@ Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
 })
 
 Template.registerHelper('FieldsValid', function(fields, formId){
-console.log("FieldsValid")
-console.log(fields)
-console.log(formId)
   var showStatus = true
   $.each(fields, function( index, value ) {      
     if (((AutoForm.getFieldValue(value, [formId])) == undefined)) {
+      console.log("FieldValue")
+      console.log((AutoForm.getFieldValue(value, [formId])))
       showStatus = false
     } 
   });
@@ -1474,7 +1467,6 @@ Template.BookingReviewLeftPanel.events({
         if(currentStepIndex > -1){
           let nextStepIndex = currentStepIndex + 1
           if(nextStepIndex < panels.length){
-            console.log("Go to next page")
             instance.checkboxState.set(false);
             instance.currentStep.set(panels[nextStepIndex]);
           }
@@ -1546,24 +1538,6 @@ Template.upsertSessionResponse.helpers ({
       });
       return optionsArray
     }
-  }
-});
-
-Template.orchestras.helpers ({
-  fields: function(){
-    return (["name", "position", "startDate", "endDate"])
-  }
-});
-
-Template.awards.helpers ({
-  fields: function(){
-    return (["name", "award", "date"])
-  }
-});
-
-Template.musicPrograms.helpers ({
-  fields: function(){
-    return (["programName", "startDate", "endDate"])
   }
 });
 
@@ -2064,8 +2038,6 @@ Template.registerHelper( 'fromProfile', (location) =>{
 });
 
 Template.registerHelper( 'fromSideNav', (page) =>{
-  console.log("from side nav")
-  console.log(page)
   if (page == "sideNav") {
     return true
   } else {
@@ -2092,6 +2064,7 @@ Template.registerHelper( 'fromBookingTime', (page) =>{
 Template.registerHelper( 'getBookingRoute', (bookingId) =>{
   return FlowRouter.path('/bookingRequest/:transactionId', {transactionId: bookingId})
 });
+
 
 Template.registerHelper( 'transactionById', (id = FlowRouter.getParam("transactionId")) => {
     event.preventDefault();
@@ -2348,16 +2321,49 @@ Template.advancedSearch.helpers ({
 Template.orchestras.helpers ({
   fields: function(){
     return (["name", "position", "startDate", "endDate"])
+  },
+   years: function(){
+    return yearsToPresent().map(function(obj){return {label: obj, value:obj}})
+  },
+  months: function(){
+    return months().map(function(obj){return {label: obj, value:obj}})
   }
 });
 
 Template.awards.helpers ({
   fields: function(){
     return (["name", "award", "date"])
+  },
+  years: function(){
+    return yearsToPresent().map(function(obj){return {label: obj, value:obj}})
   }
 });
 
+// Function that return list of years until present
+
+
+function yearsToPresent() { 
+  var present_years = []
+  var year = moment(new Date()).format('YYYY');
+  var todays_year = parseInt(year) + 8
+  for (var i = 1900; i < todays_year; i++) { 
+    present_years.push(i)
+  }
+  return present_years
+}
+
+function months() { 
+  var all_months = ["Jan","Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  return all_months
+}
+
 Template.musicPrograms.helpers ({
+   years: function(){
+    return yearsToPresent().map(function(obj){return {label: obj, value:obj}})
+  },
+  months: function(){
+    return months().map(function(obj){return {label: obj, value:obj}})
+  },
   fields: function(){
     return (["programName", "startDate", "endDate"])
   }
@@ -2502,21 +2508,25 @@ AutoForm.addHooks(null, {
 });
 
 
-// Template.NewAccompLayout.onRendered(function () {
+Template.profileTemplate.onRendered(function () {
+  yearsToPresent()
+});
 
-//     $('#name, #phone, #birth, #affiliation').bind('keyup', function() {
-//     if(allFilled()) $('#basicProfile').removeAttr('disabled');
+Template.awards.onRendered(function () {
+  $('select').material_select();
+});
 
-// });
-// function allFilled() {
-//     var filled = true;
-//     $('body input').each(function() {
-//         if($(this).val() == '') filled = false;
-//     });
-//     return filled;
-// }
+Template.orchestras.onRendered(function () {
+  $('select').material_select();
+});
 
-// });
+Template.musicPrograms.onRendered(function () {
+  $('select').material_select();
+});
+
+Template.instruments.onRendered(function () {
+  $('select').material_select();
+});
 
 Template.upsertBasicProfileForm.helpers ({
   // Helps set up fields for deciding between "insert" and "update"
@@ -2872,14 +2882,6 @@ Template.results.helpers({
     var time = FlowRouter.getQueryParam("working_hours")
     var day = FlowRouter.getQueryParam("working_days")
 
-    console.log("Search Info")
-    console.log(address)
-    console.log(charge)
-    console.log(session_location)
-    console.log(radius)
-    console.log(time)
-    console.log(day)
-
     Meteor.call('getGeocode', address, function(err, result){
 
       if (result !== null){
@@ -2918,11 +2920,9 @@ Template.results.helpers({
         if (time !== undefined && time.length > 1) {
           var time_algo =
           {working_hours: {$in: time}}
-          console.log("several times")
         } else if (time !== undefined) {
           var time_algo =
           {working_hours: time}
-          console.log("one time")
         }
 
         if (day !== undefined && $.isArray(day)) {
@@ -2979,8 +2979,6 @@ Template.results.helpers({
         var distance = 20000
       }
       var x =  searchWith()
-      console.log("Search Algorithm")
-      console.log(x)
       var results = AccompanistProfiles.find(
         {loc:
         { $near :

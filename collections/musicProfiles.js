@@ -13,14 +13,24 @@ OrchestraSchema = new SimpleSchema({
     label: "Position in Ensemble"
   },
 
-  startDate: {
-    type: Date,
-    label: "Beginning Date"
+  startYear: {
+    type: Number,
+    label: "Start Year"
   },
 
-  endDate: {
-    type: Date,
-    label: "Ending Date"
+   startMonth: {
+    type: String,
+    label: "Start Month"
+  },
+
+  endYear: {
+    type: Number,
+    label: "End Year"
+  },
+
+  endMonth: {
+    type: String,
+    label: "End Month"
   }
 });
 
@@ -34,9 +44,9 @@ AwardSchema = new SimpleSchema({
     type: String,
     label: "Award Title"
   },
-  date: {
-    type: Date,
-    label: "Date Received"
+  year: {
+    type: Number,
+    label: "Year Received"
   }
 });
 
@@ -46,15 +56,24 @@ MusicProgramSchema = new SimpleSchema({
     type: String,
     label: "Program Name"
   },
-
-  startDate: {
-    type: Date,
-    label: "Start Date"
+   startYear: {
+    type: Number,
+    label: "Start Year"
   },
 
-  endDate: {
-    type: Date,
-    label: "End Date"
+   startMonth: {
+    type: String,
+    label: "Start Month"
+  },
+
+  endYear: {
+    type: Number,
+    label: "End Year"
+  },
+  
+  endMonth: {
+    type: String,
+    label: "End Month"
   }
 });
 

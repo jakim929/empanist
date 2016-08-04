@@ -3,14 +3,12 @@ html {
 	font-family: Avenir Next;
 }
 
-.card{
-}
-
 .profile-picture{
-	max-width: 200px;
-	max-height: 200px;
+	width: 200px;
+	height: 200px;
 	border-radius: 1%;
 	border:1px solid #eeeeee;
+  margin-left: -5px;
 }
 
 .text-shadow-setting{
@@ -487,8 +485,26 @@ a {
   background-color: blue;
 }
 
+.profileImg {
+  float:left;
+  width:200px;
+  height:200px;
+  margin-left: -20px;
+  margin-right: 20px;
+  overflow:hidden;
+}
+
+.profileData {
+  width:50%;
+  overflow:hidden;
+}
+
 .overlap-into-top {
   margin-top:-13%;
+}
+
+.imgMargin{
+  margin-right: 20px
 }
 
 .materialboxed {
@@ -556,20 +572,6 @@ a {
   right:0;
 }
 
-/*#profileImg {
-	width:150px
-  float:left;
-  overflow:hidden;
-}*/
-
-#first-card-text {
-  overflow:hidden;
-}
-
-/*.instrumentsAddForm {
-display:none;
-}*/
-
 .instrumentsAddForm {
   display:none;
 }
@@ -599,12 +601,6 @@ display:none;
   margin-top: -10px;
   margin-bottom: 20px;
 }
-
-/*THIS SHOULD BE REACTIVE*/
-.all {
-  height:200px;
-}
-
 
 .add-btn {
   width:100%;

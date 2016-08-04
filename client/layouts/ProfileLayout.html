@@ -2,21 +2,11 @@
 <template name="ProfileLayout">
     <main>
       <div class="hide-on-med-and-down parallax-container">
-        <!-- <div class="parallax"> -->
-          <!-- {{#unless isOwnProfile}} -->
-          {{#with currentCoverPic}}
-            <img class="cover-picture" src="{{this}}" />
-          {{else}}
-            <img class="cover-picture" src="/images/newparallax.png" />
-          {{/with}}
-
-        <!--   {{else}}
-              <img id="#cover-picture" class="modal-trigger change-cover-pic" href="#changeImageModal" src="http://materializecss.com/images/parallax1.jpg" /> -->
-            <!-- <a class="btn waves-effect waves-light modal-trigger" href="#changeProfileModal">
-              <i class="material-icons right">account_box</i>Add Picture<br><br><br><br>&nbsp;
-            </a> -->
-          <!-- {{/unless}} -->
-        <!-- </div> -->
+        {{#with currentCoverPic}}
+          <img class="cover-picture" src="{{this}}" />
+        {{else}}
+          <img class="cover-picture" src="/images/newparallax.png" />
+        {{/with}}
       </div>
 
       <!-- uncomment later on -->
@@ -32,31 +22,31 @@
                 </div>
                 <div class="col l4 m4 hide-on-small-only">
                   <div class="aside">
-                  <div class="overlap-into-top">
-                    <div class="card grey lighten-5 z-depth-0">
-                      <div class="card-content">
-                        <ul>
-                          <li>
-                            <h5><div class="center">Profile Strength</div></h5>
-                            <div class="divider"></div>
-                            <br>
-                            {{>liquid_fill_gauge}}
-                            <br>
-                            <br>
-                          </li>
-                          <!-- <li class="divider"></li> -->
-                          <li>
-                            <h5><div class="center">Strengthen Your Profile</div></h5>
-                            <div class="divider"></div><br>
-                            {{> suggestions}}
-                          </li>
-                          <!-- <li class="divider"></li>
-                          <li>
-                            <h6><b><div class="center">Accompanying data/advs to join</div></b></h6>
-                          </li> -->
-                      </ul>
+                    <div class="overlap-into-top">
+                      <div class="card grey lighten-5 z-depth-0">
+                        <div class="card-content">
+                          <ul>
+                            <li>
+                              <h5><div class="center">Profile Strength</div></h5>
+                              <div class="divider"></div>
+                              <br>
+                              {{>liquid_fill_gauge}}
+                              <br>
+                              <br>
+                            </li>
+                            <!-- <li class="divider"></li> -->
+                            <li>
+                              <h5><div class="center">Strengthen Your Profile</div></h5>
+                              <div class="divider"></div><br>
+                              {{> suggestions}}
+                            </li>
+                            <!-- <li class="divider"></li>
+                            <li>
+                              <h6><b><div class="center">Accompanying data/advs to join</div></b></h6>
+                            </li> -->
+                          </ul>
+                        </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                 </div>
@@ -168,46 +158,41 @@
 <template name="accountTemplate">
   <div class="col s12">
     <div id="first-card-container" class="card grey lighten-5 z-depth-0">
-      <div id="first-card-text" class="card-content">
+      <div class="card-content">
         <span class="black-text activator">
-          <div class="all">
-            <div class="row">
-              <div class="col s5">
-                <div id="profileImg">
-                    {{#unless isOwnProfile}}
-                      {{#with currentProfilePic}}
-                        <a class="waves-effect waves-light">
-                          <div>
-                            <img class="profile-picture"  src={{currentProfilePic}}>
-                          </div>
-                        </a>
-                      {{/with}}
-                    {{else}}
-                      {{> Template.dynamic template='PictureModal' data=getProfileData}}
-                    {{/unless}}
-                </div>
+            <!-- <div class="row"> -->
+              <div class="profileImg">
+                {{#unless isOwnProfile}}
+                  {{#with currentProfilePic}}
+                    <a class="waves-effect waves-light">
+                      <div>
+                        <img class="profile-picture"  src={{currentProfilePic}}>
+                      </div>
+                    </a>
+                  {{/with}}
+                {{else}}
+                  {{> Template.dynamic template='PictureModal' data=getProfileData}}
+                {{/unless}}
               </div>
-              <div class="col s7">
-                <div class="details">
+              <div class="profileData">
                   <h4>{{name}}</h4>
                   <h5>{{affiliation}}</h5>
                   {{#if isOwnProfile}}
                   <h7>{{formatBirthDate this.birthDate}}</h7> <br>
                   <h10>{{phone}}</h10> <br>
                   {{/if}}
-                </div>
               </div>
-            </div>
+            <!-- </div> -->
             {{#if isOwnProfile}}
             <i class="material-icons right">mode_edit</i>
             <br>
           {{/if}}
-          </div>
         </span>
       </div>
       {{#if isOwnProfile}}
         <div class="card-reveal grey lighten-5 z-depth-0">
           <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+          <br>
           {{> basicMyProfile}}
         </div>
       {{/if}}
@@ -276,27 +261,27 @@
     <div class="col s12">
       {{#each arrayProfileCards instruments awards musicPrograms orchestras}}
         {{#if isEmpty dynamicData}}
-        <div class="col s12">
            <div class={{addArrayClass}}>
-              <div class=" col s12 card grey lighten-5 z-depth-0">
+              <div class=" card grey lighten-5 z-depth-0">
                 <div class="card-content">
                   <span class="{{close}} right"><i class="material-icons right">close</i> </span>
                   <h5>
-                    <i id="align_text" class="medium material-icons">{{icon}}</i>
+                    <i id="align_text" class="medium material-icons color">{{icon}}</i>
                      Add {{add_title}}
                   </h5>
-                  {{#autoForm collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
+                  {{#autoForm validation="keyup" collection="MusicProfiles" id="upsertMusicProfileForm" doc=currentProfile type=formType}}
+
                     {{> afArrayField name=arrayField template="firstCustomArrayField"}}
 
-                    <button type="submit" class=" {{close}} btn right btn-primary">Save First</button>
+                    <button type="submit" class=" {{close}} btn right btn-primary">Save</button>
 
                     <br>
                     <br>
                   {{/autoForm}}
+
                 </div>
               </div>
             </div>
-          </div>
         {{/if}}
       {{/each}}
     </div>
@@ -347,9 +332,7 @@
                   </h5>
                   <div class="text-bigcard">
                     {{> UI.dynamic template=dynamicDataTemplate data=dynamicData}}
-                    {{#if isOwnProfile}}
                       <i class="myprofile_edit material-icons right">mode_edit</i>
-                    {{/if}}
                     <br>
                   </div>
                 </span>
@@ -485,7 +468,7 @@
 
 <template name="awardsList">
   {{#each this}}
-    <span class="right">{{formatDate this.date}}</span>
+    <span class="right">{{this.year}}</span>
     <p class="weight">{{name}}</p>
     {{award}}
     <br><br>
@@ -494,7 +477,7 @@
 
 <template name="programsList">
   {{#each this}}
-    <span class="right">{{formatDuration this.startDate this.endDate}}</span>
+    <span class="right">{{this.startMonth}}, {{this.startYear}} - {{this.endMonth}}, {{this.endYear}}</span>    
     {{programName}}
     <br><br>
   {{/each}}
@@ -502,7 +485,7 @@
 
 <template name="orchestrasList">
   {{#each this}}
-    <span class="right">{{formatDuration this.startDate this.endDate}}</span>
+    <span class="right">{{this.startMonth}}, {{this.startYear}} - {{this.endMonth}}, {{this.endYear}}</span>
     <p class="bold">{{name}}</p>
     {{position}}
     <br><br>
@@ -514,7 +497,7 @@
 <!-- SECTION: Accompanist Profile Information Card -->
 <template name="accompanistProfileTemplate">
   <div class="col s12">
-    <div class="card {{accompColor accompanist_active (this.Id)}} grey lighten-5 z-depth-0">
+    <div class="card {{accompColor accompanist_active (this.Id)}} z-depth-0">
     <div class="card-content">
       <span class="black-text activator">
 
