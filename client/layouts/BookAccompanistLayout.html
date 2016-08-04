@@ -88,8 +88,10 @@
         {{> afQuickField name="startDate" type="hidden"}}
         {{> afQuickField name="endDate" type="hidden"}}
         {{> afQuickField name="status" type="hidden"}}
-        {{> afQuickField name="repertoire" type="hidden"}}
         {{> afQuickField name="accompanist" type="hidden"}}
+
+        <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
+        {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
 
           How many sessions? (Rehearsal and Performance)
           <div class="row">
@@ -152,7 +154,7 @@
   </div>
 </template>
 
-<template name="bookAccompanistForm">
+<!-- <template name="bookAccompanistForm">
   {{#with routeAccompanist}}
     {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
       {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
@@ -183,7 +185,7 @@
   {{else}}
     Not on an accompanist page.
   {{/with}}
-</template>
-<template name="invalidId">
+</template> -->
+<!-- <template name="invalidId">
   <h2>Invalid ID</h2>
-</template>
+</template> -->

@@ -25,5 +25,5 @@
 }
 
 .block-with-text {
-  @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 7, $bgColor: #fafafa);  
+  @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 4, $bgColor: #fafafa);  
 }

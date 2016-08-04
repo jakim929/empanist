@@ -1303,27 +1303,20 @@ Template.ReviewLeftFormPanel.events({
 
 Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
+    event.preventDefault();
     var userId = Meteor.userId();
     if (userId){
       if(Roles.userIsInRole(userId, 'bookAccompanist')){
-        //$('#bookAccompanistForm').submit()
-        if(AutoForm.validateForm("bookAccompanistForm")){
-          let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
-          console.log(currentTransaction);
-          let currentProfileId = FlowRouter.getParam("profileId");
-          if (currentProfileId){
-            FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
-          }else{
-            console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
-          }
+        let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
+        console.log(currentTransaction);
+        let currentProfileId = FlowRouter.getParam("profileId");
+        if (currentProfileId){
+          console.log("validated like a little bitch")
+          FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
         }else{
-          Bert.alert( 'Please check the fields again!', 'danger');
+          console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
         }
-
-      }else{
-        Bert.alert( 'You must first fill in music profile before booking!', 'danger');
       }
-    }else{
     }
   }
 });
@@ -1352,12 +1345,20 @@ Template.bookAccompanistForm.onRendered(function(){
 Template.bookAccompanistForm.helpers({
   urlStartDate() {
     var startDate = new Date(FlowRouter.getQueryParam('start_date'))
-    return dateToDateString(startDate)
+    if(startDate != ''){
+      return dateToDateString(startDate)
+    }
   },
   urlEndDate() {
     var endDate = new Date(FlowRouter.getQueryParam('end_date'))
-    return dateToDateString(endDate)
-  }
+    if(endDate !=''){
+       return dateToDateString(endDate)
+    }
+
+  },
+  fields: function(){
+      return (["startDate", "endDate", "performanceType"])
+    }
 });
 
 Template.registerHelper('myProfilePic', function(){
@@ -1383,19 +1384,19 @@ Template.registerHelper('paymentInfo', function(accompanistId, sessionCount){
 
 })
 
-// Template.accountTemplate.helpers({
-//   currentProfilePic(){
-//     var profileDoc = BasicProfiles.findOne({userId: FlowRouter.getParam("profileId"), profilePic: {$exists: true}}, {profilePic : 1});
-//     if (profileDoc){
-//       var picId = profileDoc.profilePic;
-//       if(picId){
-//         var imageDoc = UserImages.findOne(picId);
-//         return imageDoc.url
-//       }
-//     }
-//   },
-//
-// })
+Template.registerHelper('FieldsValid', function(fields, formId){
+console.log("FieldsValid")
+console.log(fields)
+console.log(formId)
+  var showStatus = true
+  $.each(fields, function( index, value ) {      
+    if (((AutoForm.getFieldValue(value, [formId])) == undefined)) {
+      showStatus = false
+    } 
+  });
+  console.log(showStatus)
+  return showStatus
+})
 
 Template.BookingReviewLeftPanel.onCreated(function () {
   this.currentStep = new ReactiveVar("repertoireSection");
@@ -1576,6 +1577,29 @@ Template.upsertSessionResponse.helpers ({
   }
 });
 
+Template.orchestras.helpers ({
+  fields: function(){
+    return (["name", "position", "startDate", "endDate"])
+  }
+});
+
+Template.awards.helpers ({
+  fields: function(){
+    return (["name", "award", "date"])
+  }
+});
+
+Template.musicPrograms.helpers ({
+  fields: function(){
+    return (["programName", "startDate", "endDate"])
+  }
+});
+
+Template.instruments.helpers ({
+  fields: function(){
+    return (["instrument", "yearsPlayed"])
+  }
+});
 
 // Uploader Tests
 
@@ -1676,10 +1700,12 @@ AccountsTemplates.configure({
       if (state === "signIn"){
         console.log("Signed In")
         $('#loginModal').closeModal();
+        $('#signUpModal').closeModal();
       }
       if (state === "signUp"){
         console.log("Signed Up")
         $('#signUpModal').closeModal();
+        $('#loginModal').closeModal();
       }
     }
   }
@@ -1765,6 +1791,8 @@ Template.ProfileLayout.onRendered(function(){
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
     $('.aside').pushpin({ top:490});
+
+    $('.basicCardPushpin').pushpin({ bottom:100});
 
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
@@ -2362,15 +2390,40 @@ Template.advancedSearch.helpers ({
   }
 })
 
+Template.orchestras.helpers ({
+  fields: function(){
+    return (["name", "position", "startDate", "endDate"])
+  }
+});
+
+Template.awards.helpers ({
+  fields: function(){
+    return (["name", "award", "date"])
+  }
+});
+
+Template.musicPrograms.helpers ({
+  fields: function(){
+    return (["programName", "startDate", "endDate"])
+  }
+});
+
+Template.instruments.helpers ({
+  fields: function(){
+    return (["instrument", "yearsPlayed"])
+  }
+});
+
 Template.profileTemplate.helpers({
   arrayProfileCards: function(instruments, awards, programs, orchestras) {
     var mydata =[
-      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument",text: 'Filling in instruments you have experience with gives musicians an understanding of your instrument-specific repertoire. '},
-      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward", text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist. '},
-      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram", text: 'Your participation in music festivals and programs connects you to musicians even before meeting! '},
-      {icon: 'group_work', mainTitle: 'Ensemble', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Ensemble", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra", text: 'Your involvement in ensembles such as orchestras at schools or chamber groups adds to the trust you are creating with users.  '}
+      {icon: 'brush', mainTitle: 'Instruments Mastered', dynamicDataTemplate: 'InstList', dynamicData: instruments, arrayField: "instruments", add_title: "Instrument", addButtonClass: "instrumentsAddButton", addArrayClass: "instrumentsAddForm", close: "cancelInstrument", fields:(["instrument", "yearsPlayed"]),text: 'Filling in instruments you have experience with gives musicians an understanding of your instrument-specific repertoire. '},
+      {icon: 'verified_user', mainTitle: 'Honors & Awards', dynamicDataTemplate: 'awardsList', dynamicData: awards, arrayField: "awards", add_title: "Award", addButtonClass: "awardsAddButton", addArrayClass: "awardsAddForm", close: "cancelAward", fields:["name", "award", "date"], text: 'Filling in your Honors & Awards gives musicians a good idea of your abilities as an artist and accompanist. '},
+      {icon: 'music_note', mainTitle: 'Music Programs', dynamicDataTemplate: 'programsList', dynamicData: programs, arrayField: "musicPrograms", add_title: "Music Program", addButtonClass: "programsAddButton", addArrayClass: "programsAddForm", close: "cancelProgram", fields:["programName", "startDate", "endDate"], text: 'Your participation in music festivals and programs connects you to musicians even before meeting! '},
+      {icon: 'group_work', mainTitle: 'Ensemble', dynamicDataTemplate: 'orchestrasList', dynamicData: orchestras, arrayField: "orchestras", add_title: "Ensemble", addButtonClass: "orchestrasAddButton", addArrayClass: "orchestrasAddForm", close: "cancelOrchestra", fields:["name", "position", "startDate", "endDate"], text: 'Your involvement in ensembles such as orchestras at schools or chamber groups adds to the trust you are creating with users.  '}
     ]
     return mydata;
+
   },
   emptyArrays: function(instList, awardsList, programList, OrchestraList) {
     return []
@@ -2438,7 +2491,18 @@ Template.afArrayField_newAccompCustomArrayField.helpers({
             case 'suggestedTimes':    return "Time";
             case 'instruments':    return "Instrument";
         }
-    }
+    },
+  //   NotValid: function (field) {
+  //   var x = AutoForm.getFieldValue(field, [field]);
+  //   // var y = AutoForm.getFieldValue("repertoire", ['upsertAccompanistForm']);
+  //   console.log("Printing field values")
+  //   console.log(x)
+  //   if ( x == undefined ){
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // },
 });
 
 Template.afArrayField_editProfileCustomArrayField.helpers({
@@ -2807,7 +2871,8 @@ Template.registerHelper('profilePicById', function(userId) {
       var picId = profileDoc.profilePic;
       if(picId){
         var imageDoc = UserImages.findOne(picId);
-        return imageDoc.url
+        return 'https://empanist-images.s3.amazonaws.com/xkB6ntMHkXeoTxq7a/928a898d-7633-46d5-a38a-490851d62645.png'
+        //imageDoc.url
       }
 
     }
@@ -2821,7 +2886,8 @@ Template.registerHelper('coverPicById', function(userId) {
       var picId = profileDoc.coverPic;
       if(picId){
         var imageDoc = UserImages.findOne(picId);
-        return imageDoc.url
+        return 'https://empanist-images.s3.amazonaws.com/xkB6ntMHkXeoTxq7a/928a898d-7633-46d5-a38a-490851d62645.png'
+        //imageDoc.url
       }
 
     }
@@ -2846,13 +2912,13 @@ Template.results.helpers({
     var time = FlowRouter.getQueryParam("working_hours")
     var day = FlowRouter.getQueryParam("working_days")
 
-    // console.log("Search Info")
-    // console.log(address)
-    // console.log(charge)
-    // console.log(session_location)
-    // console.log(radius)
-    // console.log(time)
-    // console.log(day)
+    console.log("Search Info")
+    console.log(address)
+    console.log(charge)
+    console.log(session_location)
+    console.log(radius)
+    console.log(time)
+    console.log(day)
 
     Meteor.call('getGeocode', address, function(err, result){
 
@@ -2889,12 +2955,14 @@ Template.results.helpers({
           {session_location: session_location}
         }
 
-        if (time !== undefined && time.length < 4) {
+        if (time !== undefined && time.length > 1) {
           var time_algo =
           {working_hours: {$in: time}}
+          console.log("several times")
         } else if (time !== undefined) {
           var time_algo =
           {working_hours: time}
+          console.log("one time")
         }
 
         if (day !== undefined && $.isArray(day)) {
@@ -2950,8 +3018,9 @@ Template.results.helpers({
       } else {
         var distance = 20000
       }
-
       var x =  searchWith()
+      console.log("Search Algorithm")
+      console.log(x)
       var results = AccompanistProfiles.find(
         {loc:
         { $near :

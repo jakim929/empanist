@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="input-field col s6">
-          <i class="material-icons prefix">child_friendly</i>
+          <i class="material-icons prefix">cake</i>
             {{>afFieldInput name="birthDate" id="birth" type="date"}}
             <label class="active">Birth Date</label>
         </div>
@@ -289,7 +289,7 @@
 </template>
 
 <template name="afArrayField_firstCustomArrayField">
-  {{#if afFieldIsInvalid name=atts.name}}
+  {{#if afFieldIsInvalid name=atts.name}}f
     <span>{{{afFieldMessage name=atts.name}}}</span>
   {{/if}}
       <!-- <h5>
@@ -340,7 +340,11 @@
       {{> afFieldInput name="date" id="test"  type="select" options=yearOptionsArray}}
       <label class="active">Date Won</label>
     </div>
-     <button type="submit" class="btn right btn-primary">Save</button>
+     {{#if FieldsValid fields "awards"}}
+      <button type="submit" class="btn right btn-primary">Save</button>
+      {{else}}
+      <button type="submit" disabled class="btn right btn-primary disabled">Save</button>
+    {{/if}}
     </div>
     {{else}}
      <div class="row">
@@ -379,7 +383,11 @@
         {{> afFieldInput name="endDate" type="date"}}
         <label class="active">End Date</label>
       </div>
-       <button type="submit" class="{{this}} btn right btn-primary">Save</button>
+       {{#if FieldsValid fields "musicPrograms"}}
+      <button type="submit" class="btn right btn-primary">Save</button>
+      {{else}}
+      <button type="submit" disabled class="btn right btn-primary disabled">Save</button>
+    {{/if}}
        <br>
     </div>
     {{else}}
@@ -425,7 +433,11 @@
       {{> afFieldInput name="endDate" type="date"}}
       <label class="active">End Year</label>
     </div>
-    <button type="submit" class="{{this}} btn right btn-primary">Save</button>
+    {{#if FieldsValid fields "orchestras"}}
+      <button type="submit" class="{{this}} btn right btn-primary">Save</button>
+      {{else}}
+      <button type="submit" disabled class="{{this}} btn right btn-primary disabled">Save</button>
+    {{/if}}
   </div>
   {{else}}
   <div class="row">
@@ -465,8 +477,12 @@
         {{> afFieldInput name="yearsPlayed" id="yrs" type="text"}}
       <label for="yrs" class="active">Years Played</label>
     </div>
-    <button type="submit" class="{{this}} btn right btn-primary">Save</button>
-       <br>
+    {{#if FieldsValid fields "instruments"}}
+      <button type="submit" class="btn right btn-primary">Save</button>
+      {{else}}
+      <button type="submit" disabled class="btn right btn-primary disabled">Save</button>
+    {{/if}}
+    <br>
   </div>
   {{else}}
    <div class="row">

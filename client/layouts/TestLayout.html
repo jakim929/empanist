@@ -10,7 +10,18 @@
 
 
       <main>
+        <button class='btn justifyNow'>Justify Now</button>
+        <div id='testJustifiedGallery'>
+          {{#each imageArray}}
+            <a href=''>
+              <img alt="caption for image 1" src='{{this.url}}' />
+            </a>
+          {{/each}}
+        </div>
 
+
+
+        <!-- {{> SimplePicturePicker}} -->
 
         <div class="row">
           <div class="col s6">

@@ -13,62 +13,59 @@
 		<div class="row">
 		{{#each accompanists}}
 			<a class="changeColor" href="" data-accompanist={{Id}}>
-				<div class="card result-card col s12 m5 l5 grey lighten-5 z-depth-0">
-					<div class="card-content">
-						<div class="mainResults">
-			        <div id="resultsBackgroundImg">
-				        <a class="waves-effect waves-light">
-				          <img class=" responsive-img" src="{{coverPicById Id}}">
-				        </a>
-			        </div>
-			        <div id="resultsProfileImg">
-				        <a class="waves-effect waves-light">
-				          <img class="responsive-img circle" src="{{profilePicById Id}}">
-				        </a>
-			        </div>
+				<div class="col s12 m6 l6">
+					<div class="card result-card  grey lighten-5 z-depth-0">
+						<div class="card-content result-card ">
 
-							<div class="nameAffili ">
-								<p class="bold ellipsis">{{accompname.name}}</p>
-								<p class="ellipsis">{{accompname.affiliation}}</p>
+				        <div class="resultsBackgroundImg">
+					        <img class="backimg" src="{{coverPicById Id}}">
+				        </div>
+
+				        <div id="resultsProfileImg">
+					        <a class="waves-effect waves-light">
+					          <img class="responsive-img circle" src="{{profilePicById Id}}">
+					        </a>
+				        </div>
+
+								<div class="nameAffili ">
+									<p class="weight ellipsis larger">{{accompname.name}}</p>
+									<p class="ellipsis">{{accompname.affiliation}}</p>
+								</div>
+								<br>
+
+								<div class="divide">
+								<p class="top">
+									<i id="align_text" class="small material-icons prefix color">attach_money</i>
+									{{charge}}/hr
+								</p>
+								<p class="ellipsis">
+									<i id="align_text" class="small material-icons prefix color">location_on</i>
+									{{mylocation}}
+								</p>
 							</div>
-							<br>
 
 							<div class="divide">
-							<p class="top">
-								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">attach_money</i>
-								{{charge}}/hr
-							</p>
-							<p class="ellipsis">
-								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">location_on</i>
-								{{mylocation}}
-							</p>
-						</div>
-
-						<div class="divide">
-							<p class="top">
-								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">access_time</i>
-
-								{{#if allTimes working_hours}}
-									Anytime
-								{{else}}
-									{{#each working_hours}}
-										{{this}},
-									{{/each}}
-								{{/if}}
-
-							</p>
-							<p>
-								<i id="align_text" class="small material-icons prefix blue-text text-darken-2">event</i>
-								{{#if allDays working_days }}
-									Any Day
-								{{else}}
-									{{#each working_days}}
-										{{formatDay this}},
-									{{/each}}
-								{{/if}}
-							</p>
-						</div>
-							<!-- <p class="oneLiner"> {{one_liner}}</p> -->
+								<p class="top">
+									<i id="align_text" class="small material-icons prefix color">access_time</i>
+									{{#if allTimes working_hours}}
+										Anytime
+									{{else}}
+										{{#each working_hours}}
+											{{this}},
+										{{/each}}
+									{{/if}}
+								</p>
+								<p>
+									<i id="align_text" class="small material-icons prefix color">event</i>
+									{{#if allDays working_days }}
+										Any Day
+									{{else}}
+										{{#each working_days}}
+											{{formatDay this}},
+										{{/each}}
+									{{/if}}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -86,7 +83,7 @@
     	{{#autoForm schema="SearchDataSchema" id="advancedSearch" type="normal" }}
 	    	<div class="row ">
 		  		<div class="input-field col s2">
-		      	<h10>Location/Dates</h10>
+		      	<h10>Location/ Dates</h10>
 		      </div>
 		      <div class="row col s10">
 			      <div class="input-field col s4">
@@ -139,14 +136,14 @@
        		</div>
 				</div>
 
-     		<div class="input-field col s12">
+     		<!-- <div class="input-field col s12">
      			<button type="submit" class=" advancedsearch-btn btn btn-primary" id="advancedsearch">Search</button>
-     		</div>
+     		</div> -->
 
      		<div class="input-field col s12">
      			<br>
      			<a class="more">More Filters</a>
-     			<a class="less">Less Filters</a>
+     			<a class="less">Fewer Filters</a>
      		</div>
 
       {{/autoForm}}
@@ -164,7 +161,7 @@
 		          <h10 class="box-label">{{this.label}}
 
 
-		          <input checked type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
+		          <input type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
 
 		          <label class="right checker" style="top:5px;" for="{{this.value}}-slot"></label>
 	          </h10>

@@ -31,13 +31,13 @@ getGeocode = function (arg) {
 
 // Google Distance Matrix (Not used for not!)
 // var distance = require('google-distance-matrix');
- 
+
 // var origins = ['40.7421,-73.9914'];
 // var destinations = ['41.8337329,-87.7321554'];
- 
+
 // distance.key('AIzaSyBborL-F_GWmjbUgtTw2P1QwPHYrDJIaCo');
 // distance.units('imperial');
- 
+
 // distance.matrix(origins, destinations, function (err, distances) {
 //     if (err) {
 //         return console.log(err);
@@ -243,33 +243,48 @@ Meteor.methods({
     setAsCoverPicture(imageId);
   },
 
-  storeImageUrlInDatabase: function( info ) {
+  storeImageUrlInDatabase: function( info) {
     var url = 'https://s3.amazonaws.com/empanist-images/' + Meteor.userId() + "/" + info.name;
 
     Modules.both.checkUrlValidity( url );
 
-    try {
-      UserImages.insert({
-        url: url,
-        userId: Meteor.userId(),
-        type: info.type,
-        name: info.name,
-        size: info.size,
-        added: new Date(),
-        isThumbnail: false,
-        lastModifiedDate: info.lastModifiedDate
-      });
-    } catch( exception ) {
-      return exception;
-    }
+    var result = UserImages.insert({
+      url: url,
+      userId: Meteor.userId(),
+      type: info.type,
+      name: info.name,
+      size: info.size,
+      added: new Date(),
+      isThumbnail: false,
+      lastModifiedDate: info.lastModifiedDate
+    });
+    return result
+    // UserImages.insert({
+    //   url: url,
+    //   userId: Meteor.userId(),
+    //   type: info.type,
+    //   name: info.name,
+    //   size: info.size,
+    //   added: new Date(),
+    //   isThumbnail: false,
+    //   lastModifiedDate: info.lastModifiedDate
+    // }, function(err, result){
+    //   if (err){
+    //     callback(err);
+    //   }else{
+    //     callback(null, result)
+    //   }
+    // });
+
   },
 
-  storeThumbnailUrlInDatabase: function(info,  originalImageId ) {
+  storeThumbnailUrlInDatabase: function(info,  originalImageId, callback) {
       storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
         if (err){
-          throw new Meteor.Error(err);
+          callback(err)
         }else{
-          console.log('Saved Thumbnail',result)
+          console.log('Saved Thumbnail',result);
+          callback(null, result)
         }
       });
   },
