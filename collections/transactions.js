@@ -27,6 +27,11 @@ TransactionSchema = new SimpleSchema({
     // }
   },
 
+  eventName: {
+    type: String,
+    label: "Event Name"
+  },
+
 
   performanceType: {
     type: String,
@@ -36,8 +41,7 @@ TransactionSchema = new SimpleSchema({
 
   sessionCount: {
     type: Number,
-    label: "Session Count",
-    optional: true
+    label: "Session Count"
   },
 
   repertoire: {
@@ -62,6 +66,11 @@ TransactionSchema = new SimpleSchema({
   endDate: {
     type: Date,
     label: "End Date"
+  },
+
+  eventTime: {
+    type: String,
+    label: 'Event Time'
   },
 
   rating: {

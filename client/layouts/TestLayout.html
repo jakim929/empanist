@@ -10,18 +10,38 @@
 
 
       <main>
-        <button class='btn justifyNow'>Justify Now</button>
-        <div id='testJustifiedGallery'>
+
+
+        {{#autoForm id='testerAutoform' collection='Transactions' type='insert'}}
+          {{>afFieldInput name='startDate' type='pickadate'}}
+        {{/autoForm}}
+
+
+        <!-- <div class='testblur'></div> -->
+        		<ul class="caption-style-1">
+        			<li>
+        				<img src="/images/profile.png" class='profile-picture' alt="">
+        				<div class="caption">
+        					<div class="semi-blur"></div>
+        					<div class="caption-text">
+        						<a href='/'><h7 class='hover-font-size'><div class='icon-align'><i class='material-icons'>photo_camera</i></div>&nbsp;&nbsp;Update Profile Picture</h7></a>
+        					</div>
+        				</div>
+        			</li>
+        		</ul>
+
+        <!-- <button class='btn justifyNow'>Justify Now</button>
+        <div class='hidden' id='testJustifiedGallery'>
           {{#each imageArray}}
             <a href=''>
-              <img alt="caption for image 1" src='{{this.url}}' />
+              <img alt="caption for image 1" height='{{this.height}}px' width='{{this.width}}px' src='{{this.url}}'/>
             </a>
           {{/each}}
-        </div>
+        </div> -->
 
 
 
-        <!-- {{> SimplePicturePicker}} -->
+        {{> SimplePicturePicker}}
 
         <div class="row">
           <div class="col s6">

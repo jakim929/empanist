@@ -67,8 +67,8 @@
     <div class="card-content center">
       <span class="black-text">
           <img class="responsive-img bg-cover" src="{{coverPicById accompanist}}"/>
-          <div class="limit-width-30 overlap-into-top-image"><img src="{{profilePicById accompanist}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
-
+            <div class="limit-width-30 overlap-into-top-image"><img src="{{profilePicById accompanist}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+              {{>Template.dynamic template="statusBadge" data=status}}
         <div class="container">
           {{#with basicProfileById accompanist}}
             <h6>{{name}}</h6>
@@ -76,8 +76,6 @@
         </div>
 
           <p>{{sessionCount}} sessions<br>{{formatDuration startDate endDate}}</p><br>
-          {{>Template.dynamic template="statusBadge" data=status}}<br>
-
 
           <div class="container">
             <div class="divider"></div><br>
@@ -96,13 +94,19 @@
 
 
 <template name="statusBadge">
-    <!-- <div class="card no-margin z-depth-0 {{getClass this}} statusBadge">
-      <div class="center">
-        {{this}}
+    <!-- <div class='col s12'>
+      <div class="card no-margin z-depth-0 {{getClass this}} statusBadge">
+        <div class="center">
+          {{this}}
+        </div>
       </div>
     </div> -->
 
-  <span class="new center-badge badge left {{getClass this}}" data-badge-caption="{{this}}"></span>
+    <div class='chip {{getClass this}}'>
+      {{this}}
+    </div>
+
+  <!-- <span class="new center-badge badge left {{getClass this}}" data-badge-caption="{{this}}"></span> -->
 </template>
 
 <template name="SentBookings">

@@ -94,8 +94,8 @@
         <div class="col s12">
           <ul class="tabs">
 
-            <li class="tab col s3"><a class="active" href="#choose-picture">1. Choose/Upload Picture</a></li>
-            <li class="tab col s3"><a class="edit-thumbnail-tab" href="#edit-thumbnail">2. Edit Thumbnail</a></li>
+            <li class="tab col s3"><a class="active" href="#choose-picture">Choose/Upload Picture</a></li>
+            <li class="tab col s3"><a class="edit-thumbnail-tab" href="#edit-thumbnail">Edit Thumbnail</a></li>
           </ul>
           <div class="divider"></div>
         </div>
@@ -118,7 +118,7 @@
 
                 <br>
                 <div class='col s10 push-s1'>
-                  {{> ProfilePictureDropzone }}
+                  {{> ProfilePictureDropzone }}<br>
                 </div>
             </div>
         </div>
@@ -140,9 +140,11 @@
       </div>
     {{/with}} -->
     {{#with imageArray}}
-      <div id='imagePickerGallery'>
+      <div class='hidden' id='imagePickerGallery'>
         {{#each this}}
-          <div><img data-imageid={{_id}} class="z-depth-1 responsive-img image-selection {{selectionStatus _id}}" src="{{url}}"/></div>
+          <a href='' class='select-image-for-profile'>
+            <img data-imageid={{_id}} class="z-depth-1 responsive-img image-selection {{selectionStatus _id}}" src="{{url}}"/>
+          </a>
         {{/each}}
       </div>
     {{/with}}
@@ -192,7 +194,7 @@
     <button class="save-profile-thumbnail btn center col s6 push-s3">Save {{../picType}} Thumbnail</button><br><br>
   </div>
   {{else}}
-    {{#with getImageUrl (profilePicById this.userId)}}
+    {{#with myProfilePic}}
       <div class="row">
         <div class="col s8 push-s2">
           <img id="crop-image" src={{this}}>

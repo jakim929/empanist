@@ -120,37 +120,45 @@
 
 <template name="bookAccompanistForm">
   {{#with routeAccompanist}}
-    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
+    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="update"}}
       {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
+      <div class='center'><h6>Book Accompanist</h6></div>
+      <div class='container'><div class='divider'></div></div>
+
       <br>
       <div class="row">
-        <div class="col s5">
-          <label for="startDateBookAccomp" class="active">Start Date</label>
-          {{> afFieldInput name="startDate" id="startDateBookAccomp" type="date" }}
+
+        <div class="col s6">
+          <div class='input-field tooltipped' data-position='left' data-tooltip='Final event date'>
+            {{> afFieldInput name="endDate" value=urlEndDate id="endDateBookAccompanist" type="pickadate"}}
+            <label for="endDateBookAccompanist" class='active'>Event Date</label>
+          </div>
         </div>
-        <div class="col s2">
-          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
-        </div>
-        <div class="col s5">
-          <label for="endDateBookAccompanist" class="active">End Date</label>
-          {{> afFieldInput name="endDate" id="endDateBookAccompanist" type="date" }}
+        <div class="col s6">
+          <div class='input-field tooltipped' data-position='top' data-tooltip='Total number of sessions (rehearsal and performance)'>
+            {{> afFieldInput name="sessionCount" id="sessionCountBookAccompanist" class='validate' type="select" options=sessionsOptions }}
+            <label for="sessionCountBookAccompanist">No. of Sessions</label>
+          </div>
         </div>
       </div>
 
-       <label for="pt" class="active">Performance Type</label>
-      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
+      <div class='input-field tooltipped' data-position='left' data-tooltip='Type of event (recital, audition, recording, etc.)'>
+        {{> afFieldInput name="performanceType" id="pt" type="select" class='validate' options="allowed"}}
+        <label for="pt">Event Type</label>
+      </div>
+
 
       <!-- {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}} -->
 
     {{/autoForm}}
 
-    {{#if FieldsValid fields "bookAccompanistForm"}}
+    <!-- {{#if FieldsValid fields "bookAccompanistForm"}} -->
       <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
-      {{else}}
+      <!-- {{else}}
       <div class="center"><button class="btn wave-light disabled" disabled>Request To Book</button></div>
-    {{/if}}
+    {{/if}} -->
 
   {{else}}
     Not on an accompanist page.
@@ -181,7 +189,18 @@
                         </a>
                       {{/with}}
                     {{else}}
-                      {{> Template.dynamic template='PictureModal' data=getProfileData}}
+                      <ul class="caption-style-1">
+                        <li>
+                          <img src="{{myProfilePic}}" class='profile-picture' alt="">
+                          <div class="caption">
+                            <div class="semi-blur"></div>
+                            <div class="caption-text">
+                              <a class='modal-trigger' href='#profile-specialized-modal'><h7 class='hover-font-size'><div class='icon-align'><i class='material-icons'>photo_camera</i></div>&nbsp;&nbsp;Update Profile Picture</h7></a>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      {{> ProfilePictureModal}}
                     {{/unless}}
                 </div>
               </div>

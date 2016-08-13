@@ -78,27 +78,78 @@
   {{/with}}
 </template>
 
-<template name="SessionReview">
-  <h5>1. Sessions</h5>
+<template name='EventReview'>
+
+  <h5>1. Event</h5>
 
   <div class="divider"></div><br>
   {{#with currentTransaction}}
-      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+      {{#autoForm id="UpdateEventInformation" collection="Transactions" type="update" doc=this}}
         <!-- Pre-Filled from previous page -->
         {{> afQuickField name="startDate" type="hidden"}}
         {{> afQuickField name="endDate" type="hidden"}}
         {{> afQuickField name="status" type="hidden"}}
         {{> afQuickField name="accompanist" type="hidden"}}
 
+
         <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
         {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
+
+          Where is the location of the final performance?
+          {{> afQuickField name="performanceLocation" label="Performance Location"}}
+      {{/autoForm}}
+  {{else}}
+      <!-- Some kind of error prevented transaction from being carried over-->
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        {{> afQuickField name="startDate"}}
+        {{> afQuickField name="endDate"}}
+        {{> afQuickField name="repertoire"}}
+        {{> afQuickField name="status" type="hidden" value="Pending"}}
+        {{> afQuickField name="accompanist" type="hidden" value=routeAccompanist}}
 
           How many sessions? (Rehearsal and Performance)
           <div class="row">
             <div class="col s4">
-              {{> afQuickField name="sessionCount" label=false type="select"  options=sessionsOptions }}
+              {{> afQuickField name="sessionCount" label=false type="select" defaultValue=defaultSessionCount firstOption="1 session" options=sessionsOptions }}
             </div>
-          </div>
+          </div><br>
+
+      {{/autoForm}}
+  {{/with}}
+
+
+  {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
+    {{> afQuickField name="sessionType" value="Rehearsal" type="hidden"}}
+    {{> afQuickField name="status" value="Pending" type="hidden"}}
+    {{> afQuickField name="firstSession" value="true" type="hidden"}}
+
+    When would you like to have your FIRST session?<br><br>
+    {{> afFieldInput id="firstSessionDate" name="date" type="date"}}
+    <br><br>
+    Suggest some times for the FIRST session? (At least 2)<br><br>
+    <!-- {{> afQuickField name="suggestedTimes" }} -->
+    <!-- {{> afArrayField name="suggestedTimes" template="newAccompCustomArrayField" data="sessionTime"}} -->
+    {{> afFieldInput id="firstSuggestedHours" name="suggestedHours" type="time-checkboxes" options=optionsArray}} <br>
+
+  {{/autoForm}}
+</template>
+
+
+<template name="SessionReview">
+
+  <h5>2. Sessions</h5>
+
+  <div class="divider"></div><br>
+  {{#with currentTransaction}}
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        <!-- Pre-Filled from previous page -->
+        {{> afQuickField name="startDate" type="time"}}
+        {{> afQuickField name="endDate" type="hidden"}}
+        {{> afQuickField name="status" type="hidden"}}
+        {{> afQuickField name="accompanist" type="hidden"}}
+
+        <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
+        {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
 
           Where is the location of the final performance?
           {{> afQuickField name="performanceLocation" label="Performance Location"}}

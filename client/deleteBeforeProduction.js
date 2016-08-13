@@ -1,5 +1,5 @@
 Template.TestLayout.events({
-  'click button' (event, template){
+  'click button.add-fake-users' (event, template){
 
 
     Session.set('numberOfUsers', $('#numberOfUsers')[0].value);
@@ -19,7 +19,6 @@ Template.TestLayout.events({
       clearInterval(Session.get('insertTimer'));
       console.log("Insert Finished.")
     });
-
 
 
 

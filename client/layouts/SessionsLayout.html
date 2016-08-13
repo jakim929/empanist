@@ -38,7 +38,7 @@
 
       <div class="row">
         <div class="col s12">
-          <table class="highlight striped">
+          <!-- <table class="highlight striped">
             <thead>
               <tr>
                  <th data-field="session">Session</th>
@@ -56,7 +56,54 @@
               {{/each}}
 
             </tbody>
-          </table>
+          </table> -->
+          Click on a session to see details
+          <ul class="collapsible z-depth-0" data-collapsible="accordion">
+            {{#each scheduledSessions}}
+            <li>
+              <div class="collapsible-header">
+                <div class='row'>
+                    <div class='col l3 m3 s5'>
+                      {{sessionType}}
+                    </div>
+                    <div class='col l5 m5 s7'>
+                      {{formatDate date}}
+                    </div>
+                    <div class='col l3 m3 s9'>
+                      <div class='left'>
+                        {{>Template.dynamic template="statusBadge" data=status}}
+                      </div>
+                    </div>
+                    <div class='col l1 m1 s3'>
+                        <i class='material-icons teal-text'>keyboard_arrow_down</i>
+                    </div>
+                  </div>
+                </div>
+              <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+            </li>
+            {{/each}}
+          </ul>
+
+
+          <!-- <ul class='collection'>
+            {{#each scheduledSessions}}
+            <li class='collection-item'>
+              <div class='row'>
+                <div class='col s3'>
+                  {{sessionType}}
+                </div>
+                <div class='col s3'>
+                  {{formatDate date}}
+                </div>
+                <div class='col s4'>
+                  {{>Template.dynamic template="statusBadge" data=status}}
+                </div>
+              </div>
+            </li>
+            {{/each}}
+          </ul> -->
+
+
           <br>
           <button class="btn col s12 activator">Add Another Session</button>
         </div>

@@ -21,11 +21,14 @@ let uploadThumbnail = (blob, imageId, type) => {
 }
 
 let addThumbnailToDatabase = (file, url, originalImageId, type) => {
+  console.log(file);
   var info = {
     url: url,
     name: file.name,
     size: file.size,
     type: file.type,
+    height: file.height,
+    width: file.width
   }
     Meteor.call( "saveThumbnailAs", info, originalImageId, type, ( error ) => {
       if ( error ) {
@@ -39,11 +42,14 @@ let addThumbnailToDatabase = (file, url, originalImageId, type) => {
 let addImageToDatabase = (file, type) => {
   // Sanity Check
   if(file.status == "success"){
+    console.log(file)
     var info = {
       name: file.name,
       lastModifiedDate: file.lastModifiedDate,
       size: file.size,
       type: file.type,
+      height: file.height,
+      width: file.width,
       key: file.postData[0].value
     }
     // Meteor.call( "storeImageUrlInDatabase", info, (error , result) => {
@@ -56,7 +62,7 @@ let addImageToDatabase = (file, type) => {
     // });
     Meteor.call('storeImageUrlInDatabase', info, function(error, result){
       if(error){
-        throw new Meteor.Error(error)
+        Bert.alert( error.reason, "warning" );
       }else{
         Session.set('currentImage', result);
       }
@@ -65,17 +71,52 @@ let addImageToDatabase = (file, type) => {
 };
 
 Template.ProfilePictureModal.onCreated(function(){
-  var profileDoc = BasicProfiles.findOne({userId: Meteor.userId(), profilePic: {$exists: true}})
-  if (profileDoc){
+  var profileDoc = BasicProfiles.findOne({userId: Meteor.userId()})
+  console.log(profileDoc)
+  if (profileDoc && profileDoc.profilePic){
     Session.set('currentImage', profileDoc.profilePic)
   }else{
     Session.set('currentImage', false)
   }
+
+});
+
+Template.ProfilePictureModal.onRendered(function(){
+  $('ul.tabs').tabs({
+    onShow: function(tab){
+      if ($(tab[0]).attr('id') == 'edit-thumbnail'){
+        var imageDoc = UserImages.findOne(Session.get('currentImage'));
+        if(imageDoc){
+          $('#crop-image').cropper({
+            aspectRatio:1
+          })
+          $('#crop-image').cropper('replace', imageDoc.url);
+        }
+      }
+    }
+  })
+  // $('ul.tabs').tabs('select_tab', 'choose-picture')
+
+  Tracker.autorun(function(){
+    let currentImage = Session.get('currentImage');
+    if(currentImage){
+      $('ul.tabs').tabs('select_tab', 'edit-thumbnail');
+    }
+  })
 })
+
 
 Template.ImagesLayout.onRendered(function(){
   $('.parallax').parallax();
-  $('.modal-trigger').leanModal();
+  $('.modal-trigger').leanModal({
+    ready: function(){
+      var profileDoc = BasicProfiles.findOne({userId: Meteor.userId()})
+      console.log(profileDoc)
+      if (profileDoc && profileDoc.profilePic){
+        Session.set('currentImage', profileDoc.profilePic)
+      }
+    }
+  });
 })
 
 Template.accountTemplate.helpers({
@@ -173,6 +214,11 @@ Template.PictureModal.events({
 })
 
 Template.EditProfileThumbnail.events({
+  'load img'(event, template){
+    $('#crop-image').cropper({
+      aspectRatio: 1
+    });
+  },
   'click .save-profile-thumbnail': function (event, template) {
     var imgSrc = $('#crop-image').attr('src');
     var imgDoc = UserImages.findOne({url : imgSrc}, {_id: 1})
@@ -200,13 +246,12 @@ Template.EditProfileThumbnail.helpers({
     }
   },
   getCurrentImage(){
-    if(!Session.get('currentImages')){
-      return Session.get('currentImages');
-    }
+    return Session.get('currentImage');
   }
 })
 
 Template.EditThumbnailPanel.events({
+
   'click .save-profile-thumbnail': function (event, template) {
     var imgSrc = $('#crop-image').attr('src');
     var imgDoc = UserImages.findOne({url : imgSrc}, {_id: 1})
@@ -257,6 +302,18 @@ Template.SimplePicturePicker.helpers({
 
 
 Template.SimplePicturePicker.events({
+  'load img' (event,template){
+    $('#imagePickerGallery').justifiedGallery({
+      margins: 4
+    });
+    $('#imagePickerGallery').removeClass('hidden')
+  },
+  'click .select-image-for-profile' (event, template){
+    console.log('clicked select image for profile');
+    var currentTarget = $(event.target);
+    Session.set('currentImage', currentTarget[0].dataset.imageid)
+  },
+
   'click .image-selection' (event, template){
     var currentTarget = $(event.target);
     template.selectedImageId.set(currentTarget[0].dataset.imageid);
@@ -400,10 +457,17 @@ Template.PicturePicker.onCreated(function() {
 
 
 Template.TestLayout.onRendered(function(){
-})
+
+
+});
 
 Template.TestLayout.events({
+  'load img'(event, template){
+    $('#testJustifiedGallery').justifiedGallery();
+    $('#testJustifiedGallery').removeClass('hidden');
+  },
   'click .justifyNow' (event, template){
+    //
     $('#testJustifiedGallery').justifiedGallery();
 
   }

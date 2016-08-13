@@ -153,6 +153,8 @@ var storeThumbnailUrlInDatabase = function (info, originalImageId, callback){
       type: info.type,
       name: info.name,
       size: info.size,
+      height: info.height,
+      width: info.width,
       added: new Date(),
       isThumbnail:true
     }, function (err, finalResult){
@@ -254,6 +256,8 @@ Meteor.methods({
       type: info.type,
       name: info.name,
       size: info.size,
+      height: info.height,
+      width: info.width,
       added: new Date(),
       isThumbnail: false,
       lastModifiedDate: info.lastModifiedDate
