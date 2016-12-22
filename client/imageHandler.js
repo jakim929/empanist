@@ -1,5 +1,3 @@
-
-
 let uploadThumbnail = (blob, imageId, type) => {
   // Check if blob type is image
   if(blob.type.indexOf( 'image/' ) >= 0){
@@ -23,11 +21,14 @@ let uploadThumbnail = (blob, imageId, type) => {
 }
 
 let addThumbnailToDatabase = (file, url, originalImageId, type) => {
+  console.log(file);
   var info = {
     url: url,
     name: file.name,
     size: file.size,
     type: file.type,
+    height: file.height,
+    width: file.width
   }
     Meteor.call( "saveThumbnailAs", info, originalImageId, type, ( error ) => {
       if ( error ) {
@@ -38,8 +39,84 @@ let addThumbnailToDatabase = (file, url, originalImageId, type) => {
     });
 };
 
+let addImageToDatabase = (file, type) => {
+  // Sanity Check
+  if(file.status == "success"){
+    console.log(file)
+    var info = {
+      name: file.name,
+      lastModifiedDate: file.lastModifiedDate,
+      size: file.size,
+      type: file.type,
+      height: file.height,
+      width: file.width,
+      key: file.postData[0].value
+    }
+    // Meteor.call( "storeImageUrlInDatabase", info, (error , result) => {
+    //   if ( error ) {
+    //     Bert.alert( error.reason, "warning" );
+    //   } else {
+    //     Bert.alert( "Image uploaded!", "success" );
+    //     Session.set('currentImage', result);
+    //   }
+    // });
+    Meteor.call('storeImageUrlInDatabase', info, function(error, result){
+      if(error){
+        Bert.alert( error.reason, "warning" );
+      }else{
+        Session.set('currentImage', result);
+      }
+    })
+  }
+};
+
+Template.ProfilePictureModal.onCreated(function(){
+  var profileDoc = BasicProfiles.findOne({userId: Meteor.userId()})
+  console.log(profileDoc)
+  if (profileDoc && profileDoc.profilePic){
+    Session.set('currentImage', profileDoc.profilePic)
+  }else{
+    Session.set('currentImage', false)
+  }
+
+});
+
+Template.ProfilePictureModal.onRendered(function(){
+  $('ul.tabs').tabs({
+    onShow: function(tab){
+      if ($(tab[0]).attr('id') == 'edit-thumbnail'){
+        var imageDoc = UserImages.findOne(Session.get('currentImage'));
+        if(imageDoc){
+          $('#crop-image').cropper({
+            aspectRatio:1
+          })
+          $('#crop-image').cropper('replace', imageDoc.url);
+        }
+      }
+    }
+  })
+  // $('ul.tabs').tabs('select_tab', 'choose-picture')
+
+  Tracker.autorun(function(){
+    let currentImage = Session.get('currentImage');
+    if(currentImage){
+      $('ul.tabs').tabs('select_tab', 'edit-thumbnail');
+    }
+  })
+})
+
+
 Template.ImagesLayout.onRendered(function(){
   $('.parallax').parallax();
+  $('.modal-trigger').leanModal({
+    ready: function(){
+      var profileDoc = BasicProfiles.findOne({userId: Meteor.userId()})
+      console.log(profileDoc)
+      if (profileDoc && profileDoc.profilePic){
+        Session.set('currentImage', profileDoc.profilePic)
+      }
+    }
+  });
 })
 
 Template.accountTemplate.helpers({
@@ -136,7 +213,45 @@ Template.PictureModal.events({
   // }
 })
 
+Template.EditProfileThumbnail.events({
+  'load img'(event, template){
+    $('#crop-image').cropper({
+      aspectRatio: 1
+    });
+  },
+  'click .save-profile-thumbnail': function (event, template) {
+    var imgSrc = $('#crop-image').attr('src');
+    var imgDoc = UserImages.findOne({url : imgSrc}, {_id: 1})
+    if (imgSrc && imgDoc){
+      originalImageId = imgDoc._id
+      var canvas = $("#crop-image").cropper('getCroppedCanvas')
+      if(canvas && canvas.toBlob){
+        canvas.toBlob(function (blob){
+          uploadThumbnail(blob, originalImageId, "Profile")
+
+          // Worry about async later
+        })
+      }
+    }
+  },
+});
+
+Template.EditProfileThumbnail.helpers({
+  getImageUrl(imageId) {
+    if((imageId != '') && (imageId != undefined) && (imageId != false)){
+      var imageDoc = UserImages.findOne(imageId);
+      if (imageDoc){
+        return imageDoc.url
+      }
+    }
+  },
+  getCurrentImage(){
+    return Session.get('currentImage');
+  }
+})
+
 Template.EditThumbnailPanel.events({
+
   'click .save-profile-thumbnail': function (event, template) {
     var imgSrc = $('#crop-image').attr('src');
     var imgDoc = UserImages.findOne({url : imgSrc}, {_id: 1})
@@ -154,6 +269,132 @@ Template.EditThumbnailPanel.events({
   },
 
 });
+
+
+Template.SimplePicturePicker.helpers({
+  getPicType () {
+    return Template.instance().pictureType.get()
+  },
+
+  getImageUrl (imageId) {
+    var imageDoc = UserImages.findOne(imageId);
+    if (imageDoc){
+      return imageDoc.url
+    }
+  },
+
+  imageArray () {
+    // Just get the ones needed
+    var x= UserImages.find({userId: Meteor.userId(), isThumbnail:false}).fetch()
+    console.log(x)
+    return x
+  },
+
+  selectionStatus (imageId) {
+    if (imageId == Template.instance().selectedImageId.get()){
+      return 'selected-border'
+    }else{
+      return 'unselected-border'
+    }
+  }
+});
+
+
+
+Template.SimplePicturePicker.events({
+  'load img' (event,template){
+    $('#imagePickerGallery').justifiedGallery({
+      margins: 4
+    });
+    $('#imagePickerGallery').removeClass('hidden')
+  },
+  'click .select-image-for-profile' (event, template){
+    console.log('clicked select image for profile');
+    var currentTarget = $(event.target);
+    Session.set('currentImage', currentTarget[0].dataset.imageid)
+  },
+
+  'click .image-selection' (event, template){
+    var currentTarget = $(event.target);
+    template.selectedImageId.set(currentTarget[0].dataset.imageid);
+  },
+  'click button.set-Profile' (event, template){
+    var imageId = template.selectedImageId.get()
+    if(imageId != ''){
+      // Check if imageid is legitimate
+        Meteor.call('setProfilePicture', imageId);
+    }
+  },
+  'click button.set-Cover' (event, template){
+    var imageId = template.selectedImageId.get()
+    if(imageId != ''){
+      // Check if imageid is legitimate
+        Meteor.call('setCoverPicture', imageId);
+    }
+  },
+});
+
+Template.SimplePicturePicker.onCreated(function() {
+  this.selectedImageId = new ReactiveVar('');
+  this.pictureType = new ReactiveVar('Profile');
+});
+
+Template.SimplePicturePicker.onRendered(function() {
+  $("#imagePickerGallery").justifiedGallery({
+    rowHeight : 70
+  });
+});
+
+
+
+Template.ProfilePictureDropzone.onCreated(function (){
+
+  Meteor.Dropzone.options = {
+    url: "https://s3.amazonaws.com/empanist-images",
+    maxFiles: 1,
+    accept: function(file, done) {
+      var upload = new Slingshot.Upload("uploadImageToAmazonS3")
+      var options = this.options;
+
+        upload.file = file;
+        upload.request(function (error, instructions) {
+            if (error)
+                done(error.message);
+            else {
+                options.url = instructions.upload;
+                file.postData = instructions.postData;
+                done();
+            }
+        });
+    },
+    sending: function(file, xhr, formData) {
+      _.each(file.postData, function(field){
+          formData.append(field.name, field.value);
+      });
+    },
+    success: function (file, serverResponse) {
+      if(Meteor.isDevelopment) console.log(file)
+      addImageToDatabase(file)
+    }
+  }
+
+})
+
+Template.ProfilePictureDropzone.events({
+  'mouseover .dropzone': function (event, template) {
+    $('.dz-message').addClass('blue-text text-darken-2');
+  },
+  'mouseout .dropzone': function (event, template) {
+    var selector = $('.dz-message')
+    if(selector.hasClass('blue-text text-darken-2')){
+      selector.removeClass('blue-text text-darken-2')
+    }
+  },
+
+})
+
+
+//////////////////////////////////////////
 
 
 Template.PicturePicker.helpers({
@@ -213,3 +454,31 @@ Template.PicturePicker.onCreated(function() {
   this.selectedImageId = new ReactiveVar('');
   this.pictureType = new ReactiveVar('Profile');
 });
+
+
+Template.TestLayout.onRendered(function(){
+
+
+});
+
+Template.TestLayout.events({
+  'load img'(event, template){
+    $('#testJustifiedGallery').justifiedGallery();
+    $('#testJustifiedGallery').removeClass('hidden');
+  },
+  'click .justifyNow' (event, template){
+    //
+    $('#testJustifiedGallery').justifiedGallery();
+
+  }
+
+})
+
+Template.TestLayout.helpers({
+  imageArray () {
+    // Just get the ones needed
+    var x= UserImages.find({userId: Meteor.userId(), isThumbnail:false}).fetch()
+    console.log(x)
+    return x
+  },
+})

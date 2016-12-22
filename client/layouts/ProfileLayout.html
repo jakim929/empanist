@@ -106,34 +106,44 @@
   </div>
 </template>
 
+
 <template name="bookAccompanistForm">
   {{#with routeAccompanist}}
-    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
+    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="update"}}
       {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
       {{> afQuickField name="accompanist" value=this type="hidden"}}
       {{> afQuickField name="status" value="Pending" type="hidden"}}
+      <div class='center'><h6>Book Accompanist</h6></div>
+      <div class='container'><div class='divider'></div></div>
+
       <br>
       <div class="row">
-        <div class="col s5">
-          <label for="startDateBookAccomp" class="active">Start Date</label>
-          {{> afFieldInput name="startDate" id="startDateBookAccomp" type="date" }}
+
+        <div class="col s6">
+          <div class='input-field tooltipped' data-position='left' data-tooltip='Final event date'>
+            {{> afFieldInput name="endDate" value=urlEndDate id="endDateBookAccompanist" type="pickadate"}}
+            <label for="endDateBookAccompanist" class='active'>Event Date</label>
+          </div>
         </div>
-        <div class="col s2">
-          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
-        </div>
-        <div class="col s5">
-          <label for="endDateBookAccompanist" class="active">End Date</label>
-          {{> afFieldInput name="endDate" id="endDateBookAccompanist" type="date" }}
+        <div class="col s6">
+          <div class='input-field tooltipped' data-position='top' data-tooltip='Total number of sessions (rehearsal and performance)'>
+            {{> afFieldInput name="sessionCount" id="sessionCountBookAccompanist" class='validate' type="select" options=sessionsOptions }}
+            <label for="sessionCountBookAccompanist">No. of Sessions</label>
+          </div>
         </div>
       </div>
 
-       <label for="pt" class="active">Performance Type</label>
-      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
+      <div class='input-field tooltipped' data-position='left' data-tooltip='Type of event (recital, audition, recording, etc.)'>
+        {{> afFieldInput name="performanceType" id="pt" type="select" class='validate' options="allowed"}}
+        <label for="pt">Event Type</label>
+      </div>
+
 
       <!-- {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}} -->
 
     {{/autoForm}}
 
+<<<<<<< HEAD
     {{#if loggedIn}}
       {{#if FieldsValid fields "bookAccompanistForm"}}
         <div class="center"><button class="btn wave-light book-accompanist" >Request To Book</button></div>
@@ -143,6 +153,13 @@
       {{else}}
        <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request To Book</button></div> 
     {{/if}}
+=======
+    <!-- {{#if FieldsValid fields "bookAccompanistForm"}} -->
+      <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
+      <!-- {{else}}
+      <div class="center"><button class="btn wave-light disabled" disabled>Request To Book</button></div>
+    {{/if}} -->
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 
   {{else}}
     Not on an accompanist page.
@@ -152,6 +169,7 @@
   <h2>Invalid ID</h2>
 </template>
 
+
 <!-- SECTION: Basic Information Card -->
 
 <template name="accountTemplate">
@@ -159,6 +177,7 @@
     <div id="first-card-container" class="card grey lighten-5 z-depth-0">
       <div class="card-content">
         <span class="black-text activator">
+<<<<<<< HEAD
             <!-- <div class="row"> -->
               <div class="profileImg">
                 {{#unless isOwnProfile}}
@@ -172,6 +191,35 @@
                 {{else}}
                   {{> Template.dynamic template='PictureModal' data=getProfileData}}
                 {{/unless}}
+=======
+          <div class="all">
+            <div class="row">
+              <div class="col s5">
+                <div id="profileImg">
+                    {{#unless isOwnProfile}}
+                      {{#with currentProfilePic}}
+                        <a class="waves-effect waves-light">
+                          <div>
+                            <img class="profile-picture"  src={{currentProfilePic}}>
+                          </div>
+                        </a>
+                      {{/with}}
+                    {{else}}
+                      <ul class="caption-style-1">
+                        <li>
+                          <img src="{{myProfilePic}}" class='profile-picture' alt="">
+                          <div class="caption">
+                            <div class="semi-blur"></div>
+                            <div class="caption-text">
+                              <a class='modal-trigger' href='#profile-specialized-modal'><h7 class='hover-font-size'><div class='icon-align'><i class='material-icons'>photo_camera</i></div>&nbsp;&nbsp;Update Profile Picture</h7></a>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      {{> ProfilePictureModal}}
+                    {{/unless}}
+                </div>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
               </div>
               <div class="profileData">
                   <h4>{{name}}</h4>
@@ -220,6 +268,7 @@
 
       {{#if anyArrayisEmpty instruments awards musicPrograms orchestras}}
       <div class="col s12 center">
+
         <h7> <span class="weight"> Add a section to your profile – </span> strengthen your profile!</h7>
       </div>
       {{/if}}
@@ -461,7 +510,8 @@
 
 <template name="InstList">
   {{#each this}}
-    <h10>{{this.instrument}}, {{this.yearsPlayed}} yr</h10><br><br>
+    <h7><b>{{this.instrument}}</b><br></h7>
+    Has been playing for {{this.yearsPlayed}} years<br><br>
   {{/each}}
 </template>
 
@@ -476,8 +526,13 @@
 
 <template name="programsList">
   {{#each this}}
+<<<<<<< HEAD
     <span class="right">{{this.startMonth}}, {{this.startYear}} - {{this.endMonth}}, {{this.endYear}}</span>    
     {{programName}}
+=======
+    <span class="right">{{formatDuration this.startDate this.endDate}}</span>
+    <b>{{programName}}</b>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     <br><br>
   {{/each}}
 </template>

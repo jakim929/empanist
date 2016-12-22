@@ -81,10 +81,11 @@
 
 <template name="RequestTypeCollections">
 
+
   <ul class="collection">
     {{#each this}}
       {{#with musicProfileById musician}}
-      <a class="collection-item grey lighten-5 avatar black-text select-transaction-for-review {{getSelectionClass ../id}}" data-transactionid='{{../_id}}'>
+      <a href="" class="collection-item grey lighten-5 avatar black-text select-transaction-for-review {{getSelectionClass ../id}}" data-transactionid='{{../_id}}'>
         {{#with (getProfilePictureById ../musician)}}
         <img src="{{this}}" alt="" class="circle responsive-img" style="border:3px solid white">
         {{else}}

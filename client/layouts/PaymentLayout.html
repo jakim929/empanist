@@ -3,22 +3,47 @@
         <h1> Payment </h1>
     </header>
     <main>
-      {{> StripeCheckout }}
+      <div class="row">
+        <div class="col s12 m5">
+          <div class="card-panel payment-card">
+              {{> PaymentCheckout }}
+          </div>
+        </div>
+      </div>
+
+
     </main>
 </template>
 
 
-<template name="StripeCheckout">
-  <form action="" method="POST">
-    <script
-      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-      data-key="pk_test_F5YQcuYeHVN8GBYmoCxcmPyC"
-      data-amount="999"
-      data-name="Empanist"
-      data-zip-code="true"
-      data-description="Widget"
-      data-image="/img/documentation/checkout/marketplace.png"
-      data-locale="auto">
-    </script>
+
+<template name="PaymentCheckout">
+  <form id="cardForm">
+    <div class="panel">
+      <header class="panel__header">
+        <h4 class='center'>Card Payment</h4>
+      </header>
+
+      <div class="panel__content payment-container">
+        <div class='panel_field_number'>
+          <h6><i class='material-icons icon-align'>credit_card</i> &nbsp;Card Number</h6>
+          <div class='under-border'>
+            <div id='card-number' class='payment-container'></div>
+          </div>
+        </div>
+        <br>
+        <div class='panel_field_cvv'>
+          <h6><i class='material-icons icon-align'>lock</i> &nbsp;CVV</h6>
+          <div id='cvv' class='payment-container'></div>
+        </div>
+        <br>
+        <div class='panel_field_expiration'>
+          <h6><i class='material-icons icon-align'>date_range</i> &nbsp;Expiration Date</h6>
+          <div id='expiration-date' class='payment-container'></div>
+        </div>
+
+      </div>
+
+    </div>
   </form>
 </template>

@@ -1,14 +1,211 @@
 /* CSS declarations go here */
+
 html {
 	font-family: Avenir Next;
 }
 
+<<<<<<< HEAD
 .profile-picture{
 	width: 200px;
 	height: 200px;
 	border-radius: 1%;
 	border:1px solid #eeeeee;
   margin-left: -5px;
+=======
+/*Payment Panel Styling*/
+
+.braintree-hosted-fields-focused {
+  border-bottom: 2px solid #26a69a;
+  transition: all 0.3s;
+}
+
+.braintree-hosted-fields-invalid {
+  border-bottom: 2px solid red;
+  transition: all 70ms ease;
+}
+
+.payment-card{
+	height: 400px;
+}
+
+.payment-container{
+	height: 40px;
+}
+
+.hover-font-size{
+	font-size: 105%;
+}
+
+.icon-align{
+	vertical-align: bottom !important;
+}
+
+	.caption-style-1{
+		list-style-type: none;
+		margin: 0px;
+		padding: 0px;
+
+	}
+
+	.caption-style-1 li{
+		float: left;
+		padding: 0px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.caption-style-1 li:hover .caption{
+		opacity: 1;
+
+	}
+
+
+	.caption-style-1 img{
+		margin: 0px;
+		padding: 0px;
+		float: left;
+		z-index: 4;
+		width: 200px;
+	}
+
+
+	.caption-style-1 .caption{
+		cursor: pointer;
+		position: absolute;
+		opacity: 0;
+		-webkit-transition:all 0.45s ease-in-out;
+		-moz-transition:all 0.45s ease-in-out;
+		-o-transition:all 0.45s ease-in-out;
+		-ms-transition:all 0.45s ease-in-out;
+		transition:all 0.45s ease-in-out;
+
+	}
+
+
+	.semi-blur {
+		background-color: rgba(0, 0, 0, 0.5);
+		top: 130px;
+		height: 70px;
+		width: 200px;
+		z-index: 5;
+		position: absolute;
+	}
+
+
+
+
+
+
+
+	.caption-style-1 .caption-text h1{
+		text-transform: uppercase;
+		font-size: 24px;
+	}
+	.caption-style-1 .caption-text{
+		z-index: 10;
+		color: #fff;
+		position: absolute;
+		width: 200px;
+		height: 70px;
+		text-align: center;
+		top:130px;
+		padding-top: 8px;
+	}
+
+
+
+/*ellipsis truncation*/
+
+.slight-upper-padding {
+	padding-top: 1.5%;
+}
+.slight-right-padding {
+	padding-right: 2%;
+}
+.slight-left-padding {
+	padding-left: 2%;
+}
+
+/* styles for '...' */
+.block-with-text {
+  /* hide text if it more than N lines  */
+  overflow: hidden;
+  /* for set '...' in absolute position */
+  position: relative;
+  /* use this value to count block height */
+  line-height: 1.2em;
+  /* max-height = line-height (1.2) * lines max number (3) */
+  max-height: 3.6em;
+  /* fix problem when last visible word doesn't adjoin right side  */
+  text-align: justify;
+  /* place for '...' */
+  margin-right: -1em;
+  padding-right: 1em;
+}
+/* create the ... */
+.block-with-text:before {
+  /* points in the end */
+  content: '...';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of block */
+  right: 0;
+  bottom: 0;
+}
+/* hide ... if we have text, which is less than or equal to max lines */
+.block-with-text:after {
+  /* points in the end */
+  content: '';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of text */
+  right: 0;
+  /* set width and height */
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  /* bg color = bg color under block */
+  background: white;
+}
+
+
+.semi-bold{
+	font-weight: 500;
+}
+
+
+.less-bottom-padding{
+	padding-top: 12px !important;
+}
+
+.less-upper-margin{
+	margin-top:0 !important;
+}
+
+.normal-button-font{
+	font-size: 15px !important;
+	font-weight: normal !important;
+}
+
+.card-content{
+	background-color: white;
+}
+
+.zero-border-radius {
+	border-radius: 0 !important;
+}
+
+.profile-picture{
+	max-width: 200px;
+	max-height: 200px;
+	/*border-radius: 1%;
+	border:1px solid #eeeeee;*/
+}
+
+.profile-picture-circle{
+	width: 100px;
+	height: 100px;
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 }
 
 .text-shadow-setting{
@@ -40,7 +237,7 @@ html {
 
 
 .image-modal-margins {
-	margin-left: 10px;
+	margin-left: 20px;
 	margin-right: 10px;
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -76,6 +273,7 @@ html {
 	padding:0 0 0 0 !important;
 	margin: 0 0 0 0 !important;
 }
+
 
 .statusBadge {
 	height : 25px;
@@ -225,14 +423,29 @@ h6.id {
     padding-bottom: 3px;
 }
 
+.regular-font-size{
+	font-size: 100%;
+}
+.smaller-font-size{
+	font-size: 85%;
+}
+
+.h7-font-size{
+	font-size: 115%;
+}
+
 
 h6 {
   font-size: 130%;
 }
 
 h7 {
-  font-size: 110%;
+  font-size: 115%;
 }
+h8 {
+  font-size: 100%;
+}
+
 
 body {
   background-color: #eeeeee;
@@ -657,110 +870,6 @@ display:none;
 
 
 
-/*Steppers*/
-
-.stepper .step {
-  position: relative;
-  min-height: 32px;
-  padding: 24px;
-}
-.stepper .step:hover {
-  background: #F6F6F6;
-}
-.stepper .step > div:first-child {
-  position: static; height: 0;
-}
-.stepper .step > div:last-child {
-  margin-left: 32px;
-  padding-left: 16px;
-  min-height: 24px;
-}
-.stepper .circle {
-  background: #4285f4;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  border-radius: 16px;
-  position: relative;
-  color: white;
-  text-align: center;
-}
-.stepper .line {
-  position: absolute;
-    border-left: 1px solid gainsboro;
-    left: 40px;
-    bottom: -12px;
-    top: 68px;
-    z-index: 1;
-}
-.stepper .step:last-child .line {
-  display: none !important;
-}
-.stepper .title {
-  line-height: 32px;
-  font-weight: 500;
-}
-.stepper .body {
-  padding-bottom: 28px;
-    padding-top: 8px;
-}
-.stepper .description {
-  line-height: 0.1;
-    font-size: 1em;
-    padding-bottom: 24px;
-    color: #989898;
-}
-/** Horizontal **/
-.stepper.horizontal {
-  line-height: 72px;
-  position: relative;
-}
-.stepper.horizontal .step {
-  display: inline-block;
-}
-.stepper.horizontal .step .line, .stepper.horizontal .step .circle, .stepper.horizontal .step .title {
-  display: inline-block;
-}
-.stepper.horizontal .step .line {
-  border-left: 0px;
-  position: inherit;
-  border-top: 1px solid gainsboro;
-    width: 100px;
-    margin-bottom: 5px;
-    margin-left: 8px;
-    margin-right: 8px;
-}
-.stepper.horizontal .step .title {
-  margin-left: 8px;
-}
-.stepper.horizontal .step .body {
-  line-height: initial;
-}
-.stepper.horizontal .step > div:last-child {
-  position: absolute;
-    width: 90vw;
-    top: 93px;
-    margin-left: 0px;
-    padding-left: 0px;
-    margin: auto;
-}
-.stepper .step.inactive .title{
-  color: #C9C9C9;
-  font-weight: 400;
-}
-.stepper .step.inactive .body{
-    display: none;
-}
-.stepper .step.inactive .circle{
-    background-color: #9e9e9e;
-}
-
-.aside.pinned{
-  top: 100px !important;
-  margin-right: 15%;
-/*  width: 10% !important;
-*/}
-
 
 /* AddInfoLayout.html Style*/
 
@@ -874,5 +983,5 @@ display: none;
 
 .text-bigcard {
   margin-right: 25px;
-  margin-left: 25px; 
+  margin-left: 25px;
 }

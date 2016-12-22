@@ -191,6 +191,7 @@ Template.ImageDropzone.onCreated(function (){
 
   Meteor.Dropzone.options = {
     url: "https://s3.amazonaws.com/empanist-images",
+    maxFiles: 1,
     accept: function(file, done) {
       var upload = new Slingshot.Upload("uploadImageToAmazonS3")
       var options = this.options;

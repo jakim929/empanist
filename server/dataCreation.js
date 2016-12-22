@@ -92,7 +92,7 @@ function randomMusicProgram (){
   var sd = randomDate();
   var ed = randomDatePar(sd, today, 6, 20);
 
-  return {programName: musicProgramName, startDate: sd, endDate: ed};
+  return {programName: musicProgramName, startYear: sd, endYear: ed};
 };
 
 createNewMusicProfile = function (givenUserId){

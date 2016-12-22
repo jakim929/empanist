@@ -1,4 +1,5 @@
 <template name="ImagesLayout">
+
     <header>
         <h1> Images </h1>
     </header>
@@ -19,6 +20,8 @@
       <br><br><br><br>
       {{> ChangeThumbnailModal}}
       {{> UploadImageModal}} -->
+      <a class='btn modal-trigger' href='#profile-specialized-modal'>Click Me</a>
+      {{>ProfilePictureModal}}
     </main>
 </template>
 
@@ -85,6 +88,68 @@
 </template>
 
 
+<template name='ProfilePictureModal'>
+  <div class='modal white' id='profile-specialized-modal'>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+
+            <li class="tab col s3"><a class="active" href="#choose-picture">Choose/Upload Picture</a></li>
+            <li class="tab col s3"><a class="edit-thumbnail-tab" href="#edit-thumbnail">Edit Thumbnail</a></li>
+          </ul>
+          <div class="divider"></div>
+        </div>
+          <div id="choose-picture" class="col s12 modal-content less-bottom-padding">
+            <div class='row'>
+                <h6 class='center less-upper-margin'>Choose a Picture</h6>
+                <div class='container'><div class='divider'></div></div>
+
+
+                <div class="col s10 push-s1"><br>
+                  {{> SimplePicturePicker }}
+                </div>
+
+            </div>
+                <br>
+            <div class='row'>
+
+                <h6 class='center'>Or Upload a Picture</h6>
+                <div class='container'><div class='divider'></div></div>
+
+                <br>
+                <div class='col s10 push-s1'>
+                  {{> ProfilePictureDropzone }}<br>
+                </div>
+            </div>
+        </div>
+
+          <div id="edit-thumbnail" class="col s12 image-modal-margins container">
+            {{> EditProfileThumbnail}}
+          </div>
+
+      </div>
+  </div>
+</template>
+
+<template name='SimplePicturePicker'>
+    <!-- {{#with imageArray}}
+      <div class="row">
+        {{#each this}}
+          <a href=''><img data-imageid={{_id}} class="z-depth-1 responsive-img gallery-img image-selection {{selectionStatus _id}}" src="{{url}}"/></a>
+        {{/each}}
+      </div>
+    {{/with}} -->
+    {{#with imageArray}}
+      <div class='hidden' id='imagePickerGallery'>
+        {{#each this}}
+          <a href='' class='select-image-for-profile'>
+            <img data-imageid={{_id}} class="z-depth-1 responsive-img image-selection {{selectionStatus _id}}" src="{{url}}"/>
+          </a>
+        {{/each}}
+      </div>
+    {{/with}}
+</template>
+
 <template name="PicturePicker">
   {{#with imageArray}}
     <div class="row">
@@ -115,6 +180,33 @@
     No Images Uploaded Yet.<br><br>
     <button class="btn change-to-upload-panel">Upload Image</button>
 
+  {{/with}}
+</template>
+
+<template name="EditProfileThumbnail">
+  {{#with getImageUrl getCurrentImage}}
+  <div class="row">
+    <div class="col s8 push-s2">
+      <img id="crop-image" src={{this}}>
+    </div>
+  </div><br>
+  <div class="row">
+    <button class="save-profile-thumbnail btn center col s6 push-s3">Save {{../picType}} Thumbnail</button><br><br>
+  </div>
+  {{else}}
+    {{#with myProfilePic}}
+      <div class="row">
+        <div class="col s8 push-s2">
+          <img id="crop-image" src={{this}}>
+        </div>
+      </div><br>
+      <div class="row">
+        <button class="save-profile-thumbnail btn center col s6 push-s3">Save {{../picType}} Thumbnail</button><br><br>
+      </div>
+    {{else}}
+      No Images Uploaded Yet.<br><br>
+      <button class="btn change-to-upload-panel">Upload Image</button>
+    {{/with}}
   {{/with}}
 </template>
 
@@ -150,6 +242,14 @@
           {{> dropzone id="upload-image" dictDefaultMessage='Drop files (or click) here to upload'}}
         </div>
       </div>
+    </div>
+  </div>
+</template>
+
+<template name="ProfilePictureDropzone">
+  <div class="row">
+    <div class="col s12">
+      {{> dropzone id="upload-image" dictDefaultMessage='Drop files (or click) here to upload'}}
     </div>
   </div>
 </template>

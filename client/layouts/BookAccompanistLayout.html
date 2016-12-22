@@ -16,7 +16,7 @@
     </div>
 
     <div class="col s12 m5 l5">
-      {{>ReviewRightSummaryPanel}}
+      {{> ReviewRightSummaryPanel}}
     </div>
   </div>
 </template>
@@ -35,17 +35,17 @@
 </template>
 
 <template name="ReviewRightSummaryPanel">
+  {{#with currentBooking}}
   <div class="card z-depth-0">
     <div class="card-content center">
       <span class="black-text">
         <h5>Booking Summary</h5>
           <div class="divider"></div>
-          <img class="responsive-img" src="http://materializecss.com/images/parallax1.jpg"/>
-          <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+          <img class="responsive-img" src="{{coverPicById accompanist}}"/>
+          <div class="limit-width-30 overlap-into-top-image"><img src="{{profilePicById accompanist}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
 
         <div class="container">
 
-        {{#with currentBooking}}
 
 
           {{#with basicProfileById accompanist}}
@@ -70,35 +70,86 @@
            </table>
           {{/with}}
 
-        {{/with}}
 
       </div>
      </span>
     </div>
   </div>
+  {{/with}}
 </template>
 
-<template name="SessionReview">
-  <h5>1. Sessions</h5>
+<template name='EventReview'>
+
+  <h5>1. Event</h5>
 
   <div class="divider"></div><br>
   {{#with currentTransaction}}
-      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+      {{#autoForm id="UpdateEventInformation" collection="Transactions" type="update" doc=this}}
         <!-- Pre-Filled from previous page -->
         {{> afQuickField name="startDate" type="hidden"}}
         {{> afQuickField name="endDate" type="hidden"}}
         {{> afQuickField name="status" type="hidden"}}
         {{> afQuickField name="accompanist" type="hidden"}}
 
+
         <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
         {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
+
+          Where is the location of the final performance?
+          {{> afQuickField name="performanceLocation" label="Performance Location"}}
+      {{/autoForm}}
+  {{else}}
+      <!-- Some kind of error prevented transaction from being carried over-->
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        {{> afQuickField name="startDate"}}
+        {{> afQuickField name="endDate"}}
+        {{> afQuickField name="repertoire"}}
+        {{> afQuickField name="status" type="hidden" value="Pending"}}
+        {{> afQuickField name="accompanist" type="hidden" value=routeAccompanist}}
 
           How many sessions? (Rehearsal and Performance)
           <div class="row">
             <div class="col s4">
-              {{> afQuickField name="sessionCount" label=false type="select"  options=sessionsOptions }}
+              {{> afQuickField name="sessionCount" label=false type="select" defaultValue=defaultSessionCount firstOption="1 session" options=sessionsOptions }}
             </div>
-          </div>
+          </div><br>
+
+      {{/autoForm}}
+  {{/with}}
+
+
+  {{#autoForm id="InsertFirstSession" collection="Sessions" type="update" doc=currentSession}}
+    {{> afQuickField name="sessionType" value="Rehearsal" type="hidden"}}
+    {{> afQuickField name="status" value="Pending" type="hidden"}}
+    {{> afQuickField name="firstSession" value="true" type="hidden"}}
+
+    When would you like to have your FIRST session?<br><br>
+    {{> afFieldInput id="firstSessionDate" name="date" type="date"}}
+    <br><br>
+    Suggest some times for the FIRST session? (At least 2)<br><br>
+    <!-- {{> afQuickField name="suggestedTimes" }} -->
+    <!-- {{> afArrayField name="suggestedTimes" template="newAccompCustomArrayField" data="sessionTime"}} -->
+    {{> afFieldInput id="firstSuggestedHours" name="suggestedHours" type="time-checkboxes" options=optionsArray}} <br>
+
+  {{/autoForm}}
+</template>
+
+
+<template name="SessionReview">
+
+  <h5>2. Sessions</h5>
+
+  <div class="divider"></div><br>
+  {{#with currentTransaction}}
+      {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=this}}
+        <!-- Pre-Filled from previous page -->
+        {{> afQuickField name="startDate" type="time"}}
+        {{> afQuickField name="endDate" type="hidden"}}
+        {{> afQuickField name="status" type="hidden"}}
+        {{> afQuickField name="accompanist" type="hidden"}}
+
+        <!-- {{> afQuickField name="repertoire" type="hidden"}} -->
+        {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
 
           Where is the location of the final performance?
           {{> afQuickField name="performanceLocation" label="Performance Location"}}
@@ -153,3 +204,39 @@
     </div>
   </div>
 </template>
+
+<!-- <template name="bookAccompanistForm">
+  {{#with routeAccompanist}}
+    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
+      {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
+      {{> afQuickField name="accompanist" value=this type="hidden"}}
+      {{> afQuickField name="status" value="Pending" type="hidden"}}
+      <br>
+      <div class="row">
+        <div class="col s5 tooltipped" data-tooltip="Start date of rehearsals">
+          <label for="sd" class="active">Start Date</label>
+          {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" }}
+        </div>
+        <div class="col s2">
+          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
+        </div>
+        <div class="col s5 tooltipped" data-tooltip="Final performance date">
+          <label for="ed" class="active">End Date</label>
+          {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" }}
+        </div>
+      </div>
+
+       <label for="pt" class="active">Performance Type</label>
+      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
+
+      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
+
+    {{/autoForm}}
+    <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
+  {{else}}
+    Not on an accompanist page.
+  {{/with}}
+</template> -->
+<!-- <template name="invalidId">
+  <h2>Invalid ID</h2>
+</template> -->

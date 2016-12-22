@@ -40,6 +40,16 @@ UserImageSchema = new SimpleSchema({
     label: "Added Date"
   },
 
+  height: {
+    type: Number,
+    label: 'Image Height'
+  },
+
+  width: {
+    type: Number,
+    label: 'Image Width'
+  },
+
   thumbnailId: {
     type: String,
     label: "Thumbnail ID"

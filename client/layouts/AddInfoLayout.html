@@ -208,7 +208,7 @@
           <br>
           {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
        </div>
-        
+
         <div class="one_liner">
           <br>
           {{> afQuickField name="one_liner"}}
@@ -262,7 +262,7 @@
 
         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
           <span class="autoform-remove-item"><i class="material-icons right">close</i></span>
-        {{/if}}      
+        {{/if}}
         {{> UI.dynamic template=../atts.name}}
 
       {{/afEachArrayItem}}
@@ -326,10 +326,16 @@
       </div>
     </div>
     <div class="row">
+<<<<<<< HEAD
       <div class="input-field col s6">
         {{> afFieldInput name="year" type="select" options=years}}
         <label style="bottom: 90px;" class="active">Year Won</label>
       </div> 
+=======
+    <div class="input-field col s6">
+      {{> afFieldInput name="date" id="test"  type="select" options=yearOptionsArray}}
+      <label class="active">Date Won</label>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     </div>
     <div class="row">
       <button type="submit" class="btn right btn-primary">Save</button>
@@ -438,7 +444,7 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name="name" id="comp.name" type="text"}}
+        {{> afFieldInput name="name" id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
       <label for="comp.name">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
@@ -448,12 +454,21 @@
   </div>
   <div class="row">
     <div class="input-field col s6">
+<<<<<<< HEAD
       {{> afFieldInput name="startYear" type="select" options=years}}
       <label style="bottom: 90px;" class="active">Start Year</label>
     </div>
     <div class="input-field col s6">
       {{> afFieldInput name="startMonth" type="select" options=months}}
       <label style="bottom: 90px;" class="active">Start Month</label>
+=======
+      {{> afFieldInput name="startDate" type="date"}}
+      <label class="active">Start Year</label>
+    </div>
+     <div class="input-field col s6">
+      {{> afFieldInput name="endDate" type="date"}}
+      <label class="active">End Year</label>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     </div>
   </div>
   <div class="row">
@@ -479,7 +494,7 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
-        {{> afFieldInput name=this.current.name id="comp.name" type="text"}}
+        {{> afFieldInput name=this.current.name id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
       <label for="comp.name" class="active">Ensemble Name</label>
     </div>
     <div class="input-field col s6">
@@ -515,8 +530,14 @@
   <div class="row">
     <br>
     <div class="input-field col s6">
+<<<<<<< HEAD
         {{> afFieldInput name="instrument" id="name" type="select" options=instrumentList}}
       <label style="bottom: 90px;" class="active">Instrument Name</label>
+=======
+        <!-- {{> afFieldInput name="instrument" id="name" type="text" class='autocomplete autocomplete-instrument'}} -->
+        <input type="text" class="autocomplete autocomplete-instrument">
+      <label for="name" class="active">Instrument Name</label>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name="yearsPlayed" id="yrs" type="text"}}
@@ -534,8 +555,13 @@
     <br>
     <div class="input-field col s6">
       {{../atts.name}}
+<<<<<<< HEAD
         {{> afFieldInput name=this.current.instrument id="comp.name" type="select" options=instrumentList}}
       <label style="bottom: 90px;" class="active">Instrument Name</label>
+=======
+        {{> afFieldInput name=this.current.instrument id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
+      <label for="comp.name" class="active">Instrument Name</label>
+>>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name=this.current.yearsPlayed id="comp.name" type="text"}}

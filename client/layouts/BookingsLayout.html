@@ -15,28 +15,16 @@
       {{> Template.dynamic template="BookingCard" data=this}}
     </div>
     {{else}}
-    <div class="card">
-      <div class="card-content center">
-        <h6>You have no bookings currently. Go <a href="/" class="teal-text">search</a> for accompanists!</h6>
+    <a href="/">
+      <div class="card">
+        <div class="card-content center">
+          <h6>You have no bookings currently. Go <span class="teal-text">search</span> for accompanists!</h6>
+        </div>
       </div>
-    </div>
+    </a>
 
     {{/each}}
-    <!-- <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div>
-    <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div>
-    <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div>
-    <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div>
-    <div class="col s12 m6 l4">
-      {{> BookingCardExample}}
-    </div> -->
+
   </div>
 </template>
 
@@ -78,9 +66,9 @@
   <div class="card z-depth-0">
     <div class="card-content center">
       <span class="black-text">
-          <img class="responsive-img bg-cover" src="/images/newparallax.png"/>
-          <div class="limit-width-30 overlap-into-top-image"><img src="/images/profile.png" alt="" class="circle responsive-img" style="border:3px solid white"></div>
-
+          <img class="responsive-img bg-cover" src="{{coverPicById accompanist}}"/>
+            <div class="limit-width-30 overlap-into-top-image"><img src="{{profilePicById accompanist}}" alt="" class="circle responsive-img" style="border:3px solid white"></div>
+              {{>Template.dynamic template="statusBadge" data=status}}
         <div class="container">
           {{#with basicProfileById accompanist}}
             <h6>{{name}}</h6>
@@ -88,8 +76,6 @@
         </div>
 
           <p>{{sessionCount}} sessions<br>{{formatDuration startDate endDate}}</p><br>
-          <div class="row no-margin"><div class="col s12 m4 l4 push-m4 push-l4">{{>Template.dynamic template="statusBadge" data=status}}</div></div><br>
-
 
           <div class="container">
             <div class="divider"></div><br>
@@ -108,11 +94,19 @@
 
 
 <template name="statusBadge">
-    <div class="card no-margin z-depth-0 {{getClass this}} statusBadge">
-      <div class="center">
-        {{this}}
+    <!-- <div class='col s12'>
+      <div class="card no-margin z-depth-0 {{getClass this}} statusBadge">
+        <div class="center">
+          {{this}}
+        </div>
       </div>
+    </div> -->
+
+    <div class='chip {{getClass this}}'>
+      {{this}}
     </div>
+
+  <!-- <span class="new center-badge badge left {{getClass this}}" data-badge-caption="{{this}}"></span> -->
 </template>
 
 <template name="SentBookings">
