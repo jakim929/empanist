@@ -6,6 +6,64 @@
 </template>
 
 <template name="results">
+  {{#each accompanists}}
+    {{> ResultCard}}
+  {{/each}}
+
+</template>
+
+
+<template name="ResultCard">
+  <div class="card hoverable z-depth-1">
+    <a class="result-card-clickable" href="" data-accompanist={{Id}}>
+      <div class="card-content">
+        <div class="row">
+          <div class="col s2">
+            <img src="{{profilePicById Id}}" class="profile-picture circle responsive-img">
+          </div>
+          <div class="col s3">
+            {{#with basicProfileById Id}}
+            <div class="row">
+              <h6 class="semi-bold">{{name}}</h6>
+            </div>
+            <div class="row">
+              {{affiliation}}
+            </div>
+            {{/with}}
+
+            <div class="row">
+              {{mylocation}}
+            </div>
+
+          </div>
+          <div class="col s7">
+            <div class="slight-left-padding slight-right-padding">
+              <div class="row">
+                <div class="col s10">
+                  <h7 class="teal-text">Juilliard Trained Musician - Extensive Repertoire</h7>
+                </div>
+                <div class="col s2">
+                  <span class="semi-bold h7-font-size">
+                    ${{charge}}/</span><span class="smaller-font-size">hour</span>
+                </div>
+
+              </div>
+              <div class="slight-left-padding slight-upper-padding">
+                <div class="row">
+                  <p class="block-with-text">I am a music teacher with 15 years of experience teaching flute, recorder, music theory, music history, ear training and music literature. I have contributed to the creation of music curriculums in one of the most renowned music schools in Montreal as well as being the author of a series of published music theory and music literature exercise books. I am also an active performer on the Boston classical music scene. I teach students of all ages and levels of proficiency. Lesson style is adapted to the goals of the student.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</template>
+
+
+<!-- <template name="results">
 	<div class="resultsContainer">
 	{{#if noResults accompanists}}
 		<p>Sorry, no results found (aka go and tell your friends to use our amazing platform!)</p>
@@ -23,7 +81,7 @@
 
 				        <div id="resultsProfileImg">
 					        <a class="waves-effect waves-light">
-					          <img class="responsive-img circle" src="{{profilePicById Id}}">
+					          <img class="responsive-img profile-picture-circle circle" src="{{profilePicById Id}}">
 					        </a>
 				        </div>
 
@@ -51,7 +109,7 @@
 										Anytime
 									{{else}}
 										{{#each working_hours}}
-											{{this}},
+											{{capitalize this}},
 										{{/each}}
 									{{/if}}
 								</p>
@@ -61,7 +119,7 @@
 										Any Day
 									{{else}}
 										{{#each working_days}}
-											{{formatDay this}},
+											{{capitalize (formatDay this)}},
 										{{/each}}
 									{{/if}}
 								</p>
@@ -74,7 +132,7 @@
 	</div>
 	{{/if}}
 </div>
-</template>
+</template> -->
 
 
 <template name="advancedSearch">

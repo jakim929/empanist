@@ -16,11 +16,13 @@ OrchestraSchema = new SimpleSchema({
 
   startYear: {
     type: Date,
+    optional: true,
     label: "Beginning Year",
   },
 
   endYear: {
     type: Date,
+    optional: true,
     label: "Ending Year"
   },
 
@@ -49,6 +51,7 @@ AwardSchema = new SimpleSchema({
   },
   year: {
     type: Number,
+    optional:true,
     label: "Year Received"
   },
 
@@ -68,11 +71,13 @@ MusicProgramSchema = new SimpleSchema({
 
   startYear: {
     type: Date,
+    optional: true,
     label: "Beginning Year",
   },
 
   endYear: {
     type: Date,
+    optional: true,
     label: "Ending Year"
   },
 

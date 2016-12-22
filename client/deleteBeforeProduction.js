@@ -1,4 +1,4 @@
-Template.TestLayout.events({
+Template.AdminPanel.events({
   'click button.add-fake-users' (event, template){
 
 

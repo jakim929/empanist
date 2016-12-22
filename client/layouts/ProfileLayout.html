@@ -497,7 +497,8 @@
 
 <template name="InstList">
   {{#each this}}
-    <h10>{{this.instrument}}, {{this.yearsPlayed}} yr</h10><br><br>
+    <h7><b>{{this.instrument}}</b><br></h7>
+    Has been playing for {{this.yearsPlayed}} years<br><br>
   {{/each}}
 </template>
 
@@ -513,7 +514,7 @@
 <template name="programsList">
   {{#each this}}
     <span class="right">{{formatDuration this.startDate this.endDate}}</span>
-    {{programName}}
+    <b>{{programName}}</b>
     <br><br>
   {{/each}}
 </template>

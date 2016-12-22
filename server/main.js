@@ -6,16 +6,15 @@ import { Transactions } from '../collections/transactions.js'
 import { Sessions } from '../collections/transactions.js'
 import { Data } from '../collections/profileData.js'
 
-import braintree from 'braintree'
 
 Meteor.startup(() => {
+
 });
 
 AWS.config.update({
   accessKeyId: Meteor.settings.AWSAccessKeyId,
   secretAccessKey: Meteor.settings.AWSSecretAccessKey
 });
-
 
 
 var geo = new GeoCoder();
@@ -28,6 +27,7 @@ getGeocode = function (arg) {
     return result
   }
 };
+
 
 // Google Distance Matrix (Not used for not!)
 // var distance = require('google-distance-matrix');
