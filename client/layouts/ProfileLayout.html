@@ -143,7 +143,6 @@
 
     {{/autoForm}}
 
-<<<<<<< HEAD
     {{#if loggedIn}}
       {{#if FieldsValid fields "bookAccompanistForm"}}
         <div class="center"><button class="btn wave-light book-accompanist" >Request To Book</button></div>
@@ -151,15 +150,9 @@
         <div class="center"><button class="btn wave-light" disabled>Request To Book</button></div>
         {{/if}}
       {{else}}
-       <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request To Book</button></div> 
+       <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request To Book</button></div>
     {{/if}}
-=======
-    <!-- {{#if FieldsValid fields "bookAccompanistForm"}} -->
-      <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
-      <!-- {{else}}
-      <div class="center"><button class="btn wave-light disabled" disabled>Request To Book</button></div>
-    {{/if}} -->
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+
 
   {{else}}
     Not on an accompanist page.
@@ -177,7 +170,7 @@
     <div id="first-card-container" class="card grey lighten-5 z-depth-0">
       <div class="card-content">
         <span class="black-text activator">
-<<<<<<< HEAD
+
             <!-- <div class="row"> -->
               <div class="profileImg">
                 {{#unless isOwnProfile}}
@@ -191,35 +184,7 @@
                 {{else}}
                   {{> Template.dynamic template='PictureModal' data=getProfileData}}
                 {{/unless}}
-=======
-          <div class="all">
-            <div class="row">
-              <div class="col s5">
-                <div id="profileImg">
-                    {{#unless isOwnProfile}}
-                      {{#with currentProfilePic}}
-                        <a class="waves-effect waves-light">
-                          <div>
-                            <img class="profile-picture"  src={{currentProfilePic}}>
-                          </div>
-                        </a>
-                      {{/with}}
-                    {{else}}
-                      <ul class="caption-style-1">
-                        <li>
-                          <img src="{{myProfilePic}}" class='profile-picture' alt="">
-                          <div class="caption">
-                            <div class="semi-blur"></div>
-                            <div class="caption-text">
-                              <a class='modal-trigger' href='#profile-specialized-modal'><h7 class='hover-font-size'><div class='icon-align'><i class='material-icons'>photo_camera</i></div>&nbsp;&nbsp;Update Profile Picture</h7></a>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                      {{> ProfilePictureModal}}
-                    {{/unless}}
-                </div>
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+
               </div>
               <div class="profileData">
                   <h4>{{name}}</h4>
@@ -526,13 +491,9 @@
 
 <template name="programsList">
   {{#each this}}
-<<<<<<< HEAD
-    <span class="right">{{this.startMonth}}, {{this.startYear}} - {{this.endMonth}}, {{this.endYear}}</span>    
+    <span class="right">{{this.startMonth}}, {{this.startYear}} - {{this.endMonth}}, {{this.endYear}}</span>
     {{programName}}
-=======
-    <span class="right">{{formatDuration this.startDate this.endDate}}</span>
-    <b>{{programName}}</b>
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+
     <br><br>
   {{/each}}
 </template>

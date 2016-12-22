@@ -13,7 +13,6 @@ OrchestraSchema = new SimpleSchema({
     label: "Position in Ensemble"
   },
 
-<<<<<<< HEAD
   startYear: {
     type: Number,
     label: "Start Year"
@@ -32,31 +31,7 @@ OrchestraSchema = new SimpleSchema({
   endMonth: {
     type: String,
     label: "End Month"
-=======
 
-  startYear: {
-    type: Date,
-    optional: true,
-    label: "Beginning Year",
-  },
-
-  endYear: {
-    type: Date,
-    optional: true,
-    label: "Ending Year"
-  },
-
-  startDate: {
-    type: Date,
-    label: "Beginning Date",
-    optional: true
-  },
-
-  endDate: {
-    type: Date,
-    label: "Ending Date",
-    optional:true
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
   }
 });
 
@@ -72,18 +47,8 @@ AwardSchema = new SimpleSchema({
   },
   year: {
     type: Number,
-<<<<<<< HEAD
     label: "Year Received"
-=======
-    optional:true,
-    label: "Year Received"
-  },
 
-  date: {
-    type: Date,
-    label: "Date Received",
-    optional: true
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
   }
 });
 
@@ -98,7 +63,6 @@ MusicProgramSchema = new SimpleSchema({
     label: "Start Year"
   },
 
-<<<<<<< HEAD
    startMonth: {
     type: String,
     label: "Start Month"
@@ -108,34 +72,11 @@ MusicProgramSchema = new SimpleSchema({
     type: Number,
     label: "End Year"
   },
-  
+
   endMonth: {
     type: String,
     label: "End Month"
-=======
-  startYear: {
-    type: Date,
-    optional: true,
-    label: "Beginning Year",
-  },
 
-  endYear: {
-    type: Date,
-    optional: true,
-    label: "Ending Year"
-  },
-
-  startDate: {
-    type: Date,
-    label: "Start Date",
-    optional: true
-  },
-
-  endDate: {
-    type: Date,
-    label: "End Date",
-    optional: true
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
   }
 });
 

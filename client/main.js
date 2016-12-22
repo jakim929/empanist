@@ -142,10 +142,7 @@ Template.NewSession.onRendered(function() {
 })
 
 
-<<<<<<< HEAD
-        $('#advancedsearch').removeAttr('disabled');
-        FlowRouter.setQueryParams(doc);
-=======
+
 Template.NewSession.events({
   'click .schedule-new-session' (event,template){
     if(AutoForm.validateForm('NewSession')){
@@ -157,7 +154,6 @@ Template.NewSession.events({
           Materialize.toast('New Session Scheduled!', 4000);
         }
       })
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
     }
   }
 })
@@ -1220,7 +1216,7 @@ Template.ReviewLeftFormPanel.events({
 
     var currentTransaction = FlowRouter.getQueryParam("booking")
     // FIX Security FLAW (CHANGE) -> use something other than clientside user id
-<<<<<<< HEAD
+// <<<<<<< HEAD
     currentTransaction.musician = Meteor.userId();
     currentTransaction.performanceLocation = AutoForm.getFieldValue('performanceLocation', 'UpdateSessionCount')
     currentTransaction.sessionCount = AutoForm.getFieldValue('sessionCount', 'UpdateSessionCount')
@@ -1245,29 +1241,29 @@ Template.ReviewLeftFormPanel.events({
         if(nextStepIndex < panels.length){
           template.currentStep.set(panels[nextStepIndex]);
         }
-=======
-
-    if(this.currentStep.get() == 'EventReview'){
-      currentTransaction.musician = Meteor.userId();
-      currentTransaction.performanceLocation = AutoForm.getFieldValue('performanceLocation', 'UpdateSessionCount')
-
-
-    }else if(this.currentStep.get() == 'SessionReview'){
-      currentTransaction.musician = Meteor.userId();
-      currentTransaction.sessionCount = AutoForm.getFieldValue('sessionCount', 'UpdateSessionCount')
-
-      var validationContext = TransactionSchema.newContext();
-      TransactionSchema.clean(currentTransaction);
-
-      if( validationContext.validate(currentTransaction) &&
-          AutoForm.validateField('InsertFirstSession', 'suggestedHours') &&
-          AutoForm.validateField('InsertFirstSession', 'date') &&
-          AutoForm.validateField('InsertFirstSession', 'location'))
-      {
-
-        var queryParam = {booking: currentTransaction, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
-        FlowRouter.setQueryParams(queryParam);
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+// =======
+//
+//     if(this.currentStep.get() == 'EventReview'){
+//       currentTransaction.musician = Meteor.userId();
+//       currentTransaction.performanceLocation = AutoForm.getFieldValue('performanceLocation', 'UpdateSessionCount')
+//
+//
+//     }else if(this.currentStep.get() == 'SessionReview'){
+//       currentTransaction.musician = Meteor.userId();
+//       currentTransaction.sessionCount = AutoForm.getFieldValue('sessionCount', 'UpdateSessionCount')
+//
+//       var validationContext = TransactionSchema.newContext();
+//       TransactionSchema.clean(currentTransaction);
+//
+//       if( validationContext.validate(currentTransaction) &&
+//           AutoForm.validateField('InsertFirstSession', 'suggestedHours') &&
+//           AutoForm.validateField('InsertFirstSession', 'date') &&
+//           AutoForm.validateField('InsertFirstSession', 'location'))
+//       {
+//
+//         var queryParam = {booking: currentTransaction, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
+//         FlowRouter.setQueryParams(queryParam);
+// >>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
       }
     }
 
@@ -1307,7 +1303,7 @@ Template.bookAccompanistForm.events({
   'click .book-accompanist' (event, instance) {
     event.preventDefault();
     var userId = Meteor.userId();
-<<<<<<< HEAD
+// <<<<<<< HEAD
     // if (userId){
       // if(Roles.userIsInRole(userId, 'bookAccompanist')){
         let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
@@ -1324,26 +1320,26 @@ Template.bookAccompanistForm.events({
   'click .modal-login-trigger': function(){
     AccountsTemplates.setState('signIn');
     AccountsTemplates.avoidRedirect = true;
-=======
-    if (userId){
-      if(Roles.userIsInRole(userId, 'bookAccompanist')){
-        var endDateStatus = AutoForm.validateField('bookAccompanistForm', 'endDate')
-        var sessionCountStatus = AutoForm.validateField('bookAccompanistForm', 'sessionCount')
-        var performanceTypeStatus = AutoForm.validateField('bookAccompanistForm', 'performanceType')
-        if(endDateStatus && sessionCountStatus && performanceTypeStatus){
-              let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
-              console.log(currentTransaction);
-              let currentProfileId = FlowRouter.getParam("profileId");
-              if (currentProfileId){
-                FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
-              }else{
-                console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
-              }
-            }
-
-      }
-    }
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+// =======
+//     if (userId){
+//       if(Roles.userIsInRole(userId, 'bookAccompanist')){
+//         var endDateStatus = AutoForm.validateField('bookAccompanistForm', 'endDate')
+//         var sessionCountStatus = AutoForm.validateField('bookAccompanistForm', 'sessionCount')
+//         var performanceTypeStatus = AutoForm.validateField('bookAccompanistForm', 'performanceType')
+//         if(endDateStatus && sessionCountStatus && performanceTypeStatus){
+//               let currentTransaction = AutoForm.getFormValues("bookAccompanistForm").insertDoc
+//               console.log(currentTransaction);
+//               let currentProfileId = FlowRouter.getParam("profileId");
+//               if (currentProfileId){
+//                 FlowRouter.go('/bookAccompanist/:profileId',  {profileId: currentProfileId}, {booking: currentTransaction} );
+//               }else{
+//                 console.log("Wrong Page; Please book an accompanist on an accompanist profile page")
+//               }
+//             }
+//
+//       }
+//     }
+// >>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
   }
 });
 // Just Testing
@@ -1351,24 +1347,24 @@ Template.bookAccompanistForm.events({
 
 
 Template.bookAccompanistForm.onRendered(function(){
-<<<<<<< HEAD
-  // $('.datepicker').pickadate({
-  //   selectMonths: true, // Creates a dropdown to control month
-  //   selectYears: 15 // Creates a dropdown of 15 years to control year
-  // });
-
-  $('.modal-login-trigger').leanModal({
-      dismissible: true,
-      complete: function() {   AccountsTemplates.avoidRedirect = false; }
-    });
-=======
+// <<<<<<< HEAD
+//   // $('.datepicker').pickadate({
+//   //   selectMonths: true, // Creates a dropdown to control month
+//   //   selectYears: 15 // Creates a dropdown of 15 years to control year
+//   // });
+//
+//   $('.modal-login-trigger').leanModal({
+//       dismissible: true,
+//       complete: function() {   AccountsTemplates.avoidRedirect = false; }
+//     });
+// =======
   $('.pickadate').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 15 // Creates a dropdown of 15 years to control year
   });
 
   $('.tooltipped').tooltip({delay: 50});
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+// >>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 })
 
 Template.bookAccompanistForm.helpers({
@@ -1908,19 +1904,7 @@ Template.registerHelper('navbarFields', () => {
   }
 });
 
-<<<<<<< HEAD
-=======
-// function MakingNewAccomp(path){
-//       if (path == "/newaccomp" || path == "/newaccomp/step1" || path == "/newaccomp/step2" || path == "/newaccomp/step3") {
-//     return true
-//   } else {
-//     return false
-//   }
-//     }
 
-
-
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 // Get Current User's Account
 Template.registerHelper('myBasicProfile', () => {
   return BasicProfiles.findOne({userId: Meteor.userId()});
@@ -2406,17 +2390,17 @@ Template.awards.helpers ({
 // Function that return list of years until present
 
 
-function yearsToPresent() { 
+function yearsToPresent() {
   var present_years = []
   var year = moment(new Date()).format('YYYY');
   var todays_year = parseInt(year) + 8
-  for (var i = 1900; i < todays_year; i++) { 
+  for (var i = 1900; i < todays_year; i++) {
     present_years.push(i)
   }
   return present_years
 }
 
-function months() { 
+function months() {
   var all_months = ["Jan","Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   return all_months
 }
@@ -2936,7 +2920,7 @@ Template.registerHelper('coverPicById', function(userId) {
 })
 
 
-<<<<<<< HEAD
+
 Template.results.helpers({
 
   accompanists: function() {
@@ -3110,9 +3094,7 @@ Template.results.helpers({
     }
   }
 });
-=======
 
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 
 // Events
 

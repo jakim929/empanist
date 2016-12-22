@@ -1,17 +1,11 @@
 <template name="Navbar">
 	<div class="navbar-fixed">
-<<<<<<< HEAD
 		<nav class="#9fa8da indigo lighten-3">
 		  <div class="nav-wrapper container">
 		    <a href="/"><img class="logo brand-logo" src="/images/new_logo.png" alt=""></a>
 		    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 		    <ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
-=======
-		<nav class="indigo lighten-3">
-			<div class="nav-wrapper container">
-		 		<a href="/"><img class="logo brand-logo left" src="/images/new_logo.png" alt=""></a>
-				<ul id="nav-mobile" class="right valign-wrapper hide-on-med-and-down">
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
+
 					{{#each navbarFields}}
 						<li >{{> Template.dynamic template=this}}</li>
 					{{/each}}
@@ -45,7 +39,7 @@
 	{{#if fromSideNav this}}
 		<li class="divider"></li>
 	{{/if}}
-  <a href="#signUpModal" class="waves-effect waves-light modal-signup-trigger modal-trigger">Sign Up</a> 	
+  <a href="#signUpModal" class="waves-effect waves-light modal-signup-trigger modal-trigger">Sign Up</a>
 </template>
 
 <template name="modalLogin">
@@ -90,7 +84,7 @@
 
 <template name="accompanistDashboard">
 	{{#if fromSideNav this}}
-    <a href='/accompanistDashboard'>Dashboard<i class="material-icons left">dashboard</i> </a>  
+    <a href='/accompanistDashboard'>Dashboard<i class="material-icons left">dashboard</i> </a>
 		{{else}}
 		<a href='/accompanistDashboard'><i class="material-icons right">dashboard</i> </a>
 	{{/if}}
@@ -99,7 +93,7 @@
 <template name="bookings">
 	{{#if fromSideNav this}}
     <li class="divider"></li>
-    <a href='/bookings'>Booking<i class="material-icons left">book</i></a>   
+    <a href='/bookings'>Booking<i class="material-icons left">book</i></a>
 		{{else}}
 		<a href='/bookings'><i class="material-icons right">book</i></a>
 	{{/if}}

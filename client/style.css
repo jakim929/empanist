@@ -4,14 +4,13 @@ html {
 	font-family: Avenir Next;
 }
 
-<<<<<<< HEAD
 .profile-picture{
 	width: 200px;
 	height: 200px;
 	border-radius: 1%;
 	border:1px solid #eeeeee;
   margin-left: -5px;
-=======
+}
 /*Payment Panel Styling*/
 
 .braintree-hosted-fields-focused {
@@ -205,7 +204,6 @@ html {
 .profile-picture-circle{
 	width: 100px;
 	height: 100px;
->>>>>>> 7a576b362b2bff10c8003ab786f10284ae07ffeb
 }
 
 .text-shadow-setting{
