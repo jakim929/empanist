@@ -1,35 +1,47 @@
 
 <!-- SECTION: Basic Profile -->
 
+
 <template name="basicMyProfile">
   {{> Template.dynamic template="upsertBasicProfileForm" data="myProfile"}}
 </template>
 
 <template name="basicNewAccomp">
-   <div class="progress">
-      <div class="determinate" style="width: 100%"></div>
-  </div>
-<br>
-  <h5>Clarify some basics</h5>
-
-  <div class="left-basic">
-    <div class=" centerIt smallMargin formsTopMargin">
-      {{> upsertBasicProfileForm }}
+  <div class="row">
+    <div class="col l7 hide-on-med-and-down halfWhite">
+          <div class="containerLeft">
+        <br><br><br>
+      <h5>Clarify some basics</h5>
+        
+          <div class=" centerIt smallMargin formsTopMargin">
+            {{> upsertBasicProfileForm }}
+          </div>
+        </div>
     </div>
-  </div>
-
-  <div class="basic-advice">
-    <div class="card grey lighten-5 z-depth-0">
-      <div class="card-content">
-        <i class="small material-icons prefix blue-text text-darken-2">school</i>
-        <br>
-        <h10>
-          Entering in your school affiliation allows you to connect to fellow students and alumni, enabling you to create relationships that go beyond the practice room
-        </h10>
+    <div class="col s12 m12 hide-on-large-only halfWhite">
+          <div class="containerLeftSmall">
+        <br><br><br>
+      <h5>Clarify some basics</h5>
+        
+          <div class=" centerIt smallMargin formsTopMargin">
+            {{> upsertBasicProfileForm }}
+          </div>
+        </div>
+    </div>
+    <div class="col l5 hide-on-med-and-down">
+      <div class="containerRight">
+        <div class="card grey lighten-5 z-depth-0">
+          <div class="card-content">
+            <i class="small material-icons prefix blue-text text-darken-2">school</i>
+            <br>
+            <h10>
+              Entering in your school affiliation allows you to connect to fellow students and alumni, enabling you to create relationships that go beyond the practice room
+            </h10>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <!-- SECTION: Upsert Forms -->
@@ -50,15 +62,15 @@
           </div>
         </div>
 
+         <div class="input-field col s6">
+          <i class="material-icons prefix">business_center</i>
+            {{>afFieldInput name="affiliation" id="affiliation" type="text"}}
+          <label class="active">Affiliation</label>
+        </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">cake</i>
             {{>afFieldInput name="birthDate" id="birth" type="date"}}
             <label class="active">Birth Date</label>
-        </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">business_center</i>
-            {{>afFieldInput name="affiliation" id="affiliation" type="text"}}
-          <label class="active">Affiliation</label>
         </div>
         <br>
         {{#if fromProfile this}}
@@ -76,10 +88,10 @@
 
 <template name="upsertMusicProfileForm">
   {{#if isInRole 'makeMusicProfile'}}
-  <div class="progress">
+  <!-- <div class="progress">
       <div class="determinate" style="width: 25%"></div>
   </div>
-  <br>
+  <br> -->
   {{#if musicProfileExists}}
     <div class="row">
       <div class="col s12">
@@ -91,30 +103,66 @@
       </div>
     </div>
   {{/if}}
-  <div>
-    <h5>{{question}}</h5>f
-  </div>
-  <div class="formsTopMargin">
-    {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
-      <div class="scrollable ">
-        <div class="instrument">
-          {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
-        </div>
+  
+  <div class="row">
 
-        <div class="award">
-          {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
-        </div>
+    <div class="col l7 hide-on-med-and-down halfWhite">
+      <div class="containerLeft">
+        <!-- <div class="halfwhite"> -->
+          <br><br><br>
+          <h5>{{question}}</h5>
+          {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
+            <div class="scrollable ">
+              <div class="instrument">
+                {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
+              </div>
 
-        <div class="program">
-          {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
-        </div>
+              <div class="award">
+                {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
+              </div>
 
-        <div class="orchestra">
-          {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
-        </div>
+              <div class="program">
+                {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
+              </div>
+
+              <div class="orchestra">
+                {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
+              </div>
+            </div>
+          {{/autoForm}}
+        <!-- </div> -->
       </div>
+    </div>
 
-      <div class="music-advice">
+    <div class="col s12 m12 hide-on-large-only halfWhite">
+      <div class="containerLeftSmall">
+        <br><br><br>
+        <h5>{{question}}</h5>
+        {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
+          <div class="scrollable ">
+            <div class="instrument">
+              {{> afArrayField name="instruments" template="newAccompCustomArrayField"}}
+            </div>
+
+            <div class="award">
+              {{> afArrayField name="awards" template="newAccompCustomArrayField"}}
+            </div>
+
+            <div class="program">
+              {{> afArrayField name="musicPrograms" template="newAccompCustomArrayField"}}
+            </div>
+
+            <div class="orchestra">
+              {{> afArrayField name="orchestras" template="newAccompCustomArrayField"}}
+            </div>
+        </div>
+    {{/autoForm}}
+    
+      </div>
+    </div>
+
+    <div class="col l5 hide-on-med-and-down">
+      <div class="containerRight">
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             {{#with advice}}
@@ -127,29 +175,54 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="backNext">
-        <hr>
-        {{#unless shouldShow "orchestras"}}
-          <a class="next-{{button}} right waves-effect waves-light btn">Next</a>
-          {{else}}
-           <button type="submit" class="right btn btn-primary">Save</button>
-        {{/unless}}
-        {{#unless shouldShow "instruments"}}
-          <a class="back-{{button}} left waves-effect waves-light btn">Back</a>
-        {{/unless}}
+  </div>
+
+  <div class="row">
+    <div class="col l7 hide-on-med-and-down">
+      <div class="containerLeft">
+        <div class="backNext">
+          <hr>
+          {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
+          {{#unless shouldShow "orchestras"}}
+              <a class="next-{{button}} right waves-effect waves-light btn">Next</a>
+              {{else}}
+               <button type="submit" class="right btn btn-primary">Save</button>
+            {{/unless}}
+            {{#unless shouldShow "instruments"}}
+              <a class="back-{{button}} left waves-effect waves-light btn">Back</a>
+            {{/unless}}
+          {{/autoForm}}
+        </div>
       </div>
-    {{/autoForm}}
+    </div>
+    <div class="col m12 s12 hide-on-large-only">
+      <div class="containerLeftSmall">
+        <div class="backNextSmall">
+          <hr>
+          {{#autoForm collection="MusicProfiles" doc=currentProfile id="upsertMusicProfileForm" type=formType}}
+          {{#unless shouldShow "orchestras"}}
+              <a class="next-{{button}} right waves-effect waves-light btn">Next</a>
+              {{else}}
+               <button type="submit" class="right btn btn-primary">Save</button>
+            {{/unless}}
+            {{#unless shouldShow "instruments"}}
+              <a class="back-{{button}} left waves-effect waves-light btn">Back</a>
+            {{/unless}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
   </div>
 
   {{/if}}
 </template>
 
 <template name="upsertAccompanistForm">
-  <div class="progress">
+  <!-- <div class="progress">
       <div class="determinate" style="width: 0%"></div>
-  </div>
-   <br>
+  </div> -->
   {{#if accompanistProfileExists}}
     <div class="row">
       <div class="col s12">
@@ -161,61 +234,162 @@
       </div>
     </div>
   {{/if}}
-  <div>
-    <h5>{{question}}</h5>
-  </div>
-  <div class="formsTopMargin">
-    {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
-      <div class="scrollable">
-        <div class="repertoire">
-          {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
-        </div>
 
-        <div class="charge">
-          <br>
-          <h5>
-            {{> afFieldInput name="charge" type="select-radio"}}
-          </h5>
-        </div>
+  <div class="row">
 
-        <div class="working_hours">
-          <br>
-          <h5>
-            {{> afQuickField name="working_hours"}}
-          </h5>
+    <div class="col l7 hide-on-med-and-down halfWhite">
+      <div class="containerLeft">
+        <br><br><br>
+        <div>
+        <h5>{{question}}</h5>
         </div>
+        {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" type=formType}}
+          <div class="scrollable">
+            <div class="repertoire">
+              {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
+            </div>
 
-        <div class="working_days">
-          <br>
-          <h5>
-          {{> afQuickField name="working_days"}}
-          </h5>
-        </div>
+            <div class="charge">
+              <br>
+              <h5>
+                {{> afFieldInput name="charge" type="select-radio"}}
+              </h5>
+            </div>
 
-        <div class="accompanist_active">
-          <br>
-          {{> afQuickField name="accompanist_active"}}
-        </div>
+            <div class="working_hours">
+              <br>
+              <h5>
+                {{> afQuickField name="working_hours"}}
+              </h5>
+            </div>
 
-        <div class="session_location">
-          <br>
-          <h5>
-            {{> afFieldInput name="session_location" type="select-radio"}}
-          </h5>
-        </div>
+            <div class="working_days">
+              <br>
+              <h5>
+              {{> afQuickField name="working_days"}}
+              </h5>
+            </div>
 
-        <div class="mylocation">
-          <br>
-          {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
-       </div>
+            <div class="accompanist_active center-align">
+              <br>
+              {{> afQuickField name="accompanist_active"}}
+              <!-- {{> afFieldInput name="accompanist_active"}} -->
+            </div>
 
-        <div class="one_liner">
-          <br>
-          {{> afQuickField name="one_liner"}}
-        </div>
+            <div class="session_location">
+              <br>
+              <h5>
+                {{> afFieldInput name="session_location" type="select-radio"}}
+              </h5>
+            </div>
+
+            <div class="mylocation">
+              <br>
+              {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
+           </div>
+
+            <div class="one_liner">
+              <br>
+              {{> afQuickField name="one_liner"}}
+            </div>
+          </div>
+
+          <div class="backNext">
+            <hr>
+            {{#unless shouldShow "one_liner"}}
+              {{#if AccompNotValid name}}
+                <button  class="next-{{name}} right waves-effect waves-light btn disabled " disabled>Next</button>
+                {{else}}
+                <a class="next-{{name}} right waves-effect waves-light btn " >Next</a>
+              {{/if}}
+              {{else}}
+              <button type="submit" class=" btn right btn-primary">Save</button>
+            {{/unless}}
+            {{#unless shouldShow "repertoire"}}
+              <a class="back-{{name}} left waves-effect waves-light btn">Back</a>
+            {{/unless}}
+          </div>
+        {{/autoForm}}
       </div>
+    </div>
 
-      <div class="music-advice">
+    <div class="col s12 m12 hide-on-large-only halfWhite">
+      <div class="containerLeftSmall">
+        <br><br><br>
+        <div>
+        <h5>{{question}}</h5>
+        </div>
+        {{#autoForm collection="AccompanistProfiles" doc=currentAccompanistProfiles id="upsertAccompanistForm" validate=keyup type=formType}}
+          <div class="scrollable">
+            <div class="repertoire">
+              {{> afArrayField name="repertoire" template="newAccompCustomArrayField"}}
+            </div>
+
+            <div class="charge">
+              <br>
+              <h5>
+                {{> afFieldInput name="charge" type="select-radio"}}
+              </h5>
+            </div>
+
+            <div class="working_hours">
+              <br>
+              <h5>
+                {{> afQuickField name="working_hours"}}
+              </h5>
+            </div>
+
+            <div class="working_days">
+              <br>
+              <h5>
+              {{> afQuickField name="working_days"}}
+              </h5>
+            </div>
+
+            <div class="accompanist_active">
+              <br>
+              {{> afQuickField name="accompanist_active"}}
+            </div>
+
+            <div class="session_location">
+              <br>
+              <h5>
+                {{> afFieldInput name="session_location" type="select-radio"}}
+              </h5>
+            </div>
+
+            <div class="mylocation">
+              <br>
+              {{>afFieldInput name="mylocation" class="autocomplete" id="autocomplete" type="text"}}
+           </div>
+
+            <div class="one_liner">
+              <br>
+              {{> afQuickField name="one_liner"}}
+            </div>
+          </div>
+
+          <div class="backNextSmall">
+            <hr>
+            {{#unless shouldShow "one_liner"}}
+              {{#if AccompNotValid name}}
+                <button  class="next-{{name}} right waves-effect waves-light btn disabled " disabled>Next</button>
+                {{else}}
+                <a class="next-{{name}} right waves-effect waves-light btn " >Next</a>
+              {{/if}}
+              {{else}}
+              <button type="submit" class=" btn right btn-primary">Save</button>
+            {{/unless}}
+            {{#unless shouldShow "repertoire"}}
+              <a class="back-{{name}} left waves-effect waves-light btn">Back</a>
+            {{/unless}}
+          </div>
+        {{/autoForm}}
+      </div>
+    </div>
+
+     <div class="col l5 hide-on-med-and-down">
+          <div class="containerRight">
         <div class="card grey lighten-5 z-depth-0">
           <div class="card-content">
             {{#with advice}}
@@ -226,26 +400,9 @@
             </h10>
             {{/with}}
           </div>
+          </div>
         </div>
       </div>
-
-      <div class="backNext">
-        <hr>
-        {{#unless shouldShow "one_liner"}}
-          {{#if AccompNotValid name}}
-            <button  class="next-{{name}} right waves-effect waves-light btn disabled " disabled>Next</button>
-            {{else}}
-            <a class="next-{{name}} right waves-effect waves-light btn " >Next</a>
-          {{/if}}
-          {{else}}
-          <button type="submit" class=" btn right btn-primary">Save</button>
-        {{/unless}}
-        {{#unless shouldShow "repertoire"}}
-          <a class="back-{{name}} left waves-effect waves-light btn">Back</a>
-        {{/unless}}
-      </div>
-
-    {{/autoForm}}
   </div>
 <!--  -->
 </template>
@@ -356,7 +513,7 @@
     <div class="row">
       <div class="input-field col s6">
         {{> afFieldInput name=this.current.year type="select" options=years}}
-        <label style="bottom: 90px;" class="active">Competition Name</label>
+        <label style="bottom: 90px;" class="active">Year Won</label>
       </div>
     </div>
 
@@ -440,7 +597,7 @@
     <br>
     <div class="input-field col s6">
         {{> afFieldInput name="name" id="comp.name" type="text" class='autocomplete autocomplete-instrument'}}
-      <label for="comp.name">Ensemble Name</label>
+      <label for="comp.name">Ensemble</label>
     </div>
     <div class="input-field col s6">
         {{> afFieldInput name="position" id="comp.name" type="text"}}

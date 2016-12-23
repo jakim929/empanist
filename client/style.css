@@ -2,6 +2,61 @@
 
 html {
 	font-family: Avenir Next;
+  height: 100%
+}
+
+body {
+  height: 100%;
+  background-color: #eeeeee;
+
+}
+
+.backNext {
+  position: absolute;
+  padding-bottom:30px;
+  bottom: 0px;
+  width:500px;
+  /*box-shadow: 0 -5px 5px -5px #333;*/
+  background-color: white;
+}
+
+.backNextSmall {
+  position: absolute;
+  padding-bottom:30px;
+  padding-left:5%;
+  bottom: 0px;
+  right: 5%;
+  width:95%;
+  background-color: white;
+}
+
+.containerLeft{
+  float: right;
+  margin-right: 10px;  
+  width:500px;
+}
+
+.containerLeftSmall{
+  margin-right: 5%; 
+  margin-left: 5%; 
+  width:90%;
+}
+
+.containerRight{
+  margin-right: 23%;
+  margin-top: 80px;
+  width:300px;
+}
+
+.halfWhite{
+  /*position: absolute;
+  bottom: 0px;*/
+ 
+  /*width:50%;*/
+  /*min-height: 100%;
+  overflow-y: hidden;*/
+  height:93vh;
+  background-color: white;
 }
 
 .profile-picture{
@@ -444,12 +499,6 @@ h8 {
   font-size: 100%;
 }
 
-
-body {
-  background-color: #eeeeee;
-  height:100%;
-}
-
 .no-padding{
   padding: 0;
 }
@@ -568,7 +617,7 @@ a {
 	color: inherit;
 }
 
-
+fp
 .oneLiner {
   text-align: center;
 }
@@ -578,22 +627,14 @@ a {
 }
 
 .scrollable {
-
-  height:500px;
+  max-height:500px;
   overflow: scroll;
-  width: 60%;
-  float:left;
 }
 
 .music-advice {
   width:38%;
   margin-left:62%;
   overflow:hidden;
-}
-
-.backNext {
-  margin-top:5px;
-  margin-right: 40%;
 }
 
 .result-card {
@@ -910,7 +951,7 @@ overflow:hidden;
 }
 
 .newAccompPublish {
-  width: 60%;
+
   margin-top:50px;
   overflow:hidden;
 }

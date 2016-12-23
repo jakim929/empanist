@@ -1,16 +1,35 @@
 <template name="NewAccompLayout">
     <main>
-  
-    {{> NewAccompanist}}
-    {{> newAccompAdvice}}
-    {{> publishAccompanist}}
+      <div class="row">
+
+        <div class="col l7 hide-on-med-and-down halfWhite">
+          <div class="containerLeft">
+            {{> NewAccompanist}}
+            {{> publishAccompanist}}
+          </div>
+        </div>
+
+        <div class="col s12 m12 hide-on-large-only halfWhite">
+          <div class="containerLeftSmall">
+            {{> NewAccompanist}}
+            {{> publishAccompanist}}
+          </div>
+        </div>
+
+        <div class="col l5 hide-on-med-and-down">
+          <div class="containerRight">
+            {{> newAccompAdvice}}
+          </div>
+        </div>
         
+      </div>
     </main>
 </template>
 
 <template name="NewAccompanist">
+  <br>
   <h3>Become an accompanist</h3>
-  <div class="left-card">
+  <!-- <div class="left-card"> -->
     <ul class="collection">
         <li class="collection-item">
           <div>
@@ -76,22 +95,24 @@
           </div>
         </li>
       </ul>
-  </div>
+  <!-- </div> -->
 </template>
 
 <template name="newAccompAdvice">
-  <div class=" advice">
+  <!-- <div class=" advice"> -->
+    <br>
+    <br>
     <div class="card grey lighten-5 z-depth-0">
       <div class="card-content">
-        <i class="small left material-icons prefix blue-text text-darken-2">ic_wb_incandescent</i>
+        <i class="small left material-icons prefix blue-text text-darken-2">lightbulb_outline</i>
         <br>
         <br>
            <h10>
-            You can work on your own schedule to make over $90 a day! Fill in all sections of your accompanist profile to attract as many musicians as possible. If you’re having a particularly busy week, you can always deactivate your account for awhile!
+            Fill in all sections of your accompanist profile to attract as many musicians as possible. If you’re having a particularly busy week, you can always deactivate your account for awhile!
           </h10>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <template name="publishAccompanist">

@@ -13,8 +13,8 @@ import cropper from 'cropper';
 import 'cropper/dist/cropper.min.css'
 
 
-import clockpicker from 'materialize-clockpicker';
-import 'materialize-clockpicker/dist/css/materialize.clockpicker.css'
+// import clockpicker from 'materialize-clockpicker';
+// import 'materialize-clockpicker/dist/css/materialize.clockpicker.css'
 
 window.MusicProfiles = MusicProfiles
 window.AccompanistProfiles = AccompanistProfiles
@@ -23,7 +23,6 @@ window.MusicCompetitions = MusicCompetitions
 window.Transactions = Transactions
 window.Sessions = Sessions
 window.SearchData = SearchData
-
 
 Template.bookAccompanistForm.onRendered(function(){
   $('.tooltipped').tooltip({
@@ -1817,9 +1816,13 @@ Template.ProfileLayout.onRendered(function(){
     $('.materialboxed').materialbox();
 
     // $('.pushpin').pushpin({ top: $('.cover-picture').offset().top });
-    $('.aside').pushpin({ top:490});
 
-    $('.basicCardPushpin').pushpin({ bottom:100});
+    // Took it out because it's buggy
+     // $('.aside').pushpin({ 
+     //    top:490,
+     //  });
+
+     $('.basicCardPushpin').pushpin({ bottom:100});
 
     $(document).on('click.card', '.card', function (e) {
       if ($(this).find('> .card-reveal').length) {
@@ -2746,7 +2749,7 @@ Template.upsertAccompanistForm.helpers ({
   AccompNotValid: function (field) {
     var x = AutoForm.getFieldValue(field, ['upsertAccompanistForm']);
     // var y = AutoForm.getFieldValue("repertoire", ['upsertAccompanistForm']);
-    if ( x == undefined ){
+    if ( x == undefined && field !== "repertoire" && field !== "mylocation" && field !== "one_liner" ){
       return true
     } else {
       return false
