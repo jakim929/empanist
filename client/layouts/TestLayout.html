@@ -1,39 +1,5 @@
 <template name="TestLayout">
 
-   <ul id="slide-out" class="side-nav">
-      <li><a href="#!">First Sidebar Link</a></li>
-      <li><a href="#!">Second Sidebar Link</a></li>
-      <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li>
-            <a class="collapsible-header">Dropdown<i class="material-icons">arrow_drop_down</i></a>
-            <div class="collapsible-body">
-              <ul>
-                <li><a href="#!">First</a></li>
-                <li><a href="#!">Second</a></li>
-                <li><a href="#!">Third</a></li>
-                <li><a href="#!">Fourth</a></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="right hide-on-med-and-down">
-      <li><a href="#!">First Sidebar Link</a></li>
-      <li><a href="#!">Second Sidebar Link</a></li>
-      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-      <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="#!">First</a></li>
-        <li><a href="#!">Second</a></li>
-        <li><a href="#!">Third</a></li>
-        <li><a href="#!">Fourth</a></li>
-      </ul>
-    </ul>
-    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-
-
-
 
   <header>
   <link rel="stylesheet" href="../style.css">
@@ -44,8 +10,17 @@
 
 
   <main>
-
-
+  <div class="row">
+    <div class="col s12">
+      {{#autoForm collection="Transactions" id="testInsertTransactions" type="insert"}}
+        <fieldset>
+          <legend>Add a Repertoire</legend>
+          {{> afQuickField name='repertoire' template='materialize-fixed'}}
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Insert</button>
+      {{/autoForm}}
+    </div>
+  </div>
   <div class="row">
     <div class="col s6">
       <div class="card">
@@ -77,6 +52,45 @@
       </main>
 
 	<!-- Include Required Prerequisites -->
+</template>
+
+<template name="afArrayField_materialize_fixed">
+  <fieldset>
+    <legend>{{afFieldLabelText name=this.atts.name}}</legend>
+    {{#if afFieldIsInvalid name=this.atts.name}}
+    <div class="autoform-array-field-error">
+      {{{afFieldMessage name=this.atts.name}}}
+    </div>
+    {{/if}}
+    {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+    <div class="autoform-array-item">
+      {{> afQuickField name=this.name label=false}}
+      {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+      <button type="button" class="autoform-remove-item">Remove</button>
+      {{/if}}
+    </div>
+    {{/afEachArrayItem}}
+    {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+    <div style="margin-top: 20px;">
+      <button type="button" class="autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">Add</button>
+    </div>
+    {{/if}}
+  </fieldset>
+</template>
+
+<template name="PaymentPanel">
+    <div class="card">
+      <div class="card-content container">
+        <div class="row">
+          <form>
+            <div id="dropin-container"></div><br>
+            <div class="row pay-button">
+              <input type='submit' class='waves-effect waves-light btn col s12 z-depth-0' value='Update Payment'/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 </template>
 
 <template name="AdminPanel">

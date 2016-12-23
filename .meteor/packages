@@ -70,7 +70,9 @@ random
 alanning:roles
 aldeed:template-extension
 useraccounts:flow-routing
-gildaspk:autoform-materialize
+
+#For the time being edited autoform materialize
+#gildaspk:autoform-materialize
 planettraining:material-design-icons
 edgee:slingshot
 themeteorchef:bert
@@ -88,3 +90,5 @@ dbarrett:dropzonejs
 aldeed:autoform-select2
 materialize:materialize
 micah:justified-gallery
+session
+gildaspk:autoform-materialize-jkmodified
