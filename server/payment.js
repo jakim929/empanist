@@ -41,5 +41,11 @@ Meteor.methods({
     console.log("Payment Complete");
 
     return response;
+  },
+
+  createCustomer: function(userId){
+    if(userId){
+
+    }
   }
 })

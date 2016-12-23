@@ -35,13 +35,14 @@ TransactionSchema = new SimpleSchema({
 
   performanceType: {
     type: String,
-    allowedValues: ['Solo Recital/Concert', 'College Audition', 'Orchestral Audition', 'Competition', 'Recording Session', 'Private Lesson', 'Other'],
+    allowedValues: ['Solo Recital', 'Audition', 'Competition', 'Recording Session', 'Private Lesson', 'Other'],
     label: 'Final Performance Type'
   },
 
   sessionCount: {
     type: Number,
-    label: "Session Count"
+    label: "Session Count",
+    min: 1
   },
 
   repertoire: {
@@ -52,7 +53,7 @@ TransactionSchema = new SimpleSchema({
   status: {
     type: String,
     label: "Booking Status",
-    allowedValues: [ 'Pending', 'Ongoing', 'Completed', 'Cancelled']
+    allowedValues: ['Making', 'Pending', 'Ongoing', 'Completed', 'Cancelled']
     // autoform: {
     //   type: "hidden"
     // }
@@ -65,12 +66,13 @@ TransactionSchema = new SimpleSchema({
 
   endDate: {
     type: Date,
-    label: "End Date"
+    label: "End Date",
   },
 
   eventTime: {
     type: String,
-    label: 'Event Time'
+    label: 'Event Time',
+    optional: true
   },
 
   rating: {
@@ -85,12 +87,16 @@ TransactionSchema = new SimpleSchema({
   rehearsalLocation: {
     type: String,
     label: "Rehearsal Location",
-    optional: true
   },
 
   performanceLocation: {
     type: String,
     label: "Performance Location",
+  },
+
+  description: {
+    type: String,
+    label:  'Performance Description',
     optional: true
   }
 
@@ -132,7 +138,7 @@ SessionSchema = new SimpleSchema({
 
   date: {
     type: Date,
-    label: "Session Date"
+    label: "Session Date",
   },
 
   suggestedHours: {
