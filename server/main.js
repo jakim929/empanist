@@ -74,9 +74,17 @@ AccountsTemplates.configure({
 });
 
 Accounts.onCreateUser(function(options, user) {
+
   // We still want the default hook's 'profile' behavior.
-  if (options.profile.name && options.profile.birthDate){
-    var newBasicProfile = {userId: user._id, name: options.profile.name, birthDate: options.profile.birthDate}
+  if (options.profile.firstName &&  options.profile.lastName && options.profile.birthDate){
+    let fullName = options.profile.firstName + ' ' + options.profile.lastName
+    var newBasicProfile = {
+        userId: user._id,
+        name: fullName,
+        firstName: options.profile.firstName,
+        lastName: options.profile.lastName,
+        birthDate: options.profile.birthDate
+      }
     console.log(newBasicProfile)
     BasicProfiles.insert(newBasicProfile);
 
@@ -357,14 +365,14 @@ Meteor.methods({
           Transactions.update({_id: transactionId}, {$set: {status: "Ongoing"}});
         }
         else{
-          Meteor.Error("First session not set yet.")
+          throw new Meteor.Error("First session not set yet.")
         }
       }
       else{
-        Meteor.Error("No permission to confirm booking.")
+        throw new Meteor.Error("No permission to confirm booking.")
       }
     }else{
-      Meteor.Error("No such transaction.")
+    throw new  Meteor.Error("No such transaction.")
     }
   },
 
@@ -393,6 +401,7 @@ Meteor.users.after.insert(function (userId, doc){
 
 BasicProfiles.before.insert(function (userId, doc){
   // Alert -> Make Safer ASDFDSAFDASFASDFFA
+
 });
 
 BasicProfiles.after.insert(function(userId, doc){

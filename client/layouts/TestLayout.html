@@ -54,38 +54,14 @@
 	<!-- Include Required Prerequisites -->
 </template>
 
-<template name="afArrayField_materialize_fixed">
-  <fieldset>
-    <legend>{{afFieldLabelText name=this.atts.name}}</legend>
-    {{#if afFieldIsInvalid name=this.atts.name}}
-    <div class="autoform-array-field-error">
-      {{{afFieldMessage name=this.atts.name}}}
-    </div>
-    {{/if}}
-    {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-    <div class="autoform-array-item">
-      {{> afQuickField name=this.name label=false}}
-      {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-      <button type="button" class="autoform-remove-item">Remove</button>
-      {{/if}}
-    </div>
-    {{/afEachArrayItem}}
-    {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-    <div style="margin-top: 20px;">
-      <button type="button" class="autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}">Add</button>
-    </div>
-    {{/if}}
-  </fieldset>
-</template>
-
 <template name="PaymentPanel">
-    <div class="card">
-      <div class="card-content container">
+    <div class="card z-depth-0">
+      <div class="card-content">
         <div class="row">
           <form>
             <div id="dropin-container"></div><br>
             <div class="row pay-button">
-              <input type='submit' class='waves-effect waves-light btn col s12 z-depth-0' value='Update Payment'/>
+              <input type='submit' class='waves-effect waves-light btn col s8 offset-s2 z-depth-0' value='Add Payment Method'/>
             </div>
           </form>
         </div>

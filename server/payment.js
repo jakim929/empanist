@@ -43,9 +43,38 @@ Meteor.methods({
     return response;
   },
 
-  createCustomer: function(userId){
+  createCustomer: function(paymentMethodNonce){
     if(userId){
 
     }
+  },
+
+  attachPayment: function(nonce){
+
   }
 })
+
+function createCustomer(userId, paymentMethodNonce, callback){
+  let basicProfile = basicProfiles.findOne({userId: userId});
+  if(paymentMethodNonce){
+    gateway.customer.create({
+      firstName: "basicProfile"
+    })
+  }else{
+
+  }
+}
+
+function setCustomerObj(userId, customerObj){
+  //FIX make it non-blocking
+  basicProfiles.update({userId: userId}, {$set: {customerObj: customerObj}})
+}
+
+function getCustomerId(userId){
+  let result = basicProfiles.findOne({userId: userId, customerId: {$exists: true}}, {fields: {customerObj: 1}});
+  if(result){
+    return result.customerObj.customerId
+  }else{
+    return false
+  }
+}

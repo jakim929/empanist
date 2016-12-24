@@ -25,6 +25,16 @@ BasicProfileSchema = new SimpleSchema({
     }
   },
 
+  firstName: {
+    type: String,
+    label: "First Name"
+  },
+
+  lastName:{
+    type: String,
+    label: "Last Name"
+  },
+
   name: {
     type: String,
     label: "Name"
@@ -56,6 +66,13 @@ BasicProfileSchema = new SimpleSchema({
   coverPic: {
     type: String,
     label: "Cover Picture ID",
+    optional: true
+  },
+
+  customerObj : {
+    type: Object,
+    label: "Braintree Customer Object",
+    blackbox: true,
     optional: true
   }
 });

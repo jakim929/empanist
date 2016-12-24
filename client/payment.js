@@ -1,7 +1,6 @@
 // Change to only take code needed
 import braintree from 'braintree-web';
 
-Session.set('paymentFormStatus', null);
 var isBraintreeInitialized = false;
 
 function initializeBraintree (clientToken) {
@@ -9,8 +8,8 @@ function initializeBraintree (clientToken) {
 
   braintree.setup(clientToken, 'dropin', {
     container: 'dropin-container',
-    paymentMethodNonceRecieved: function(event, nonce){
-      Session.set('paymentFormStatus', true);
+    onPaymentMethodReceived: function(result){
+
     }
   })
 }
