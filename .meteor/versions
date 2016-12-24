@@ -10,7 +10,6 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 aldeed:template-extension@3.4.3
-alexgreg:materialize-clockpicker@0.0.1
 allow-deny@1.0.5
 amplify@1.0.0
 autopublish@1.0.7
@@ -29,6 +28,7 @@ callback-hook@1.0.9
 check@1.2.3
 coffeescript@1.1.2
 comerc:autoform-selectize@2.3.2
+cunneen:mailgun@0.9.1
 d3js:d3@3.5.8
 dbarrett:dropzonejs@4.2.1
 ddp@1.2.5

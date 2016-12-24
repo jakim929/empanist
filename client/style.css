@@ -669,6 +669,10 @@ fp
   border-top: 1px solid #E5E5E5;
 }
 
+.nameFont {
+  font-size:30px;
+}
+
 .larger {
   font-size:20px;
 }
@@ -744,6 +748,7 @@ fp
 #first-card-container {
   margin-top:-5%;
   background-color: blue;
+  /*height: 500px;*/
 }
 
 .profileImg {

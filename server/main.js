@@ -11,6 +11,15 @@ Meteor.startup(() => {
 
 });
 
+// Email.send({
+//   to: "to.ajamjoom@college.harvard.edu",
+//   from: "from.postmaster@empanist.com",
+//   subject: "Example Email",
+//   text: "The contents of our email in plain text.",
+// });
+
+
+
 AWS.config.update({
   accessKeyId: Meteor.settings.AWSAccessKeyId,
   secretAccessKey: Meteor.settings.AWSSecretAccessKey
@@ -79,6 +88,7 @@ Accounts.onCreateUser(function(options, user) {
     var newBasicProfile = {userId: user._id, name: options.profile.name, birthDate: options.profile.birthDate}
     console.log(newBasicProfile)
     BasicProfiles.insert(newBasicProfile);
+    // Accounts.sendEnrollmentEmail(user._id);
 
     return user;
   }
@@ -401,7 +411,9 @@ BasicProfiles.after.insert(function(userId, doc){
 
    var suggestions = ["-> Master more Instruments", "-> Win more Awards", "-> Attend more Music Programs", "-> Play in more Orchestras"]
    Data.insert({ userId: doc.userId, suggestions: suggestions, value: 0})
-
+   // TESTING
+   // console.log("EMAIL SHOULD BE SENT TO ajamjoom@college.harvard.edu")
+   // Email.send()
 });
 
 
