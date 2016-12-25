@@ -123,11 +123,11 @@ var deleteImageFromS3 = function(key){
 
 }
 
-var setAsProfilePicture = function(imageId){
-  if(!UserImages.findOne({_id : imageId, userId: Meteor.userId()}, {_id:1})){
+var setAsProfilePicture = function(imageId, userId){
+  if(!UserImages.findOne({_id : imageId, userId: userId}, {_id:1})){
     throw new Meteor.Error('no-such-image', "Insufficient permissions/No such image in database.");
   }else{
-    BasicProfiles.update({userId: Meteor.userId()}, {$set: {profilePic : imageId}}, function(err, result){
+    BasicProfiles.update({userId: userId}, {$set: {profilePic : imageId}}, function(err, result){
       if(err){
         throw new Meteor.Error(err);
       }else{
@@ -137,11 +137,11 @@ var setAsProfilePicture = function(imageId){
   }
 };
 
-var setAsCoverPicture = function(imageId){
-  if(!UserImages.findOne({_id : imageId, userId: Meteor.userId()}, {_id:1})){
+var setAsCoverPicture = function(imageId, userId){
+  if(!UserImages.findOne({_id : imageId, userId: userId}, {_id:1})){
     throw new Meteor.Error('no-such-image', "Insufficient permissions/No such image in database.");
   }else{
-    BasicProfiles.update({userId: Meteor.userId()}, {$set: {coverPic : imageId}}, function(err, result){
+    BasicProfiles.update({userId: userId}, {$set: {coverPic : imageId}}, function(err, result){
       if(err){
         throw new Meteor.Error(err);
       }else{
@@ -151,13 +151,13 @@ var setAsCoverPicture = function(imageId){
   }
 };
 
-var storeThumbnailUrlInDatabase = function (info, originalImageId, callback){
+var storeThumbnailUrlInDatabase = function (info, userId, originalImageId, callback){
   Modules.both.checkUrlValidity( info.url );
   var originalImageDoc = UserImages.findOne({_id: originalImageId})
   if(originalImageDoc){
     UserImages.insert({
       url: info.url,
-      userId: Meteor.userId(),
+      userId: userId,
       type: info.type,
       name: info.name,
       size: info.size,
@@ -209,8 +209,8 @@ var storeThumbnailUrlInDatabase = function (info, originalImageId, callback){
   }
 }
 
-var rejectAllSessions = function(transactionId, callback){
-  if(Transactions.findOne({_id: transactionId, accompanist: Meteor.userId()})){
+var rejectAllSessions = function(transactionId, accompanistId, callback){
+  if(Transactions.findOne({_id: transactionId, accompanist: accompanistId})){
 
       Sessions.update({transaction: transactionId}, {$set: {status: "Cancelled"}}, {multi: true}, function(err, result){
         if (err){
@@ -231,7 +231,7 @@ Meteor.methods({
         if (err){
           throw new Meteor.Error(err)
         }else{
-          rejectAllSessions(transactionId, function(err, result){
+          rejectAllSessions(transactionId, Meteor.userId(), function(err, result){
             if (err){
               throw new Meteor.Error(err);
             }else{
@@ -246,11 +246,11 @@ Meteor.methods({
 
 
   setProfilePicture: function(imageId) {
-    setAsProfilePicture(imageId);
+    setAsProfilePicture(imageId, Meteor.userId());
   },
 
   setCoverPicture: function(imageId) {
-    setAsCoverPicture(imageId);
+    setAsCoverPicture(imageId, Meteor.userId());
   },
 
   storeImageUrlInDatabase: function( info) {
@@ -291,7 +291,7 @@ Meteor.methods({
   },
 
   storeThumbnailUrlInDatabase: function(info,  originalImageId, callback) {
-      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+      storeThumbnailUrlInDatabase(info, Meteor.userId(), originalImageId, function(err, result){
         if (err){
           callback(err)
         }else{
@@ -305,7 +305,7 @@ Meteor.methods({
 
   saveThumbnailAs: function(info, originalImageId, type){
     if (type == "Profile"){
-      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+      storeThumbnailUrlInDatabase(info, Meteor.userId(), originalImageId, function(err, result){
         if (err){
           throw new Meteor.Error(err);
         }else{
@@ -314,7 +314,7 @@ Meteor.methods({
         }
       });
     }else if (type == "Cover"){
-      storeThumbnailUrlInDatabase(info, originalImageId, function(err, result){
+      storeThumbnailUrlInDatabase(info, Meteor.userId(), originalImageId, function(err, result){
         if (err){
           throw new Meteor.Error(err);
         }else{

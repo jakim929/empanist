@@ -79,8 +79,9 @@ function randomAward (){
   var awardName = randomElement(awardNameList);
 
   var wonDate = randomDate();
+  var wonYear = wonDate.getFullYear();
 
-  return {name: competition, date: wonDate, award: awardName};
+  return {name: competition, year: wonYear, award: awardName};
 };
 
 function randomMusicProgram (){
@@ -92,7 +93,13 @@ function randomMusicProgram (){
   var sd = randomDate();
   var ed = randomDatePar(sd, today, 6, 20);
 
-  return {programName: musicProgramName, startYear: sd, endYear: ed};
+  var sy = sd.getFullYear();
+  var ey = ed.getFullYear();
+
+  var sm = sd.getMonth();
+  var em = ed.getMonth();
+
+  return {programName: musicProgramName, startYear: sy, endYear: ey, startMonth: sm, endMonth: em};
 };
 
 createNewMusicProfile = function (givenUserId){
@@ -143,7 +150,9 @@ createNewAccompanistProfile = function (givenUserId){
 }
 
 createNewBasicProfile = function (givenUserId){
-  var randomName = faker.name.findName();
+  var randomFirstName = faker.name.firstName();
+  var randomLastName = faker.name.lastName();
+  var randomFullName = randomFirstName + ' ' + randomLastName
 
   var schools =["The Julliard School","Royal Academy of Music","Le Conservatoire de Paris","Berkley College of Music","Cleveland Institute of Music","Curtis Institute of Music","Jacobs School of Music","Manhattan School of Music","Trinity Laban Conservatoire of Music and Dance","Royal College of Music","Mannes College","Boston Conservatory","New England Conservatory","Oberlin Conservatory","King’s Academy","Los Angeles College of Music"];
   var randomAffiliation = randomElement(schools);
@@ -157,7 +166,9 @@ createNewBasicProfile = function (givenUserId){
 
   return {
             userId: givenUserId,
-            name: randomName,
+            name: randomFullName,
+            firstName : randomFirstName,
+            lastName : randomLastName,
             birthDate: randomBirthDate,
             phone: randomPhone,
             affiliation: randomAffiliation,

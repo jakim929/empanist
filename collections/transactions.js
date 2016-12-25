@@ -100,6 +100,12 @@ TransactionSchema = new SimpleSchema({
     type: String,
     label:  'Performance Description',
     optional: true
+  },
+
+  transactionCustomerId: {
+    type: String,
+    label: 'Customer ID',
+    optional: true
   }
 
 });

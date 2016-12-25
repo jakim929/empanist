@@ -8,7 +8,13 @@ function initializeBraintree (clientToken) {
 
   braintree.setup(clientToken, 'dropin', {
     container: 'dropin-container',
-    onPaymentMethodReceived: function(result){
+    onPaymentMethodReceived: function(obj){
+      var booking = FlowRouter.getQueryParam("booking");
+      console.log(booking)
+
+      Meteor.call('attachMusicianPayment', booking._id, obj.nonce, function(err,result){
+
+      })
 
     }
   })

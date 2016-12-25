@@ -1,6 +1,6 @@
 Template.AdminPanel.events({
-  'click button.add-fake-users' (event, template){
-
+  'click .add-fake-users' (event, template){
+    console.log("hello")
 
     Session.set('numberOfUsers', $('#numberOfUsers')[0].value);
 
@@ -8,7 +8,7 @@ Template.AdminPanel.events({
       Meteor.call('insertRandomData', 1);
       Session.set('numberOfUsers', (Session.get('numberOfUsers')-1));
       console.log(Session.get('numberOfUsers'), "left...");
-    }, 500);
+    }, 700);
 
     Session.set('insertTimer', insertTimer);
 
@@ -19,8 +19,6 @@ Template.AdminPanel.events({
       clearInterval(Session.get('insertTimer'));
       console.log("Insert Finished.")
     });
-
-
 
   }
 })
