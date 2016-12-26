@@ -67,6 +67,7 @@ TransactionSchema = new SimpleSchema({
   endDate: {
     type: Date,
     label: "End Date",
+    min: new Date()
   },
 
   eventTime: {
@@ -87,6 +88,7 @@ TransactionSchema = new SimpleSchema({
   rehearsalLocation: {
     type: String,
     label: "Rehearsal Location",
+    optional: true
   },
 
   performanceLocation: {
@@ -97,6 +99,12 @@ TransactionSchema = new SimpleSchema({
   description: {
     type: String,
     label:  'Performance Description',
+    optional: true
+  },
+
+  transactionCustomerId: {
+    type: String,
+    label: 'Customer ID',
     optional: true
   }
 
@@ -139,6 +147,7 @@ SessionSchema = new SimpleSchema({
   date: {
     type: Date,
     label: "Session Date",
+    min: new Date()
   },
 
   suggestedHours: {

@@ -23,6 +23,13 @@
   <div class="card z-depth-0">
     <div class="card-content">
       <span class="black-text">
+        <h5>{{getTitle}}</h5>
+
+        <div class="progress">
+            <div class="determinate" style="{{progressBarWidth}}"></div>
+        </div>
+
+        <!-- <div class="divider"></div><br> -->
         {{> Template.dynamic template=currentStep}}
      </span>
     </div>
@@ -78,11 +85,7 @@
 </template>
 
 <template name='EventReview'>
-
-  <h5>1. Final Event</h5>
-
-  <div class="divider"></div><br>
-
+  <br>
 
   {{#with currentTransaction}}
       {{#autoForm id="UpdateEventInformation" collection="Transactions" type="update" doc=this}}
@@ -97,16 +100,16 @@
         <div class="container">
           {{> afArrayField name="repertoire" data="booking"}}
         </div>
-        <br><br>
+        <br>
 
         What is the final event?
           {{> afQuickField name="eventName" label="Event Name"}}
-        <br><br>
+        <br>
 
 
         Where is the location of the final performance?
         {{> afQuickField name="performanceLocation" label="Performance Location"}}
-        <br>
+
 
       {{/autoForm}}
   {{else}}
@@ -145,10 +148,7 @@
 
 
 <template name="SessionReview">
-
-  <h5>2. Sessions</h5>
-
-  <div class="divider"></div><br>
+  <br>
   {{#if transactionInputStatus}}
     {{#autoForm id="UpdateSessionCount" collection="Transactions" type="update" doc=transactionCurrent}}
       {{> afQuickField name="status" type="hidden" value="Pending"}}
@@ -180,31 +180,87 @@
   {{/autoForm}}
 </template>
 
+<template name="PricingReview">
+  <br>
+
+    You will only be charged <b>after</b> each completed hourly session and the service fee. You may add more sessions any time.  <br><br>
+    {{#with currentReceipt}}
+
+      {{>PriceTable}}
+
+
+    {{else}}
+      Error connecting to database
+    {{/with}}
+
+</template>
+
 <template name="PaymentReview">
-  <h5>3. Payment</h5>
-    <div class="divider"></div>
-    <br><br>
-    You will only be charged after each completed hourly session. You may add more sessions any time.<br><br>
 
-    <table class="highlight">
-      <thead>
-        <tr>
-            <th data-field="st">Session Type</th>
-            <th data-field="rate">Hourly Rate</th>
-        </tr>
-      </thead>
+  {{> PaymentPanel}}
+</template>
 
-      <tbody>
-        <tr>
-          <td>Rehearsal</td>
-          <td>$0.87</td>
-        </tr>
-        <tr>
-          <td>Alan</td>
-          <td>$3.76</td>
-        </tr>
-      </tbody>
-    </table>
+<template name="PriceTable">
+  <ul class="collapsible z-depth-0" data-collapsible="accordion">
+        <li>
+          <div class="collapsible-header">
+            <table>
+                <tbody>
+                  <tr>
+                    <td>Rehearsal Session Fee<br>(inc. service fee)</td>
+                    <td><h6 class='right-align'>{{sessionChargePostService}}</h6></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          <div class="collapsible-body">
+            <table class="striped centered">
+              <tbody>
+                <tr>
+                  <td>Base Charge</td>
+                  <td>Service Fee</td>
+                  <td>Total</td>
+                </tr>
+                <tr>
+                  <td>{{sessionChargePreService}}</td>
+                  <td>{{sessionServiceFee}}</td>
+                  <td>{{sessionChargePostService}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Final Session Fee<br>(inc. service fee)</td>
+                  <td><h6 class='right-align'>{{finalSessionPostService}}</h6></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="collapsible-body">
+            <table class="striped centered">
+              <tbody>
+                <tr>
+                  <td>Base Charge</td>
+                  <td>{{performanceType}} Session Fee</td>
+                  <td>Service Fee</td>
+                  <td>Total</td>
+                </tr>
+                <tr>
+                  <td>{{sessionChargePreService}}</td>
+                  <td>{{finalSessionFee}}</td>
+                  <td>{{finalSessionServiceFee}}</td>
+                  <td>{{finalSessionPostService}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+      </ul>
 </template>
 
 <template name="SuccessLayout">
@@ -215,39 +271,3 @@
     </div>
   </div>
 </template>
-
-<!-- <template name="bookAccompanistForm">
-  {{#with routeAccompanist}}
-    {{#autoForm id="bookAccompanistForm" collection="Transactions" type="insert"}}
-      {{> afQuickField name="musician" value=currentUser._id type="hidden"}}
-      {{> afQuickField name="accompanist" value=this type="hidden"}}
-      {{> afQuickField name="status" value="Pending" type="hidden"}}
-      <br>
-      <div class="row">
-        <div class="col s5 tooltipped" data-tooltip="Start date of rehearsals">
-          <label for="sd" class="active">Start Date</label>
-          {{> afFieldInput name="startDate" id="sd" value=urlStartDate type="date" }}
-        </div>
-        <div class="col s2">
-          <i class=" arrow fa-rotate-180 small material-icons prefix blue-text text-darken-2">keyboard_backspace</i>
-        </div>
-        <div class="col s5 tooltipped" data-tooltip="Final performance date">
-          <label for="ed" class="active">End Date</label>
-          {{> afFieldInput name="endDate" id="ed" value=urlEndDate type="date" }}
-        </div>
-      </div>
-
-       <label for="pt" class="active">Performance Type</label>
-      {{> afFieldInput name="performanceType" id="pt" type="select" options="allowed"}}
-
-      {{> afArrayField name="repertoire" template="newAccompCustomArrayField" data="booking"}}
-
-    {{/autoForm}}
-    <div class="center"><button class="btn wave-light book-accompanist">Request To Book</button></div>
-  {{else}}
-    Not on an accompanist page.
-  {{/with}}
-</template> -->
-<!-- <template name="invalidId">
-  <h2>Invalid ID</h2>
-</template> -->

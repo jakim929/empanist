@@ -1,4 +1,5 @@
 // export const SearchData = new Mongo.Collection('searchData');
+import { Mongo } from 'meteor/mongo';
 
 SearchDataSchema = new SimpleSchema({
   // userId: {

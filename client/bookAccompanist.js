@@ -18,6 +18,23 @@ Template.ReviewLeftFormPanel.helpers({
 
   currentStep(){
     return Template.instance().currentStep.get();
+  },
+
+  getTitle(){
+
+    let panels= ["EventReview", "SessionReview", "PricingReview", "PaymentReview"]
+    var currentStepIndex = panels.indexOf(Template.instance().currentStep.get());
+
+    let titles = ["1. Final Event", "2. Sessions", "3. Pricing", "4. Payment"]
+    return titles[currentStepIndex]
+  },
+
+  progressBarWidth(){
+    let panels= ["EventReview", "SessionReview", "PricingReview", "PaymentReview"]
+    var currentStepIndex = panels.indexOf(Template.instance().currentStep.get());
+    let widths = ["25%", "50%", "75%", "100%"]
+    return "width: "+widths[currentStepIndex]
+
   }
 });
 
@@ -39,7 +56,45 @@ Template.SessionReview.helpers({
   }
 })
 
+Template.PricingReview.onCreated(function(){
+  var self = this;
+  self.currentReceipt = new ReactiveVar();
+  var currentTransaction = FlowRouter.getQueryParam("booking")
+  if(currentTransaction._id){
+    Meteor.call('getReceipt', currentTransaction._id, function(err, result){
+      if (err){
+        console.log(err)
+      }else{
+        console.log(result)
+        self.currentReceipt.set(result);
+      }
+    })
+  }
+})
 
+Template.PricingReview.onRendered(function(){
+    // console.log("PricingReview Rendered")
+    // $(document).ready(function(){
+    //   $('.collapsible').collapsible();
+    // });
+})
+
+Template.PriceTable.onRendered(function(){
+        $('.collapsible').collapsible();
+})
+
+
+Template.PricingReview.helpers({
+  currentTransaction(){
+    var currentTransaction = FlowRouter.getQueryParam("booking")
+    if(currentTransaction._id){
+      return Transactions.findOne(currentTransaction._id)
+    }
+  },
+  currentReceipt(){
+    return Template.instance().currentReceipt.get();
+  }
+})
 
 Template.EventReview.onRendered(function(){
   $('#timepicker').pickatime({
@@ -59,7 +114,7 @@ Template.EventReview.helpers({
 })
 
 
-Template.PaymentReview.helpers({
+Template.PricingReview.helpers({
 
 });
 
@@ -117,6 +172,20 @@ Template.SessionReview.helpers({
   }
 });
 
+function makeTransition(template){
+    let panels= ["EventReview", "SessionReview", "PricingReview", "PaymentReview"]
+    var currentStepIndex = panels.indexOf(template.currentStep.get());
+    console.log(currentStepIndex)
+    if(currentStepIndex > -1){
+      let nextStepIndex = currentStepIndex + 1
+      if(nextStepIndex < panels.length){
+        console.log("Go to next page")
+        template.currentStep.set(panels[nextStepIndex]);
+      }
+    }
+
+}
+
 function enterFinalEventInfo(){
   var currentTransaction = FlowRouter.getQueryParam("booking")
 
@@ -124,7 +193,7 @@ function enterFinalEventInfo(){
   currentTransaction.musician = Meteor.userId()
   currentTransaction.performanceLocation = AutoForm.getFieldValue('performanceLocation', 'UpdateEventInformation')
   currentTransaction.repertoire = AutoForm.getFieldValue('repertoire', 'UpdateEventInformation')
-  currentTransaction.eventName = AutoForm.getFieldValue('eventName', 'updateEventInformaiton')
+  currentTransaction.eventName = AutoForm.getFieldValue('eventName', 'UpdateEventInformation')
 
   let eventNameCorrect = AutoForm.validateField('UpdateEventInformation', 'eventName', false)
   let repertoireCorrect =  AutoForm.validateField('UpdateEventInformation', 'repertoire', false)
@@ -156,7 +225,7 @@ Template.ReviewLeftFormPanel.events({
       if (validationStatus[0]){
         var queryParam = {booking: validationStatus[1], session: {}};
         FlowRouter.setQueryParams(queryParam);
-        transitionSuccess = true;
+        makeTransition(template)
       }
     }
     else if(currentStep == "SessionReview"){
@@ -168,16 +237,34 @@ Template.ReviewLeftFormPanel.events({
         // FIX show some sort of feedback
         if(AutoForm.getFormValues('InsertFirstSession').insertDoc.suggestedHours.length >= 2){
           var validationContext = TransactionSchema.newContext();
-          TransactionSchema.clean(currentTransaction);
-          var queryParam = {booking: currentTransaction, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
+          var firstSessionData = AutoForm.getFormValues('InsertFirstSession').insertDoc
+
+          console.log(firstSessionData.date)
+          currentTransaction.startDate = firstSessionData.date
+
+          var queryParam = {booking: currentTransaction, session: firstSessionData};
           FlowRouter.setQueryParams(queryParam);
-          transitionSuccess = true;
+
+          console.log(currentTransaction);
+
+          Meteor.call('makeFirstTransactionRequest', currentTransaction, function(err, result){
+            if(err){
+              console.log(err)
+            }else{
+              makeTransition(template)
+              var insertedTransaction = Transactions.findOne(result);
+              console.log(insertedTransaction)
+              var queryParam = {booking: insertedTransaction, session: firstSessionData};
+              FlowRouter.setQueryParams(queryParam);
+            }
+          })
+
         }
 
       }
     }
-    else if(currentStep == "PaymentReview"){
-
+    else if(currentStep == "PricingReview"){
+      makeTransition(template)
     }
     //
     // var currentTransaction = FlowRouter.getQueryParam("booking")
@@ -198,7 +285,7 @@ Template.ReviewLeftFormPanel.events({
     //   var queryParam = {booking: currentTransaction, session: AutoForm.getFormValues('InsertFirstSession').insertDoc};
     //   FlowRouter.setQueryParams(queryParam);
     //
-    //   let panels= ["SessionReview", "PaymentReview"]
+    //   let panels= ["SessionReview", "PricingReview"]
     //   var currentStepIndex = panels.indexOf(template.currentStep.get());
     //   console.log(currentStepIndex)
     //   if(currentStepIndex > -1){
@@ -209,24 +296,13 @@ Template.ReviewLeftFormPanel.events({
     //
     //   }
     // }
-    if(transitionSuccess){
-      let panels= ["EventReview", "SessionReview", "PaymentReview"]
-      var currentStepIndex = panels.indexOf(template.currentStep.get());
-      console.log(currentStepIndex)
-      if(currentStepIndex > -1){
-        let nextStepIndex = currentStepIndex + 1
-        if(nextStepIndex < panels.length){
-          console.log("Go to next page")
-          template.currentStep.set(panels[nextStepIndex]);
-        }
-      }
-    }
+
 
 
   },
 
   'click .previous-panel'(event, template){
-    let panels= ["EventReview", "SessionReview", "PaymentReview"]
+    let panels= ["EventReview", "SessionReview", "PricingReview", "PaymentReview"]
     var currentStepIndex = panels.indexOf(template.currentStep.get());
     console.log(currentStepIndex)
     if(currentStepIndex > -1){
