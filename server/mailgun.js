@@ -1,74 +1,71 @@
 Meteor.startup(function() {  
     Meteor.methods({
-        // emailFeedback: function (body, any_variable) {
+        sendEmail: function (mailFields) {
+            console.log("about to send email...");
+            check([mailFields.to, mailFields.from, mailFields.subject, mailFields.text, mailFields.html], [String]);
+            this.unblock();
 
-        //     // Don't wait for result
-        //     this.unblock();
+            Meteor.Mailgun.send({
+                to: mailFields.to,
+                from: mailFields.from,
+                subject: mailFields.subject,
+                text: mailFields.text,
+                html: mailFields.html
+            });
+        },
 
-        //     // Define the settings
-        //     var postURL = process.env.MAILGUN_API_URL + '/' + process.env.MAILGUN_DOMAIN + '/messages';
-        //     var options =   {
-        //                         auth: "api:" + process.env.MAILGUN_API_KEY,
-        //                         params: {
-        //                             "from":"Movie at My Place <postmaster@empanist.com>",
-        //                             "to":['ajamjoom@college.harvard.edu'],
-        //                             "subject": 'movieatmyplace.com quick feedback',
-        //                             "html": body,
-        //                         }
-        //                     }
-        //     var onError = function(error, result) {
-        //                       if(error) {console.log("Error: " + error)}
-        //                   }
+        addMusicRole: function (userId) {
+            console.log("Add Access to MusicPrograms which gives main access to the website")
+            // This is not fully functional
+            Roles.addUsersToRoles(userId, "makeMusicProfile") 
+        },
 
-        //     // Send the request
-        //     Meteor.http.post(postURL, options, onError);
-        //     console.log("post request should be sent")
-        // },
+        sendVerificationLink: function(userId, email, err) {
+            Accounts.emailTemplates.siteName = "Empanist";
+            Accounts.emailTemplates.from     = "Empanist Verification <verify@empanist.com>";
 
-  //       Email.send({
-  //   from: fromEmail,
-  //   to: "ajamjoom@college.harvard.edu",
-  //   replyTo: fromEmail,
-  //   subject: "That was easy",
-  //   text: "If you're reading this, sending an email through Meteor really was that easy"
-  // });
+            Accounts.emailTemplates.verifyEmail = {
+              subject() {
+                return "[Empanist] Verify Your Email Address";
+              },
+              text( user, url ) {
+                let emailAddress   = email,
+                    urlWithoutHash = url.replace( '#/', '' ),
+                    supportEmail   = "support@empanist.com",
+                    emailBody      = `To verify your email address (${emailAddress}) visit the following link:\n\n${urlWithoutHash}\n\n If you did not request this verification, please ignore this email. If you feel something is wrong, please contact our support team: ${supportEmail}.`;
 
+                return emailBody;
+              }
+            };
 
-// sendEmail: function (to, subject, text) {
-//     // Let other method calls from the same client start running,
-//     // without waiting for the email sending to complete.
-//     this.unblock();
-
-//     // and here is where you can throttle the number of emails this user
-//     // is allowed to send per day
-
-//     Email.send({
-//       to: to,
-//       from: "ajamjoom@empanist.com",
-//       subject: subject,
-//       text: text
-//     });
-//   }
-
-
-    sendEmail: function (mailFields) {
-        console.log("about to send email...");
-        check([mailFields.to, mailFields.from, mailFields.subject, mailFields.text, mailFields.html], [String]);
-
-        // Let other method calls from the same client start running,
-        // without waiting for the email sending to complete.
-        this.unblock();
-
-        Meteor.Mailgun.send({
-            to: mailFields.to,
-            from: mailFields.from,
-            subject: mailFields.subject,
-            text: mailFields.text,
-            html: mailFields.html
-        });
-        console.log("email sent!");
-    }
-
-
-    });
+            Accounts.sendVerificationEmail(userId, email)
+        }
+    });   
 });
+
+Meteor.users.after.insert(function (userId, doc){
+  
+    // Verify Email
+
+    Accounts.emailTemplates.siteName = "Empanist";
+    Accounts.emailTemplates.from     = "Empanist Verification <verify@empanist.com>";
+
+    Accounts.emailTemplates.verifyEmail = {
+      subject() {
+        return "[Empanist] Verify Your Email Address";
+      },
+      text( user, url ) {
+        let emailAddress   = doc.emails[0].address,
+            urlWithoutHash = url.replace( '#/', '' ),
+            supportEmail   = "support@empanist.com",
+            emailBody      = `To verify your email address (${emailAddress}) visit the following link:\n\n${urlWithoutHash}\n\n If you did not request this verification, please ignore this email. If you feel something is wrong, please contact our support team: ${supportEmail}.`;
+
+        return emailBody;
+      }
+    };
+
+  Accounts.sendVerificationEmail(doc._id, doc.emails[0].address)
+  
+});
+
+ 

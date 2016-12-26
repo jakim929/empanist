@@ -32,9 +32,8 @@ BasicProfileSchema = new SimpleSchema({
 
   birthDate : {
     type: Date,
-    // label: "Date of Birth"
   },
-//
+
   phone: {
     type: String,
     label: "Phone Number",

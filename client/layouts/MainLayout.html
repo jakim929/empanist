@@ -8,15 +8,30 @@
 			{{> Template.dynamic template=nav}}
 		</div>
 
-	    <div class ="container">
-	   		{{> Template.dynamic template=main}}
-	   	</div>
-
-	   	<!-- <div class="row"> -->
-	   <!-- 	<div class ="halfWhite"> -->
-	   	{{> Template.dynamic template=main_no_container}}
-		<!-- </div> -->
-	<!-- </div> -->
-
+		{{#if loggedIn}}
+			{{#unless currentUser.emails.[0].verified}}
+			    <div class ="container">
+				   	<div class="warning ">
+				        <div class="card-panel orange lighten-5 center-align ">
+				          <span class="black-text">You need to verify your email address before using Empanist. <a href="#" class="resend-verification-link">Resend verification link </a>
+				          </span>
+				        </div>
+				        </div>
+				    {{> Template.dynamic template=main}}
+				</div>
+				
+			   	{{> Template.dynamic template=main_no_container}}
+			{{else}}
+			    <div class ="container">
+					{{> Template.dynamic template=main}}
+				</div>
+				{{> Template.dynamic template=main_no_container}}
+			{{/unless}}
+			{{else}}
+			<div class ="container">
+				{{> Template.dynamic template=main}}
+			</div>
+			{{> Template.dynamic template=main_no_container}}
+		{{/if}}
    	</body>
 </template>

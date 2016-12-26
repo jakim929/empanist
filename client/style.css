@@ -11,6 +11,47 @@ body {
 
 }
 
+.icon-valign {
+  display: inline-flex;
+  vertical-align: middle;
+  padding-bottom: 8px;
+}
+
+.white-tabs-cover {
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  height: 48px;
+}
+
+.settings-background {
+  background-color: #c5cae9;
+  height: 250px;
+  width: 100%;
+}
+
+.settings-sub-text {
+  padding-top:60px;
+  color: white;
+  font-family: Avenir Next;
+  font-size: 13pt;
+}
+
+.settings-main-text {
+  padding-top: 50px;
+  color: white;
+  font-family: Avenir Next;
+  font-size: 20pt;
+}
+
+.warning {
+  position: fixed;
+  top: 60px;
+  z-index: 1;
+  width:70%;
+  
+}
+
 .backNext {
   position: absolute;
   padding-bottom:30px;

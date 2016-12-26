@@ -145,23 +145,50 @@
 
     {{#if loggedIn}}
       {{#if FieldsValid fields "bookAccompanistForm"}}
-        <div class="center"><button class="btn wave-light book-accompanist" >Request To Book</button></div>
+        {{#if ifnotVerified}}
+        <!-- <div class="center"><a class="waves-effect waves-light btn modal-trigger" href="#notVerified">Modal</a></div> -->
+     <!--    {{> notVerified}} -->
+
+        {{> Template.dynamic template='notVerified' data="request"}}
+        {{else}}
+        <div class="center"><button class="btn wave-light book-accompanist" >Request to book</button></div>
+        {{/if}}
         {{else}}
         <div class="center"><button class="btn wave-light" disabled>Invalid</button></div>
         {{/if}}
       {{else}}
-       <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request To Book</button></div>
+       <div class="center"><button href="#loginModal" class="btn wave-light {{ifNotSignedIn}}">Request to book</button></div>
     {{/if}}
 
 
   {{else}}
     Not on an accompanist page.
   {{/with}}
+
+  <!-- Modal Structure -->
+  <div id="notVerified" class="modal">
+    <div class="modal-content">
+      <h4>Sorry :(</h4>
+      <p>You have to verify your email to enable this functionality. </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Got it!</a>
+    </div>
+  </div>
+
 </template>
+
+<template name="notVerified">
+  {{#if fromBookings this }}
+    <a class="modal-trigger" href="#notVerified"><i class="material-icons right">book</i></a>
+  {{else}}
+    <div class="center"><a class="waves-effect waves-light btn modal-trigger" href="#notVerified">Request to book</a></div>  
+  {{/if}}
+</template>
+
 <template name="invalidId">
   <h2>Invalid ID</h2>
 </template>
-
 
 <!-- SECTION: Basic Information Card -->
 
