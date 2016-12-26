@@ -3,11 +3,11 @@ accounts-password@1.1.11
 alanning:roles@1.2.15
 aldeed:autoform@5.8.1
 aldeed:autoform-select2@2.0.2
-aldeed:collection2@2.9.1
-aldeed:collection2-core@1.1.1
+aldeed:collection2@2.10.0
+aldeed:collection2-core@1.2.0
 aldeed:geocoder@0.3.8
-aldeed:schema-deny@1.0.1
-aldeed:schema-index@1.0.1
+aldeed:schema-deny@1.1.0
+aldeed:schema-index@1.1.1
 aldeed:simple-schema@1.5.3
 aldeed:template-extension@3.4.3
 allow-deny@1.0.5

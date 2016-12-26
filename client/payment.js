@@ -11,17 +11,18 @@ function initializeBraintree (clientToken) {
     onPaymentMethodReceived: function(obj){
       var booking = FlowRouter.getQueryParam("booking");
       console.log(booking)
+      if(booking){
+        Meteor.call('attachMusicianPayment', Meteor.userId(), booking._id, obj.nonce, function(err,result){
+        })
 
-      Meteor.call('attachMusicianPayment', booking._id, obj.nonce, function(err,result){
-
-      })
+      }
 
     }
   })
 }
 
 Template.PaymentPanel.onCreated(function(){
-  Meteor.call('getClientToken', function(err, clientToken){
+  Meteor.call('getClientToken', Meteor.userId(), function(err, clientToken){
     if(err){
       console.log("There was an error generating client token");
       return;

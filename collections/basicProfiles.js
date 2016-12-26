@@ -69,6 +69,12 @@ BasicProfileSchema = new SimpleSchema({
     optional: true
   },
 
+  customerId:{
+    type: String,
+    label: "Braintree Customer ID",
+    optional: true
+  },
+
   customerObj : {
     type: Object,
     label: "Braintree Customer Object",
