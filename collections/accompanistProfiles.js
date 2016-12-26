@@ -41,6 +41,7 @@ AccompanistProfileSchema = new SimpleSchema({
 
   	working_hours: {
   		type: [String],
+      optional: true,
   		// label: "Times you prefer working",
   		autoform: {
   			type: "select-checkbox-inline",
@@ -54,6 +55,7 @@ AccompanistProfileSchema = new SimpleSchema({
 
    	working_days: {
   		type: [String],
+      optional: true,
   		//noselect:true,
   		// label: "Days you want to accompany",
   		autoform: {

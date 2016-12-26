@@ -28,6 +28,7 @@ callback-hook@1.0.9
 check@1.2.3
 coffeescript@1.1.2
 comerc:autoform-selectize@2.3.2
+cunneen:mailgun@0.9.1
 d3js:d3@3.5.8
 dbarrett:dropzonejs@4.2.1
 ddp@1.2.5
