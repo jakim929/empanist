@@ -33,7 +33,19 @@
     </div>
   </div>
 
+	<!-- Modal Structure -->
+	<div id="notVerified" class="modal">
+	  <div class="modal-content">
+	    <h4>Sorry :(</h4>
+	    <p>You have to verify your email to enable this functionality. </p>
+	  </div>
+	  <div class="modal-footer">
+	    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Got it!</a>
+	  </div>
+	</div>
+
 </template>
+
 
 <template name="modalSignUp">
 	{{#if fromSideNav this}}
@@ -70,6 +82,7 @@
 
 	  <ul id="accountDropdown" class="dropdown-content" style='width: auto !important;'>
 	    <li><a href={{getProfileRoute}}>Profile</a></li>
+	    <li><a href="/settings">Settings</a></li>
 	    <li class="divider"></li>
 	    <li><a class='logout'>Logout</a></li>
 	  </ul>
@@ -92,15 +105,20 @@
 
 <template name="bookings">
 	{{#if fromSideNav this}}
-    <li class="divider"></li>
-    <a href='/bookings'>Booking<i class="material-icons left">book</i></a>
+    	<li class="divider"></li>
+    	<a href='/bookings'>Booking<i class="material-icons left">book</i></a>
 		{{else}}
-		<a href='/bookings'><i class="material-icons right">book</i></a>
+		{{#if ifnotVerified}}
+			<!-- {{> notVerified}} -->
+			{{> Template.dynamic template='notVerified' data="bookings"}}
+			{{else}}
+			<a href='/bookings'><i class="material-icons right">book</i></a>
+		{{/if}}
 	{{/if}}
 </template>
 
 <template name="becomeAnAccompanist">
-	<a class='waves-effect waves-light z-depth-0 btn {{onNewAccomp}} {{ifNotSignedIn}}' href={{link}}>Become an Accompanist</a>
+	<a class='waves-effect waves-light z-depth-0 btn {{onNewAccomp}} {{ifNotSignedIn}} {{notVerified}}' href={{link}}>Become an Accompanist</a>
 </template>
 
 <template name="addProfile">

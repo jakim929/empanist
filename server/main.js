@@ -11,14 +11,6 @@ Meteor.startup(() => {
 
 });
 
-// Email.send({
-//   to: "to.ajamjoom@college.harvard.edu",
-//   from: "from.postmaster@empanist.com",
-//   subject: "Example Email",
-//   text: "The contents of our email in plain text.",
-// });
-
-
 
 AWS.config.update({
   accessKeyId: Meteor.settings.AWSAccessKeyId,
@@ -38,49 +30,18 @@ getGeocode = function (arg) {
 };
 
 
-// Google Distance Matrix (Not used for not!)
-// var distance = require('google-distance-matrix');
+// myPostSubmitFunc = function (userId, info) {
+//   // This is not fully functional
+//   // if(BasicProfiles.findOne({userId: userId}) && Meteor.users.findOne({ $and: [ { _id: userId }, { emails: true } ] })) {
+//   //   Roles.addUsersToRoles(userId, "makeMusicProfile")
+//   // }
+//   // console.log("User not verified yet")
+//   // console.log(emails)
+// }
 
-// var origins = ['40.7421,-73.9914'];
-// var destinations = ['41.8337329,-87.7321554'];
-
-// distance.key('AIzaSyBborL-F_GWmjbUgtTw2P1QwPHYrDJIaCo');
-// distance.units('imperial');
-
-// distance.matrix(origins, destinations, function (err, distances) {
-//     if (err) {
-//         return console.log(err);
-//     }
-//     if(!distances) {
-//         return console.log('no distances');
-//     }
-//     if (distances.status == 'OK') {
-//         for (var i=0; i < origins.length; i++) {
-//             for (var j = 0; j < destinations.length; j++) {
-//                 var origin = distances.origin_addresses[i];
-//                 var destination = distances.destination_addresses[j];
-//                 if (distances.rows[0].elements[j].status == 'OK') {
-//                     var distance = distances.rows[i].elements[j].distance.text;
-//                     var time = distances.rows[i].elements[j].duration.text;
-//                     console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance + ', time to destination is ' + time );
-//                 } else {
-//                     console.log(destination + ' is not reachable by land from ' + origin);
-//                 }
-//             }
-//         }
-//     }
+// AccountsTemplates.configure({
+//   postSignUpHook: myPostSubmitFunc
 // });
-
-
-myPostSubmitFunc = function (userId, info) {
-  if(BasicProfiles.findOne({userId: userId})){
-    Roles.addUsersToRoles(userId, "makeMusicProfile")
-  }
-}
-
-AccountsTemplates.configure({
-  postSignUpHook: myPostSubmitFunc
-});
 
 Accounts.onCreateUser(function(options, user) {
 
@@ -96,7 +57,6 @@ Accounts.onCreateUser(function(options, user) {
       }
     console.log(newBasicProfile)
     BasicProfiles.insert(newBasicProfile);
-    // Accounts.sendEnrollmentEmail(user._id);
 
     return user;
   }
@@ -403,8 +363,14 @@ Meteor.methods({
 // });
 
 
+// Meteor.users.before.insert(function (userId, doc){
+
+ 
+// });
+
 Meteor.users.after.insert(function (userId, doc){
   Roles.addUsersToRoles(this._id, 'makeBasicProfile');
+
 });
 
 // Basic Profiles Server Side Hooks
@@ -415,8 +381,8 @@ BasicProfiles.before.insert(function (userId, doc){
 });
 
 BasicProfiles.after.insert(function(userId, doc){
-  console.log("Basic Profile Made for",doc.userId);
-  Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
+  // console.log("Basic Profile Made for",doc.userId);
+  // Roles.addUsersToRoles(doc.userId, 'makeMusicProfile');
 
    var suggestions = ["-> Master more Instruments", "-> Win more Awards", "-> Attend more Music Programs", "-> Play in more Orchestras"]
    Data.insert({ userId: doc.userId, suggestions: suggestions, value: 0})

@@ -1,0 +1,139 @@
+<template name="SettingsLayout">
+	<div class="row">
+		<div class="hide-on-small-only">
+			{{> SettingsTopCard}}
+		</div>
+		<div class="white-tabs-cover">
+		</div>
+		<div class="container">
+			{{> SettingTabs}}
+		</div>
+	</div>
+</template>
+
+<!-- TOP CARD -->
+<template name="SettingsTopCard">
+	<div class="settings-background">
+		<div class="container">
+  		<div class="center settings-main-text">
+  			{{basicInfo.name}}, configure your account as you wish
+  		</div>
+  		<div class="row settings-sub-text">
+  			<div class="col l6 m6 s6 ">
+  				<div class="row">
+  					<div class="col l2 m2 s2 ">
+    					{{> picture}}
+    				</div>
+    				<div class="col l10 m10 s10 ">
+	      			{{basicInfo.name}}
+	      			<br>
+	      			{{basicInfo.affiliation}}
+	      		</div>
+      		</div>
+    		</div>
+      	<div class="col l6 m6 s6 right-align">
+      		{{role}}
+      	</div>
+  		</div>
+		</div>
+  </div>
+</template>
+
+<!-- TOP CARD PROFILE PICTURE PROCESSING -->
+
+<template name="picture">
+	{{#with myProfilePic}}
+		<img src={{this}} alt="" width="60" height="60" style="border:2px solid white" class="circle valign white-border">
+	{{else}}
+		<i class="material-icons medium right">account_circle</i>
+	{{/with}}
+</template>
+
+<!-- SETTINGS TABS/OPTIONS (DEPENDS ON ARTIST OR ACCOMPANIST)-->
+
+<template name="SettingTabs">
+	<div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#account"><i class="material-icons icon-valign">perm_identity</i> Account</a></li>
+        <li class="tab col s3"><a href="#communication"><i class="material-icons icon-valign">mail_outline</i> Communication</a></li>
+        <li class="tab col s3"><a href="#payment"><i class="material-icons icon-valign">attach_money</i> Payment</a></li>
+      </ul>
+    </div>
+
+{{> SettingsCard}}
+    
+
+  </div>
+</template>
+
+<template name="SettingsCard">
+
+	<!-- ACCOUNT TAB -->
+	<div id="account" class="col s12">
+		<ul class="collapsible z-depth-0" data-collapsible="accordion">
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">email</i>Change Email<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">https</i>Change Password<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">phone_iphone</i>Phone Number<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">sentiment_very_satisfied</i>Change Name<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">cake</i>Edit Birthdate<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">business</i>Update Affiliation<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">clear</i>Deactivate Account<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		</ul>
+	</div>
+
+<!-- COMMUNICATION TAB -->
+
+<div id="communication" class="col s12">
+	<ul class="collapsible z-depth-0" data-collapsible="accordion">
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">notifications_active</i>Reminder Emails<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">event</i>Booking Emails<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">loop</i>Cancel/Accept Emails<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		  <li>
+		    <div class="collapsible-header"><i class="material-icons">whatshot</i>Ads<i class="material-icons right">mode_edit</i></div>
+		    <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+		  </li>
+		</ul>
+</div>
+
+<!-- PAYMENT TAB -->
+
+<div id="payment" class="col s12">Payment - Working on it</div>
+
+</template>
+
+
+
+
+
+

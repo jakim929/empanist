@@ -29,7 +29,9 @@ window.SearchData = SearchData
 
 // Meteor.call('emailFeedback', body, any_variable);
 
+
 Template.bookAccompanistForm.onRendered(function(){
+  $('.modal-trigger').leanModal();
   $('.tooltipped').tooltip({
     position: 'top',
     delay: 50
@@ -57,9 +59,13 @@ Template.SessionsLayout.helpers({
 })
 
 Template.TestLayout.onRendered(function () {
-    $(document).ready(function(){
+
       // (function($){
         // $(".button-collapse").sideNav();
+    console.log("hello")
+    $('.modal-trigger').leanModal();
+
+
 
     $('.parallax').parallax();
     $('.autocomplete-test').autocomplete(
@@ -72,7 +78,7 @@ Template.TestLayout.onRendered(function () {
       }
     )
 // })(jQuery);
-    });
+
 
 })
 
@@ -259,8 +265,6 @@ var sexyOptions = {template: "SexySelect", valueOut: SexyValueOut}
 
 AutoForm.addInputType("sexyselect-checkboxes", sexyOptions)
 
-
-
 Template.SexySelect.helpers({
   dsk: function dsk() {
     return {
@@ -279,6 +283,39 @@ Template.ReservationLayout.helpers({
 
 // Bookings Layout
 
+Template.bookings.helpers({
+  ifnotVerified: function() {
+    if (Meteor.user().emails[ 0 ].verified == true) {
+      return false
+    } else {
+      return  true
+      conso
+    }
+  }
+})
+
+
+Template.notVerified.helpers({
+  fromBookings: function(from) {
+    if (from == "bookings") {
+      return true
+    } else {
+      return  false
+    }
+  }
+})
+
+Template.bookAccompanistForm.helpers({
+  ifnotVerified: function() {
+    if (Meteor.user().emails[ 0 ].verified == true) {
+      return false
+    } else {
+      return  true
+      conso
+    }
+  },
+})
+
 Template.becomeAnAccompanist.helpers({
   onNewAccomp: function() {
     if (FlowRouter.getRouteName() == "NewAccompLayout"){
@@ -292,13 +329,25 @@ Template.becomeAnAccompanist.helpers({
       return  "modal-login-trigger modal-trigger"
     }
   },
-  link: function() {
-    if (Meteor.user()) {
-      return "/newaccomp"
+  notVerified: function() {
+    if (Meteor.user().emails[ 0 ].verified == true) {
+      return ""
     } else {
-      return "#loginModal"
+      return "modal-trigger"
+      conso
     }
-  }
+  },
+  link: function() {
+    if (Meteor.user() && (Meteor.user().emails[ 0 ].verified == true)) {
+      return "/newaccomp"
+    } else if (Meteor.user() && (Meteor.user().emails[ 0 ].verified == false)) {
+      return "#notVerified"
+      } else {
+        return "#loginModal"
+      }
+    }
+
+
 });
 
 // DELETE LATER
@@ -804,8 +853,23 @@ Template.bookAccompanistForm.events({
 // Just Testing
 
 
+Template.bookings.onRendered(function(){
+
+  $('.modal-trigger').leanModal();
+});
+
+Template.notVerified.onRendered(function(){
+
+  $('.modal-trigger').leanModal();
+});
 
 Template.bookAccompanistForm.onRendered(function(){
+  $('.modal-trigger').leanModal();
+  $('.tooltipped').tooltip({
+    position: 'top',
+    delay: 50
+  });
+  console.log("correct modal rendered")
 // <<<<<<< HEAD
 //   // $('.datepicker').pickadate({
 //   //   selectMonths: true, // Creates a dropdown to control month
@@ -1191,6 +1255,7 @@ Template.Navbar.onRendered(function () {
 
 });
 
+
 Template.modalLogin.onRendered(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-login-trigger').leanModal({
@@ -1223,6 +1288,14 @@ Template.becomeAnAccompanist.onRendered(function () {
       dismissible: true,
       complete: function() {   AccountsTemplates.avoidRedirect = false; }
     });
+// =======
+//   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+//   $('.modal-trigger').leanModal();
+//   $('.modal-login-trigger').leanModal({
+//     dismissible: true,
+//     complete: function() {   AccountsTemplates.avoidRedirect = false; }
+//   });
+// >>>>>>> 1c14faaef85b7992ad8ab254c670581d9732cb9d
 });
 
 Template.TabStructure.onRendered(function () {
@@ -1231,13 +1304,6 @@ Template.TabStructure.onRendered(function () {
       $('.carousel').carousel();
     }
   });
-});
-
-Template.NewAccompLayout.onRendered(function () {
-  // Initialize collapse button
-  // $(".button-collapse").sideNav();
-  // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-  //$('.collapsible').collapsible();
 });
 
 
@@ -2541,6 +2607,19 @@ Template.results.helpers({
 
 
 // Events
+
+Template.MainLayout.events({
+  'click .resend-verification-link' ( event, template ) {
+    Meteor.call( 'sendVerificationLink', Meteor.userId(), Meteor.user().emails[ 0 ].address, ( error, response ) => {
+      if ( error ) {
+        Bert.alert( error.reason, 'danger' );
+      } else {
+        let email = Meteor.user().emails[ 0 ].address;
+        Bert.alert( `Verification sent to ${ email }!`, 'success' );
+      }
+    });
+  }
+});
 
 Template.search.events({
   'submit form': function(){
