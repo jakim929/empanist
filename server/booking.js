@@ -37,6 +37,39 @@ Meteor.methods({
 
   },
 
+  finalizeTransactionRequest: function(transactionId, firstSession){
+    if(!transactionId || !firstSession){
+      throw new Meteor.Error('booking.finalizeTransactionRequest.invalidParameters', 'Empty parameters to meteor call')
+    }
+    var finalTransaction = Transactions.findOne({_id: transactionId, musician: Meteor.userId(), transactionCustomerId: {$exists: true}, transactionPaymentToken: {$exists: true}})
+    if(finalTransaction){
+      firstSession.transaction = finalTransaction._id;
+      firstSession.musician = finalTransaction.musician;
+      firstSession.accompanist = finalTransaction.accompanist;
+      Transactions.update({_id: transactionId, musician: Meteor.userId(), transactionCustomerId: {$exists: true}, transactionPaymentToken: {$exists: true}}, {$set:{status: 'Pending'}}, function(err, result){
+        if(err){
+          console.log("No valid transaction found")
+          throw new Meteor.Error(err)
+        }else{
+          if(result == 1)
+          {
+            let result = Sessions.insert(firstSession);
+            if(result){
+              return true
+            }else{
+              throw new Meteor.Error('booking.finalizeTransactionRequest.unexpectedBehavior', 'Unable to add first session.')
+            }
+          }else{
+            throw new Meteor.Error('booking.finalizeTransactionRequest.unexpectedBehavior', 'Transactions.update updated other than 1 document')
+          }
+        }
+      })
+    }else{
+      throw new Meteor.Error('booking.finalizeTransactionRequest.notFound', "Couldn't find a valid transaction to confirm")
+    }
+
+  },
+
   getReceipt: function(transactionId){
     var transaction = Transactions.findOne(transactionId)
     if (transaction){

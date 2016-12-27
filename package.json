@@ -7,7 +7,7 @@
   "dependencies": {
     "accounting": "^0.4.1",
     "braintree": "^1.46.0",
-    "braintree-web": "^2.30.0",
+    "braintree-web": "^3.6.3",
     "coffee-script": "^1.10.0",
     "cropper": "^2.3.2",
     "faker": "^3.1.0",

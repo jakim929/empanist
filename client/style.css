@@ -11,6 +11,44 @@ body {
 
 }
 
+/* Payment CSS */
+.payment-control-container{
+	min-height: 470px;
+}
+
+.credit-card-type-image{
+	max-height: 22px;
+}
+
+.payment-info-label{
+	margin-bottom: 10px;
+}
+
+.card-payment-label{
+	font-size: 85%;
+}
+
+.card-payment-input-block{
+	/*margin-left: 25px;
+	margin-right: 25px;*/
+	margin-bottom: 10px;
+}
+
+.card-payment-details{
+	height: 40px;
+	border-bottom: 1px solid #9e9e9e;
+	transition: all 0.3s;
+	margin-bottom: 5px;
+}
+
+.card-payment-details-divider{
+	margin-bottom: 10px;
+}
+
+
+
+
+
 .backNext {
   position: absolute;
   padding-bottom:30px;
@@ -32,13 +70,13 @@ body {
 
 .containerLeft{
   float: right;
-  margin-right: 10px;  
+  margin-right: 10px;
   width:500px;
 }
 
 .containerLeftSmall{
-  margin-right: 5%; 
-  margin-left: 5%; 
+  margin-right: 5%;
+  margin-left: 5%;
   width:90%;
 }
 
@@ -51,7 +89,7 @@ body {
 .halfWhite{
   /*position: absolute;
   bottom: 0px;*/
- 
+
   /*width:50%;*/
   /*min-height: 100%;
   overflow-y: hidden;*/
@@ -78,13 +116,16 @@ body {
 /*Payment Panel Styling*/
 
 .braintree-hosted-fields-focused {
-  border-bottom: 2px solid #26a69a;
-  transition: all 0.3s;
+  border-bottom: 1px solid #26a69a;
+	box-shadow: 0 1px 0 0 #26a69a;
+	transition: all 0.3s;
+
 }
 
 .braintree-hosted-fields-invalid {
-  border-bottom: 2px solid red;
-  transition: all 70ms ease;
+  border-bottom: 1px solid #F44336;
+	box-shadow: 0 1px 0 0 #F44336;
+  transition: all 0.3s;
 }
 
 .payment-card{

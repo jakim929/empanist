@@ -314,24 +314,39 @@ Template.ReviewLeftFormPanel.events({
     }
   },
 
-  'click .finalize' (event, template) {
-    var finalTransaction = FlowRouter.getQueryParam("booking");
-    var firstSession = FlowRouter.getQueryParam("session");
-
-    let insertedTransactionId = Transactions.insert(finalTransaction);
-
-    if(insertedTransactionId){
-      firstSession.transaction = insertedTransactionId;
-      firstSession.musician = finalTransaction.musician;
-      firstSession.accompanist = finalTransaction.accompanist
-
-      if(Sessions.insert(firstSession)){
-        console.log('Successfully Booked');
-        FlowRouter.go('/success/:transactionId', {transactionId: insertedTransactionId});
-      };
-    }
-  }
+  // 'click .finalize' (event, template) {
+  //   var finalTransaction = FlowRouter.getQueryParam("booking");
+  //   var firstSession = FlowRouter.getQueryParam("session");
+  //
+  //   let insertedTransactionId = Transactions.insert(finalTransaction);
+  //
+  //   if(insertedTransactionId){
+  //     firstSession.transaction = insertedTransactionId;
+  //     firstSession.musician = finalTransaction.musician;
+  //     firstSession.accompanist = finalTransaction.accompanist
+  //
+  //     if(Sessions.insert(firstSession)){
+  //       console.log('Successfully Booked');
+  //       FlowRouter.go('/success/:transactionId', {transactionId: insertedTransactionId});
+  //     };
+  //   }
+  // }
 });
+
+// function finalizeTransaction(transactionId, firstSession){
+//   if(transactionId){
+//     Meteor.call('finalizeTransactionRequest', transactionId, firstSession, function(err,result){
+//       if(err){
+//         console.log("Error in finalizing transaction")
+//       }else{
+//         console.log('Successfully Booked');
+//         FlowRouter.go('/success/:transactionId', {transactionId: transactionId});
+//       }
+//     })
+//   }else{
+//     return false
+//   }
+// }
 
 
 Template.ReviewRightSummaryPanel.helpers({

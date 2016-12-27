@@ -27,7 +27,7 @@ window.SearchData = SearchData
 // var body = "<html><head>Bicthes and drinks</head/><body>Tities and dicks</body></html>";
 // var any_variable = "any variable test";
 
-// Meteor.call('emailFeedback', body, any_variable);  
+// Meteor.call('emailFeedback', body, any_variable);
 
 Template.bookAccompanistForm.onRendered(function(){
   $('.tooltipped').tooltip({
@@ -1210,13 +1210,13 @@ Template.modalSignUp.onRendered(function () {
 Template.becomeAnAccompanist.onRendered(function () {
 
 // Testing Emails == Sending emails works
-Meteor.call('sendEmail',{
-    to: 'sunwookim@college.harvard.edu',
-    from: 'ajamjoom@empanist.com',
-    subject: 'Bitch it works!',
-    text: 'Mailgun is totally awesome for sending emails!',
-    html: 'With meteor it&apos;s easy to set up <strong>HTML</strong> <span style="color:red">emails</span> too.'
-  });
+// Meteor.call('sendEmail',{
+//     to: 'sunwookim@college.harvard.edu',
+//     from: 'ajamjoom@empanist.com',
+//     subject: 'Bitch it works!',
+//     text: 'Mailgun is totally awesome for sending emails!',
+//     html: 'With meteor it&apos;s easy to set up <strong>HTML</strong> <span style="color:red">emails</span> too.'
+//   });
 
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
     $('.modal-login-trigger').leanModal({

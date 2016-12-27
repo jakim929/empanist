@@ -104,7 +104,13 @@ TransactionSchema = new SimpleSchema({
 
   transactionCustomerId: {
     type: String,
-    label: 'Customer ID',
+    label: 'Braintree Customer ID',
+    optional: true
+  },
+
+  transactionPaymentToken: {
+    type: String,
+    label: 'Braintree Payment Token',
     optional: true
   }
 
