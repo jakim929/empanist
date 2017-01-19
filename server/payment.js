@@ -1,10 +1,13 @@
 import braintree from 'braintree'
 
+import { MerchantAccountSchema } from '../collections/merchantAccounts.js'
+import { AccompanistProfiles } from '../collections/accompanistProfiles.js'
+
 import { BasicProfiles } from '../collections/basicProfiles.js'
 import { Transactions } from '../collections/transactions.js'
 
 
-var gateway;
+export var gateway;
 
 Meteor.startup(function(){
   gateway = braintree.connect({
@@ -160,8 +163,57 @@ Meteor.methods({
     }else{
       return []
     }
+  },
+  makeSubmerchant: function(doc){
+    //Called directly from AutoForm
+
+    // Validation and adding necessary information
+    MerchantAccountSchema.clean(doc)
+    var masContext = MerchantAccountSchema.namedContext("SubmerchantPanel")
+
+    masContext.validate(doc)
+
+    if(!masContext.isValid()){
+      console.log(masContext)
+      throw new Meteor.Error("payment.makeSubmerchant.invalidParameters", "User entered invalid information in the SubmerchantPanel form")
+    }
+
+    if(!doc.tosAccepted){
+      throw new Meteor.Error("payment.makeSubmerchant.mustAgreeTOS", "User did not agree to Terms of Service")
+    }
+
+    doc.funding.destination = braintree.MerchantAccount.FundingDestination.Bank
+    doc.masterMerchantAccountId = "empanist";
+
+
+    var createMerchantAccount = Meteor.wrapAsync(gateway.merchantAccount.create, gateway.merchantAccount)
+
+    var createMerchantAccountResult;
+    try{
+      createMerchantAccountResult = createMerchantAccount(doc)
+    }catch(error){
+      console.log(error)
+      throw new Meteor.Error(error)
+    }
+
+    var returnVar = {};
+    returnVar.success = true
+
+    if(createMerchantAccountResult.success == false){
+      returnVar.success = false
+      returnVar.errorArray = createMerchantAccountResult.errors.deepErrors();
+      return returnVar
+    }
+
+    //If Successful
+
+    // MAKE NON BLOCKING
+    AccompanistProfiles.update({Id: Meteor.userId()}, {$set:{accompanistSubmerchantId: createMerchantAccountResult.merchantAccount.id}})
+    return returnVar
+
   }
 })
+
 
 
 function addNewPaymentMethod(nonce, customerId){

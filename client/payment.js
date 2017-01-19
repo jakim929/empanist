@@ -1,6 +1,11 @@
 // Change to only take code needed
 import braintree from 'braintree-web';
 
+import { MerchantAccounts } from '../collections/merchantAccounts.js'
+
+window.MerchantAccounts = MerchantAccounts
+
+
 var isBraintreeInitialized = false;
 
 function initializeBraintree(clientToken){

@@ -7,35 +7,205 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </header>
 
-    <!-- Modal Trigger -->
-    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-    
-
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-  </div>
-</div>
 
   <main>
 
-  {{>AdminPanel}}
+    {{>AdminPanel}}
+    <div class="row">
+      <div class="col s6">
+        <div class="card z-depth-0">
+          <div class="card-content">
+            {{>SubmerchantUpdatePanel}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</template>
+
+
+<template name="CurrentMerchant">
+
+</template>
+
+<template name="SubmerchantPanel">
+  {{#autoForm collection="MerchantAccounts" id="insertMerchantAccount" type="method" meteormethod="makeSubmerchant"}}
+  {{#with getErrorValue}}
+    {{this}}
+  {{/with}}
+  <div class="row">
+    {{#with getExistingDetails}}
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.firstName" defaultValue=firstName}}
+        </div>
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.lastName" defaultValue=lastName}}
+        </div>
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.dateOfBirth" defaultValue=birthDate}}
+        </div>
+    {{else}}
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.firstName" }}
+      </div>
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.lastName"}}
+      </div>
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.dateOfBirth"}}
+      </div>
+    {{/with}}
+  </div>
 
   <div class="row">
-    <div class="col s6">
-      {{>PaymentControl}}
+    <div class="col l12 m12 s12">
+      {{#with getCurrentEmail}}
+        {{> afQuickField name="individual.email" defaultValue=this}}
+      {{else}}
+        {{> afQuickField name="individual.email"}}
+      {{/with}}
     </div>
   </div>
 
-  </main>
-
-	<!-- Include Required Prerequisites -->
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.phone"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.ssn"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.address.streetAddress"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.address.locality"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.address.region"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.address.postalCode"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="funding.accountNumber"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="funding.routingNumber"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="tosAccepted"}}
+    </div><br><br>
+  </div>
+    <button type="submit" class="btn teal lighten-1 make-submerchant">Insert</button>
+  {{/autoForm}}
 </template>
+
+<template name="SubmerchantUpdatePanel">
+  {{#autoForm collection="MerchantAccounts" id="insertMerchantAccount" type="method" meteormethod="makeSubmerchant"}}
+  {{#with getErrorValue}}
+    {{this}}
+  {{/with}}
+  <div class="row">
+    {{getSubmerchantDetails}}
+    {{#with getExistingDetails}}
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.firstName" defaultValue=firstName}}
+        </div>
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.lastName" defaultValue=lastName}}
+        </div>
+        <div class="col l6 m6 s12">
+          {{> afQuickField name="individual.dateOfBirth" defaultValue=birthDate}}
+        </div>
+    {{else}}
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.firstName" }}
+      </div>
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.lastName"}}
+      </div>
+      <div class="col l6 m6 s12">
+        {{> afQuickField name="individual.dateOfBirth"}}
+      </div>
+    {{/with}}
+  </div>
+
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{#with getCurrentEmail}}
+        {{> afQuickField name="individual.email" defaultValue=this}}
+      {{else}}
+        {{> afQuickField name="individual.email"}}
+      {{/with}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.phone"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.ssn"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.address.streetAddress"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="individual.address.locality"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.address.region"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l6 m6 s12">
+      {{> afQuickField name="individual.address.postalCode"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="funding.accountNumber"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="funding.routingNumber"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col l12 m12 s12">
+      {{> afQuickField name="tosAccepted"}}
+    </div><br><br>
+  </div>
+    <button type="submit" class="btn teal lighten-1 make-submerchant">Insert</button>
+  {{/autoForm}}
+</template>
+
 
 <template name="PaymentControl">
   <div class="card z-depth-0 payment-control-container">
@@ -172,7 +342,7 @@
 <template name="AdminPanel">
   <div class="row">
     <div class="col s6">
-      <div class="card">
+      <div class="card z-depth-0">
         <div class="card-content">
           <fieldset id="AdminPanel">
             <legend for="AdminPanel">

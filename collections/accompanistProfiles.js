@@ -133,6 +133,12 @@ AccompanistProfileSchema = new SimpleSchema({
     one_liner: {
       type: String,
       // label: "Describe yourself in one sentence",
+    },
+
+    accompanistSubmerchantId: {
+      type: String,
+      label: "Accompanist Braintree Submerchant ID",
+      optional: true
     }
 
 });
