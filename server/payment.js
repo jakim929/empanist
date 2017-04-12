@@ -167,7 +167,6 @@ Meteor.methods({
 })
 
 
-function getServiceFee
 
 function addNewPaymentMethod(nonce, customerId){
   var createNewPaymentMethod = Meteor.wrapAsync(gateway.paymentMethod.create, gateway.paymentMethod)
@@ -285,12 +284,12 @@ function getCustomerId(userId){
     return false
   }
 }
-
-function getCustomerObj(userId){
-  let result = BasicProfiles.findOne({userId: userId, customerId: {$exists: true}}, {fields: {customerObj: 1}});
-  if(result){
-    return result.customerObj
-  }else{
-    return false
-  }
-}
+//
+// function getCustomerObj(userId){
+//   let result = BasicProfiles.findOne({userId: userId, customerId: {$exists: true}}, {fields: {customerObj: 1}});
+//   if(result){
+//     return result.customerObj
+//   }else{
+//     return false
+//   }
+// }

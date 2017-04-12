@@ -15,7 +15,7 @@
       <div class="col s6">
         <div class="card z-depth-0">
           <div class="card-content">
-            {{>SubmerchantUpdatePanel}}
+            {{>SubmerchantPanel}}
           </div>
         </div>
       </div>
@@ -30,10 +30,7 @@
 </template>
 
 <template name="SubmerchantPanel">
-  {{#autoForm collection="MerchantAccounts" id="insertMerchantAccount" type="method" meteormethod="makeSubmerchant"}}
-  {{#with getErrorValue}}
-    {{this}}
-  {{/with}}
+  {{#autoForm collection="MerchantAccounts" id="insertMerchantAccount" type="normal"}}
   <div class="row">
     {{#with getExistingDetails}}
         <div class="col l6 m6 s12">
@@ -118,12 +115,12 @@
 </template>
 
 <template name="SubmerchantUpdatePanel">
-  {{#autoForm collection="MerchantAccounts" id="insertMerchantAccount" type="method" meteormethod="makeSubmerchant"}}
+  {{> sAlert}}
+  {{#autoForm collection="MerchantAccounts" id="updateMerchantAccount" type="method" meteormethod="makeSubmerchant"}}
   {{#with getErrorValue}}
     {{this}}
   {{/with}}
   <div class="row">
-    {{getSubmerchantDetails}}
     {{#with getExistingDetails}}
         <div class="col l6 m6 s12">
           {{> afQuickField name="individual.firstName" defaultValue=firstName}}

@@ -11,6 +11,15 @@ Meteor.startup(() => {
 
 });
 
+throwError = function(error, reason, details){
+  var meteorError = new Meteor.Error(error, reason, details);
+  throw meteorError;
+}
+
+throwValidationError = function(errors){
+  var valError =  new ValidationError(errors)
+  throw valError;
+}
 
 AWS.config.update({
   accessKeyId: Meteor.settings.AWSAccessKeyId,
@@ -365,7 +374,7 @@ Meteor.methods({
 
 // Meteor.users.before.insert(function (userId, doc){
 
- 
+
 // });
 
 Meteor.users.after.insert(function (userId, doc){

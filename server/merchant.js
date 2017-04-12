@@ -9,10 +9,12 @@ import { Transactions } from '../collections/transactions.js'
 
 import { gateway } from './payment.js'
 
+
+
 Meteor.methods({
   makeSubmerchant: function(doc){
     //Called directly from AutoForm
-
+    console.log("makeSubmerchant called")
     // Validation and adding necessary information
     MerchantAccountSchema.clean(doc)
     var masContext = MerchantAccountSchema.namedContext("SubmerchantPanel")
@@ -34,31 +36,54 @@ Meteor.methods({
 
     var createMerchantAccount = Meteor.wrapAsync(gateway.merchantAccount.create, gateway.merchantAccount)
 
+    var origin = {
+      'first_name': 'individual.firstName',
+      'last_name' : 'individual.lastName',
+      'date_of_birth' : 'individual.dateOfBirth',
+      'email' : 'individual.email',
+      'phone' : 'individual.phone',
+      'ssn' : 'individual.ssn',
+      'street_address' : 'individual.address.streetAddress',
+      'locality' : 'individual.address.locality',
+      'region' : 'individual.address.region',
+      'postalCode' : 'individual.address.postalCode',
+      'account_number': 'funding.accountNumber',
+      'routing_number': 'funding.routingNumber',
+      'tos_accepted': 'tosAccepted'
+    }
+
     var createMerchantAccountResult;
     try{
       createMerchantAccountResult = createMerchantAccount(doc)
     }catch(error){
       console.log(error)
-      throw new Meteor.Error(error)
+      throwError('merchant.makeSubmerchant.braintreeFailed','Error raised while sending request to Braintree', 'Connection to payment server failed. Please try again later.')
     }
-
-    var returnVar = {};
-    returnVar.success = true
 
     if(createMerchantAccountResult.success == false){
-      returnVar.success = false
-      returnVar.errorArray = createMerchantAccountResult.errors.deepErrors();
-      return returnVar
+      var errors = []
+      var deepErrors = createMerchantAccountResult.errors.deepErrors()
+      for (i in deepErrors) {
+        if(deepErrors.hasOwnProperty(i)){
+          console.log(deepErrors[i].attribute)
+          var name = origin[deepErrors[i].attribute]
+          var errorObject = {}
+          errorObject.name = name
+          errorObject.type = deepErrors[i].code.toString()
+          errorObject.message = deepErrors[i].message
+          errors.push(errorObject)
+        }
+      }
+      console.log(errors)
+      throwValidationError(errors)
     }
-
-    //If Successful
 
     // MAKE NON BLOCKING
     AccompanistProfiles.update({Id: Meteor.userId()}, {$set:{accompanistSubmerchantId: createMerchantAccountResult.merchantAccount.id}})
-    return returnVar
+    return true
 
   },
-  
+
   getSubmerchantDetails: function (userId){
     if(Meteor.userId() != userId){
       throw new Meteor.Error("payment.getSubmerchantDetails.unauthorized", "Incorrect user credentials (User ID): credential mismatch")
