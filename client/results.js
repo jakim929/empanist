@@ -324,3 +324,25 @@ AutoForm.hooks({
     }
   }
 });
+
+
+Template.registerHelper('randomBlurb', () => {
+    console.log("randomblurb")
+    let randoms = [
+      "I am a music teacher with 15 years of experience teaching flute, recorder, music theory, music history, ear training and music literature. I have contributed to the creation of music curriculums in one of the most renowned music schools in Montreal.",
+      "I have been a concert pianist for 6 years, having worked with the nation's best soloist musicians. I am very adaptable in style, and having been a soloist as well, am able to work well with soloists. I've also played with smaller ensembles in the Carnegie Hall.",
+      "I am a professional accompanist with a specialty in Jazz piano. I studied at the nation's best music schools, and am currently working as a concert pianist as well. I have previously collaborated with Yo-Yo Ma, Lang Lang, and Bihn Park, few of the most famous soloists in the world.",
+      "I've played the piano for nearly 40 years. I can read, write, and produce music very well. I own and operate a recording studio in my home. Currently, I am the piano accompanist for a high school. My career includes being the music director for a not-for-profit theater company, and I'm the minister of music for my church. My hobby includes being the leader of an R&B/Soul band."
+    ]
+    return randoms[Math.floor(Math.random()*randoms.length)]
+  }
+)
+
+Template.registerHelper('joinComma', (array) =>{
+    // let trueName = {'Mon': 'Monday', 'Tue': 'Tuesday', 'Wed': 'Wednesday', 'Thu': 'Thursday', 'Fri': 'Friday', 'Sat': 'Saturday', 'Sun': 'Sunday'}
+    // for(var i = 0; i < array.length; i++){
+    //   console.log(array[i])
+    //   array[i] = trueName[array[i]]
+    // }
+    return array.join(', ')
+})

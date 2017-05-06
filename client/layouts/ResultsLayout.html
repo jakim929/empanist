@@ -40,7 +40,10 @@
             <div class="slight-left-padding slight-right-padding">
               <div class="row">
                 <div class="col s10">
-                  <h7 class="teal-text">Juilliard Trained Musician - Extensive Repertoire</h7>
+                  {{#with basicProfileById Id}}
+
+                    <h7 class="teal-text">{{affiliation}} Musician - Extensive Repertoire</h7>
+                  {{/with}}
                 </div>
                 <div class="col s2">
                   <span class="semi-bold h7-font-size">
@@ -50,7 +53,8 @@
               </div>
               <div class="slight-left-padding slight-upper-padding">
                 <div class="row">
-                  <p class="block-with-text">I am a music teacher with 15 years of experience teaching flute, recorder, music theory, music history, ear training and music literature. I have contributed to the creation of music curriculums in one of the most renowned music schools in Montreal as well as being the author of a series of published music theory and music literature exercise books. I am also an active performer on the Boston classical music scene. I teach students of all ages and levels of proficiency. Lesson style is adapted to the goals of the student.
+                  <p class="block-with-text">
+                    {{randomBlurb}}
                   </p>
                 </div>
               </div>
@@ -242,8 +246,7 @@
           <div class="col s4">
           	<div class="box">
 
-		          <h10 class="box-label">{{this.label}}
-
+		          <h10 class="box-label slightly-bigger"><span class="unbold">{{this.label}}</span>
 
 		          <input type="checkbox" id="{{this.value}}-slot" value={{this.value}} class="sexyselect-checkbox" />
 

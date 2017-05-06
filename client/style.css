@@ -10,6 +10,19 @@ body {
   background-color: #eeeeee;
 
 }
+h10 {
+	font-size: 110%;
+}
+
+
+
+.slightly-bigger{
+	font-size:145%;
+}
+
+.unbold{
+	font-weight: normal;
+}
 
 /* Payment CSS */
 .payment-control-container{
@@ -355,7 +368,7 @@ body {
 }
 
 .text-shadow-setting{
-	    text-shadow: 4px 4px 4px #000000;
+	    text-shadow: 2px 2px 2px #000000;
 }
 
 .logo {
@@ -825,7 +838,7 @@ fp
 
 .center_horizontal {
   text-align: center;
-  background-color: #e6e6e6;
+  background-color: #eeeeee;
 }
 
 /*not consistant*/
